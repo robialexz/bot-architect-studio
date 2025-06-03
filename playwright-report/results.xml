@@ -1,0 +1,167 @@
+<testsuites id="" name="" tests="6" failures="1" skipped="5" errors="0" time="139.805457">
+<testsuite name="e2e\record-demo.spec.ts" timestamp="2025-05-31T09:03:07.635Z" hostname="chromium" tests="6" failures="1" skipped="5" time="130.682" errors="0">
+<testcase name="AI Workflow Studio Demo Recording › Record complete demo video" classname="e2e\record-demo.spec.ts" time="121.039">
+<failure message="record-demo.spec.ts:20:3 Record complete demo video" type="FAILURE">
+<![CDATA[  [chromium] › e2e\record-demo.spec.ts:20:3 › AI Workflow Studio Demo Recording › Record complete demo video 
+
+    TimeoutError: page.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for locator('button[value="triggers"]')
+
+
+       at ..\demo-video\automated-demo-recorder.ts:120
+
+      118 |           try {
+      119 |             await this.highlightElement(action.selector);
+    > 120 |             await this.page.click(action.selector, { timeout: action.optional ? 5000 : 30000 });
+          |                             ^
+      121 |           } catch (error) {
+      122 |             if (action.optional) {
+      123 |               console.log(`⚠️ Optional action skipped: ${action.selector} - ${error.message}`);
+        at AutomatedDemoRecorder.executeAction (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:120:29)
+        at AutomatedDemoRecorder.executeStep (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:102:7)
+        at AutomatedDemoRecorder.executeDemo (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:77:7)
+        at recordDemo (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:473:3)
+        at C:\Users\robia\Desktop\AiFlow\tests\e2e\record-demo.spec.ts:24:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\error-context.md
+
+    Retry #1 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for locator('button[value="triggers"]')
+
+
+       at ..\demo-video\automated-demo-recorder.ts:120
+
+      118 |           try {
+      119 |             await this.highlightElement(action.selector);
+    > 120 |             await this.page.click(action.selector, { timeout: action.optional ? 5000 : 30000 });
+          |                             ^
+      121 |           } catch (error) {
+      122 |             if (action.optional) {
+      123 |               console.log(`⚠️ Optional action skipped: ${action.selector} - ${error.message}`);
+        at AutomatedDemoRecorder.executeAction (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:120:29)
+        at AutomatedDemoRecorder.executeStep (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:102:7)
+        at AutomatedDemoRecorder.executeDemo (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:77:7)
+        at recordDemo (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:473:3)
+        at C:\Users\robia\Desktop\AiFlow\tests\e2e\record-demo.spec.ts:24:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Retry #2 ───────────────────────────────────────────────────────────────────────────────────────
+
+    TimeoutError: page.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for locator('button[value="triggers"]')
+
+
+       at ..\demo-video\automated-demo-recorder.ts:120
+
+      118 |           try {
+      119 |             await this.highlightElement(action.selector);
+    > 120 |             await this.page.click(action.selector, { timeout: action.optional ? 5000 : 30000 });
+          |                             ^
+      121 |           } catch (error) {
+      122 |             if (action.optional) {
+      123 |               console.log(`⚠️ Optional action skipped: ${action.selector} - ${error.message}`);
+        at AutomatedDemoRecorder.executeAction (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:120:29)
+        at AutomatedDemoRecorder.executeStep (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:102:7)
+        at AutomatedDemoRecorder.executeDemo (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:77:7)
+        at recordDemo (C:\Users\robia\Desktop\AiFlow\demo-video\automated-demo-recorder.ts:473:3)
+        at C:\Users\robia\Desktop\AiFlow\tests\e2e\record-demo.spec.ts:24:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[🎬 Starting AI Workflow Studio demo recording...
+🎬 Demo recording started...
+🎯 Executing step: Welcome to AI Workflow Studio
+🎯 Executing step: Drag and Drop Interface
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\video.webm]]
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\error-context.md]]
+🎬 Starting AI Workflow Studio demo recording...
+🎬 Demo recording started...
+🎯 Executing step: Welcome to AI Workflow Studio
+🎯 Executing step: Drag and Drop Interface
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\test-failed-1.png]]
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\video.webm]]
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\error-context.md]]
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\trace.zip]]
+🎬 Starting AI Workflow Studio demo recording...
+🎬 Demo recording started...
+🎯 Executing step: Welcome to AI Workflow Studio
+🎯 Executing step: Drag and Drop Interface
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\test-failed-1.png]]
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\video.webm]]
+
+[[ATTACHMENT|..\test-results\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="AI Workflow Studio Demo Recording › Record individual demo sections" classname="e2e\record-demo.spec.ts" time="9.643">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Workflow Studio Demo Recording › Record demo with authentication" classname="e2e\record-demo.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Workflow Studio Demo Recording › Record tutorial system showcase" classname="e2e\record-demo.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="AI Workflow Studio Demo Recording › Record performance and features showcase" classname="e2e\record-demo.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Video Post-Processing › Generate video metadata and optimization info" classname="e2e\record-demo.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

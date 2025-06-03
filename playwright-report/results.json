@@ -1,0 +1,484 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\robia\\Desktop\\AiFlow\\playwright.config.ts",
+    "rootDir": "C:/Users/robia/Desktop/AiFlow/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      ["html", null],
+      [
+        "json",
+        {
+          "outputFile": "playwright-report/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "playwright-report/results.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/robia/Desktop/AiFlow/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/robia/Desktop/AiFlow/tests",
+        "testIgnore": [],
+        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
+        "timeout": 60000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.52.0",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:8080",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "e2e\\record-demo.spec.ts",
+      "file": "e2e/record-demo.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "AI Workflow Studio Demo Recording",
+          "file": "e2e/record-demo.spec.ts",
+          "line": 5,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Record complete demo video",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 40182,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\n    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\n    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\n    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\n    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23",
+                        "location": {
+                          "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
+                          "column": 29,
+                          "line": 120
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
+                            "column": 29,
+                            "line": 120
+                          },
+                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\u001b[22m\n\u001b[2m    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\u001b[22m\n\u001b[2m    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎬 Starting AI Workflow Studio demo recording...\n"
+                        },
+                        {
+                          "text": "🎬 Demo recording started...\n"
+                        },
+                        {
+                          "text": "🎯 Executing step: Welcome to AI Workflow Studio\n"
+                        },
+                        {
+                          "text": "🎯 Executing step: Drag and Drop Interface\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-31T09:03:09.062Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\\video.webm"
+                        },
+                        {
+                          "name": "_error-context-0",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
+                        "column": 29,
+                        "line": 120
+                      }
+                    },
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 40772,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\n    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\n    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\n    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\n    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23",
+                        "location": {
+                          "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
+                          "column": 29,
+                          "line": 120
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
+                            "column": 29,
+                            "line": 120
+                          },
+                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\u001b[22m\n\u001b[2m    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\u001b[22m\n\u001b[2m    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎬 Starting AI Workflow Studio demo recording...\n"
+                        },
+                        {
+                          "text": "🎬 Demo recording started...\n"
+                        },
+                        {
+                          "text": "🎯 Executing step: Welcome to AI Workflow Studio\n"
+                        },
+                        {
+                          "text": "🎯 Executing step: Drag and Drop Interface\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-05-31T09:03:51.144Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\\video.webm"
+                        },
+                        {
+                          "name": "_error-context-0",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
+                        "column": 29,
+                        "line": 120
+                      }
+                    },
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 40085,
+                      "error": {
+                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n",
+                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\n    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\n    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\n    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\n    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23",
+                        "location": {
+                          "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
+                          "column": 29,
+                          "line": 120
+                        },
+                        "snippet": "\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
+                            "column": 29,
+                            "line": 120
+                          },
+                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\u001b[22m\n\u001b[2m    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\u001b[22m\n\u001b[2m    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎬 Starting AI Workflow Studio demo recording...\n"
+                        },
+                        {
+                          "text": "🎬 Demo recording started...\n"
+                        },
+                        {
+                          "text": "🎯 Executing step: Welcome to AI Workflow Studio\n"
+                        },
+                        {
+                          "text": "🎯 Executing step: Drag and Drop Interface\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 2,
+                      "startTime": "2025-05-31T09:04:34.266Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\\video.webm"
+                        },
+                        {
+                          "name": "_error-context-0",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
+                        "column": 29,
+                        "line": 120
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "1f0ab8591599f48283df-947ddc6b33c0119b3b54",
+              "file": "e2e/record-demo.spec.ts",
+              "line": 20,
+              "column": 3
+            },
+            {
+              "title": "Record individual demo sections",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "interrupted",
+                      "duration": 9643,
+                      "error": {
+                        "message": "Error: page.waitForTimeout: Test ended.",
+                        "stack": "Error: page.waitForTimeout: Test ended.\n    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:45:18",
+                        "location": {
+                          "file": "C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts",
+                          "column": 18,
+                          "line": 45
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 43 |\u001b[39m\n \u001b[90m 44 |\u001b[39m       \u001b[90m// Add section break\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m     }\n \u001b[90m 47 |\u001b[39m\n \u001b[90m 48 |\u001b[39m     \u001b[36mconst\u001b[39m videoPath \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m recorder\u001b[33m.\u001b[39mstopRecording()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts",
+                            "column": 18,
+                            "line": 45
+                          },
+                          "message": "Error: page.waitForTimeout: Test ended.\n\n\u001b[0m \u001b[90m 43 |\u001b[39m\n \u001b[90m 44 |\u001b[39m       \u001b[90m// Add section break\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m     }\n \u001b[90m 47 |\u001b[39m\n \u001b[90m 48 |\u001b[39m     \u001b[36mconst\u001b[39m videoPath \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m recorder\u001b[33m.\u001b[39mstopRecording()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:45:18\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎬 Demo recording started...\n"
+                        },
+                        {
+                          "text": "🎯 Recording section 1: Welcome to AI Workflow Studio\n"
+                        },
+                        {
+                          "text": "🎯 Executing step: Welcome to AI Workflow Studio\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-31T09:05:16.529Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-1756c-rd-individual-demo-sections-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-1756c-rd-individual-demo-sections-chromium\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts",
+                        "column": 18,
+                        "line": 45
+                      }
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "1f0ab8591599f48283df-a08fe6b98630e1c4fd7c",
+              "file": "e2e/record-demo.spec.ts",
+              "line": 32,
+              "column": 3
+            },
+            {
+              "title": "Record demo with authentication",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "1f0ab8591599f48283df-e8fbe41c279b468fe4b6",
+              "file": "e2e/record-demo.spec.ts",
+              "line": 52,
+              "column": 3
+            },
+            {
+              "title": "Record tutorial system showcase",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "1f0ab8591599f48283df-917cad8f285dae08a97b",
+              "file": "e2e/record-demo.spec.ts",
+              "line": 74,
+              "column": 3
+            },
+            {
+              "title": "Record performance and features showcase",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "1f0ab8591599f48283df-a164eda6be75b42428ac",
+              "file": "e2e/record-demo.spec.ts",
+              "line": 154,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Video Post-Processing",
+          "file": "e2e/record-demo.spec.ts",
+          "line": 213,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Generate video metadata and optimization info",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "1f0ab8591599f48283df-02ec13506669498d16de",
+              "file": "e2e/record-demo.spec.ts",
+              "line": 214,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-05-31T09:03:07.153Z",
+    "duration": 139805.457,
+    "expected": 0,
+    "skipped": 5,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
