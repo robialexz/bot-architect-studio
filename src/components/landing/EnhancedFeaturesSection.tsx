@@ -17,7 +17,7 @@ const EnhancedFeaturesSection: React.FC = () => {
 
   const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
   const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0.7]);
 
   // For progress-based animations
   const { ref: progressRef, progress } = useScrollProgress({
@@ -233,7 +233,7 @@ const EnhancedFeaturesSection: React.FC = () => {
             className="max-w-4xl mx-auto bg-card/50 backdrop-blur-sm rounded-xl p-8 border border-border relative overflow-hidden"
             style={{
               scale: useTransform(scrollYProgress, [0.3, 0.6], [0.9, 1]),
-              opacity: useTransform(scrollYProgress, [0.3, 0.4, 0.7, 0.8], [0, 1, 1, 0]),
+              opacity: useTransform(scrollYProgress, [0.3, 0.4, 0.8, 0.9], [0, 1, 1, 0.8]),
             }}
           >
             <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent opacity-50" />

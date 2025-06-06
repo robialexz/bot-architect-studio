@@ -12,9 +12,9 @@
 ### User Authentication
 
 - [ ] Navigate to `http://localhost:8080/ai-workflow-studio/new`
-- [ ] Login with credentials:
-  - Email: `robialexzi0@gmail.com`
-  - Password: `Alexandur132!@?`
+- [ ] Login with test credentials:
+  - Email: `test@example.com`
+  - Password: `testpassword123`
 - [ ] Successful authentication and redirect
 
 ---

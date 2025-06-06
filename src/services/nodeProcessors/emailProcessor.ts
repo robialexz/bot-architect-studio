@@ -6,11 +6,11 @@ export class EmailProcessor implements NodeProcessor {
     return ['email', 'notification', 'send-email'].includes(nodeType);
   }
 
-  getRequiredInputs(node: any): string[] {
+  getRequiredInputs(node: Record<string, unknown>): string[] {
     return ['to', 'subject', 'body'];
   }
 
-  validateInputs(node: any, inputs: Record<string, any>): boolean {
+  validateInputs(node: Record<string, unknown>, inputs: Record<string, unknown>): boolean {
     const required = this.getRequiredInputs(node);
 
     for (const input of required) {
@@ -33,8 +33,8 @@ export class EmailProcessor implements NodeProcessor {
   }
 
   async processNode(
-    node: any,
-    inputs: Record<string, any>,
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
@@ -112,7 +112,10 @@ export class EmailProcessor implements NodeProcessor {
     }
   }
 
-  private prepareEmailData(node: any, inputs: Record<string, any>): any {
+  private prepareEmailData(
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): Record<string, unknown> {
     const nodeData = node.data || {};
 
     return {
@@ -130,7 +133,7 @@ export class EmailProcessor implements NodeProcessor {
     };
   }
 
-  private async sendEmail(emailData: any): Promise<any> {
+  private async sendEmail(emailData: Record<string, unknown>): Promise<Record<string, unknown>> {
     // Mock email sending for now
     // In production, this would integrate with actual email services
 

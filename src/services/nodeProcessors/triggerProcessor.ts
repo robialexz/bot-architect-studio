@@ -6,20 +6,20 @@ export class TriggerProcessor implements NodeProcessor {
     return ['trigger', 'start', 'input', 'manual'].includes(nodeType);
   }
 
-  getRequiredInputs(node: any): string[] {
+  getRequiredInputs(node: Record<string, unknown>): string[] {
     // Trigger nodes typically don't require specific inputs
     // They use whatever inputs are provided to the workflow
     return [];
   }
 
-  validateInputs(node: any, inputs: Record<string, any>): boolean {
+  validateInputs(node: Record<string, unknown>, inputs: Record<string, unknown>): boolean {
     // Trigger nodes are flexible with inputs
     return true;
   }
 
   async processNode(
-    node: any,
-    inputs: Record<string, any>,
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
@@ -87,7 +87,7 @@ export class TriggerProcessor implements NodeProcessor {
     }
   }
 
-  private applyInputTransforms(outputs: Record<string, any>, transforms: any[]): void {
+  private applyInputTransforms(outputs: Record<string, unknown>, transforms: unknown[]): void {
     transforms.forEach(transform => {
       try {
         switch (transform.type) {
@@ -119,7 +119,7 @@ export class TriggerProcessor implements NodeProcessor {
     });
   }
 
-  private formatValue(value: any, format: string): any {
+  private formatValue(value: unknown, format: string): unknown {
     switch (format) {
       case 'string':
         return String(value);

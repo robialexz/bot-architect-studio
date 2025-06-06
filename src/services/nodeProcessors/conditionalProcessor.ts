@@ -6,8 +6,8 @@ export class ConditionalProcessor implements NodeProcessor {
     return ['conditional', 'if-else', 'switch', 'decision'].includes(nodeType);
   }
 
-  getRequiredInputs(node: any): string[] {
-    const conditionType = node.data?.conditionType || 'simple';
+  getRequiredInputs(node: Record<string, unknown>): string[] {
+    const conditionType = (node.data as Record<string, unknown>)?.conditionType || 'simple';
 
     switch (conditionType) {
       case 'simple':
@@ -21,7 +21,7 @@ export class ConditionalProcessor implements NodeProcessor {
     }
   }
 
-  validateInputs(node: any, inputs: Record<string, any>): boolean {
+  validateInputs(node: Record<string, unknown>, inputs: Record<string, unknown>): boolean {
     const required = this.getRequiredInputs(node);
 
     for (const input of required) {
@@ -38,8 +38,8 @@ export class ConditionalProcessor implements NodeProcessor {
   }
 
   async processNode(
-    node: any,
-    inputs: Record<string, any>,
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
@@ -114,9 +114,9 @@ export class ConditionalProcessor implements NodeProcessor {
 
   private evaluateCondition(
     conditionType: string,
-    nodeData: any,
-    inputs: Record<string, any>
-  ): { passed: boolean; value: any; branch?: string } {
+    nodeData: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): { passed: boolean; value: unknown; branch?: string } {
     switch (conditionType) {
       case 'simple':
         return this.evaluateSimpleCondition(nodeData, inputs);
@@ -139,9 +139,9 @@ export class ConditionalProcessor implements NodeProcessor {
   }
 
   private evaluateSimpleCondition(
-    nodeData: any,
-    inputs: Record<string, any>
-  ): { passed: boolean; value: any } {
+    nodeData: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): { passed: boolean; value: unknown } {
     const value = inputs.value;
     const condition = inputs.condition || nodeData.condition;
     const operator = nodeData.operator || '==';
@@ -201,9 +201,9 @@ export class ConditionalProcessor implements NodeProcessor {
   }
 
   private evaluateExpression(
-    nodeData: any,
-    inputs: Record<string, any>
-  ): { passed: boolean; value: any } {
+    nodeData: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): { passed: boolean; value: unknown } {
     const expression = inputs.expression || nodeData.expression;
 
     if (!expression) {
@@ -220,9 +220,9 @@ export class ConditionalProcessor implements NodeProcessor {
   }
 
   private evaluateSwitch(
-    nodeData: any,
-    inputs: Record<string, any>
-  ): { passed: boolean; value: any; branch: string } {
+    nodeData: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): { passed: boolean; value: unknown; branch: string } {
     const value = inputs.value;
     const cases = inputs.cases || nodeData.cases || {};
     const defaultCase = nodeData.defaultCase;
@@ -255,9 +255,9 @@ export class ConditionalProcessor implements NodeProcessor {
   }
 
   private evaluateRange(
-    nodeData: any,
-    inputs: Record<string, any>
-  ): { passed: boolean; value: any } {
+    nodeData: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): { passed: boolean; value: unknown } {
     const value = Number(inputs.value);
     const min = Number(nodeData.min);
     const max = Number(nodeData.max);
@@ -274,9 +274,9 @@ export class ConditionalProcessor implements NodeProcessor {
   }
 
   private evaluateRegex(
-    nodeData: any,
-    inputs: Record<string, any>
-  ): { passed: boolean; value: any } {
+    nodeData: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): { passed: boolean; value: unknown } {
     const value = String(inputs.value);
     const pattern = nodeData.pattern;
     const flags = nodeData.flags || 'i';
@@ -298,7 +298,7 @@ export class ConditionalProcessor implements NodeProcessor {
     }
   }
 
-  private safeEvaluateExpression(expression: string, inputs: Record<string, any>): any {
+  private safeEvaluateExpression(expression: string, inputs: Record<string, unknown>): unknown {
     // Simple and safe expression evaluator
     // Replace input variables in the expression
     let processedExpression = expression;

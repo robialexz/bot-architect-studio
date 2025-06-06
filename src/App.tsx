@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -9,7 +9,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { AssistantProvider } from './contexts/AssistantContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Layout from './components/Layout';
-import ProtectedRoute from './components/ProtectedRoute';
+
 import { AuthenticatedRoute, PublicRoute } from './components/auth/authHelpers';
 import { Loader2 } from 'lucide-react';
 
@@ -169,7 +169,6 @@ const Settings = lazy(() => import('./pages/Settings'));
 const MyAgents = lazy(() => import('./pages/MyAgents'));
 const Wallet = lazy(() => import('./pages/Wallet'));
 
-const AuthTestPage = lazy(() => import('./pages/AuthTestPage'));
 const AuthDebugPage = lazy(() => import('./pages/AuthDebugPage'));
 const WorkflowTemplatesGallery = lazy(() => import('./pages/WorkflowTemplatesGallery'));
 const WorkflowAnalytics = lazy(() => import('./pages/WorkflowAnalytics'));
@@ -194,7 +193,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000, // 5 minutes
-      cacheTime: 10 * 60 * 1000, // 10 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes
       retry: 1,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
@@ -580,14 +579,6 @@ const App = () => {
                       element={
                         <Suspense fallback={<PageLoader />}>
                           <Pricing />
-                        </Suspense>
-                      }
-                    />
-                    <Route
-                      path="/auth-test"
-                      element={
-                        <Suspense fallback={<PageLoader />}>
-                          <AuthTestPage />
                         </Suspense>
                       }
                     />

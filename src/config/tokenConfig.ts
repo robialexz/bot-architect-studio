@@ -51,8 +51,8 @@ export const FLOWSY_TOKEN_CONFIG: TokenConfig = {
   decimals: 9,
 
   // Visual Assets
-  logoUrl: '/flowsy-token-logo.png', // Add actual logo to public folder
-  bannerImageUrl: '/flowsy-token-banner.png',
+  logoUrl: '/flowsy-new-logo.png', // Updated to use custom logo from Downloads
+  bannerImageUrl: '/flowsy-new-logo.png',
 
   // Trading Links (UPDATE WITH ACTUAL TOKEN ADDRESS)
   dexScreenerUrl: 'https://dexscreener.com/solana/DEMO_TOKEN',

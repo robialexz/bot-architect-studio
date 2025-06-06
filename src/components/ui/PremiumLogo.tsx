@@ -15,19 +15,19 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
   animated = true,
 }) => {
   const sizeClasses = {
-    sm: 'w-6 h-6',
-    md: 'w-8 h-8',
-    lg: 'w-12 h-12',
-    xl: 'w-16 h-16',
-    xxl: 'w-20 h-20',
+    sm: 'w-8 h-8',
+    md: 'w-12 h-12',
+    lg: 'w-16 h-16',
+    xl: 'w-24 h-24',
+    xxl: 'w-32 h-32',
   };
 
   const textSizeClasses = {
-    sm: 'text-lg',
-    md: 'text-xl',
-    lg: 'text-2xl',
-    xl: 'text-3xl',
-    xxl: 'text-4xl',
+    sm: 'text-sm',
+    md: 'text-base',
+    lg: 'text-lg',
+    xl: 'text-2xl',
+    xxl: 'text-3xl',
   };
 
   const logoVariants = {
@@ -63,65 +63,12 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
         whileHover={animated ? 'hover' : undefined}
         className="relative group"
       >
-        {/* Modern FA Logo - Square Design */}
-        <svg
-          className={`${sizeClasses[size]} text-primary drop-shadow-lg group-hover:drop-shadow-xl transition-all duration-300`}
-          viewBox="0 0 100 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Background Square with Rounded Corners */}
-          <rect
-            x="8"
-            y="8"
-            width="84"
-            height="84"
-            rx="18"
-            fill="url(#logoGradient)"
-            stroke="url(#borderGradient)"
-            strokeWidth="2"
-            className="group-hover:stroke-[3] transition-all duration-300"
-          />
-
-          {/* Letter "F" - Left Side */}
-          <path
-            d="M25 70 L25 35 L45 35 M25 52 L40 52"
-            stroke="white"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-
-          {/* Letter "A" - Right Side */}
-          <path
-            d="M55 70 L65 35 L75 70 M60 55 L70 55"
-            stroke="white"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
-          />
-
-          {/* Flow Connection - Subtle dots between F and A */}
-          <circle cx="47" cy="45" r="2" fill="white" opacity="0.7" />
-          <circle cx="50" cy="50" r="2" fill="white" opacity="0.5" />
-          <circle cx="53" cy="55" r="2" fill="white" opacity="0.7" />
-
-          {/* Gradient Definitions */}
-          <defs>
-            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="hsl(var(--primary))" />
-              <stop offset="50%" stopColor="hsl(var(--accent))" />
-              <stop offset="100%" stopColor="hsl(var(--primary))" />
-            </linearGradient>
-            <linearGradient id="borderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="hsl(var(--accent))" stopOpacity="1" />
-              <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.8" />
-            </linearGradient>
-          </defs>
-        </svg>
+        {/* FlowsyAI Logo from Downloads */}
+        <img
+          src="/flowsy-new-logo.png"
+          alt="FlowsyAI Logo"
+          className={`${sizeClasses[size]} drop-shadow-lg group-hover:drop-shadow-xl transition-all duration-300 group-hover:scale-105 object-contain`}
+        />
 
         {/* Luxury Glow Effect */}
         <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/30 to-accent/30 blur-xl -z-10 opacity-20 group-hover:opacity-60 transition-all duration-500 scale-110" />
@@ -144,13 +91,13 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
               <span className={`font-bold text-foreground tracking-tight ${textSizeClasses[size]}`}>
                 FlowsyAI
               </span>
-              <span className="text-xs text-muted-foreground font-medium tracking-wider uppercase -mt-1">
+              <span className="text-[10px] text-muted-foreground font-medium tracking-wider uppercase -mt-1">
                 Luxury Automation
               </span>
             </>
           )}
           {size === 'lg' && (
-            <span className="text-sm font-semibold text-foreground tracking-tight">FlowsyAI</span>
+            <span className="text-base font-semibold text-foreground tracking-tight">FlowsyAI</span>
           )}
         </motion.div>
       )}

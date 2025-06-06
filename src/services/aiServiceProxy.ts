@@ -108,7 +108,7 @@ class AIServiceProxyImpl implements AIServiceProxy {
     return true;
   }
 
-  async trackUsage(userId: string, usage: any): Promise<void> {
+  async trackUsage(userId: string, usage: AIUsageRecord): Promise<void> {
     try {
       await supabase.from('ai_usage').insert({
         user_id: userId,
@@ -424,7 +424,7 @@ class AIServiceProxyImpl implements AIServiceProxy {
     }
   }
 
-  private calculateUsageStats(usageData: any[]): UsageStats {
+  private calculateUsageStats(usageData: AIUsageRecord[]): UsageStats {
     const stats: UsageStats = {
       totalRequests: usageData.length,
       totalTokens: 0,

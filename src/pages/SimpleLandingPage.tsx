@@ -56,8 +56,12 @@ const SimpleLandingPage: React.FC = () => {
                   transition={{ duration: 0.5 }}
                   className="flex justify-center mb-8"
                 >
-                  <div className="w-20 h-20 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
-                    <Bot className="w-10 h-10 text-blue-400" />
+                  <div className="w-20 h-20 rounded-full bg-blue-500/10 border border-blue-500/20 flex items-center justify-center p-3">
+                    <img
+                      src="/flowsy-new-logo.png"
+                      alt="FlowsyAI Logo"
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                 </motion.div>
 

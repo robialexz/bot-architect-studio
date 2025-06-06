@@ -14,25 +14,15 @@ import {
   Plus,
   Sparkles,
   ArrowRight,
-  Settings,
   Trash2,
-  Mic,
-  MicOff,
   Lightbulb,
-  Layout,
-  Wand2,
+  MapPin,
   Brain,
   Rocket,
-  Star,
-  Clock,
-  Users,
-  TrendingUp,
-  CheckCircle,
   X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { realAIService } from '@/services/realAIService';
-import { Link } from 'react-router-dom';
 
 interface AgentNode {
   id: string;
@@ -89,7 +79,7 @@ interface ProcessingResult {
   timestamp: number;
 }
 
-interface NodeOutput {
+interface NodeOutput extends Record<string, unknown> {
   response: string;
   model: string;
   tokensUsed?: number;
@@ -117,7 +107,7 @@ const VisualWorkflowBuilder: React.FC = () => {
   const [nodes, setNodes] = useState<AgentNode[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
   const [, setDataPackets] = useState<DataPacket[]>([]);
-  const [processingResults, setProcessingResults] = useState<ProcessingResult[]>([]);
+  const [, setProcessingResults] = useState<ProcessingResult[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [draggedAgent, setDraggedAgent] = useState<{
@@ -141,8 +131,8 @@ const VisualWorkflowBuilder: React.FC = () => {
     id: string;
     offset: { x: number; y: number };
   } | null>(null);
-  const [showResults, setShowResults] = useState(false);
-  const [workflowMetrics, setWorkflowMetrics] = useState({
+  const [, setShowResults] = useState(false);
+  const [, setWorkflowMetrics] = useState({
     totalProcessingTime: 0,
     totalTokensProcessed: 0,
     averageAccuracy: 0,
@@ -169,8 +159,7 @@ const VisualWorkflowBuilder: React.FC = () => {
       action?: () => void;
     }>
   >([]);
-  const [voiceCommands, setVoiceCommands] = useState(false);
-  const [isListening, setIsListening] = useState(false);
+
   const [smartMode, setSmartMode] = useState(true);
   const [workflowTemplates, setWorkflowTemplates] = useState<
     Array<{
@@ -185,7 +174,7 @@ const VisualWorkflowBuilder: React.FC = () => {
       popularity: number;
     }>
   >([]);
-  const [showTemplateGallery, setShowTemplateGallery] = useState(false);
+
   const [,] = useState(true);
   const canvasRef = useRef<HTMLDivElement>(null);
 
@@ -193,7 +182,7 @@ const VisualWorkflowBuilder: React.FC = () => {
   const [userInput, setUserInput] = useState('');
   const [showInputDialog, setShowInputDialog] = useState(false);
   const [isGeneratingWorkflow, setIsGeneratingWorkflow] = useState(false);
-  const [generatedWorkflowDescription, setGeneratedWorkflowDescription] = useState('');
+  const [, setGeneratedWorkflowDescription] = useState('');
   const [finalResults, setFinalResults] = useState<string>('');
 
   // Initialize Smart Templates and AI Features - Run only once
@@ -437,194 +426,12 @@ const VisualWorkflowBuilder: React.FC = () => {
               setConnectionStart(null);
               setProcessingResults([]);
               setShowResults(false);
-              setShowTemplateGallery(false);
             }
           },
         },
       ]);
     }, 2000);
   }, []); // No dependencies needed
-
-  // Smart Template Loading
-  const loadTemplate = useCallback(
-    (templateId: string) => {
-      const template = workflowTemplates.find(t => t.id === templateId);
-      if (!template) return;
-
-      setNodes(template.nodes);
-      setConnections(template.connections);
-      setSelectedNode(null);
-      setConnectionStart(null);
-      setProcessingResults([]);
-      setShowResults(false);
-      setShowTemplateGallery(false);
-
-      // Show success message
-      setAiSuggestions(prev => [
-        ...prev,
-        {
-          id: `loaded-${Date.now()}`,
-          type: 'completion',
-          message: `✅ ${template.name} loaded successfully! Click Run to see it in action.`,
-          confidence: 1.0,
-        },
-      ]);
-    },
-    [workflowTemplates]
-  );
-
-  // Voice Commands System
-  const toggleVoiceCommands = () => {
-    if (!voiceCommands) {
-      setVoiceCommands(true);
-      startListening();
-    } else {
-      setVoiceCommands(false);
-      stopListening();
-    }
-  };
-
-  const startListening = () => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      // Define proper types for Speech Recognition to avoid any usage
-      interface SpeechRecognitionConstructor {
-        new (): SpeechRecognitionInstance;
-      }
-
-      interface SpeechRecognitionInstance {
-        continuous: boolean;
-        interimResults: boolean;
-        lang: string;
-        start(): void;
-        stop(): void;
-        onresult: ((event: SpeechRecognitionEvent) => void) | null;
-        onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
-        onend: (() => void) | null;
-        onstart: (() => void) | null;
-      }
-
-      interface SpeechRecognitionEvent {
-        results: SpeechRecognitionResultList;
-      }
-
-      interface SpeechRecognitionErrorEvent {
-        error: string;
-      }
-
-      interface SpeechRecognitionResultList {
-        length: number;
-        [index: number]: SpeechRecognitionResult;
-      }
-
-      interface SpeechRecognitionResult {
-        length: number;
-        isFinal: boolean;
-        [index: number]: SpeechRecognitionAlternative;
-      }
-
-      interface SpeechRecognitionAlternative {
-        transcript: string;
-        confidence: number;
-      }
-
-      const SpeechRecognition =
-        (
-          window as unknown as {
-            webkitSpeechRecognition?: SpeechRecognitionConstructor;
-            SpeechRecognition?: SpeechRecognitionConstructor;
-          }
-        ).webkitSpeechRecognition ||
-        (
-          window as unknown as {
-            webkitSpeechRecognition?: SpeechRecognitionConstructor;
-            SpeechRecognition?: SpeechRecognitionConstructor;
-          }
-        ).SpeechRecognition;
-
-      if (!SpeechRecognition) {
-        console.warn('Speech recognition not available');
-        return;
-      }
-
-      const recognition = new SpeechRecognition();
-
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-
-      recognition.onstart = () => {
-        setIsListening(true);
-        setAiSuggestions(prev => [
-          ...prev,
-          {
-            id: `voice-${Date.now()}`,
-            type: 'completion',
-            message: '🎤 Voice commands active! Try: "Add GPT-4", "Run workflow", "Clear canvas"',
-            confidence: 1.0,
-          },
-        ]);
-      };
-
-      recognition.onresult = (event: SpeechRecognitionEvent) => {
-        try {
-          const results = event.results;
-          if (results && results.length > 0) {
-            const lastResult = results[results.length - 1];
-            if (lastResult && lastResult[0]) {
-              const transcript = lastResult[0].transcript?.toLowerCase()?.trim();
-              if (transcript && lastResult.isFinal) {
-                handleVoiceCommand(transcript);
-              }
-            }
-          }
-        } catch (error) {
-          console.warn('Speech recognition result processing error:', error);
-        }
-      };
-
-      recognition.onerror = () => {
-        setIsListening(false);
-      };
-
-      recognition.start();
-    }
-  };
-
-  const stopListening = () => {
-    setIsListening(false);
-  };
-
-  const handleVoiceCommand = (command: string) => {
-    if (command.includes('add gpt') || command.includes('add gpt-4')) {
-      const gpt4Agent = agentLibrary.find(agent => agent.type === 'gpt4-analyzer');
-      if (gpt4Agent) {
-        const newNode: AgentNode = {
-          id: `voice-node-${Date.now()}`,
-          ...gpt4Agent,
-          position: { x: 300, y: 200 },
-          status: 'idle',
-        };
-        setNodes(prev => [...prev, newNode]);
-        setAiSuggestions(prev => [
-          ...prev,
-          {
-            id: `voice-success-${Date.now()}`,
-            type: 'completion',
-            message: '✅ GPT-4 Analyzer added via voice command!',
-            confidence: 1.0,
-          },
-        ]);
-      }
-    } else if (command.includes('run workflow') || command.includes('execute')) {
-      runWorkflow();
-    } else if (command.includes('clear') || command.includes('reset')) {
-      clearWorkflow();
-    } else if (command.includes('demo') || command.includes('example')) {
-      loadDemoWorkflow();
-    } else if (command.includes('template')) {
-      setShowTemplateGallery(true);
-    }
-  };
 
   // Smart Auto-Suggestions based on current workflow - Optimized to prevent infinite loops
   useEffect(() => {
@@ -988,150 +795,6 @@ const VisualWorkflowBuilder: React.FC = () => {
     setConnectionStart(null);
   };
 
-  const loadDemoWorkflow = () => {
-    const demoNodes: AgentNode[] = [
-      {
-        id: 'demo-trigger',
-        type: 'smart-trigger',
-        name: 'Smart Trigger',
-        icon: <Zap className="w-5 h-5" />,
-        color: 'bg-gradient-to-r from-yellow-500 to-orange-500',
-        position: { x: 50, y: 120 },
-        inputs: 0,
-        outputs: 1,
-        description: 'Intelligent workflow triggers: webhooks, schedules, file changes',
-        category: 'Automation',
-        status: 'idle',
-        processingTime: 0.1,
-      },
-      {
-        id: 'demo-scraper',
-        type: 'web-scraper',
-        name: 'Web Scraper',
-        icon: <BarChart className="w-5 h-5" />,
-        color: 'bg-gradient-to-r from-teal-500 to-cyan-600',
-        position: { x: 280, y: 80 },
-        inputs: 1,
-        outputs: 1,
-        description: 'Intelligent web scraping with anti-bot detection',
-        category: 'Data Sources',
-        status: 'idle',
-        processingTime: 2.1,
-      },
-      {
-        id: 'demo-gpt4',
-        type: 'gpt4-analyzer',
-        name: 'GPT-4 Analyzer',
-        icon: <BrainCircuit className="w-5 h-5" />,
-        color: 'bg-gradient-to-r from-blue-500 to-purple-600',
-        position: { x: 520, y: 60 },
-        inputs: 1,
-        outputs: 2,
-        description: 'Advanced text analysis with GPT-4',
-        category: 'AI Models',
-        status: 'idle',
-        processingTime: 2.3,
-      },
-      {
-        id: 'demo-claude',
-        type: 'claude-writer',
-        name: 'Claude Writer',
-        icon: <FileText className="w-5 h-5" />,
-        color: 'bg-gradient-to-r from-green-500 to-emerald-600',
-        position: { x: 760, y: 40 },
-        inputs: 1,
-        outputs: 1,
-        description: 'Professional content generation with Claude',
-        category: 'AI Models',
-        status: 'idle',
-        processingTime: 3.1,
-      },
-      {
-        id: 'demo-dalle',
-        type: 'dalle-generator',
-        name: 'DALL-E 3',
-        icon: <Image className="w-5 h-5" />,
-        color: 'bg-gradient-to-r from-purple-500 to-pink-600',
-        position: { x: 760, y: 140 },
-        inputs: 1,
-        outputs: 1,
-        description: 'High-quality image generation with DALL-E 3',
-        category: 'AI Models',
-        status: 'idle',
-        processingTime: 4.7,
-      },
-      {
-        id: 'demo-vector',
-        type: 'vector-search',
-        name: 'Vector Search',
-        icon: <Database className="w-5 h-5" />,
-        color: 'bg-gradient-to-r from-orange-500 to-red-600',
-        position: { x: 280, y: 180 },
-        inputs: 1,
-        outputs: 1,
-        description: 'Semantic search through vector embeddings',
-        category: 'Data Processing',
-        status: 'idle',
-        processingTime: 0.4,
-      },
-    ];
-
-    const demoConnections: Connection[] = [
-      {
-        id: 'demo-conn-1',
-        sourceId: 'demo-trigger',
-        targetId: 'demo-scraper',
-        sourcePort: 0,
-        targetPort: 0,
-        animated: false,
-        dataType: 'webhook',
-      },
-      {
-        id: 'demo-conn-2',
-        sourceId: 'demo-trigger',
-        targetId: 'demo-vector',
-        sourcePort: 0,
-        targetPort: 0,
-        animated: false,
-        dataType: 'query',
-      },
-      {
-        id: 'demo-conn-3',
-        sourceId: 'demo-scraper',
-        targetId: 'demo-gpt4',
-        sourcePort: 0,
-        targetPort: 0,
-        animated: false,
-        dataType: 'text',
-      },
-      {
-        id: 'demo-conn-4',
-        sourceId: 'demo-gpt4',
-        targetId: 'demo-claude',
-        sourcePort: 0,
-        targetPort: 0,
-        animated: false,
-        dataType: 'analysis',
-      },
-      {
-        id: 'demo-conn-5',
-        sourceId: 'demo-gpt4',
-        targetId: 'demo-dalle',
-        sourcePort: 1,
-        targetPort: 0,
-        animated: false,
-        dataType: 'prompt',
-      },
-    ];
-
-    setNodes(demoNodes);
-    setConnections(demoConnections);
-    setSelectedNode(null);
-    setConnectionStart(null);
-    setProcessingResults([]);
-    setShowResults(false);
-  };
-
   // Advanced Workflow Execution with Real AI Simulation
   const runWorkflow = async () => {
     if (nodes.length === 0) return;
@@ -1323,12 +986,14 @@ const VisualWorkflowBuilder: React.FC = () => {
   };
 
   // Helper functions for AI service mapping
-  const getServiceFromNodeType = (nodeType: string): string => {
+  const getServiceFromNodeType = (
+    _nodeType: string
+  ): 'openai' | 'anthropic' | 'google' | 'huggingface' | 'stability' | 'cohere' => {
     // Always use Google AI for all node types
     return 'google';
   };
 
-  const getModelFromNodeType = (nodeType: string): string => {
+  const getModelFromNodeType = (_nodeType: string): string => {
     // Always use Gemini 2.0 Flash Lite for all node types (2025 latest)
     return 'gemini-2.0-flash-lite';
   };
@@ -1402,10 +1067,9 @@ const VisualWorkflowBuilder: React.FC = () => {
         color: '#8B5CF6',
         position: { x: 400, y: 200 },
         status: 'idle',
-        inputs: ['prompt'],
-        outputs: ['content'],
+        inputs: 1,
+        outputs: 1,
         processingTime: 2,
-        sampleOutput: { content: 'Generated blog post content...' },
       };
 
       setNodes([quickTestNode]);
@@ -1429,10 +1093,13 @@ const VisualWorkflowBuilder: React.FC = () => {
       const { aiServiceProxy } = await import('@/services/aiServiceProxy');
 
       const aiRequest = {
+        nodeId: 'quick-test-node',
+        nodeType: 'claude-writer',
         service: 'google' as const,
         model: 'gemini-2.0-flash-lite',
         prompt:
           'Scrie un articol de blog cuprinzător și captivant despre tehnologia sustenabilă. Include o introducere, beneficiile principale, tendințele actuale, exemple din lumea reală și o concluzie. Fă-l informativ și bine structurat pentru cititorii obișnuiți.',
+        inputs: { userRequest: 'Generate blog post about sustainable technology' },
         parameters: {
           maxTokens: 1500,
           temperature: 0.7,
@@ -1558,82 +1225,6 @@ The transition to sustainable technology requires continued investment, policy s
     } finally {
       setIsGeneratingWorkflow(false);
     }
-  };
-
-  // Helper function to create a demo workflow execution
-  const runDemoWorkflow = async () => {
-    // This is the fallback demo execution (existing logic)
-    const results: ProcessingResult[] = [];
-    let totalProcessingTime = 0;
-    let totalTokensProcessed = 0;
-    let accuracySum = 0;
-
-    // Process nodes in sequence (simplified for demo)
-    for (let i = 0; i < nodes.length; i++) {
-      const node = nodes[i];
-
-      // Update node status to processing
-      setNodes(prev =>
-        prev.map(n => (n.id === node.id ? { ...n, status: 'processing' as const } : n))
-      );
-
-      // Simulate processing delay
-      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-
-      // Generate template output
-      const agentTemplate = agentLibrary.find(agent => agent.type === node.type);
-      const output = agentTemplate?.sampleOutput || { processed: true, timestamp: Date.now() };
-
-      // Generate realistic metrics
-      const metrics = {
-        processingTime: Math.random() * 3 + 0.5,
-        tokensProcessed: Math.floor(Math.random() * 500) + 100,
-        accuracy: Math.random() * 0.3 + 0.7,
-        confidence: Math.random() * 0.2 + 0.8,
-      };
-
-      totalProcessingTime += metrics.processingTime;
-      totalTokensProcessed += metrics.tokensProcessed;
-      accuracySum += metrics.accuracy;
-
-      // Update node with results
-      setNodes(prev =>
-        prev.map(n =>
-          n.id === node.id
-            ? {
-                ...n,
-                status: 'completed' as const,
-                outputData: output,
-                metrics: {
-                  tokensProcessed: metrics.tokensProcessed,
-                  accuracy: metrics.accuracy,
-                  speed: metrics.processingTime,
-                },
-              }
-            : n
-        )
-      );
-
-      // Store result
-      const result: ProcessingResult = {
-        nodeId: node.id,
-        input: i === 0 ? { prompt: 'Start workflow execution' } : results[i - 1]?.output || {},
-        output,
-        metrics,
-        timestamp: Date.now(),
-      };
-
-      results.push(result);
-      setProcessingResults(prev => [...prev, result]);
-    }
-
-    // Update workflow metrics
-    setWorkflowMetrics({
-      totalProcessingTime,
-      totalTokensProcessed,
-      averageAccuracy: accuracySum / nodes.length,
-      throughput: totalTokensProcessed / totalProcessingTime,
-    });
   };
 
   // Generate workflow based on user input
@@ -1870,6 +1461,7 @@ The transition to sustainable technology requires continued investment, policy s
       // Process each node in sequence using the provided nodes
       for (let i = 0; i < workflowNodes.length; i++) {
         const node = workflowNodes[i];
+        if (!node) continue;
 
         // Update node status to processing
         setNodes(prev =>
@@ -1922,7 +1514,7 @@ The transition to sustainable technology requires continued investment, policy s
                 tokensUsed: Math.floor((scrapingResult.content?.length || 0) / 4), // Rough token estimate
                 processingTime: Date.now() - new Date().getTime(),
                 timestamp: Date.now(),
-                scrapingData: scrapingResult,
+                scrapingData: scrapingResult as unknown as Record<string, unknown>,
               };
             } else {
               throw new Error(scrapingResult.error || 'Web scraping failed');
@@ -1945,15 +1537,15 @@ The transition to sustainable technology requires continued investment, policy s
 
             if (aiResult.success) {
               output = {
-                response: aiResult.data,
-                model: aiResult.model,
-                tokensUsed: aiResult.tokensUsed,
-                processingTime: aiResult.processingTime,
+                response: String(aiResult.data || ''),
+                model: aiResult.model || 'unknown',
+                tokensUsed: aiResult.tokensUsed || 0,
+                processingTime: aiResult.processingTime || 0,
                 timestamp: Date.now(),
               };
             } else {
               // Fallback to realistic mock response
-              output = generateRealisticMockResponse(node.type, originalInput);
+              output = generateRealisticMockResponse(node?.type || 'unknown', originalInput);
             }
           }
 
@@ -2049,246 +1641,6 @@ The transition to sustainable technology requires continued investment, policy s
         finalOutput = lastResult.output;
       }
 
-      setFinalResults(finalOutput);
-
-      // Calculate metrics
-      const totalTime = results.reduce((sum, r) => sum + r.metrics.processingTime, 0);
-      const totalTokens = results.reduce((sum, r) => sum + (r.metrics.tokensProcessed || 0), 0);
-      const avgAccuracy =
-        results.reduce((sum, r) => sum + (r.metrics.accuracy || 0), 0) / results.length;
-
-      setWorkflowMetrics({
-        totalProcessingTime: totalTime,
-        totalTokensProcessed: totalTokens,
-        averageAccuracy: avgAccuracy,
-        throughput: totalTokens / totalTime,
-      });
-
-      // Show completion message
-      setAiSuggestions(prev => [
-        ...prev,
-        {
-          id: `completion-${Date.now()}`,
-          type: 'completion',
-          message: `🎉 Workflow completed! Generated result for: "${originalInput}"`,
-          confidence: 1.0,
-        },
-      ]);
-    } catch (error) {
-      console.error('Workflow execution failed:', error);
-      setAiSuggestions(prev => [
-        ...prev,
-        {
-          id: `error-${Date.now()}`,
-          type: 'completion',
-          message: `❌ Workflow execution failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
-          confidence: 0.3,
-        },
-      ]);
-    }
-
-    // Stop animations
-    setConnections(prev => prev.map(conn => ({ ...conn, animated: false })));
-    setIsRunning(false);
-    setShowResults(true);
-  };
-
-  // Execute workflow with user input
-  const runWorkflowWithUserInput = async (originalInput: string) => {
-    if (nodes.length === 0) {
-      return;
-    }
-
-    setIsRunning(true);
-    setFinalResults('');
-
-    // Reset all nodes to idle
-    setNodes(prev => prev.map(node => ({ ...node, status: 'idle' as const, outputData: null })));
-
-    // Animate connections
-    setConnections(prev => prev.map(conn => ({ ...conn, animated: true })));
-
-    try {
-      const results: ProcessingResult[] = [];
-      let currentInput = originalInput;
-
-      // Process each node in sequence
-      for (let i = 0; i < nodes.length; i++) {
-        const node = nodes[i];
-
-        // Update node status to processing
-        setNodes(prev =>
-          prev.map(n => (n.id === node.id ? { ...n, status: 'processing' as const } : n))
-        );
-
-        // Simulate processing time
-        await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
-
-        try {
-          let output: NodeOutput;
-
-          // Check if this is a web scraper node
-          if (node.type === 'web-scraper') {
-            // Import and use web scraping service
-            const { WebScrapingService } = await import('@/services/webScrapingService');
-
-            // Extract URL from input - handle various formats
-            let url = originalInput;
-            if (originalInput.toLowerCase().includes('gsp.ro')) {
-              url = 'https://www.gsp.ro';
-            } else if (
-              originalInput.toLowerCase().includes('stiri') &&
-              originalInput.toLowerCase().includes('gsp')
-            ) {
-              url = 'https://www.gsp.ro';
-            } else if (!originalInput.startsWith('http')) {
-              // If no URL provided, try to extract domain or use a default
-              const domainMatch = originalInput.match(/([a-zA-Z0-9-]+\.[a-zA-Z]{2,})/);
-              if (domainMatch) {
-                url = `https://${domainMatch[1]}`;
-              } else {
-                throw new Error('No valid URL found in input. Please provide a website URL.');
-              }
-            }
-
-            // Perform web scraping
-            const scrapingResult = await WebScrapingService.scrapeWebsite({
-              url,
-              extractText: true,
-              extractLinks: false,
-              waitFor: 2000,
-              maxRetries: 3,
-            });
-
-            if (scrapingResult.success) {
-              output = {
-                response: `🌐 Successfully scraped ${url}\n\n📰 Title: ${scrapingResult.title || 'No title found'}\n\n📄 Content:\n${scrapingResult.content || scrapingResult.text || 'No content extracted'}`,
-                model: 'web-scraper',
-                tokensUsed: Math.floor((scrapingResult.content?.length || 0) / 4), // Rough token estimate
-                processingTime: Date.now() - new Date().getTime(),
-                timestamp: Date.now(),
-                scrapingData: scrapingResult,
-              };
-            } else {
-              throw new Error(scrapingResult.error || 'Web scraping failed');
-            }
-          } else {
-            // Use AI service for other node types
-            const { aiServiceProxy } = await import('@/services/aiServiceProxy');
-
-            const aiRequest = {
-              nodeId: node.id,
-              nodeType: node.type,
-              service: getServiceFromNodeType(node.type),
-              model: getModelFromNodeType(node.type),
-              prompt: getPromptFromNodeType(node.type).replace('{{input}}', originalInput),
-              inputs: { userRequest: originalInput, currentInput: currentInput },
-              parameters: { temperature: 0.7, maxTokens: 1000 },
-            };
-
-            const aiResult = await aiServiceProxy.executeAIRequest(aiRequest, 'demo-user');
-
-            if (aiResult.success) {
-              output = {
-                response: aiResult.data,
-                model: aiResult.model,
-                tokensUsed: aiResult.tokensUsed,
-                processingTime: aiResult.processingTime,
-                timestamp: Date.now(),
-              };
-            } else {
-              // Fallback to mock response
-              output = generateMockResponse(node.type, originalInput);
-            }
-          }
-
-          // Update node with results
-          setNodes(prev =>
-            prev.map(n =>
-              n.id === node.id
-                ? {
-                    ...n,
-                    status: 'completed' as const,
-                    outputData: output,
-                    metrics: {
-                      tokensProcessed: output.tokensUsed || Math.floor(Math.random() * 500) + 100,
-                      accuracy: Math.random() * 0.3 + 0.7,
-                      speed: output.processingTime || Math.random() * 3 + 0.5,
-                    },
-                  }
-                : n
-            )
-          );
-
-          // Store result
-          const result: ProcessingResult = {
-            nodeId: node.id,
-            input: {
-              userRequest: originalInput,
-              currentInput: i === 0 ? originalInput : results[i - 1]?.output.response,
-            },
-            output,
-            metrics: {
-              processingTime: output.processingTime || Math.random() * 3 + 0.5,
-              tokensProcessed: output.tokensUsed || Math.floor(Math.random() * 500) + 100,
-              accuracy: Math.random() * 0.3 + 0.7,
-              confidence: Math.random() * 0.2 + 0.8,
-            },
-            timestamp: Date.now(),
-          };
-
-          results.push(result);
-          setProcessingResults(prev => [...prev, result]);
-        } catch (error) {
-          console.error(`Error processing node ${node.id}:`, error);
-
-          // Fallback to mock response
-          const output = generateMockResponse(node.type, currentInput);
-          currentInput = output.response;
-
-          setNodes(prev =>
-            prev.map(n =>
-              n.id === node.id
-                ? {
-                    ...n,
-                    status: 'completed' as const,
-                    outputData: output,
-                    metrics: {
-                      tokensProcessed: Math.floor(Math.random() * 500) + 100,
-                      accuracy: Math.random() * 0.3 + 0.7,
-                      speed: Math.random() * 3 + 0.5,
-                    },
-                  }
-                : n
-            )
-          );
-
-          const result: ProcessingResult = {
-            nodeId: node.id,
-            input: {
-              userRequest: originalInput,
-              currentInput: i === 0 ? originalInput : results[i - 1]?.output.response,
-            },
-            output,
-            metrics: {
-              processingTime: Math.random() * 3 + 0.5,
-              tokensProcessed: Math.floor(Math.random() * 500) + 100,
-              accuracy: Math.random() * 0.3 + 0.7,
-              confidence: Math.random() * 0.2 + 0.8,
-            },
-            timestamp: Date.now(),
-          };
-
-          results.push(result);
-          setProcessingResults(prev => [...prev, result]);
-        }
-      }
-
-      // Set final results
-      const finalOutput =
-        results[results.length - 1]?.output?.response || 'Workflow completed successfully!';
-      console.log('Setting final results:', finalOutput);
-      console.log('Results array:', results);
       setFinalResults(finalOutput);
 
       // Calculate metrics
@@ -2495,12 +1847,12 @@ The transition to sustainable technology requires continued investment, policy s
 
                     <Button
                       size="sm"
-                      variant="ghost"
-                      onClick={() => setShowTemplateGallery(true)}
-                      className="text-muted-foreground hover:text-foreground"
+                      variant="outline"
+                      onClick={() => window.open('/roadmap', '_blank')}
+                      className="border-gold/20 text-gold hover:bg-gold/5"
                     >
-                      <Layout className="w-4 h-4 mr-2" />
-                      Templates
+                      <MapPin className="w-4 h-4 mr-2" />
+                      Roadmap
                     </Button>
 
                     <Button
@@ -2885,157 +2237,6 @@ The transition to sustainable technology requires continued investment, policy s
             </div>
           </div>
         </motion.div>
-
-        {/* Template Gallery Modal */}
-        <AnimatePresence>
-          {showTemplateGallery && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-lg"
-              onClick={() => setShowTemplateGallery(false)}
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="premium-card bg-card border border-border-alt rounded-2xl shadow-2xl max-w-4xl w-full max-h-[80vh] overflow-hidden"
-                onClick={e => e.stopPropagation()}
-              >
-                {/* Header */}
-                <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 p-6 border-b border-border-alt">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-2xl font-bold text-foreground">Workflow Templates</h3>
-                      <p className="text-muted-foreground">
-                        Professional AI workflows ready to use
-                      </p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowTemplateGallery(false)}
-                      className="text-muted-foreground hover:text-foreground"
-                    >
-                      ×
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Templates Grid */}
-                <div className="p-6 overflow-y-auto max-h-[60vh]">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {workflowTemplates.map((template, index) => (
-                      <motion.div
-                        key={template.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: index * 0.1 }}
-                        className="premium-card bg-background/50 border border-border-alt rounded-xl p-6 hover:border-primary/30 transition-all duration-300 group cursor-pointer"
-                        onClick={() => loadTemplate(template.id)}
-                      >
-                        {/* Template Header */}
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex-1">
-                            <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                              {template.name}
-                            </h4>
-                            <p className="text-sm text-muted-foreground mt-1">
-                              {template.description}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2 text-yellow-500">
-                            <Star className="w-4 h-4 fill-current" />
-                            <span className="text-sm font-medium">{template.popularity}</span>
-                          </div>
-                        </div>
-
-                        {/* Template Stats */}
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                          <div className="flex items-center gap-1">
-                            <Users className="w-4 h-4" />
-                            <span>{template.nodes.length} nodes</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            <span>{template.estimatedTime}</span>
-                          </div>
-                          <div
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              template.difficulty === 'beginner'
-                                ? 'bg-green-100 text-green-700'
-                                : template.difficulty === 'intermediate'
-                                  ? 'bg-yellow-100 text-yellow-700'
-                                  : 'bg-red-100 text-red-700'
-                            }`}
-                          >
-                            {template.difficulty}
-                          </div>
-                        </div>
-
-                        {/* Template Preview */}
-                        <div className="bg-background/30 rounded-lg p-3 mb-4">
-                          <div className="text-xs text-muted-foreground mb-2">
-                            Workflow Preview:
-                          </div>
-                          <div className="flex items-center gap-2 text-xs">
-                            {template.nodes.slice(0, 3).map((node, i) => (
-                              <React.Fragment key={node.id}>
-                                <div className="flex items-center gap-1">
-                                  <div className={`w-3 h-3 rounded ${node.color}`}></div>
-                                  <span className="text-foreground">{node.name}</span>
-                                </div>
-                                {i < 2 && <ArrowRight className="w-3 h-3 text-muted-foreground" />}
-                              </React.Fragment>
-                            ))}
-                            {template.nodes.length > 3 && (
-                              <span className="text-muted-foreground">
-                                +{template.nodes.length - 3} more
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Category & Action */}
-                        <div className="flex items-center justify-between">
-                          <div className="text-xs text-primary font-medium bg-primary/10 px-2 py-1 rounded">
-                            {template.category}
-                          </div>
-                          <Button
-                            size="sm"
-                            className="bg-gradient-to-r from-primary to-sapphire text-background hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
-                          >
-                            <TrendingUp className="w-4 h-4 mr-2" />
-                            Use Template
-                          </Button>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Footer */}
-                <div className="bg-background/50 p-4 border-t border-border-alt">
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>More templates available in the full version</span>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="border-primary/20 text-primary hover:bg-primary/5"
-                      asChild
-                    >
-                      <Link to="/auth">
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        Get Full Access
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* User Input Dialog */}
         <AnimatePresence>

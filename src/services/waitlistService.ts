@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { logger } from '@/lib/logger';
+import { databaseSetupService } from './databaseSetupService';
 
 export interface WaitlistEmail {
   id: string;
@@ -37,6 +38,27 @@ export interface WaitlistStats {
 
 class WaitlistService {
   private readonly TABLE_NAME = 'waitlist_emails';
+  private readonly DEMO_MODE = import.meta.env.DEV || import.meta.env.VITE_DEMO_MODE === 'true';
+  private demoEmails: Set<string> = new Set();
+  private initialized = false;
+
+  /**
+   * Initializes the waitlist service and ensures database is set up
+   */
+  async initialize(): Promise<void> {
+    if (this.initialized) return;
+
+    try {
+      const { success, message } = await databaseSetupService.initializeDatabase();
+      if (!success) {
+        logger.warn('Database setup incomplete:', message);
+      }
+      this.initialized = true;
+    } catch (error) {
+      logger.error('Failed to initialize waitlist service:', error);
+      this.initialized = true; // Continue with demo mode
+    }
+  }
 
   /**
    * Validates email format using a comprehensive regex
@@ -52,6 +74,66 @@ class WaitlistService {
    */
   private normalizeEmail(email: string): string {
     return email.trim().toLowerCase();
+  }
+
+  /**
+   * Checks if the waitlist table exists and is accessible
+   */
+  private async checkTableExists(): Promise<boolean> {
+    try {
+      const { error } = await supabase.from(this.TABLE_NAME).select('id').limit(1);
+
+      return !error || error.code !== 'PGRST106'; // PGRST106 = table not found
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Demo mode storage for development
+   */
+  private handleDemoMode(
+    email: string,
+    action: 'add' | 'check' | 'remove'
+  ): { success: boolean; message: string; exists?: boolean } {
+    const normalizedEmail = this.normalizeEmail(email);
+
+    switch (action) {
+      case 'check':
+        return {
+          success: true,
+          message: '',
+          exists: this.demoEmails.has(normalizedEmail),
+        };
+      case 'add':
+        if (this.demoEmails.has(normalizedEmail)) {
+          return {
+            success: false,
+            message: 'This email is already on our waitlist!',
+          };
+        }
+        this.demoEmails.add(normalizedEmail);
+        logger.info('Demo: Email added to waitlist:', {
+          email: normalizedEmail,
+          total: this.demoEmails.size,
+        });
+        return {
+          success: true,
+          message:
+            "Success! You're now on our waitlist. We'll notify you when we launch! (Demo Mode)",
+        };
+      case 'remove':
+        this.demoEmails.delete(normalizedEmail);
+        return {
+          success: true,
+          message: 'You have been successfully unsubscribed from our waitlist. (Demo Mode)',
+        };
+      default:
+        return {
+          success: false,
+          message: 'Invalid action',
+        };
+    }
   }
 
   /**
@@ -80,6 +162,9 @@ class WaitlistService {
     email: string
   ): Promise<{ success: boolean; message: string; data?: WaitlistEmail }> {
     try {
+      // Initialize service if not already done
+      await this.initialize();
+
       // Validate email format
       if (!this.validateEmail(email)) {
         return {
@@ -89,6 +174,14 @@ class WaitlistService {
       }
 
       const normalizedEmail = this.normalizeEmail(email);
+
+      // Check if table exists, if not use demo mode
+      const tableExists = await this.checkTableExists();
+      if (!tableExists || this.DEMO_MODE) {
+        logger.warn('Waitlist table not accessible, using demo mode');
+        return this.handleDemoMode(normalizedEmail, 'add');
+      }
+
       const clientInfo = this.getClientInfo();
 
       // Check if email already exists
@@ -191,6 +284,24 @@ class WaitlistService {
    */
   async getStats(): Promise<{ success: boolean; data?: WaitlistStats; message?: string }> {
     try {
+      // Check if table exists, if not use demo mode
+      const tableExists = await this.checkTableExists();
+      if (!tableExists || this.DEMO_MODE) {
+        logger.warn('Waitlist table not accessible, using demo stats');
+        const demoStats: WaitlistStats = {
+          total_emails: this.demoEmails.size,
+          active_emails: this.demoEmails.size,
+          unsubscribed_emails: 0,
+          bounced_emails: 0,
+          signups_today: Math.min(this.demoEmails.size, 3),
+          signups_this_week: Math.min(this.demoEmails.size, 12),
+          signups_this_month: this.demoEmails.size,
+        };
+        return {
+          success: true,
+          data: demoStats,
+        };
+      }
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -355,6 +466,13 @@ class WaitlistService {
   async unsubscribeEmail(email: string): Promise<{ success: boolean; message: string }> {
     try {
       const normalizedEmail = this.normalizeEmail(email);
+
+      // Check if table exists, if not use demo mode
+      const tableExists = await this.checkTableExists();
+      if (!tableExists || this.DEMO_MODE) {
+        logger.warn('Waitlist table not accessible, using demo mode');
+        return this.handleDemoMode(normalizedEmail, 'remove');
+      }
 
       const { error } = await supabase
         .from(this.TABLE_NAME)

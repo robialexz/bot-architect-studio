@@ -634,7 +634,7 @@ const WorkflowStudio = () => {
     target: sectionRef,
     offset: ['start end', 'end start'],
   });
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.8, 1, 1, 0.8]);
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0.8, 1, 1, 0.9]);
 
   const containerVariants = {
     hidden: { opacity: 0 },

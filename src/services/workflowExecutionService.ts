@@ -23,7 +23,10 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     this.nodeProcessorRegistry = new NodeProcessorRegistry();
   }
 
-  async executeWorkflow(workflowId: string, inputs: Record<string, any>): Promise<ExecutionResult> {
+  async executeWorkflow(
+    workflowId: string,
+    inputs: Record<string, unknown>
+  ): Promise<ExecutionResult> {
     const startTime = new Date();
     logger.info('Starting workflow execution', { workflowId, inputs });
 
@@ -267,7 +270,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
 
   private async createExecution(
     workflowId: string,
-    inputs: Record<string, any>
+    inputs: Record<string, unknown>
   ): Promise<WorkflowExecution> {
     try {
       const { data: userData } = await supabase.auth.getUser();
@@ -303,7 +306,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     additionalData?: Partial<WorkflowExecution>
   ): Promise<void> {
     try {
-      const updateData: any = { status };
+      const updateData: Record<string, unknown> = { status };
 
       if (additionalData?.startedAt) {
         updateData.started_at = additionalData.startedAt.toISOString();
@@ -385,7 +388,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     return results;
   }
 
-  private findStartingNodes(workflow: Workflow): any[] {
+  private findStartingNodes(workflow: Workflow): Record<string, unknown>[] {
     return workflow.nodes.filter(node => {
       return !workflow.edges.some(edge => edge.target === node.id);
     });
@@ -395,7 +398,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     return workflow.edges.filter(edge => edge.target === nodeId).map(edge => edge.source);
   }
 
-  private getNodeDependents(workflow: Workflow, nodeId: string): any[] {
+  private getNodeDependents(workflow: Workflow, nodeId: string): Record<string, unknown>[] {
     const dependentIds = workflow.edges
       .filter(edge => edge.source === nodeId)
       .map(edge => edge.target);
@@ -403,7 +406,10 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     return workflow.nodes.filter(node => dependentIds.includes(node.id));
   }
 
-  private async processNode(node: any, context: ExecutionContext): Promise<NodeExecutionResult> {
+  private async processNode(
+    node: Record<string, unknown>,
+    context: ExecutionContext
+  ): Promise<NodeExecutionResult> {
     const startTime = new Date();
 
     this.emitEvent({
@@ -450,8 +456,11 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     }
   }
 
-  private collectNodeInputs(node: any, context: ExecutionContext): Record<string, any> {
-    const inputs: Record<string, any> = { ...context.variables };
+  private collectNodeInputs(
+    node: Record<string, unknown>,
+    context: ExecutionContext
+  ): Record<string, unknown> {
+    const inputs: Record<string, unknown> = { ...context.variables };
 
     // Collect outputs from connected nodes
     const dependencies = context.nodeResults;
@@ -464,8 +473,8 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     return inputs;
   }
 
-  private collectOutputs(nodeResults: NodeExecutionResult[]): Record<string, any> {
-    const outputs: Record<string, any> = {};
+  private collectOutputs(nodeResults: NodeExecutionResult[]): Record<string, unknown> {
+    const outputs: Record<string, unknown> = {};
 
     nodeResults.forEach(result => {
       if (result.outputs) {
@@ -476,7 +485,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     return outputs;
   }
 
-  private async getAIUsageForExecution(executionId: string): Promise<any[]> {
+  private async getAIUsageForExecution(executionId: string): Promise<AIUsageRecord[]> {
     try {
       const { data, error } = await supabase
         .from('ai_usage')
@@ -495,7 +504,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     }
   }
 
-  private mapExecutionData(data: any): WorkflowExecution {
+  private mapExecutionData(data: Record<string, unknown>): WorkflowExecution {
     return {
       id: data.id,
       workflowId: data.workflow_id,
@@ -511,7 +520,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     };
   }
 
-  private mapNodeExecutionData(data: any): NodeExecution {
+  private mapNodeExecutionData(data: Record<string, unknown>): NodeExecution {
     return {
       id: data.id,
       executionId: data.execution_id,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import {
   TrendingUp,
@@ -56,7 +56,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
   const logoControls = useAnimation();
   const priceRef = useRef<HTMLSpanElement>(null);
 
-  const fetchTokenData = async () => {
+  const fetchTokenData = useCallback(async () => {
     try {
       setError(null);
       const data = await solanaTokenService.getTokenData(tokenAddress);
@@ -99,7 +99,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [tokenAddress, tokenData, showTransactions, logoControls]);
 
   const handleRefresh = () => {
     setIsLoading(true);

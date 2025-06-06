@@ -30,8 +30,8 @@ export default defineConfig({
     /* Take screenshot on failure */
     screenshot: 'only-on-failure',
 
-    /* Record video for demo tests, on failure for others */
-    video: process.env.DEMO_MODE ? 'on' : 'retain-on-failure',
+    /* Take screenshot on failure only */
+    video: 'off',
 
     /* Optimized timeouts for better performance */
     actionTimeout: 15000,

@@ -38,7 +38,7 @@ const HeroSection: React.FC = () => {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 100]);
   const y2 = useTransform(scrollY, [0, 500], [0, -100]);
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const opacity = useTransform(scrollY, [0, 500], [1, 0.3]);
 
   // Handle video play/pause
   const toggleVideo = () => {

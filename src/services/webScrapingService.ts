@@ -20,7 +20,7 @@ export interface ScrapingResult {
   text?: string;
   links?: string[];
   images?: string[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   error?: string;
   timestamp: number;
 }
@@ -267,8 +267,8 @@ export class WebScrapingService {
     return [...new Set(images)]; // Remove duplicates
   }
 
-  private static extractMetadata(doc: Document): Record<string, any> {
-    const metadata: Record<string, any> = {};
+  private static extractMetadata(doc: Document): Record<string, unknown> {
+    const metadata: Record<string, unknown> = {};
 
     // Extract meta tags
     const metaTags = doc.querySelectorAll('meta');
@@ -283,7 +283,7 @@ export class WebScrapingService {
 
     // Extract structured data
     const jsonLdScripts = doc.querySelectorAll('script[type="application/ld+json"]');
-    const structuredData: any[] = [];
+    const structuredData: Record<string, unknown>[] = [];
 
     jsonLdScripts.forEach(script => {
       try {

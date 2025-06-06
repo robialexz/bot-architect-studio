@@ -6,7 +6,7 @@ export class DataProcessor implements NodeProcessor {
     return ['data-processor', 'database', 'transform', 'filter', 'map'].includes(nodeType);
   }
 
-  getRequiredInputs(node: any): string[] {
+  getRequiredInputs(node: Record<string, unknown>): string[] {
     const operation = node.data?.operation || 'transform';
 
     switch (operation) {
@@ -23,7 +23,7 @@ export class DataProcessor implements NodeProcessor {
     }
   }
 
-  validateInputs(node: any, inputs: Record<string, any>): boolean {
+  validateInputs(node: Record<string, unknown>, inputs: Record<string, unknown>): boolean {
     const required = this.getRequiredInputs(node);
 
     for (const input of required) {
@@ -40,8 +40,8 @@ export class DataProcessor implements NodeProcessor {
   }
 
   async processNode(
-    node: any,
-    inputs: Record<string, any>,
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
@@ -100,9 +100,9 @@ export class DataProcessor implements NodeProcessor {
 
   private async executeDataOperation(
     operation: string,
-    nodeData: any,
-    inputs: Record<string, any>
-  ): Promise<Record<string, any>> {
+    nodeData: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
     const data = inputs.data;
 
     switch (operation) {
@@ -132,7 +132,7 @@ export class DataProcessor implements NodeProcessor {
     }
   }
 
-  private filterData(data: any, condition: any): Record<string, any> {
+  private filterData(data: unknown, condition: unknown): Record<string, unknown> {
     if (!Array.isArray(data)) {
       throw new Error('Filter operation requires array data');
     }
@@ -165,7 +165,7 @@ export class DataProcessor implements NodeProcessor {
     };
   }
 
-  private mapData(data: any, mapping: any): Record<string, any> {
+  private mapData(data: unknown, mapping: unknown): Record<string, unknown> {
     if (!Array.isArray(data)) {
       throw new Error('Map operation requires array data');
     }
@@ -177,7 +177,7 @@ export class DataProcessor implements NodeProcessor {
     } else if (typeof mapping === 'object') {
       // Object-based field mapping
       mapped = data.map(item => {
-        const newItem: any = {};
+        const newItem: Record<string, unknown> = {};
         Object.entries(mapping).forEach(([newKey, oldKey]) => {
           newItem[newKey] = item[oldKey as string];
         });
@@ -194,7 +194,7 @@ export class DataProcessor implements NodeProcessor {
     };
   }
 
-  private transformData(data: any, transformation: any): Record<string, any> {
+  private transformData(data: unknown, transformation: unknown): Record<string, unknown> {
     if (!transformation) {
       return { data, operation: 'transform' };
     }
@@ -225,12 +225,12 @@ export class DataProcessor implements NodeProcessor {
     };
   }
 
-  private aggregateData(data: any, aggregation: any): Record<string, any> {
+  private aggregateData(data: unknown, aggregation: unknown): Record<string, unknown> {
     if (!Array.isArray(data)) {
       throw new Error('Aggregate operation requires array data');
     }
 
-    const result: any = {
+    const result: Record<string, unknown> = {
       count: data.length,
       operation: 'aggregate',
     };
@@ -256,10 +256,10 @@ export class DataProcessor implements NodeProcessor {
   }
 
   private sortData(
-    data: any,
+    data: unknown,
     sortBy: string,
     sortOrder: 'asc' | 'desc' = 'asc'
-  ): Record<string, any> {
+  ): Record<string, unknown> {
     if (!Array.isArray(data)) {
       throw new Error('Sort operation requires array data');
     }
@@ -282,7 +282,7 @@ export class DataProcessor implements NodeProcessor {
     };
   }
 
-  private groupData(data: any, groupBy: string): Record<string, any> {
+  private groupData(data: unknown, groupBy: string): Record<string, unknown> {
     if (!Array.isArray(data)) {
       throw new Error('Group operation requires array data');
     }
@@ -296,7 +296,7 @@ export class DataProcessor implements NodeProcessor {
         groups[key].push(item);
         return groups;
       },
-      {} as Record<string, any[]>
+      {} as Record<string, unknown[]>
     );
 
     return {
@@ -308,7 +308,11 @@ export class DataProcessor implements NodeProcessor {
     };
   }
 
-  private joinData(leftData: any, rightData: any, joinKey: string): Record<string, any> {
+  private joinData(
+    leftData: unknown,
+    rightData: unknown,
+    joinKey: string
+  ): Record<string, unknown> {
     if (!Array.isArray(leftData) || !Array.isArray(rightData)) {
       throw new Error('Join operation requires array data');
     }
@@ -326,7 +330,7 @@ export class DataProcessor implements NodeProcessor {
     };
   }
 
-  private getDataSize(data: any): string {
+  private getDataSize(data: unknown): string {
     if (Array.isArray(data)) {
       return `${data.length} items`;
     } else if (typeof data === 'object') {
