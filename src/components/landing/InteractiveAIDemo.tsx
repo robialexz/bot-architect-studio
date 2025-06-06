@@ -630,9 +630,7 @@ What type of project or automation are you considering? I can help you design th
                 <Link to="/pricing">View Pricing Plans</Link>
               </Button>
             </div>
-            <p className="text-sm text-muted-foreground mt-4">
-              No credit card required • 14-day free trial • Cancel anytime
-            </p>
+
           </div>
         </motion.div>
       </div>

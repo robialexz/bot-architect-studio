@@ -2802,51 +2802,7 @@ The transition to sustainable technology requires continued investment, policy s
 
 
 
-        {/* Contextual Call to Action - After Demo */}
-        <motion.div
-          className="text-center mt-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <div className="premium-card bg-gradient-to-br from-primary/5 to-gold/5 border border-primary/20 rounded-2xl p-8 max-w-2xl mx-auto">
-            <p className="text-xl text-foreground mb-2 font-semibold">
-              Ready to Build Your Own AI Workflows?
-            </p>
-            <p className="text-lg text-muted-foreground mb-6">
-              Join <strong className="text-primary">10,000+</strong> professionals automating their
-              work with AI
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-primary to-primary text-white hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 px-10 py-6 text-lg font-semibold hover:scale-105"
-                asChild
-              >
-                <Link to="/auth">
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  Start Free Trial
-                </Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-primary/30 hover:bg-primary/10 px-8 py-6 text-lg"
-                asChild
-              >
-                <Link to="/pricing">
-                  <Settings className="w-5 h-5 mr-2" />
-                  View Pricing
-                </Link>
-              </Button>
-            </div>
-            <div className="mt-4 text-sm text-muted-foreground">
-              ✓ 14-day free trial &nbsp;&nbsp; ✓ No credit card required &nbsp;&nbsp; ✓ Setup in 2
-              minutes
-            </div>
-          </div>
-        </motion.div>
+
 
         {/* Template Gallery Modal */}
         <AnimatePresence>
