@@ -68,14 +68,26 @@ const HeroSection: React.FC = () => {
       ref={sectionRef}
       className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-36 md:pt-44"
     >
-      {/* Subtle Hero Enhancement - Let global background shine */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden z-[1]">
-        {/* Subtle overlay for text readability */}
-        <div className="absolute inset-0 bg-background/10"></div>
+      {/* Video Background */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-4/5 h-3/5 overflow-hidden z-[0] rounded-2xl">
+        <video
+          className="w-full h-full object-cover rounded-2xl"
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/hero-visual-coming-soon.svg"
+        >
+          <source src="/background-animation.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        {/* Enhanced overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/20 to-background/40 z-[1] rounded-2xl"></div>
+        <div className="absolute inset-0 bg-black/10 z-[2] rounded-2xl"></div>
       </div>
 
       {/* Enhanced Floating Elements with Colors */}
-      <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 z-[5] overflow-hidden pointer-events-none">
         {[...Array(12)].map((_, i) => (
           <motion.div
             key={i}
@@ -111,7 +123,7 @@ const HeroSection: React.FC = () => {
       {/* Hero Content */}
       <motion.div
         style={{ opacity }}
-        className="hero-content max-w-5xl px-6 py-12 md:py-16 z-[10] relative"
+        className="hero-content max-w-5xl px-6 py-12 md:py-16 z-[20] relative"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, ease: 'easeOut' }}
