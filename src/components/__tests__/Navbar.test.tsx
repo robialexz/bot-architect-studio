@@ -1,4 +1,4 @@
-import React from 'react';
+limport React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen, fireEvent } from '@testing-library/react';
 import { render, createMockUser } from '@/test/utils';
@@ -56,8 +56,8 @@ describe('Navbar', () => {
 
     render(<Navbar />);
 
-    // Logo shows "FlowsyAI" not "AI Flow"
-    expect(screen.getByText('FlowsyAI')).toBeInTheDocument();
+    // Logo shows video animation (no text in navbar)
+    expect(screen.getByLabelText('Navigate to home page')).toBeInTheDocument();
     expect(screen.getByText('Features')).toBeInTheDocument();
     expect(screen.getByText('Pricing')).toBeInTheDocument();
     expect(screen.getByText('Documentation')).toBeInTheDocument();
@@ -82,8 +82,8 @@ describe('Navbar', () => {
 
     render(<Navbar />);
 
-    // Logo shows "FlowsyAI" not "AI Flow"
-    expect(screen.getByText('FlowsyAI')).toBeInTheDocument();
+    // Logo shows video animation (no text in navbar)
+    expect(screen.getByLabelText('Navigate to home page')).toBeInTheDocument();
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
     expect(screen.getByText('Workflow Builder')).toBeInTheDocument();
     expect(screen.getByText('Analytics')).toBeInTheDocument();
@@ -185,7 +185,8 @@ describe('Navbar', () => {
 
     render(<Navbar />);
 
-    expect(screen.getByText('FlowsyAI')).toBeInTheDocument();
+    // Logo shows video animation (no text in navbar)
+    expect(screen.getByLabelText('Navigate to home page')).toBeInTheDocument();
     // During loading, buttons are still shown but may be disabled
     // Let's just check that the navbar renders properly during loading
     expect(screen.getByText('Join Token Waitlist')).toBeInTheDocument();

@@ -10,7 +10,6 @@ import {
   LazyRoadmapSection,
   LazyTokenTierSection,
   LazyARSection,
-  LazyNexusAssistantUI,
 } from '@/components/lazy/LazyComponents';
 
 // Import new landing page components
@@ -18,12 +17,9 @@ import EnhancedWaitlistCTA from '@/components/landing/EnhancedWaitlistCTA';
 import LiveMetricsDashboard from '@/components/landing/LiveMetricsDashboard';
 import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection';
 
-import { Button } from '@/components/ui/button';
-import { MessageCircle, X } from 'lucide-react';
-import { useState } from 'react';
+
 
 const IndexPage: React.FC = () => {
-  const [showAssistant, setShowAssistant] = useState(false);
   return (
     <div className="index-page-container">
       <div className="index-page-background">
@@ -80,27 +76,7 @@ const IndexPage: React.FC = () => {
         </Suspense>
       </main>
 
-      {/* Floating Assistant Button */}
-      <Button
-        onClick={() => setShowAssistant(!showAssistant)}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary hover:bg-primary/90 shadow-lg z-50"
-        size="icon"
-      >
-        {showAssistant ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
-      </Button>
 
-      {/* Conditional Assistant UI - Lazy loaded */}
-      {showAssistant && (
-        <Suspense
-          fallback={
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-              <Loader2 className="h-8 w-8 animate-spin text-white" />
-            </div>
-          }
-        >
-          <LazyNexusAssistantUI />
-        </Suspense>
-      )}
       {/*
         The existing H1, P, and Button elements that were directly here for the hero
         are now encapsulated within the HeroSection component.

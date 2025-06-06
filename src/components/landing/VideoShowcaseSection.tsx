@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Play, Pause, Volume2, VolumeX, Maximize2, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -17,11 +15,7 @@ interface VideoItem {
 }
 
 const VideoShowcaseSection: React.FC = () => {
-  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-  const [isPlaying, setIsPlaying] = useState<{ [key: string]: boolean }>({});
-  const [isMuted, setIsMuted] = useState<{ [key: string]: boolean }>({});
-
-  // Real video showcase - 2 actual videos
+  // Simple video showcase - 2 actual videos
   const videos: VideoItem[] = [
     {
       id: 'videoclip-1',
@@ -44,14 +38,6 @@ const VideoShowcaseSection: React.FC = () => {
       featured: true,
     },
   ];
-
-  const togglePlay = (videoId: string) => {
-    setIsPlaying(prev => ({ ...prev, [videoId]: !prev[videoId] }));
-  };
-
-  const toggleMute = (videoId: string) => {
-    setIsMuted(prev => ({ ...prev, [videoId]: !prev[videoId] }));
-  };
 
   return (
     <section className="py-16 bg-gradient-to-b from-background to-background/95">
@@ -92,67 +78,34 @@ const VideoShowcaseSection: React.FC = () => {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="group overflow-hidden border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10">
+                <Card className="overflow-hidden border-primary/20 hover:border-primary/40 transition-all duration-300">
                   <CardContent className="p-0">
-                    <div className="relative aspect-video overflow-hidden">
+                    {/* Simple Video - No overlays, no controls */}
+                    <div className="aspect-video overflow-hidden rounded-t-lg">
                       <video
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover"
                         poster={video.thumbnail}
-                        muted={isMuted[video.id] !== false}
+                        muted
                         loop
                         playsInline
                         autoPlay
-                        controls
                       >
                         <source src={video.videoUrl} type="video/mp4" />
                       </video>
+                    </div>
 
-                      {/* Video Controls Overlay */}
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="flex gap-3">
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            className="bg-white/90 text-black hover:bg-white"
-                            onClick={() => togglePlay(video.id)}
-                          >
-                            {isPlaying[video.id] ? (
-                              <Pause className="w-4 h-4" />
-                            ) : (
-                              <Play className="w-4 h-4" />
-                            )}
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            className="bg-white/90 text-black hover:bg-white"
-                            onClick={() => toggleMute(video.id)}
-                          >
-                            {isMuted[video.id] ? (
-                              <VolumeX className="w-4 h-4" />
-                            ) : (
-                              <Volume2 className="w-4 h-4" />
-                            )}
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                            className="bg-white/90 text-black hover:bg-white"
-                            onClick={() => setSelectedVideo(video.id)}
-                          >
-                            <Maximize2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Video Info Overlay */}
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                        <Badge className="mb-2 bg-primary/20 text-primary border-primary/30">
-                          {video.category}
+                    {/* Video Info Below - Clean and Simple */}
+                    <div className="p-6">
+                      <Badge className="mb-3 bg-primary/10 text-primary border-primary/20">
+                        {video.category}
+                      </Badge>
+                      <h4 className="text-foreground font-bold text-lg mb-2">{video.title}</h4>
+                      <p className="text-muted-foreground text-sm mb-3 leading-relaxed">{video.description}</p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-muted-foreground text-sm font-medium">{video.duration}</span>
+                        <Badge variant="outline" className="text-muted-foreground">
+                          HD Quality
                         </Badge>
-                        <h4 className="text-white font-semibold mb-1">{video.title}</h4>
-                        <p className="text-white/80 text-sm mb-2">{video.description}</p>
-                        <span className="text-white/60 text-xs">{video.duration}</span>
                       </div>
                     </div>
                   </CardContent>

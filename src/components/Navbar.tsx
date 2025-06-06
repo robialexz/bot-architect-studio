@@ -144,7 +144,7 @@ const Navbar = () => {
         >
           <PremiumLogo
             size={isDesktop ? 'xl' : 'lg'}
-            showText={true}
+            showText={false}
             animated={true}
             className="drop-shadow-sm"
           />
