@@ -222,7 +222,9 @@ const WaitlistAdmin: React.FC = () => {
                 <Filter className="w-4 h-4 text-muted-foreground" />
                 <select
                   value={statusFilter}
-                  onChange={e => setStatusFilter(e.target.value as 'all' | 'active' | 'unsubscribed' | 'bounced')}
+                  onChange={e =>
+                    setStatusFilter(e.target.value as 'all' | 'active' | 'unsubscribed' | 'bounced')
+                  }
                   className="px-3 py-2 border border-border rounded-md bg-background"
                 >
                   <option value="all">All Status</option>
