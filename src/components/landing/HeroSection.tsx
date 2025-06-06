@@ -66,7 +66,7 @@ const HeroSection: React.FC = () => {
     <section
       id="hero"
       ref={sectionRef}
-      className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-24 md:pt-28"
+      className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-36 md:pt-44"
     >
       {/* Subtle Hero Enhancement - Let global background shine */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-[1]">
