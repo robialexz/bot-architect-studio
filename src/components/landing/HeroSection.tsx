@@ -116,15 +116,15 @@ const HeroSection: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1, ease: 'easeOut' }}
       >
-        {/* Animated Logo Video Display */}
+        {/* Animated Logo Video Display - More Spacious */}
         <motion.div
-          className="mb-8"
+          className="mb-16"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
         >
           <div className="flex justify-center">
-            <div className="relative w-96 h-24 rounded-2xl overflow-hidden border border-primary/20 shadow-lg">
+            <div className="relative w-[480px] h-28 rounded-3xl overflow-hidden border border-primary/20 shadow-xl">
               <video
                 className="w-full h-full object-cover"
                 autoPlay
@@ -164,30 +164,30 @@ const HeroSection: React.FC = () => {
         </motion.div>
 
         <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold mb-8 tracking-tight text-center"
+          className="text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-bold mb-12 tracking-tight text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <span className="block text-2xl sm:text-3xl md:text-4xl font-semibold text-gold mb-4">
+          <span className="block text-3xl sm:text-4xl md:text-5xl font-semibold text-gold mb-6">
             FlowsyAI
           </span>
-          <span className="block text-foreground mb-2">The Future of</span>
+          <span className="block text-foreground mb-4">The Future of</span>
           <span className="block bg-gradient-to-r from-primary via-gold to-sapphire bg-clip-text text-transparent">
             Intelligent Automation
           </span>
         </motion.h1>
 
         <motion.div
-          className="mb-8"
+          className="mb-16"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <div className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
+          <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
             Experience AR-Powered Workflow Building
           </div>
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-center">
+          <p className="text-xl sm:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed text-center">
             Build AI workflows in <span className="text-primary font-semibold">3D space</span> using
             your mobile camera. Connect{' '}
             <span className="text-gold font-semibold">real AI services</span> with gesture controls
@@ -259,7 +259,7 @@ const HeroSection: React.FC = () => {
         </motion.div>
 
         <motion.div
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-8 justify-center items-center mt-16"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9 }}

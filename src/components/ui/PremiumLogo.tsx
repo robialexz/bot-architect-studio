@@ -15,11 +15,11 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
   animated = true,
 }) => {
   const sizeClasses = {
-    sm: 'w-8 h-8',
-    md: 'w-12 h-12',
-    lg: 'w-16 h-16',
-    xl: 'w-24 h-24',
-    xxl: 'w-32 h-32',
+    sm: 'w-16 h-4',
+    md: 'w-24 h-6',
+    lg: 'w-32 h-8',
+    xl: 'w-48 h-12',
+    xxl: 'w-64 h-16',
   };
 
   const textSizeClasses = {
@@ -63,12 +63,27 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
         whileHover={animated ? 'hover' : undefined}
         className="relative group"
       >
-        {/* FlowsyAI Logo from Downloads */}
-        <img
-          src="/flowsy-new-logo.png"
-          alt="FlowsyAI Logo"
-          className={`${sizeClasses[size]} drop-shadow-lg group-hover:drop-shadow-xl transition-all duration-300 group-hover:scale-105 object-contain`}
-        />
+        {/* FlowsyAI Animated Logo Video */}
+        <div
+          className={`${sizeClasses[size]} rounded-lg overflow-hidden border border-primary/20 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105`}
+        >
+          <video
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/flowsy-logo.svg"
+          >
+            <source src="/background-animation.mp4" type="video/mp4" />
+            {/* Fallback to static logo */}
+            <img
+              src="/flowsy-new-logo.png"
+              alt="FlowsyAI Logo"
+              className="w-full h-full object-contain"
+            />
+          </video>
+        </div>
 
         {/* Luxury Glow Effect */}
         <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/30 to-accent/30 blur-xl -z-10 opacity-20 group-hover:opacity-60 transition-all duration-500 scale-110" />

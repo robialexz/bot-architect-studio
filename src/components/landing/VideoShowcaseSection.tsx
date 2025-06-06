@@ -101,6 +101,8 @@ const VideoShowcaseSection: React.FC = () => {
                         muted={isMuted[video.id] !== false}
                         loop
                         playsInline
+                        autoPlay
+                        controls
                       >
                         <source src={video.videoUrl} type="video/mp4" />
                       </video>
