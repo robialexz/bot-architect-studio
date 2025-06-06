@@ -1,21 +1,22 @@
 {
   "config": {
-    "configFile": "C:\\Users\\robia\\Desktop\\AiFlow\\playwright.config.ts",
-    "rootDir": "C:/Users/robia/Desktop/AiFlow/tests",
+    "configFile": "C:\\Users\\robert.popescu\\Desktop\\FlowsyAI\\FlowsyAI\\playwright.config.ts",
+    "rootDir": "C:/Users/robert.popescu/Desktop/FlowsyAI/FlowsyAI/tests",
     "forbidOnly": false,
-    "fullyParallel": false,
+    "fullyParallel": true,
     "globalSetup": null,
     "globalTeardown": null,
     "globalTimeout": 0,
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {
-      "actualWorkers": 1
-    },
+    "metadata": {},
     "preserveOutput": "always",
     "reporter": [
-      ["html", null],
+      [
+        "html",
+        null
+      ],
       [
         "json",
         {
@@ -36,17 +37,17 @@
     "quiet": false,
     "projects": [
       {
-        "outputDir": "C:/Users/robia/Desktop/AiFlow/test-results",
+        "outputDir": "C:/Users/robert.popescu/Desktop/FlowsyAI/FlowsyAI/test-results",
         "repeatEach": 1,
-        "retries": 2,
-        "metadata": {
-          "actualWorkers": 1
-        },
+        "retries": 0,
+        "metadata": {},
         "id": "chromium",
         "name": "chromium",
-        "testDir": "C:/Users/robia/Desktop/AiFlow/tests",
+        "testDir": "C:/Users/robert.popescu/Desktop/FlowsyAI/FlowsyAI/tests",
         "testIgnore": [],
-        "testMatch": ["**/*.@(spec|test).?(c|m)[jt]s?(x)"],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
         "timeout": 60000
       }
     ],
@@ -54,7 +55,7 @@
     "updateSnapshots": "missing",
     "updateSourceMethod": "patch",
     "version": "1.52.0",
-    "workers": 1,
+    "workers": 4,
     "webServer": {
       "command": "npm run dev",
       "url": "http://localhost:8080",
@@ -63,6 +64,1560 @@
     }
   },
   "suites": [
+    {
+      "title": "debug\\console-errors-debug.spec.ts",
+      "file": "debug/console-errors-debug.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Console Errors Debug",
+          "file": "debug/console-errors-debug.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should identify specific console errors on each route",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "5d81ba12cd065b00ba85-e03aecb4cd8d143ff85d",
+              "file": "debug/console-errors-debug.spec.ts",
+              "line": 10,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "demo\\record-demo.spec.ts",
+      "file": "demo/record-demo.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "AI Workflow Studio - Professional Demo Recording",
+          "file": "demo/record-demo.spec.ts",
+          "line": 151,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Record comprehensive demo video",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "1df5c6ef658b6b4eef57-b8678c94c713f50b1370",
+              "file": "demo/record-demo.spec.ts",
+              "line": 152,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e\\ai-workflow-studio.spec.ts",
+      "file": "e2e/ai-workflow-studio.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "AI Workflow Studio - Comprehensive E2E Tests",
+          "file": "e2e/ai-workflow-studio.spec.ts",
+          "line": 257,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load the AI Workflow Studio without errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-a41f1bfc4a981bb9c89f",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 294,
+              "column": 3
+            },
+            {
+              "title": "should authenticate user successfully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-69af283515f67b995053",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 299,
+              "column": 3
+            },
+            {
+              "title": "should display Smart Onboarding for new users",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-d7f0a3ade450c88e0375",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 306,
+              "column": 3
+            },
+            {
+              "title": "should handle Interactive Tutorial system",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-80963a58e5a79327e9fe",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 313,
+              "column": 3
+            },
+            {
+              "title": "should display and interact with Contextual Help",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-76d86ad3e7867e9a2d92",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 317,
+              "column": 3
+            },
+            {
+              "title": "should navigate node library categories",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-bfd8051c38af368e2802",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 321,
+              "column": 3
+            },
+            {
+              "title": "should support drag and drop functionality",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-ef3b4862450a510a385d",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 325,
+              "column": 3
+            },
+            {
+              "title": "should handle workflow saving",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-4cfb4c1b42f5c9d0dd3b",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 329,
+              "column": 3
+            },
+            {
+              "title": "should handle workflow execution",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-f0159da6fe4010ea393d",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 333,
+              "column": 3
+            },
+            {
+              "title": "should be responsive across different screen sizes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-a29cd83ca3e308a73a87",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 337,
+              "column": 3
+            },
+            {
+              "title": "should handle error scenarios gracefully",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-9b150da78369fda97c93",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 341,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Performance Tests",
+          "file": "e2e/ai-workflow-studio.spec.ts",
+          "line": 355,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load within acceptable time limits",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-d48235d9a610e8593891",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 356,
+              "column": 3
+            },
+            {
+              "title": "should handle large workflows efficiently",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-22f3e83fb17f9a75bcca",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 365,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Enhanced Tutorial System Tests",
+          "file": "e2e/ai-workflow-studio.spec.ts",
+          "line": 386,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should open comprehensive tutorial system",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-5ba02626c8720afaa8a7",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 387,
+              "column": 3
+            },
+            {
+              "title": "should open progress tracker with all tabs",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-df31e93c6b088de6f5ad",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 409,
+              "column": 3
+            },
+            {
+              "title": "should display gamification elements",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-2921c328725341305f81",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 435,
+              "column": 3
+            },
+            {
+              "title": "should display AI optimization insights",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-8909f8b6d82b88f815be",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 461,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Accessibility Tests",
+          "file": "e2e/ai-workflow-studio.spec.ts",
+          "line": 487,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should be keyboard navigable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-e6ed74d109dfbe514f15",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 488,
+              "column": 3
+            },
+            {
+              "title": "should have proper ARIA labels",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "db85ecdcadb4b741e865-286650282e6211d12b11",
+              "file": "e2e/ai-workflow-studio.spec.ts",
+              "line": 501,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e\\auth-pages.spec.ts",
+      "file": "e2e/auth-pages.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication Pages Testing",
+          "file": "e2e/auth-pages.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should navigate to login page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "517d6eec7510df5fa991-4649cc7d1c39e3d3ad42",
+              "file": "e2e/auth-pages.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "should navigate to register page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "517d6eec7510df5fa991-4d5a0c5103bbd0137654",
+              "file": "e2e/auth-pages.spec.ts",
+              "line": 21,
+              "column": 3
+            },
+            {
+              "title": "should display login form elements",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "517d6eec7510df5fa991-a8e94a723f5ab1d0118e",
+              "file": "e2e/auth-pages.spec.ts",
+              "line": 38,
+              "column": 3
+            },
+            {
+              "title": "should display register form elements",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "517d6eec7510df5fa991-0b4bbbbb09b2699369ef",
+              "file": "e2e/auth-pages.spec.ts",
+              "line": 58,
+              "column": 3
+            },
+            {
+              "title": "should handle 404 for non-existent auth routes",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "517d6eec7510df5fa991-7858f3c3a5db2095756f",
+              "file": "e2e/auth-pages.spec.ts",
+              "line": 78,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e\\broken-links-detection.spec.ts",
+      "file": "e2e/broken-links-detection.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Broken Links Detection",
+          "file": "e2e/broken-links-detection.spec.ts",
+          "line": 247,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should detect all broken links across the application",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e926e2d884aeb68dab76-20165636ec85d2ef35c6",
+              "file": "e2e/broken-links-detection.spec.ts",
+              "line": 248,
+              "column": 3
+            },
+            {
+              "title": "should specifically check navigation menu links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e926e2d884aeb68dab76-96ef65e8814917adc28e",
+              "file": "e2e/broken-links-detection.spec.ts",
+              "line": 261,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e\\comprehensive-testing.spec.ts",
+      "file": "e2e/comprehensive-testing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Comprehensive End-to-End Testing",
+          "file": "e2e/comprehensive-testing.spec.ts",
+          "line": 383,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should test all public routes systematically",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3f920720dc945c8276ff-a24679dc00ef16130306",
+              "file": "e2e/comprehensive-testing.spec.ts",
+              "line": 390,
+              "column": 3
+            },
+            {
+              "title": "should test protected routes with mock authentication",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3f920720dc945c8276ff-8a4f1cd43544849c18df",
+              "file": "e2e/comprehensive-testing.spec.ts",
+              "line": 422,
+              "column": 3
+            },
+            {
+              "title": "should perform comprehensive responsive design testing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3f920720dc945c8276ff-9c5b12a4c7a135472299",
+              "file": "e2e/comprehensive-testing.spec.ts",
+              "line": 480,
+              "column": 3
+            },
+            {
+              "title": "should validate accessibility standards",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3f920720dc945c8276ff-cc2c37130e4c2887e37a",
+              "file": "e2e/comprehensive-testing.spec.ts",
+              "line": 526,
+              "column": 3
+            },
+            {
+              "title": "should generate comprehensive quality report",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3f920720dc945c8276ff-fec2f6ff19c58c2c1f19",
+              "file": "e2e/comprehensive-testing.spec.ts",
+              "line": 566,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e\\landing-page-comprehensive.spec.ts",
+      "file": "e2e/landing-page-comprehensive.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Landing Page Comprehensive Testing",
+          "file": "e2e/landing-page-comprehensive.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load landing page without console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-9cf1af2eb6b5130de1a1",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 9,
+              "column": 3
+            },
+            {
+              "title": "should display Hero Section correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-6d6532d1c43b0dd3fa3e",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 31,
+              "column": 3
+            },
+            {
+              "title": "should display Demo Video Section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-1d85ed4ac51489db66c1",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 38,
+              "column": 3
+            },
+            {
+              "title": "should display main content sections",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-8b9a87ce65efe0bd756b",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 44,
+              "column": 3
+            },
+            {
+              "title": "should display Features Section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-788244281da5e3b342b5",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 57,
+              "column": 3
+            },
+            {
+              "title": "should display all landing page sections",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-a52a798bb5839c97fd1b",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 64,
+              "column": 3
+            },
+            {
+              "title": "should have working navigation links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-4d5a39e483d522d298c7",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 77,
+              "column": 3
+            },
+            {
+              "title": "should display AR section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-4d3533ebf4ac9759bb3e",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 84,
+              "column": 3
+            },
+            {
+              "title": "should show basic content",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-3147bd3453926477b49a",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 92,
+              "column": 3
+            },
+            {
+              "title": "should display basic features",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-7014fcbf4c422da713ac",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 98,
+              "column": 3
+            },
+            {
+              "title": "should have responsive design",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f172950a6ab485058c5a-6abf233822f5f8d569d1",
+              "file": "e2e/landing-page-comprehensive.spec.ts",
+              "line": 105,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e\\page-by-page-testing.spec.ts",
+      "file": "e2e/page-by-page-testing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Page-by-Page Testing Suite",
+          "file": "e2e/page-by-page-testing.spec.ts",
+          "line": 359,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should test page: /",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6c14eb4f3a3c2bb18c52-a64e6af4fef2389cacbb",
+              "file": "e2e/page-by-page-testing.spec.ts",
+              "line": 381,
+              "column": 5
+            },
+            {
+              "title": "should test page: /features",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6c14eb4f3a3c2bb18c52-a780c7cb4abae38d9ac1",
+              "file": "e2e/page-by-page-testing.spec.ts",
+              "line": 381,
+              "column": 5
+            },
+            {
+              "title": "should test page: /pricing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6c14eb4f3a3c2bb18c52-4782662c69f6d4f3d5db",
+              "file": "e2e/page-by-page-testing.spec.ts",
+              "line": 381,
+              "column": 5
+            },
+            {
+              "title": "should test page: /templates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6c14eb4f3a3c2bb18c52-5667fe844354c872a5da",
+              "file": "e2e/page-by-page-testing.spec.ts",
+              "line": 381,
+              "column": 5
+            },
+            {
+              "title": "should test page: /about",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6c14eb4f3a3c2bb18c52-818b1f7f24ab9f60552e",
+              "file": "e2e/page-by-page-testing.spec.ts",
+              "line": 381,
+              "column": 5
+            },
+            {
+              "title": "should test page: /contact",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6c14eb4f3a3c2bb18c52-bcff3f7a1034600c03d2",
+              "file": "e2e/page-by-page-testing.spec.ts",
+              "line": 381,
+              "column": 5
+            },
+            {
+              "title": "should test page: /documentation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6c14eb4f3a3c2bb18c52-d249b8c2ab915ecddb52",
+              "file": "e2e/page-by-page-testing.spec.ts",
+              "line": 381,
+              "column": 5
+            },
+            {
+              "title": "should test page: /auth",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6c14eb4f3a3c2bb18c52-6eb4f542b10dab2e1beb",
+              "file": "e2e/page-by-page-testing.spec.ts",
+              "line": 381,
+              "column": 5
+            },
+            {
+              "title": "should generate comprehensive page testing report",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "6c14eb4f3a3c2bb18c52-221ec30770eabc8ea7f9",
+              "file": "e2e/page-by-page-testing.spec.ts",
+              "line": 393,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e\\protected-pages-testing.spec.ts",
+      "file": "e2e/protected-pages-testing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Protected Pages Testing Suite",
+          "file": "e2e/protected-pages-testing.spec.ts",
+          "line": 275,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should test protected page: /account",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-34b5e7cb85eaf370684d",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 298,
+              "column": 5
+            },
+            {
+              "title": "should test protected page: /dashboard",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-eabdd9950e05bd396904",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 298,
+              "column": 5
+            },
+            {
+              "title": "should test protected page: /projects",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-d6ab2cd736e52f4e8893",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 298,
+              "column": 5
+            },
+            {
+              "title": "should test protected page: /builder",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-2522078726ece4fc2568",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 298,
+              "column": 5
+            },
+            {
+              "title": "should test protected page: /ai-workflow-studio",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-d6fbc5194ce01798f703",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 298,
+              "column": 5
+            },
+            {
+              "title": "should test protected page: /ai-ecosystem-playground",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-e08192351f188f3c2a2e",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 298,
+              "column": 5
+            },
+            {
+              "title": "should test protected page: /billing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-63f38c007533f29e72c1",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 298,
+              "column": 5
+            },
+            {
+              "title": "should test protected page: /settings",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-9e8ac86524449fcb538e",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 298,
+              "column": 5
+            },
+            {
+              "title": "should test protected page: /profile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-44fe5a8f949a628f0d41",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 298,
+              "column": 5
+            },
+            {
+              "title": "should generate comprehensive protected pages report",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d841a3439d36b74cc9df-bc3c2475a6b388d7b234",
+              "file": "e2e/protected-pages-testing.spec.ts",
+              "line": 309,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e\\quick-fixes-verification.spec.ts",
+      "file": "e2e/quick-fixes-verification.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Quick Fixes Verification",
+          "file": "e2e/quick-fixes-verification.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should verify all fixed routes are working",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ca036ade36ef6b61ccbf-f0d3cb6127e6d400ee40",
+              "file": "e2e/quick-fixes-verification.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "should verify social media footer is present",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ca036ade36ef6b61ccbf-915bb53b14a3f025854d",
+              "file": "e2e/quick-fixes-verification.spec.ts",
+              "line": 58,
+              "column": 3
+            },
+            {
+              "title": "should verify demo video link is fixed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ca036ade36ef6b61ccbf-909bafbd1143ec8ecd65",
+              "file": "e2e/quick-fixes-verification.spec.ts",
+              "line": 92,
+              "column": 3
+            },
+            {
+              "title": "should verify workflow studio link is fixed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ca036ade36ef6b61ccbf-cb3f8b1b0df7a6af6a96",
+              "file": "e2e/quick-fixes-verification.spec.ts",
+              "line": 122,
+              "column": 3
+            },
+            {
+              "title": "should generate final verification report",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ca036ade36ef6b61ccbf-462ef658022a788965b8",
+              "file": "e2e/quick-fixes-verification.spec.ts",
+              "line": 150,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
     {
       "title": "e2e\\record-demo.spec.ts",
       "file": "e2e/record-demo.spec.ts",
@@ -73,12 +1628,12 @@
         {
           "title": "AI Workflow Studio Demo Recording",
           "file": "e2e/record-demo.spec.ts",
-          "line": 5,
+          "line": 4,
           "column": 6,
           "specs": [
             {
               "title": "Record complete demo video",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -87,217 +1642,13 @@
                   "expectedStatus": "passed",
                   "projectId": "chromium",
                   "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 40182,
-                      "error": {
-                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n",
-                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\n    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\n    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\n    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\n    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23",
-                        "location": {
-                          "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
-                          "column": 29,
-                          "line": 120
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
-                            "column": 29,
-                            "line": 120
-                          },
-                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\u001b[22m\n\u001b[2m    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\u001b[22m\n\u001b[2m    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23\u001b[22m"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "🎬 Starting AI Workflow Studio demo recording...\n"
-                        },
-                        {
-                          "text": "🎬 Demo recording started...\n"
-                        },
-                        {
-                          "text": "🎯 Executing step: Welcome to AI Workflow Studio\n"
-                        },
-                        {
-                          "text": "🎯 Executing step: Drag and Drop Interface\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-05-31T09:03:09.062Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\\video.webm"
-                        },
-                        {
-                          "name": "_error-context-0",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
-                        "column": 29,
-                        "line": 120
-                      }
-                    },
-                    {
-                      "workerIndex": 1,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 40772,
-                      "error": {
-                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n",
-                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\n    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\n    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\n    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\n    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23",
-                        "location": {
-                          "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
-                          "column": 29,
-                          "line": 120
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
-                            "column": 29,
-                            "line": 120
-                          },
-                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\u001b[22m\n\u001b[2m    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\u001b[22m\n\u001b[2m    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23\u001b[22m"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "🎬 Starting AI Workflow Studio demo recording...\n"
-                        },
-                        {
-                          "text": "🎬 Demo recording started...\n"
-                        },
-                        {
-                          "text": "🎯 Executing step: Welcome to AI Workflow Studio\n"
-                        },
-                        {
-                          "text": "🎯 Executing step: Drag and Drop Interface\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 1,
-                      "startTime": "2025-05-31T09:03:51.144Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\\video.webm"
-                        },
-                        {
-                          "name": "_error-context-0",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry1\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
-                        "column": 29,
-                        "line": 120
-                      }
-                    },
-                    {
-                      "workerIndex": 2,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 40085,
-                      "error": {
-                        "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n",
-                        "stack": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\n    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\n    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\n    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\n    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23",
-                        "location": {
-                          "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
-                          "column": 29,
-                          "line": 120
-                        },
-                        "snippet": "\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
-                            "column": 29,
-                            "line": 120
-                          },
-                          "message": "TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[value=\"triggers\"]')\u001b[22m\n\n\n\u001b[90m   at \u001b[39m..\\demo-video\\automated-demo-recorder.ts:120\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mtry\u001b[39m {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mhighlightElement(action\u001b[33m.\u001b[39mselector)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mclick(action\u001b[33m.\u001b[39mselector\u001b[33m,\u001b[39m { timeout\u001b[33m:\u001b[39m action\u001b[33m.\u001b[39moptional \u001b[33m?\u001b[39m \u001b[35m5000\u001b[39m \u001b[33m:\u001b[39m \u001b[35m30000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           } \u001b[36mcatch\u001b[39m (error) {\n \u001b[90m 122 |\u001b[39m             \u001b[36mif\u001b[39m (action\u001b[33m.\u001b[39moptional) {\n \u001b[90m 123 |\u001b[39m               console\u001b[33m.\u001b[39mlog(\u001b[32m`⚠️ Optional action skipped: ${action.selector} - ${error.message}`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at AutomatedDemoRecorder.executeAction (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:120:29)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeStep (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:102:7)\u001b[22m\n\u001b[2m    at AutomatedDemoRecorder.executeDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:77:7)\u001b[22m\n\u001b[2m    at recordDemo (C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts:473:3)\u001b[22m\n\u001b[2m    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:24:23\u001b[22m"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "🎬 Starting AI Workflow Studio demo recording...\n"
-                        },
-                        {
-                          "text": "🎬 Demo recording started...\n"
-                        },
-                        {
-                          "text": "🎯 Executing step: Welcome to AI Workflow Studio\n"
-                        },
-                        {
-                          "text": "🎯 Executing step: Drag and Drop Interface\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 2,
-                      "startTime": "2025-05-31T09:04:34.266Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\\video.webm"
-                        },
-                        {
-                          "name": "_error-context-0",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-93f6a--Record-complete-demo-video-chromium-retry2\\error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\robia\\Desktop\\AiFlow\\demo-video\\automated-demo-recorder.ts",
-                        "column": 29,
-                        "line": 120
-                      }
-                    }
-                  ],
-                  "status": "unexpected"
+                  "results": [],
+                  "status": "skipped"
                 }
               ],
               "id": "1f0ab8591599f48283df-947ddc6b33c0119b3b54",
               "file": "e2e/record-demo.spec.ts",
-              "line": 20,
+              "line": 19,
               "column": 3
             },
             {
@@ -311,66 +1662,7 @@
                   "expectedStatus": "passed",
                   "projectId": "chromium",
                   "projectName": "chromium",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 0,
-                      "status": "interrupted",
-                      "duration": 9643,
-                      "error": {
-                        "message": "Error: page.waitForTimeout: Test ended.",
-                        "stack": "Error: page.waitForTimeout: Test ended.\n    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:45:18",
-                        "location": {
-                          "file": "C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts",
-                          "column": 18,
-                          "line": 45
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 43 |\u001b[39m\n \u001b[90m 44 |\u001b[39m       \u001b[90m// Add section break\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m     }\n \u001b[90m 47 |\u001b[39m\n \u001b[90m 48 |\u001b[39m     \u001b[36mconst\u001b[39m videoPath \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m recorder\u001b[33m.\u001b[39mstopRecording()\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts",
-                            "column": 18,
-                            "line": 45
-                          },
-                          "message": "Error: page.waitForTimeout: Test ended.\n\n\u001b[0m \u001b[90m 43 |\u001b[39m\n \u001b[90m 44 |\u001b[39m       \u001b[90m// Add section break\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m       \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m1000\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m     }\n \u001b[90m 47 |\u001b[39m\n \u001b[90m 48 |\u001b[39m     \u001b[36mconst\u001b[39m videoPath \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m recorder\u001b[33m.\u001b[39mstopRecording()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts:45:18\u001b[22m"
-                        }
-                      ],
-                      "stdout": [
-                        {
-                          "text": "🎬 Demo recording started...\n"
-                        },
-                        {
-                          "text": "🎯 Recording section 1: Welcome to AI Workflow Studio\n"
-                        },
-                        {
-                          "text": "🎯 Executing step: Welcome to AI Workflow Studio\n"
-                        }
-                      ],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-05-31T09:05:16.529Z",
-                      "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-1756c-rd-individual-demo-sections-chromium\\test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "C:\\Users\\robia\\Desktop\\AiFlow\\test-results\\e2e-record-demo-AI-Workflo-1756c-rd-individual-demo-sections-chromium\\video.webm"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\robia\\Desktop\\AiFlow\\tests\\e2e\\record-demo.spec.ts",
-                        "column": 18,
-                        "line": 45
-                      }
-                    }
-                  ],
+                  "results": [],
                   "status": "skipped"
                 }
               ],
@@ -396,7 +1688,7 @@
               ],
               "id": "1f0ab8591599f48283df-e8fbe41c279b468fe4b6",
               "file": "e2e/record-demo.spec.ts",
-              "line": 52,
+              "line": 45,
               "column": 3
             },
             {
@@ -416,7 +1708,7 @@
               ],
               "id": "1f0ab8591599f48283df-917cad8f285dae08a97b",
               "file": "e2e/record-demo.spec.ts",
-              "line": 74,
+              "line": 58,
               "column": 3
             },
             {
@@ -436,7 +1728,7 @@
               ],
               "id": "1f0ab8591599f48283df-a164eda6be75b42428ac",
               "file": "e2e/record-demo.spec.ts",
-              "line": 154,
+              "line": 71,
               "column": 3
             }
           ]
@@ -444,7 +1736,7 @@
         {
           "title": "Video Post-Processing",
           "file": "e2e/record-demo.spec.ts",
-          "line": 213,
+          "line": 86,
           "column": 6,
           "specs": [
             {
@@ -464,7 +1756,7 @@
               ],
               "id": "1f0ab8591599f48283df-02ec13506669498d16de",
               "file": "e2e/record-demo.spec.ts",
-              "line": 214,
+              "line": 87,
               "column": 3
             }
           ]
@@ -474,11 +1766,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-05-31T09:03:07.153Z",
-    "duration": 139805.457,
+    "startTime": "2025-06-06T14:15:54.137Z",
+    "duration": 357.2199999999999,
     "expected": 0,
-    "skipped": 5,
-    "unexpected": 1,
+    "skipped": 74,
+    "unexpected": 0,
     "flaky": 0
   }
 }
