@@ -39,6 +39,10 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+interface RoadmapSectionProps {
+  compact?: boolean;
+}
+
 interface RoadmapPhase {
   id: string;
   title: string;
@@ -518,7 +522,7 @@ const roadmapPhases: RoadmapPhase[] = [
   },
 ];
 
-const RoadmapSection: React.FC = () => {
+const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
   const [expandedPhase, setExpandedPhase] = useState<string | null>('aggressive-marketing');
   const [hoveredPhase, setHoveredPhase] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'marketing' | 'metrics'>(
@@ -573,7 +577,7 @@ const RoadmapSection: React.FC = () => {
   };
 
   return (
-    <section className="py-20 md:py-32 relative overflow-hidden">
+    <section className={`${compact ? 'py-8 md:py-12' : 'py-20 md:py-32'} relative overflow-hidden`}>
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-gold/5" />
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />

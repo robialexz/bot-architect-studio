@@ -27,7 +27,7 @@ const RoadmapPage: React.FC = () => {
       </div>
 
       {/* Roadmap Content */}
-      <RoadmapSection />
+      <RoadmapSection compact />
 
       {/* Additional Details Section */}
       <section className="py-20 bg-gradient-to-br from-muted/30 to-background">
