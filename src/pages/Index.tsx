@@ -16,6 +16,7 @@ import {
 // Import new landing page components
 import EnhancedWaitlistCTA from '@/components/landing/EnhancedWaitlistCTA';
 import LiveMetricsDashboard from '@/components/landing/LiveMetricsDashboard';
+import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection';
 
 import { Button } from '@/components/ui/button';
 import { MessageCircle, X } from 'lucide-react';
@@ -45,6 +46,11 @@ const IndexPage: React.FC = () => {
           }
         >
           <LazyHeroSection />
+        </Suspense>
+
+        {/* Video Showcase Section */}
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
+          <VideoShowcaseSection />
         </Suspense>
 
         <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>

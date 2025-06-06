@@ -26,6 +26,7 @@ import InteractiveLandingPage from './pages/InteractiveLandingPage';
 import MinimalistLandingPage from './pages/MinimalistLandingPage';
 import AuthPageSimple from './pages/AuthPageSimple';
 import NotFound from './pages/NotFound';
+import VideoShowcase from './pages/VideoShowcase';
 
 // Lazy load heavy authenticated pages for better performance with error handling
 const AccountDashboard = lazy(() =>
@@ -303,6 +304,7 @@ const App = () => {
                     <Route path="/resources" element={<Resources />} />
                     <Route path="/features" element={<Features />} />
                     <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/videos" element={<VideoShowcase />} />
                     <Route
                       path="/ar-workflow"
                       element={

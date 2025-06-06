@@ -103,6 +103,7 @@ const Navbar = () => {
   // Different navigation for authenticated vs unauthenticated users
   const unauthenticatedNavItems = [
     { to: '/platform-showcase', label: 'Platform' },
+    { to: '/videos', label: 'Videos' },
     { to: '/roadmap', label: 'Roadmap', featured: true },
     { to: '/pricing', label: 'Pricing' },
     { to: '/features', label: 'Features' },
