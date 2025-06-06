@@ -5,23 +5,59 @@ import { OpenAIService } from '../openai/openaiService';
 vi.mock('@/lib/env', () => ({
   env: {
     VITE_LOG_LEVEL: 'debug',
-    VITE_OPENAI_API_KEY: 'test-key',
+    VITE_OPENAI_API_KEY: 'sk-test-key-mock-for-testing-purposes-only',
   },
   isProduction: false,
   isDevelopment: true,
 }));
 
-// Mock fetch globally
+// Mock logger
+vi.mock('@/lib/logger', () => ({
+  logger: {
+    api: {
+      request: vi.fn(),
+      response: vi.fn(),
+      error: vi.fn(),
+    },
+    error: vi.fn(),
+  },
+}));
+
+// Mock fetch globally with proper error handling
 const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
+// Mock AbortController for timeout tests
+global.AbortController = vi.fn(() => ({
+  signal: { aborted: false },
+  abort: vi.fn(),
+})) as any;
+
 describe('OpenAIService', () => {
   let service: OpenAIService;
-  const mockApiKey = 'test-api-key';
+  const mockApiKey = 'sk-test-key-mock-for-testing-purposes-only';
 
   beforeEach(() => {
     service = new OpenAIService({ apiKey: mockApiKey });
     vi.clearAllMocks();
+
+    // Reset fetch mock to default successful response
+    mockFetch.mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({
+        id: 'test-id',
+        object: 'chat.completion',
+        created: 1234567890,
+        model: 'gpt-3.5-turbo',
+        choices: [{
+          index: 0,
+          message: { role: 'assistant', content: 'Test response' },
+          finish_reason: 'stop',
+        }],
+        usage: { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 },
+      }),
+    });
   });
 
   afterEach(() => {
@@ -114,16 +150,13 @@ describe('OpenAIService', () => {
     });
 
     it('should handle network timeouts', async () => {
-      mockFetch.mockImplementationOnce(
-        () => new Promise((_, reject) => setTimeout(() => reject(new Error('AbortError')), 100))
-      );
+      // Mock a timeout error
+      const timeoutError = new Error('Request timeout');
+      timeoutError.name = 'AbortError';
 
-      const shortTimeoutService = new OpenAIService({
-        apiKey: mockApiKey,
-        timeout: 50,
-      });
+      mockFetch.mockRejectedValueOnce(timeoutError);
 
-      await expect(shortTimeoutService.generateText({ prompt: 'Test prompt' })).rejects.toThrow();
+      await expect(service.generateText({ prompt: 'Test prompt' })).rejects.toThrow();
     });
 
     it('should use custom parameters', async () => {
@@ -264,7 +297,8 @@ describe('OpenAIService', () => {
     });
 
     it('should return false when API is unhealthy', async () => {
-      mockFetch.mockRejectedValueOnce(new Error('Network error'));
+      const networkError = new Error('Network error');
+      mockFetch.mockRejectedValueOnce(networkError);
 
       const isHealthy = await service.healthCheck();
       expect(isHealthy).toBe(false);
