@@ -45,18 +45,21 @@ describe('OpenAIService', () => {
     mockFetch.mockResolvedValue({
       ok: true,
       status: 200,
-      json: () => Promise.resolve({
-        id: 'test-id',
-        object: 'chat.completion',
-        created: 1234567890,
-        model: 'gpt-3.5-turbo',
-        choices: [{
-          index: 0,
-          message: { role: 'assistant', content: 'Test response' },
-          finish_reason: 'stop',
-        }],
-        usage: { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 },
-      }),
+      json: () =>
+        Promise.resolve({
+          id: 'test-id',
+          object: 'chat.completion',
+          created: 1234567890,
+          model: 'gpt-3.5-turbo',
+          choices: [
+            {
+              index: 0,
+              message: { role: 'assistant', content: 'Test response' },
+              finish_reason: 'stop',
+            },
+          ],
+          usage: { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 },
+        }),
     });
   });
 
