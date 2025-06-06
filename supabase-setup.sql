@@ -217,6 +217,41 @@ CREATE TABLE IF NOT EXISTS public.ai_usage (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Create waitlist emails table for production email collection
+CREATE TABLE IF NOT EXISTS public.waitlist_emails (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    ip_address INET,
+    user_agent TEXT,
+    referrer TEXT,
+    utm_source TEXT,
+    utm_medium TEXT,
+    utm_campaign TEXT,
+    status TEXT DEFAULT 'active' CHECK (status IN ('active', 'unsubscribed', 'bounced')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create indexes for performance
+CREATE INDEX IF NOT EXISTS idx_waitlist_emails_email ON public.waitlist_emails(email);
+CREATE INDEX IF NOT EXISTS idx_waitlist_emails_created_at ON public.waitlist_emails(created_at);
+CREATE INDEX IF NOT EXISTS idx_waitlist_emails_status ON public.waitlist_emails(status);
+
+-- Create function to update updated_at timestamp
+CREATE OR REPLACE FUNCTION public.update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create trigger for waitlist_emails updated_at
+CREATE TRIGGER update_waitlist_emails_updated_at
+    BEFORE UPDATE ON public.waitlist_emails
+    FOR EACH ROW
+    EXECUTE FUNCTION public.update_updated_at_column();
+
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS workflow_executions_workflow_id_idx ON public.workflow_executions(workflow_id);
 CREATE INDEX IF NOT EXISTS workflow_executions_user_id_idx ON public.workflow_executions(user_id);
@@ -235,6 +270,7 @@ CREATE INDEX IF NOT EXISTS ai_usage_created_at_idx ON public.ai_usage(created_at
 ALTER TABLE public.workflow_executions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.node_executions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.ai_usage ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.waitlist_emails ENABLE ROW LEVEL SECURITY;
 
 -- Create RLS policies for workflow_executions
 CREATE POLICY "Users can view own workflow executions" ON public.workflow_executions
@@ -278,6 +314,20 @@ CREATE POLICY "Users can view own AI usage" ON public.ai_usage
 CREATE POLICY "Users can insert own AI usage" ON public.ai_usage
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+-- Create RLS policies for waitlist_emails
+-- Allow anonymous users to insert emails (for waitlist signup)
+CREATE POLICY "Anyone can insert waitlist emails" ON public.waitlist_emails
+    FOR INSERT WITH CHECK (true);
+
+-- Only authenticated admin users can view waitlist emails
+-- Note: In production, you should create an admin role and restrict this further
+CREATE POLICY "Authenticated users can view waitlist emails" ON public.waitlist_emails
+    FOR SELECT USING (auth.role() = 'authenticated');
+
+-- Allow users to update their own email status (for unsubscribe)
+CREATE POLICY "Anyone can update waitlist email status" ON public.waitlist_emails
+    FOR UPDATE USING (true) WITH CHECK (status IN ('active', 'unsubscribed'));
+
 -- Create triggers for updated_at
 CREATE TRIGGER update_workflow_executions_updated_at
     BEFORE UPDATE ON public.workflow_executions
@@ -290,3 +340,4 @@ ALTER PUBLICATION supabase_realtime ADD TABLE public.ai_agents;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.workflow_executions;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.node_executions;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.ai_usage;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.waitlist_emails;

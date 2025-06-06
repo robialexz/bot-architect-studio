@@ -1,16 +1,21 @@
-import React from 'react';
-import EnergyNetworkCanvas from '@/components/EnergyNetworkCanvas';
+import React, { Suspense } from 'react';
+import { Loader2 } from 'lucide-react';
 
-import HeroSection from '@/components/landing/HeroSection';
+// Lazy load heavy components to reduce initial bundle size
+import {
+  LazyEnergyNetworkCanvas,
+  LazyHeroSection,
+  LazyVisualWorkflowBuilder,
+  LazyFeaturesSection,
+  LazyRoadmapSection,
+  LazyTokenTierSection,
+  LazyARSection,
+  LazyNexusAssistantUI
+} from '@/components/lazy/LazyComponents';
 
-import VisualWorkflowBuilder from '@/components/landing/VisualWorkflowBuilder';
-import FeaturesSection from '@/components/landing/FeaturesSection';
-import RoadmapSection from '@/components/landing/RoadmapSection';
-import TokenTierSection from '@/components/landing/TokenTierSection';
-
-
-import ARSection from '@/components/landing/ARSection';
-import NexusAssistantUI from '@/components/NexusAssistantUI';
+// Import new landing page components
+import EnhancedWaitlistCTA from '@/components/landing/EnhancedWaitlistCTA';
+import LiveMetricsDashboard from '@/components/landing/LiveMetricsDashboard';
 
 import { Button } from '@/components/ui/button';
 import { MessageCircle, X } from 'lucide-react';
@@ -21,20 +26,42 @@ const IndexPage: React.FC = () => {
   return (
     <div className="index-page-container">
       <div className="index-page-background">
-        <EnergyNetworkCanvas />
+        <Suspense fallback={<div className="w-full h-full bg-gradient-to-br from-background via-background/95 to-background/90" />}>
+          <LazyEnergyNetworkCanvas />
+        </Suspense>
       </div>
 
       {/* Page Content Sections */}
       <main className="bg-background">
-        <HeroSection />
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+          <LazyHeroSection />
+        </Suspense>
 
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
+          <LazyVisualWorkflowBuilder />
+        </Suspense>
 
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
+          <LazyTokenTierSection />
+        </Suspense>
 
-        <VisualWorkflowBuilder />
-        <RoadmapSection />
-        <ARSection />
-        <TokenTierSection />
-        <FeaturesSection />
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
+          <LazyRoadmapSection />
+        </Suspense>
+
+        {/* Live Metrics Dashboard - Repositioned lower and made smaller */}
+        <Suspense fallback={<div className="h-64 bg-muted/20 animate-pulse" />}>
+          <LiveMetricsDashboard />
+        </Suspense>
+
+        {/* Enhanced Waitlist CTA - Improved conversion optimization */}
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
+          <EnhancedWaitlistCTA />
+        </Suspense>
+
+        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
+          <LazyFeaturesSection />
+        </Suspense>
       </main>
 
       {/* Floating Assistant Button */}
@@ -46,8 +73,12 @@ const IndexPage: React.FC = () => {
         {showAssistant ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
       </Button>
 
-      {/* Conditional Assistant UI */}
-      {showAssistant && <NexusAssistantUI />}
+      {/* Conditional Assistant UI - Lazy loaded */}
+      {showAssistant && (
+        <Suspense fallback={<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"><Loader2 className="h-8 w-8 animate-spin text-white" /></div>}>
+          <LazyNexusAssistantUI />
+        </Suspense>
+      )}
       {/*
         The existing H1, P, and Button elements that were directly here for the hero
         are now encapsulated within the HeroSection component.

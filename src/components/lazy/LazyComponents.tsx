@@ -135,6 +135,88 @@ export const LazyWorkflowOnboarding = createLazyComponent(
   'Workflow Onboarding'
 );
 
+// Lazy load crypto and token components
+export const LazySolanaTokenWidget = createLazyComponent(
+  () => import('@/components/crypto/SolanaTokenWidget'),
+  'Solana Token Widget'
+);
+
+export const LazyTokenBanner = createLazyComponent(
+  () => import('@/components/crypto/TokenBanner'),
+  'Token Banner'
+);
+
+export const LazyInteractiveTokenDemo = createLazyComponent(
+  () => import('@/components/crypto/InteractiveTokenDemo'),
+  'Interactive Token Demo'
+);
+
+// Lazy load 3D and visualization components (largest contributors to bundle size)
+export const LazyNexusAssistantUI = createLazyComponent(
+  () => import('@/components/NexusAssistantUI'),
+  'Nexus Assistant UI'
+);
+
+// These components are already exported above, removing duplicates
+
+// Lazy load chart and analytics components
+export const LazyAreaChart = createLazyComponent(
+  () => import('recharts').then(module => ({ default: module.AreaChart })),
+  'Area Chart'
+);
+
+// Lazy load landing page sections
+export const LazyHeroSection = createLazyComponent(
+  () => import('@/components/landing/HeroSection'),
+  'Hero Section'
+);
+
+export const LazyFeaturesSection = createLazyComponent(
+  () => import('@/components/landing/FeaturesSection'),
+  'Features Section'
+);
+
+export const LazyRoadmapSection = createLazyComponent(
+  () => import('@/components/landing/RoadmapSection'),
+  'Roadmap Section'
+);
+
+export const LazyTokenTierSection = createLazyComponent(
+  () => import('@/components/landing/TokenTierSection'),
+  'Token Tier Section'
+);
+
+export const LazyARSection = createLazyComponent(
+  () => import('@/components/landing/ARSection'),
+  'AR Section'
+);
+
+// Lazy load complex page components
+export const LazyWorkflowStudio = createLazyComponent(
+  () => import('@/pages/WorkflowStudio'),
+  'Workflow Studio'
+);
+
+export const LazyAIEcosystemPlayground = createLazyComponent(
+  () => import('@/pages/AIEcosystemPlayground'),
+  'AI Ecosystem Playground'
+);
+
+export const LazyWorkflowMarketplace = createLazyComponent(
+  () => import('@/pages/WorkflowMarketplace'),
+  'Workflow Marketplace'
+);
+
+export const LazyDocumentation = createLazyComponent(
+  () => import('@/pages/Documentation'),
+  'Documentation'
+);
+
+export const LazyPlatformShowcase = createLazyComponent(
+  () => import('@/pages/PlatformShowcase'),
+  'Platform Showcase'
+);
+
 // Utility function to preload components
 export const preloadComponent = (importFn: () => Promise<{ default: ComponentType<unknown> }>) => {
   // Preload on idle or user interaction
@@ -145,10 +227,72 @@ export const preloadComponent = (importFn: () => Promise<{ default: ComponentTyp
   }
 };
 
+// Preload components based on user behavior
+export const preloadOnHover = (importFn: () => Promise<{ default: ComponentType<unknown> }>) => {
+  let isPreloaded = false;
+  return () => {
+    if (!isPreloaded) {
+      isPreloaded = true;
+      preloadComponent(importFn);
+    }
+  };
+};
+
 // Preload critical components on app start
 export const preloadCriticalComponents = () => {
   // Preload components likely to be used soon
   preloadComponent(() => import('@/components/workflow/WorkflowCanvas'));
   preloadComponent(() => import('@/components/EnhancedWorkflowBuilder'));
-  // Analytics components will be added when available
+
+  // Preload token components for landing page
+  preloadComponent(() => import('@/components/crypto/TokenBanner'));
+
+  // Preload hero section components
+  preloadComponent(() => import('@/components/landing/HeroSection'));
+};
+
+// Preload components for specific routes
+export const preloadRouteComponents = (route: string) => {
+  switch (route) {
+    case '/studio':
+      preloadComponent(() => import('@/pages/WorkflowStudio'));
+      preloadComponent(() => import('@/components/EnhancedWorkflowBuilder'));
+      preloadComponent(() => import('@/components/workflow/WorkflowCanvas'));
+      break;
+    case '/playground':
+      preloadComponent(() => import('@/pages/AIEcosystemPlayground'));
+      preloadComponent(() => import('@/components/NexusCrystal'));
+      preloadComponent(() => import('@/components/EnergyNetworkCanvas'));
+      break;
+    case '/marketplace':
+      preloadComponent(() => import('@/pages/WorkflowMarketplace'));
+      break;
+    case '/docs':
+      preloadComponent(() => import('@/pages/Documentation'));
+      break;
+    case '/showcase':
+      preloadComponent(() => import('@/pages/PlatformShowcase'));
+      break;
+    default:
+      // Preload common components
+      preloadCriticalComponents();
+  }
+};
+
+// Preload components when user shows intent (hover, focus, etc.)
+export const createPreloadTrigger = (importFn: () => Promise<{ default: ComponentType<unknown> }>) => {
+  let isPreloaded = false;
+
+  const preload = () => {
+    if (!isPreloaded) {
+      isPreloaded = true;
+      preloadComponent(importFn);
+    }
+  };
+
+  return {
+    onMouseEnter: preload,
+    onFocus: preload,
+    onTouchStart: preload,
+  };
 };

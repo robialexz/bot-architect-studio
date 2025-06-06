@@ -163,6 +163,8 @@ const Tutorials = lazy(() => import('./pages/Tutorials'));
 const Community = lazy(() => import('./pages/Community'));
 const RoadmapPage = lazy(() => import('./pages/RoadmapPage'));
 const WaitlistPage = lazy(() => import('./pages/WaitlistPage'));
+const WaitlistAdmin = lazy(() => import('./pages/WaitlistAdmin'));
+const WaitlistUnsubscribe = lazy(() => import('./pages/WaitlistUnsubscribe'));
 const Settings = lazy(() => import('./pages/Settings'));
 const MyAgents = lazy(() => import('./pages/MyAgents'));
 const Wallet = lazy(() => import('./pages/Wallet'));
@@ -658,6 +660,22 @@ const App = () => {
                       element={
                         <Suspense fallback={<PageLoader />}>
                           <WaitlistPage />
+                        </Suspense>
+                      }
+                    />
+                    <Route
+                      path="/admin/waitlist"
+                      element={
+                        <Suspense fallback={<PageLoader />}>
+                          <WaitlistAdmin />
+                        </Suspense>
+                      }
+                    />
+                    <Route
+                      path="/waitlist/unsubscribe"
+                      element={
+                        <Suspense fallback={<PageLoader />}>
+                          <WaitlistUnsubscribe />
                         </Suspense>
                       }
                     />

@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Mail, CheckCircle, Star, Rocket, Zap, Gift } from 'lucide-react';
+import { ArrowLeft, Mail, CheckCircle, Star, Rocket, Zap, Gift, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
+import { waitlistService } from '@/services/waitlistService';
+import { toast } from '@/hooks/use-toast';
+import { waitlistRateLimiter, getClientId, formatTimeRemaining } from '@/utils/rateLimiter';
 
 const WaitlistPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [counters, setCounters] = useState({ waiting: 0, today: 0, satisfaction: 0 });
 
   // Animated counter effect
@@ -40,13 +45,71 @@ const WaitlistPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+
+    // Clear previous messages
+    setError('');
+    setSuccessMessage('');
+
+    if (!email.trim()) {
+      setError('Please enter your email address.');
+      return;
+    }
+
+    // Check rate limit
+    const clientId = getClientId();
+    if (!waitlistRateLimiter.isAllowed(clientId)) {
+      const resetTime = waitlistRateLimiter.getResetTime(clientId);
+      setError(`Too many attempts. Please wait ${formatTimeRemaining(resetTime)} before trying again.`);
+      return;
+    }
 
     setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSubmitted(true);
-    setIsLoading(false);
+
+    try {
+      const result = await waitlistService.submitEmail(email);
+
+      if (result.success) {
+        setSuccessMessage(result.message);
+        setIsSubmitted(true);
+        setEmail(''); // Clear the form
+
+        // Clear rate limit on successful submission
+        waitlistRateLimiter.clear(clientId);
+
+        // Show success toast
+        toast({
+          title: "Welcome to the waitlist!",
+          description: result.message,
+        });
+
+        // Update counters to reflect new signup
+        setCounters(prev => ({
+          ...prev,
+          waiting: prev.waiting + 1,
+          today: prev.today + 1
+        }));
+      } else {
+        setError(result.message);
+
+        // Show error toast
+        toast({
+          title: "Signup failed",
+          description: result.message,
+          variant: "destructive",
+        });
+      }
+    } catch (err) {
+      const errorMessage = 'An unexpected error occurred. Please try again.';
+      setError(errorMessage);
+
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -158,17 +221,32 @@ const WaitlistPage: React.FC = () => {
                       type="email"
                       placeholder="Enter your email address"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="pl-10 h-12 text-lg"
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setError(''); // Clear error when user types
+                      }}
+                      className={`pl-10 h-12 text-lg ${error ? 'border-red-500 focus:border-red-500' : ''}`}
                       required
                     />
                   </div>
-                  
+
+                  {/* Error Message */}
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-2 text-red-500 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg"
+                    >
+                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                      <span>{error}</span>
+                    </motion.div>
+                  )}
+
                   <Button
                     type="submit"
                     size="lg"
-                    disabled={isLoading || !email}
-                    className="w-full bg-gradient-to-r from-primary to-gold text-white hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 h-12 text-lg font-semibold"
+                    disabled={isLoading || !email.trim()}
+                    className="w-full bg-gradient-to-r from-primary to-gold text-white hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 h-12 text-lg font-semibold disabled:opacity-50"
                   >
                     {isLoading ? (
                       <motion.div
@@ -348,8 +426,7 @@ const WaitlistPage: React.FC = () => {
               </h1>
               
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-                Thank you for joining our waitlist! We'll send you exclusive updates about our progress 
-                and notify you as soon as the platform is ready for early access.
+                {successMessage || "Thank you for joining our waitlist! We'll send you exclusive updates about our progress and notify you as soon as the platform is ready for early access."}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

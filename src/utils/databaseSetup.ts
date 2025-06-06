@@ -14,11 +14,12 @@ export async function checkDatabaseSetup(): Promise<{
 
   const requiredTables = [
     'profiles',
-    'workflows', 
+    'workflows',
     'ai_agents',
     'workflow_executions',
     'node_executions',
-    'ai_usage'
+    'ai_usage',
+    'waitlist_emails'
   ];
 
   // Check each table

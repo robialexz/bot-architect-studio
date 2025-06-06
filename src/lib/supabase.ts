@@ -110,6 +110,47 @@ export interface Database {
           updated_at?: string;
         };
       };
+      waitlist_emails: {
+        Row: {
+          id: string;
+          email: string;
+          ip_address: string | null;
+          user_agent: string | null;
+          referrer: string | null;
+          utm_source: string | null;
+          utm_medium: string | null;
+          utm_campaign: string | null;
+          status: 'active' | 'unsubscribed' | 'bounced';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          referrer?: string | null;
+          utm_source?: string | null;
+          utm_medium?: string | null;
+          utm_campaign?: string | null;
+          status?: 'active' | 'unsubscribed' | 'bounced';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          referrer?: string | null;
+          utm_source?: string | null;
+          utm_medium?: string | null;
+          utm_campaign?: string | null;
+          status?: 'active' | 'unsubscribed' | 'bounced';
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       workflows: {
         Row: {
           id: string;

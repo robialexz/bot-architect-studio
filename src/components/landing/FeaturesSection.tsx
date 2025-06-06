@@ -112,46 +112,7 @@ const FeaturesSection: React.FC = () => {
   const isInView = useInView(ref, { once: false, amount: 0.2 });
 
   const features = [
-    {
-      icon: <FeatureIcon1 />,
-      title: 'Workflow Studio',
-      description:
-        'Visually design and automate complex processes with our intuitive drag-and-drop interface. Connect services and logic blocks to create powerful workflows tailored to your needs.',
-      color: 'from-cyan-500 to-blue-500',
-      bgColor: 'bg-blue-500/10',
-      borderColor: 'border-blue-500/30',
-      path: '/ai-workflow-studio',
-    },
-    {
-      icon: <FeatureIcon2 />,
-      title: 'AI Agent Management',
-      description:
-        'Create, configure, and deploy intelligent AI agents. Monitor their performance and manage their interactions within your ecosystem from a centralized dashboard.',
-      color: 'from-pink-500 to-purple-500',
-      bgColor: 'bg-purple-500/10',
-      borderColor: 'border-purple-500/30',
-      path: '/my-agents',
-    },
-    {
-      icon: <FeatureIcon3 />,
-      title: 'Digital Wallet',
-      description:
-        'Securely manage your digital assets and tokens. Our integrated wallet provides a seamless experience for handling various types of digital value within the platform.',
-      color: 'from-emerald-500 to-teal-500',
-      bgColor: 'bg-emerald-500/10',
-      borderColor: 'border-emerald-500/30',
-      path: '/wallet',
-    },
-    {
-      icon: <FeatureIcon4 />,
-      title: 'Project Templates',
-      description:
-        'Kickstart your projects with pre-built templates. Save time by leveraging our library of common use-cases and configurations designed for rapid deployment.',
-      color: 'from-amber-500 to-orange-500',
-      bgColor: 'bg-amber-500/10',
-      borderColor: 'border-amber-500/30',
-      path: '/templates',
-    },
+    // Feature cards removed as requested - keeping the component structure for future use
   ];
 
   // Detailed use cases for the carousel
