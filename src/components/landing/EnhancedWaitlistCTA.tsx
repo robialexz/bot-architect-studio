@@ -58,7 +58,7 @@ const EnhancedWaitlistCTA: React.FC = () => {
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [launchDate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

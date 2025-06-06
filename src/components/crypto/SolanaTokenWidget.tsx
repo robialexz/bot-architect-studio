@@ -155,14 +155,14 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
     if (savedFavorite) {
       setIsFavorited(savedFavorite === 'true');
     }
-  }, [tokenAddress]);
+  }, [tokenAddress, fetchTokenData]);
 
   useEffect(() => {
     if (!autoRefresh) return;
 
     const interval = setInterval(fetchTokenData, refreshInterval);
     return () => clearInterval(interval);
-  }, [autoRefresh, refreshInterval, tokenAddress]);
+  }, [autoRefresh, refreshInterval, tokenAddress, fetchTokenData]);
 
   if (error) {
     return (

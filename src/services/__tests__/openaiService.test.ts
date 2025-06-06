@@ -31,7 +31,7 @@ global.fetch = mockFetch;
 global.AbortController = vi.fn(() => ({
   signal: { aborted: false },
   abort: vi.fn(),
-})) as any;
+})) as unknown as typeof AbortController;
 
 describe('OpenAIService', () => {
   let service: OpenAIService;

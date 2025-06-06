@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
   Download,
@@ -32,9 +32,9 @@ const WaitlistAdmin: React.FC = () => {
 
   useEffect(() => {
     loadData();
-  }, [currentPage]);
+  }, [currentPage, loadData]);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
       // Load stats
@@ -61,7 +61,7 @@ const WaitlistAdmin: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentPage, itemsPerPage]);
 
   const handleExport = async () => {
     setIsExporting(true);
@@ -222,7 +222,7 @@ const WaitlistAdmin: React.FC = () => {
                 <Filter className="w-4 h-4 text-muted-foreground" />
                 <select
                   value={statusFilter}
-                  onChange={e => setStatusFilter(e.target.value as any)}
+                  onChange={e => setStatusFilter(e.target.value as 'all' | 'active' | 'unsubscribed' | 'bounced')}
                   className="px-3 py-2 border border-border rounded-md bg-background"
                 >
                   <option value="all">All Status</option>

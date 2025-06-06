@@ -89,6 +89,15 @@ interface ProcessingResult {
   timestamp: number;
 }
 
+interface NodeOutput {
+  response: string;
+  model: string;
+  tokensUsed?: number;
+  processingTime?: number;
+  timestamp: number;
+  scrapingData?: Record<string, unknown>;
+}
+
 function ParticlesBackground() {
   // Simplified background without tsParticles to prevent loading issues
   return (
@@ -1180,7 +1189,7 @@ const VisualWorkflowBuilder: React.FC = () => {
           const aiRequest = {
             nodeId: node.id,
             nodeType: node.type,
-            service: getServiceFromNodeType(node.type) as any,
+            service: getServiceFromNodeType(node.type),
             model: getModelFromNodeType(node.type),
             prompt: getPromptFromNodeType(node.type),
             inputs: inputData || { prompt: 'Process this workflow step.' },
@@ -1871,7 +1880,7 @@ The transition to sustainable technology requires continued investment, policy s
         await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
 
         try {
-          let output: any;
+          let output: NodeOutput;
 
           // Check if this is a web scraper node
           if (node.type === 'web-scraper') {
@@ -1925,7 +1934,7 @@ The transition to sustainable technology requires continued investment, policy s
             const aiRequest = {
               nodeId: node.id,
               nodeType: node.type,
-              service: getServiceFromNodeType(node.type) as any,
+              service: getServiceFromNodeType(node.type),
               model: getModelFromNodeType(node.type),
               prompt: getPromptFromNodeType(node.type).replace('{{input}}', originalInput),
               inputs: { userRequest: originalInput, currentInput: currentInput },
@@ -2116,7 +2125,7 @@ The transition to sustainable technology requires continued investment, policy s
         await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
 
         try {
-          let output: any;
+          let output: NodeOutput;
 
           // Check if this is a web scraper node
           if (node.type === 'web-scraper') {
@@ -2170,7 +2179,7 @@ The transition to sustainable technology requires continued investment, policy s
             const aiRequest = {
               nodeId: node.id,
               nodeType: node.type,
-              service: getServiceFromNodeType(node.type) as any,
+              service: getServiceFromNodeType(node.type),
               model: getModelFromNodeType(node.type),
               prompt: getPromptFromNodeType(node.type).replace('{{input}}', originalInput),
               inputs: { userRequest: originalInput, currentInput: currentInput },

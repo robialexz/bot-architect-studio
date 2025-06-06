@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -36,9 +36,9 @@ export const WorkflowExecutionDashboard: React.FC<WorkflowExecutionDashboardProp
 
   useEffect(() => {
     loadExecutions();
-  }, [workflowId]);
+  }, [workflowId, loadExecutions]);
 
-  const loadExecutions = async () => {
+  const loadExecutions = useCallback(async () => {
     try {
       setLoading(true);
       const executionHistory = await workflowExecutionService.getExecutionHistory(workflowId, 20);
@@ -53,7 +53,7 @@ export const WorkflowExecutionDashboard: React.FC<WorkflowExecutionDashboardProp
     } finally {
       setLoading(false);
     }
-  };
+  }, [workflowId, selectedExecution, onExecutionSelect]);
 
   const refreshExecutions = async () => {
     try {

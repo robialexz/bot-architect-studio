@@ -479,7 +479,7 @@ const EnhancedTokenShowcase: React.FC = () => {
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => setSelectedTab(tab.id as any)}
+              onClick={() => setSelectedTab(tab.id as 'overview' | 'distribution' | 'holders' | 'security')}
               className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
                 selectedTab === tab.id
                   ? 'bg-primary text-primary-foreground shadow-sm'

@@ -156,7 +156,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
       const interval = setInterval(fetchTokenData, tokenConfig.refreshInterval);
       return () => clearInterval(interval);
     }
-  }, [actualTokenAddress, tokenConfig.autoRefresh, tokenConfig.refreshInterval]);
+  }, [actualTokenAddress, tokenConfig.autoRefresh, tokenConfig.refreshInterval, fetchTokenData]);
 
   // Mini Chart Component
   const MiniChart: React.FC<{ data: number[]; className?: string }> = ({
