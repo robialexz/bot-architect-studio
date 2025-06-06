@@ -135,7 +135,7 @@ const Navbar = () => {
 
   return (
     <nav className="border-b border-[hsl(var(--nav-border))] bg-[hsl(var(--nav-background))]/95 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-screen-xl min-h-[80px]">
+      <div className="container mx-auto px-4 py-2 flex items-center justify-between max-w-screen-xl min-h-[70px]">
         <motion.button
           onClick={handleLogoClick}
           className="group cursor-pointer bg-transparent border-none p-2 rounded-lg hover:bg-accent/50 transition-all duration-300"
