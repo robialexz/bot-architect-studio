@@ -15,9 +15,9 @@ const WaitlistUnsubscribe: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     setError('');
-    
+
     if (!email.trim()) {
       setError('Please enter your email address.');
       return;
@@ -27,28 +27,28 @@ const WaitlistUnsubscribe: React.FC = () => {
 
     try {
       const result = await waitlistService.unsubscribeEmail(email);
-      
+
       if (result.success) {
         setIsUnsubscribed(true);
         toast({
-          title: "Unsubscribed successfully",
+          title: 'Unsubscribed successfully',
           description: result.message,
         });
       } else {
         setError(result.message);
         toast({
-          title: "Unsubscribe failed",
+          title: 'Unsubscribe failed',
           description: result.message,
-          variant: "destructive",
+          variant: 'destructive',
         });
       }
     } catch (err) {
       const errorMessage = 'An unexpected error occurred. Please try again.';
       setError(errorMessage);
       toast({
-        title: "Error",
+        title: 'Error',
         description: errorMessage,
-        variant: "destructive",
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -100,17 +100,17 @@ const WaitlistUnsubscribe: React.FC = () => {
                 >
                   <Mail className="w-12 h-12 text-white" />
                 </motion.div>
-                
+
                 <h1 className="text-4xl md:text-5xl font-bold mb-6">
                   <span className="block text-foreground">Unsubscribe from</span>
                   <span className="block bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">
                     FlowsyAI Waitlist
                   </span>
                 </h1>
-                
+
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-                  We're sorry to see you go! Enter your email address below to unsubscribe from our waitlist. 
-                  You won't receive any more notifications from us.
+                  We're sorry to see you go! Enter your email address below to unsubscribe from our
+                  waitlist. You won't receive any more notifications from us.
                 </p>
               </div>
 
@@ -128,7 +128,7 @@ const WaitlistUnsubscribe: React.FC = () => {
                       type="email"
                       placeholder="Enter your email address"
                       value={email}
-                      onChange={(e) => {
+                      onChange={e => {
                         setEmail(e.target.value);
                         setError(''); // Clear error when user types
                       }}
@@ -148,7 +148,7 @@ const WaitlistUnsubscribe: React.FC = () => {
                       <span>{error}</span>
                     </motion.div>
                   )}
-                  
+
                   <Button
                     type="submit"
                     size="lg"
@@ -158,7 +158,7 @@ const WaitlistUnsubscribe: React.FC = () => {
                     {isLoading ? (
                       <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                         className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                       />
                     ) : (
@@ -198,7 +198,9 @@ const WaitlistUnsubscribe: React.FC = () => {
                   </li>
                   <li className="flex items-start gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0" />
-                    <span>Your data will be retained for compliance purposes but marked as inactive</span>
+                    <span>
+                      Your data will be retained for compliance purposes but marked as inactive
+                    </span>
                   </li>
                 </ul>
               </motion.div>
@@ -219,17 +221,17 @@ const WaitlistUnsubscribe: React.FC = () => {
               >
                 <CheckCircle className="w-12 h-12 text-white" />
               </motion.div>
-              
+
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 <span className="block text-foreground">Successfully</span>
                 <span className="block bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent">
                   Unsubscribed
                 </span>
               </h1>
-              
+
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-                You have been successfully removed from our waitlist. We're sorry to see you go, 
-                but you can always rejoin if you change your mind.
+                You have been successfully removed from our waitlist. We're sorry to see you go, but
+                you can always rejoin if you change your mind.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -239,7 +241,11 @@ const WaitlistUnsubscribe: React.FC = () => {
                     Back to Home
                   </Link>
                 </Button>
-                <Button asChild size="lg" className="bg-gradient-to-r from-primary to-gold text-white">
+                <Button
+                  asChild
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-gold text-white"
+                >
                   <Link to="/waitlist">
                     <Mail className="w-5 h-5 mr-2" />
                     Rejoin Waitlist

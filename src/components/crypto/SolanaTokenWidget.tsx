@@ -18,7 +18,7 @@ import {
   Droplets,
   Sparkles,
   Zap,
-  ShoppingCart
+  ShoppingCart,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { solanaTokenService, TokenData, TransactionData } from '@/services/solanaTokenService';
@@ -70,7 +70,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
         logoControls.start({
           scale: [1, 1.2, 1],
           rotate: [0, 180],
-          transition: { duration: 0.6, ease: "easeInOut" }
+          transition: { duration: 0.6, ease: 'easeInOut' },
         });
 
         // Clear animation after delay
@@ -108,7 +108,10 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
 
   const handleTradeClick = () => {
     // Open trading platform - will be configured with actual DEX links
-    window.open(`https://raydium.io/swap/?inputCurrency=sol&outputCurrency=${tokenAddress}`, '_blank');
+    window.open(
+      `https://raydium.io/swap/?inputCurrency=sol&outputCurrency=${tokenAddress}`,
+      '_blank'
+    );
   };
 
   const handleFavoriteToggle = () => {
@@ -120,7 +123,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
     const shareData = {
       title: `${tokenData?.name || 'FlowsyAI Token'} (${tokenData?.symbol || 'FLOWSY'})`,
       text: `Check out this token - Current price: ${formatCurrency(tokenData?.price || 0)}`,
-      url: window.location.href
+      url: window.location.href,
     };
 
     if (navigator.share) {
@@ -202,7 +205,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
               className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-gold flex items-center justify-center relative overflow-hidden cursor-pointer"
               whileHover={{
                 scale: 1.1,
-                boxShadow: "0 0 20px rgba(255, 215, 0, 0.5)"
+                boxShadow: '0 0 20px rgba(255, 215, 0, 0.5)',
               }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
@@ -329,9 +332,11 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
                   ) : (
                     <TrendingDown className="w-4 h-4 text-red-400" />
                   )}
-                  <span className={`text-sm font-semibold ${
-                    (tokenData?.priceChange24h || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'
-                  }`}>
+                  <span
+                    className={`text-sm font-semibold ${
+                      (tokenData?.priceChange24h || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'
+                    }`}
+                  >
                     {formatPercentage(tokenData?.priceChange24h || 0)}
                   </span>
                 </div>
@@ -364,7 +369,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
                 Trade Now
                 <ExternalLink className="w-3 h-3 ml-2" />
               </Button>
-              
+
               <Button
                 variant="outline"
                 onClick={() => window.open(`https://solscan.io/token/${tokenAddress}`, '_blank')}
@@ -382,7 +387,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
                   <Activity className="w-4 h-4 text-primary" />
                   <h4 className="text-sm font-semibold text-foreground">Recent Activity</h4>
                 </div>
-                
+
                 <div className="space-y-2">
                   <AnimatePresence>
                     {transactions.slice(0, 3).map((tx, index) => (
@@ -393,12 +398,16 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
                         exit={{ opacity: 0, x: 20 }}
                         transition={{ delay: index * 0.1 }}
                         className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer"
-                        onClick={() => window.open(`https://solscan.io/tx/${tx.signature}`, '_blank')}
+                        onClick={() =>
+                          window.open(`https://solscan.io/tx/${tx.signature}`, '_blank')
+                        }
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`w-2 h-2 rounded-full ${
-                            tx.type === 'buy' ? 'bg-emerald-400' : 'bg-red-400'
-                          }`} />
+                          <div
+                            className={`w-2 h-2 rounded-full ${
+                              tx.type === 'buy' ? 'bg-emerald-400' : 'bg-red-400'
+                            }`}
+                          />
                           <div>
                             <p className="text-xs text-muted-foreground">
                               {tx.type === 'buy' ? 'Buy' : 'Sell'}

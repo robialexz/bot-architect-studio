@@ -7,10 +7,16 @@ export enum ExecutionStatus {
   FAILED = 'failed',
   ERROR = 'failed', // Alias for compatibility
   PAUSED = 'paused',
-  CANCELLED = 'cancelled'
+  CANCELLED = 'cancelled',
 }
 
-export type ExecutionStatusType = 'pending' | 'running' | 'completed' | 'failed' | 'paused' | 'cancelled';
+export type ExecutionStatusType =
+  | 'pending'
+  | 'running'
+  | 'completed'
+  | 'failed'
+  | 'paused'
+  | 'cancelled';
 
 export interface WorkflowExecution {
   id: string;
@@ -89,31 +95,31 @@ export interface ExecutionContext {
 
 export interface NodeProcessor {
   processNode(
-    node: any, 
-    inputs: Record<string, any>, 
+    node: any,
+    inputs: Record<string, any>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult>;
-  
+
   canProcess(nodeType: string): boolean;
-  
+
   getRequiredInputs(node: any): string[];
-  
+
   validateInputs(node: any, inputs: Record<string, any>): boolean;
 }
 
 export interface WorkflowExecutor {
   executeWorkflow(workflowId: string, inputs: Record<string, any>): Promise<ExecutionResult>;
-  
+
   getExecutionStatus(executionId: string): Promise<WorkflowExecution | null>;
-  
+
   pauseExecution(executionId: string): Promise<void>;
-  
+
   resumeExecution(executionId: string): Promise<void>;
-  
+
   cancelExecution(executionId: string): Promise<void>;
-  
+
   getExecutionHistory(workflowId: string, limit?: number): Promise<WorkflowExecution[]>;
-  
+
   getNodeExecutions(executionId: string): Promise<NodeExecution[]>;
 }
 
@@ -140,13 +146,13 @@ export interface AIResponse {
 
 export interface AIServiceProxy {
   executeAIRequest(request: AIRequest, userId: string): Promise<AIResponse>;
-  
+
   validateAPIKey(service: string): boolean;
-  
+
   checkRateLimit(userId: string, service: string): boolean;
-  
+
   trackUsage(userId: string, usage: AIUsageRecord): Promise<void>;
-  
+
   getUsageStats(userId: string, timeframe?: 'day' | 'week' | 'month'): Promise<UsageStats>;
 }
 
@@ -154,17 +160,26 @@ export interface UsageStats {
   totalRequests: number;
   totalTokens: number;
   totalCost: number;
-  serviceBreakdown: Record<string, {
-    requests: number;
-    tokens: number;
-    cost: number;
-  }>;
+  serviceBreakdown: Record<
+    string,
+    {
+      requests: number;
+      tokens: number;
+      cost: number;
+    }
+  >;
 }
 
 // Workflow execution events for real-time updates
 export interface ExecutionEvent {
-  type: 'execution_started' | 'execution_completed' | 'execution_failed' | 
-        'node_started' | 'node_completed' | 'node_failed' | 'execution_paused';
+  type:
+    | 'execution_started'
+    | 'execution_completed'
+    | 'execution_failed'
+    | 'node_started'
+    | 'node_completed'
+    | 'node_failed'
+    | 'execution_paused';
   executionId: string;
   nodeId?: string;
   data?: any;

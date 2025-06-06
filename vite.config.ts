@@ -19,7 +19,7 @@ export default defineConfig(() => ({
       external: [],
       output: {
         // Manual chunking strategy to optimize bundle size
-        manualChunks: (id) => {
+        manualChunks: id => {
           // Vendor libraries
           if (id.includes('node_modules')) {
             // React ecosystem
@@ -33,7 +33,11 @@ export default defineConfig(() => ({
             }
 
             // 3D and visualization libraries (largest chunks)
-            if (id.includes('three') || id.includes('@react-three') || id.includes('three-stdlib')) {
+            if (
+              id.includes('three') ||
+              id.includes('@react-three') ||
+              id.includes('three-stdlib')
+            ) {
               return 'three-vendor';
             }
 
@@ -88,17 +92,32 @@ export default defineConfig(() => ({
           }
 
           // 3D and visualization components
-          if (id.includes('Crystal') || id.includes('3D') || id.includes('Canvas') || id.includes('AR')) {
+          if (
+            id.includes('Crystal') ||
+            id.includes('3D') ||
+            id.includes('Canvas') ||
+            id.includes('AR')
+          ) {
             return 'visualization';
           }
 
           // Authentication and user management
-          if (id.includes('Auth') || id.includes('auth') || id.includes('Login') || id.includes('Profile')) {
+          if (
+            id.includes('Auth') ||
+            id.includes('auth') ||
+            id.includes('Login') ||
+            id.includes('Profile')
+          ) {
             return 'auth';
           }
 
           // Crypto and token components
-          if (id.includes('crypto') || id.includes('Token') || id.includes('Solana') || id.includes('Wallet')) {
+          if (
+            id.includes('crypto') ||
+            id.includes('Token') ||
+            id.includes('Solana') ||
+            id.includes('Wallet')
+          ) {
             return 'crypto';
           }
 
@@ -119,8 +138,10 @@ export default defineConfig(() => ({
         },
 
         // Optimize chunk naming
-        chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
+        chunkFileNames: chunkInfo => {
+          const facadeModuleId = chunkInfo.facadeModuleId
+            ? chunkInfo.facadeModuleId.split('/').pop()
+            : 'chunk';
           return `assets/[name]-[hash].js`;
         },
 

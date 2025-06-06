@@ -3,7 +3,6 @@ import { logger } from '@/lib/logger';
 import { WebScrapingService, ScrapingOptions } from '../webScrapingService';
 
 export class WebScraperProcessor implements NodeProcessor {
-  
   canProcess(nodeType: string): boolean {
     return ['web-scraper', 'scraper', 'web-crawler', 'url-fetcher'].includes(nodeType);
   }
@@ -11,49 +10,49 @@ export class WebScraperProcessor implements NodeProcessor {
   getRequiredInputs(node: any): string[] {
     // URL is always required
     const required = ['url'];
-    
+
     // Add custom required inputs from node configuration
     if (node.data?.requiredInputs) {
       required.push(...node.data.requiredInputs);
     }
-    
+
     return required;
   }
 
   validateInputs(node: any, inputs: Record<string, any>): boolean {
     const required = this.getRequiredInputs(node);
-    
+
     for (const input of required) {
       if (!(input in inputs) || inputs[input] === undefined || inputs[input] === '') {
-        logger.warn('Missing required input for web scraper node', { 
-          nodeId: node.id, 
+        logger.warn('Missing required input for web scraper node', {
+          nodeId: node.id,
           missingInput: input,
-          availableInputs: Object.keys(inputs)
+          availableInputs: Object.keys(inputs),
         });
         return false;
       }
     }
-    
+
     // Validate URL format
     if (inputs.url && !this.isValidUrl(inputs.url)) {
       logger.warn('Invalid URL format', { nodeId: node.id, url: inputs.url });
       return false;
     }
-    
+
     return true;
   }
 
   async processNode(
-    node: any, 
-    inputs: Record<string, any>, 
+    node: any,
+    inputs: Record<string, any>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
-    
-    logger.info('Processing web scraper node', { 
-      nodeId: node.id, 
+
+    logger.info('Processing web scraper node', {
+      nodeId: node.id,
       url: inputs.url,
-      executionId: context.executionId
+      executionId: context.executionId,
     });
 
     try {
@@ -63,24 +62,24 @@ export class WebScraperProcessor implements NodeProcessor {
 
       // Prepare scraping options
       const scrapingOptions = this.prepareScrapingOptions(node, inputs);
-      
+
       // Perform web scraping
       const scrapingResult = await WebScrapingService.scrapeWebsite(scrapingOptions);
-      
+
       if (!scrapingResult.success) {
         throw new Error(scrapingResult.error || 'Web scraping failed');
       }
 
       // Process and format the results
       const outputs = this.processScrapingResult(node, scrapingResult, inputs);
-      
+
       const processingTime = Date.now() - startTime.getTime();
 
-      logger.info('Web scraper node completed', { 
-        nodeId: node.id, 
+      logger.info('Web scraper node completed', {
+        nodeId: node.id,
         url: inputs.url,
         contentLength: scrapingResult.content?.length || 0,
-        processingTime
+        processingTime,
       });
 
       return {
@@ -89,17 +88,16 @@ export class WebScraperProcessor implements NodeProcessor {
         status: 'completed',
         inputs,
         outputs,
-        processingTime
+        processingTime,
       };
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
-      logger.error('Web scraper node failed', { 
-        nodeId: node.id, 
+
+      logger.error('Web scraper node failed', {
+        nodeId: node.id,
         url: inputs.url,
         error: errorMessage,
-        executionId: context.executionId
+        executionId: context.executionId,
       });
 
       return {
@@ -111,17 +109,17 @@ export class WebScraperProcessor implements NodeProcessor {
           success: false,
           error: errorMessage,
           url: inputs.url,
-          timestamp: Date.now()
+          timestamp: Date.now(),
         },
         error: errorMessage,
-        processingTime: Date.now() - startTime.getTime()
+        processingTime: Date.now() - startTime.getTime(),
       };
     }
   }
 
   private prepareScrapingOptions(node: any, inputs: Record<string, any>): ScrapingOptions {
     const nodeData = node.data || {};
-    
+
     const options: ScrapingOptions = {
       url: inputs.url,
       selector: inputs.selector || nodeData.selector,
@@ -129,21 +127,23 @@ export class WebScraperProcessor implements NodeProcessor {
       userAgent: inputs.userAgent || nodeData.userAgent,
       headers: {
         ...nodeData.headers,
-        ...inputs.headers
+        ...inputs.headers,
       },
       extractText: inputs.extractText !== false && nodeData.extractText !== false,
       extractLinks: inputs.extractLinks || nodeData.extractLinks || false,
       extractImages: inputs.extractImages || nodeData.extractImages || false,
-      maxRetries: inputs.maxRetries || nodeData.maxRetries || 3
+      maxRetries: inputs.maxRetries || nodeData.maxRetries || 3,
     };
 
     // Handle special cases for known websites
     if (this.isGSPUrl(options.url)) {
-      options.selector = options.selector || '.article-title, .news-title, .title, h1, h2, h3, .content, .article-content';
+      options.selector =
+        options.selector ||
+        '.article-title, .news-title, .title, h1, h2, h3, .content, .article-content';
       options.waitFor = 2000;
       options.headers = {
         ...options.headers,
-        'Accept-Language': 'ro-RO,ro;q=0.9,en;q=0.8'
+        'Accept-Language': 'ro-RO,ro;q=0.9,en;q=0.8',
       };
     }
 
@@ -151,8 +151,8 @@ export class WebScraperProcessor implements NodeProcessor {
   }
 
   private processScrapingResult(
-    node: any, 
-    result: any, 
+    node: any,
+    result: any,
     originalInputs: Record<string, any>
   ): Record<string, any> {
     const outputs: Record<string, any> = {
@@ -162,7 +162,7 @@ export class WebScraperProcessor implements NodeProcessor {
       content: result.content || '',
       text: result.text || '',
       timestamp: result.timestamp,
-      ...originalInputs
+      ...originalInputs,
     };
 
     // Add optional data if available
@@ -209,18 +209,19 @@ export class WebScraperProcessor implements NodeProcessor {
 
   private extractNewsArticles(content: string, title: string): any[] {
     const articles: any[] = [];
-    
+
     // Split content into potential articles
     const sections = content.split(/\n\n+/);
-    
+
     sections.forEach((section, index) => {
       const trimmed = section.trim();
-      if (trimmed.length > 50) { // Minimum length for an article
+      if (trimmed.length > 50) {
+        // Minimum length for an article
         articles.push({
           id: index + 1,
           title: this.extractTitleFromSection(trimmed),
           content: trimmed,
-          wordCount: this.countWords(trimmed)
+          wordCount: this.countWords(trimmed),
         });
       }
     });
@@ -231,12 +232,12 @@ export class WebScraperProcessor implements NodeProcessor {
   private extractTitleFromSection(section: string): string {
     const lines = section.split('\n');
     const firstLine = lines[0].trim();
-    
+
     // If first line looks like a title (short and doesn't end with punctuation)
     if (firstLine.length < 100 && !firstLine.match(/[.!?]$/)) {
       return firstLine;
     }
-    
+
     // Extract first few words as title
     const words = firstLine.split(' ').slice(0, 8);
     return words.join(' ') + (words.length === 8 ? '...' : '');

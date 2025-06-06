@@ -164,17 +164,17 @@ const tokenTiers: TokenTier[] = [
     features: [
       {
         category: 'Workflows',
-        items: ['5 Active workflows', 'Basic templates', 'OpenAI GPT-3.5', '1GB Storage']
+        items: ['5 Active workflows', 'Basic templates', 'OpenAI GPT-3.5', '1GB Storage'],
       },
       {
         category: 'Support',
-        items: ['Documentation', 'Community forum', 'Email support']
-      }
+        items: ['Documentation', 'Community forum', 'Email support'],
+      },
     ],
     benefits: ['Free forever', 'Perfect for learning', 'Active community'],
     icon: <Rocket className="w-6 h-6" />,
     gradient: 'from-blue-500 to-indigo-600',
-    borderColor: 'border-blue-500/30'
+    borderColor: 'border-blue-500/30',
   },
   {
     id: 'professional',
@@ -188,21 +188,26 @@ const tokenTiers: TokenTier[] = [
     features: [
       {
         category: 'Workflows',
-        items: ['50 Active workflows', 'Premium templates', 'OpenAI GPT-4 & Claude', '10GB Storage']
+        items: [
+          '50 Active workflows',
+          'Premium templates',
+          'OpenAI GPT-4 & Claude',
+          '10GB Storage',
+        ],
       },
       {
         category: 'Collaboration',
-        items: ['Team workspaces', 'Version control', 'Advanced analytics']
+        items: ['Team workspaces', 'Version control', 'Advanced analytics'],
       },
       {
         category: 'Support',
-        items: ['Priority support', 'Video tutorials', 'Live chat']
-      }
+        items: ['Priority support', 'Video tutorials', 'Live chat'],
+      },
     ],
     benefits: ['Most popular', 'Professional features', 'Team collaboration'],
     icon: <Brain className="w-6 h-6" />,
     gradient: 'from-purple-500 to-pink-600',
-    borderColor: 'border-purple-500/30'
+    borderColor: 'border-purple-500/30',
   },
   {
     id: 'business',
@@ -215,21 +220,21 @@ const tokenTiers: TokenTier[] = [
     features: [
       {
         category: 'Workflows',
-        items: ['200 Active workflows', 'Custom templates', 'All AI models', '100GB Storage']
+        items: ['200 Active workflows', 'Custom templates', 'All AI models', '100GB Storage'],
       },
       {
         category: 'Integrations',
-        items: ['API access', 'Webhooks', 'Zapier/Make compatibility', 'Custom connectors']
+        items: ['API access', 'Webhooks', 'Zapier/Make compatibility', 'Custom connectors'],
       },
       {
         category: 'Enterprise',
-        items: ['SSO integration', 'Advanced security', 'Dedicated support', 'SLA guaranteed']
-      }
+        items: ['SSO integration', 'Advanced security', 'Dedicated support', 'SLA guaranteed'],
+      },
     ],
     benefits: ['Enterprise scalability', 'Advanced integrations', 'Enhanced security'],
     icon: <Shield className="w-6 h-6" />,
     gradient: 'from-emerald-500 to-teal-600',
-    borderColor: 'border-emerald-500/30'
+    borderColor: 'border-emerald-500/30',
   },
   {
     id: 'enterprise',
@@ -243,22 +248,32 @@ const tokenTiers: TokenTier[] = [
     features: [
       {
         category: 'Unlimited',
-        items: ['Unlimited workflows', 'Unlimited storage', 'Unlimited users', 'Custom development']
+        items: [
+          'Unlimited workflows',
+          'Unlimited storage',
+          'Unlimited users',
+          'Custom development',
+        ],
       },
       {
         category: 'Exclusive',
-        items: ['White-label solutions', 'On-premise deployment', 'Custom AI training', 'Dedicated infrastructure']
+        items: [
+          'White-label solutions',
+          'On-premise deployment',
+          'Custom AI training',
+          'Dedicated infrastructure',
+        ],
       },
       {
         category: 'VIP Support',
-        items: ['Dedicated account manager', 'Strategic consulting', 'Personalized training']
-      }
+        items: ['Dedicated account manager', 'Strategic consulting', 'Personalized training'],
+      },
     ],
     benefits: ['Personalized solutions', 'Dedicated support', 'Enterprise implementation'],
     icon: <Crown className="w-6 h-6" />,
     gradient: 'from-gold via-gold-light to-amber-500',
-    borderColor: 'border-gold/50'
-  }
+    borderColor: 'border-gold/50',
+  },
 ];
 
 const Pricing = () => {
@@ -409,7 +424,8 @@ const Pricing = () => {
                 transition={{ duration: 0.7, delay: 0.3 }}
               >
                 Choose the perfect plan for your AI automation needs. Pay with traditional money or
-                with <span className="text-gold font-semibold">FlowsyAI Tokens</span> for additional discounts.
+                with <span className="text-gold font-semibold">FlowsyAI Tokens</span> for additional
+                discounts.
               </motion.p>
 
               {/* Launch Timeline */}
@@ -426,7 +442,6 @@ const Pricing = () => {
                 </Badge>
               </motion.div>
             </motion.div>
-
             {/* Pricing Tiers Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
               {tokenTiers.map((tier, index) => (
@@ -439,12 +454,15 @@ const Pricing = () => {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   whileHover={{ y: -5, transition: { duration: 0.2 } }}
                 >
-                  <div className={`h-full premium-card p-6 rounded-2xl border ${tier.borderColor} ${
-                    tier.popular ? 'ring-2 ring-purple-500/30 shadow-2xl shadow-purple-500/20' : ''
-                  } ${
-                    tier.exclusive ? 'ring-2 ring-gold/40 shadow-2xl shadow-gold/20' : ''
-                  } transition-all duration-300 group hover:shadow-xl`}>
-
+                  <div
+                    className={`h-full premium-card p-6 rounded-2xl border ${tier.borderColor} ${
+                      tier.popular
+                        ? 'ring-2 ring-purple-500/30 shadow-2xl shadow-purple-500/20'
+                        : ''
+                    } ${
+                      tier.exclusive ? 'ring-2 ring-gold/40 shadow-2xl shadow-gold/20' : ''
+                    } transition-all duration-300 group hover:shadow-xl`}
+                  >
                     {/* Tier Badge */}
                     {(tier.popular || tier.exclusive) && (
                       <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
@@ -462,11 +480,15 @@ const Pricing = () => {
 
                     {/* Icon & Title */}
                     <div className="text-center mb-6">
-                      <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${tier.gradient} text-white mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <div
+                        className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${tier.gradient} text-white mb-4 group-hover:scale-110 transition-transform duration-300`}
+                      >
                         {tier.icon}
                       </div>
                       <h3 className="text-xl font-bold mb-2">{tier.name}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{tier.description}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {tier.description}
+                      </p>
                     </div>
 
                     {/* Pricing Options */}
@@ -478,7 +500,9 @@ const Pricing = () => {
                       {/* Dual Pricing Display */}
                       <div className="space-y-2">
                         <div className="flex items-center justify-center gap-2">
-                          <span className="text-lg font-semibold text-primary">{tier.fiatPrice}</span>
+                          <span className="text-lg font-semibold text-primary">
+                            {tier.fiatPrice}
+                          </span>
                           <span className="text-sm text-muted-foreground">sau</span>
                         </div>
                         <div className="text-sm font-medium text-gold bg-gold/10 px-3 py-1 rounded-full">
@@ -498,7 +522,10 @@ const Pricing = () => {
                           </h4>
                           <ul className="space-y-1">
                             {category.items.map((item, itemIndex) => (
-                              <li key={itemIndex} className="flex items-start gap-2 text-sm text-muted-foreground">
+                              <li
+                                key={itemIndex}
+                                className="flex items-start gap-2 text-sm text-muted-foreground"
+                              >
                                 <CheckCircle className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
                                 <span>{item}</span>
                               </li>
@@ -510,7 +537,9 @@ const Pricing = () => {
 
                     {/* Benefits */}
                     <div className="mb-6">
-                      <h4 className="text-xs font-semibold uppercase tracking-wide text-primary mb-2">Key Benefits</h4>
+                      <h4 className="text-xs font-semibold uppercase tracking-wide text-primary mb-2">
+                        Key Benefits
+                      </h4>
                       <div className="flex flex-wrap gap-1">
                         {tier.benefits.map((benefit, benefitIndex) => (
                           <Badge key={benefitIndex} variant="secondary" className="text-xs">
@@ -550,7 +579,9 @@ const Pricing = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                   {/* Investment Benefits */}
                   <div className="space-y-6">
-                    <h4 className="text-xl font-semibold text-foreground mb-4">Investment Benefits</h4>
+                    <h4 className="text-xl font-semibold text-foreground mb-4">
+                      Investment Benefits
+                    </h4>
 
                     <div className="space-y-4">
                       <div className="flex items-start gap-3 p-4 bg-gold/10 rounded-lg">
@@ -559,7 +590,9 @@ const Pricing = () => {
                         </div>
                         <div>
                           <h5 className="font-semibold text-foreground">Platform Discounts</h5>
-                          <p className="text-sm text-muted-foreground">Save 30% on all subscription plans when paying with FlowsyAI tokens</p>
+                          <p className="text-sm text-muted-foreground">
+                            Save 30% on all subscription plans when paying with FlowsyAI tokens
+                          </p>
                         </div>
                       </div>
 
@@ -569,7 +602,10 @@ const Pricing = () => {
                         </div>
                         <div>
                           <h5 className="font-semibold text-foreground">Token Burn Mechanism</h5>
-                          <p className="text-sm text-muted-foreground">20% of tokens will be burned after official launch, reducing supply and increasing value</p>
+                          <p className="text-sm text-muted-foreground">
+                            20% of tokens will be burned after official launch, reducing supply and
+                            increasing value
+                          </p>
                         </div>
                       </div>
 
@@ -579,7 +615,10 @@ const Pricing = () => {
                         </div>
                         <div>
                           <h5 className="font-semibold text-foreground">Priority Access</h5>
-                          <p className="text-sm text-muted-foreground">Early access to new features, beta testing, and exclusive community events</p>
+                          <p className="text-sm text-muted-foreground">
+                            Early access to new features, beta testing, and exclusive community
+                            events
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -587,7 +626,9 @@ const Pricing = () => {
 
                   {/* Security & Tokenomics */}
                   <div className="space-y-6">
-                    <h4 className="text-xl font-semibold text-foreground mb-4">Security & Guarantees</h4>
+                    <h4 className="text-xl font-semibold text-foreground mb-4">
+                      Security & Guarantees
+                    </h4>
 
                     <div className="space-y-4">
                       <div className="flex items-start gap-3 p-4 bg-blue-500/10 rounded-lg">
@@ -596,7 +637,10 @@ const Pricing = () => {
                         </div>
                         <div>
                           <h5 className="font-semibold text-foreground">Developer Wallet Locked</h5>
-                          <p className="text-sm text-muted-foreground">Our development wallet is locked for 3 months to ensure project commitment and investor security</p>
+                          <p className="text-sm text-muted-foreground">
+                            Our development wallet is locked for 3 months to ensure project
+                            commitment and investor security
+                          </p>
                         </div>
                       </div>
 
@@ -606,7 +650,10 @@ const Pricing = () => {
                         </div>
                         <div>
                           <h5 className="font-semibold text-foreground">Value Appreciation</h5>
-                          <p className="text-sm text-muted-foreground">Token burning reduces circulating supply, creating deflationary pressure and potential value growth</p>
+                          <p className="text-sm text-muted-foreground">
+                            Token burning reduces circulating supply, creating deflationary pressure
+                            and potential value growth
+                          </p>
                         </div>
                       </div>
 
@@ -616,7 +663,10 @@ const Pricing = () => {
                         </div>
                         <div>
                           <h5 className="font-semibold text-foreground">Smart Contract Audited</h5>
-                          <p className="text-sm text-muted-foreground">Our token smart contract will be audited by leading security firms before launch</p>
+                          <p className="text-sm text-muted-foreground">
+                            Our token smart contract will be audited by leading security firms
+                            before launch
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -648,17 +698,23 @@ const Pricing = () => {
 
                 {/* Investment Performance Projection */}
                 <div className="bg-gradient-to-r from-emerald-500/10 to-green-600/10 rounded-xl p-6 mb-6">
-                  <h4 className="text-lg font-semibold text-center mb-4">Projected Token Performance</h4>
+                  <h4 className="text-lg font-semibold text-center mb-4">
+                    Projected Token Performance
+                  </h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                     <div>
                       <div className="text-xl font-bold text-emerald-500">+150%</div>
                       <div className="text-sm text-muted-foreground">Post-Burn Value Increase</div>
-                      <div className="text-xs text-muted-foreground mt-1">Based on 20% token burn</div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Based on 20% token burn
+                      </div>
                     </div>
                     <div>
                       <div className="text-xl font-bold text-blue-500">+300%</div>
                       <div className="text-sm text-muted-foreground">Platform Adoption Growth</div>
-                      <div className="text-xs text-muted-foreground mt-1">Conservative estimate</div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Conservative estimate
+                      </div>
                     </div>
                     <div>
                       <div className="text-xl font-bold text-purple-500">+500%</div>
@@ -667,7 +723,8 @@ const Pricing = () => {
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground text-center mt-4">
-                    *Projections are estimates based on market analysis and tokenomics. Past performance does not guarantee future results.
+                    *Projections are estimates based on market analysis and tokenomics. Past
+                    performance does not guarantee future results.
                   </p>
                 </div>
 
@@ -703,8 +760,6 @@ const Pricing = () => {
       </motion.main>
 
       <Footer />
-
-
     </div>
   );
 };

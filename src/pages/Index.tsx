@@ -10,7 +10,7 @@ import {
   LazyRoadmapSection,
   LazyTokenTierSection,
   LazyARSection,
-  LazyNexusAssistantUI
+  LazyNexusAssistantUI,
 } from '@/components/lazy/LazyComponents';
 
 // Import new landing page components
@@ -26,14 +26,24 @@ const IndexPage: React.FC = () => {
   return (
     <div className="index-page-container">
       <div className="index-page-background">
-        <Suspense fallback={<div className="w-full h-full bg-gradient-to-br from-background via-background/95 to-background/90" />}>
+        <Suspense
+          fallback={
+            <div className="w-full h-full bg-gradient-to-br from-background via-background/95 to-background/90" />
+          }
+        >
           <LazyEnergyNetworkCanvas />
         </Suspense>
       </div>
 
       {/* Page Content Sections */}
       <main className="bg-background">
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+        <Suspense
+          fallback={
+            <div className="min-h-screen flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          }
+        >
           <LazyHeroSection />
         </Suspense>
 
@@ -75,7 +85,13 @@ const IndexPage: React.FC = () => {
 
       {/* Conditional Assistant UI - Lazy loaded */}
       {showAssistant && (
-        <Suspense fallback={<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"><Loader2 className="h-8 w-8 animate-spin text-white" /></div>}>
+        <Suspense
+          fallback={
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <Loader2 className="h-8 w-8 animate-spin text-white" />
+            </div>
+          }
+        >
           <LazyNexusAssistantUI />
         </Suspense>
       )}

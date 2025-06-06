@@ -487,8 +487,8 @@ const EnhancedInteractiveDemo: React.FC = () => {
         <div className="mt-12 text-center">
           <p className="text-muted-foreground max-w-2xl mx-auto">
             This interactive demonstration shows how our platform processes requests through
-            multiple specialized AI systems and integrates their responses into a
-            comprehensive answer.
+            multiple specialized AI systems and integrates their responses into a comprehensive
+            answer.
           </p>
         </div>
       </div>

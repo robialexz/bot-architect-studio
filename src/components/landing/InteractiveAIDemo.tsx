@@ -630,7 +630,6 @@ What type of project or automation are you considering? I can help you design th
                 <Link to="/pricing">View Pricing Plans</Link>
               </Button>
             </div>
-
           </div>
         </motion.div>
       </div>

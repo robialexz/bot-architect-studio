@@ -126,7 +126,7 @@ const WorkflowBuilder: React.FC = () => {
       const inputs = {
         workflowId: workflowToExecute.id,
         triggeredBy: 'manual',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       // Execute workflow using the new execution engine

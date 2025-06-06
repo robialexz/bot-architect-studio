@@ -2,7 +2,6 @@ import { NodeProcessor, NodeExecutionResult, ExecutionContext } from '@/types/ex
 import { logger } from '@/lib/logger';
 
 export class EmailProcessor implements NodeProcessor {
-  
   canProcess(nodeType: string): boolean {
     return ['email', 'notification', 'send-email'].includes(nodeType);
   }
@@ -13,38 +12,38 @@ export class EmailProcessor implements NodeProcessor {
 
   validateInputs(node: any, inputs: Record<string, any>): boolean {
     const required = this.getRequiredInputs(node);
-    
+
     for (const input of required) {
       if (!(input in inputs) || inputs[input] === undefined || inputs[input] === '') {
-        logger.warn('Missing required input for email node', { 
-          nodeId: node.id, 
-          missingInput: input 
+        logger.warn('Missing required input for email node', {
+          nodeId: node.id,
+          missingInput: input,
         });
         return false;
       }
     }
-    
+
     // Validate email format
     if (inputs.to && !this.isValidEmail(inputs.to)) {
       logger.warn('Invalid email format', { nodeId: node.id, email: inputs.to });
       return false;
     }
-    
+
     return true;
   }
 
   async processNode(
-    node: any, 
-    inputs: Record<string, any>, 
+    node: any,
+    inputs: Record<string, any>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
-    
-    logger.info('Processing email node', { 
-      nodeId: node.id, 
+
+    logger.info('Processing email node', {
+      nodeId: node.id,
       to: inputs.to,
       subject: inputs.subject,
-      executionId: context.executionId
+      executionId: context.executionId,
     });
 
     try {
@@ -54,10 +53,10 @@ export class EmailProcessor implements NodeProcessor {
 
       // Prepare email data
       const emailData = this.prepareEmailData(node, inputs);
-      
+
       // Send email (mock implementation for now)
       const result = await this.sendEmail(emailData);
-      
+
       const outputs = {
         emailSent: result.success,
         messageId: result.messageId,
@@ -65,7 +64,7 @@ export class EmailProcessor implements NodeProcessor {
         subject: emailData.subject,
         sentAt: new Date().toISOString(),
         provider: result.provider || 'mock',
-        ...inputs
+        ...inputs,
       };
 
       if (!result.success) {
@@ -74,10 +73,10 @@ export class EmailProcessor implements NodeProcessor {
 
       const processingTime = Date.now() - startTime.getTime();
 
-      logger.info('Email node completed', { 
-        nodeId: node.id, 
+      logger.info('Email node completed', {
+        nodeId: node.id,
         messageId: result.messageId,
-        processingTime
+        processingTime,
       });
 
       return {
@@ -86,16 +85,15 @@ export class EmailProcessor implements NodeProcessor {
         status: 'completed',
         inputs,
         outputs,
-        processingTime
+        processingTime,
       };
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
-      logger.error('Email node failed', { 
-        nodeId: node.id, 
+
+      logger.error('Email node failed', {
+        nodeId: node.id,
         error: errorMessage,
-        executionId: context.executionId
+        executionId: context.executionId,
       });
 
       return {
@@ -106,17 +104,17 @@ export class EmailProcessor implements NodeProcessor {
         outputs: {
           emailSent: false,
           error: errorMessage,
-          ...inputs
+          ...inputs,
         },
         error: errorMessage,
-        processingTime: Date.now() - startTime.getTime()
+        processingTime: Date.now() - startTime.getTime(),
       };
     }
   }
 
   private prepareEmailData(node: any, inputs: Record<string, any>): any {
     const nodeData = node.data || {};
-    
+
     return {
       to: inputs.to,
       from: inputs.from || nodeData.from || 'noreply@flowsyai.com',
@@ -128,18 +126,18 @@ export class EmailProcessor implements NodeProcessor {
       attachments: inputs.attachments || nodeData.attachments,
       priority: inputs.priority || nodeData.priority || 'normal',
       template: nodeData.template,
-      templateData: inputs.templateData || {}
+      templateData: inputs.templateData || {},
     };
   }
 
   private async sendEmail(emailData: any): Promise<any> {
     // Mock email sending for now
     // In production, this would integrate with actual email services
-    
+
     logger.info('Sending email (mock)', {
       to: emailData.to,
       subject: emailData.subject,
-      from: emailData.from
+      from: emailData.from,
     });
 
     // Simulate email sending delay
@@ -150,13 +148,13 @@ export class EmailProcessor implements NodeProcessor {
       success: true,
       messageId: `mock_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       provider: 'mock',
-      sentAt: new Date().toISOString()
+      sentAt: new Date().toISOString(),
     };
   }
 
   private convertToHtml(text: string): string {
     if (!text) return '';
-    
+
     // Simple text to HTML conversion
     return text
       .replace(/\n\n/g, '</p><p>')

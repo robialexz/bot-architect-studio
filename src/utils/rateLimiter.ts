@@ -14,7 +14,8 @@ class RateLimiter {
   private readonly maxAttempts: number;
   private readonly windowMs: number;
 
-  constructor(maxAttempts: number = 3, windowMs: number = 60000) { // 3 attempts per minute
+  constructor(maxAttempts: number = 3, windowMs: number = 60000) {
+    // 3 attempts per minute
     this.maxAttempts = maxAttempts;
     this.windowMs = windowMs;
   }
@@ -30,7 +31,7 @@ class RateLimiter {
       // First attempt
       this.storage.set(key, {
         count: 1,
-        resetTime: now + this.windowMs
+        resetTime: now + this.windowMs,
       });
       return true;
     }
@@ -39,7 +40,7 @@ class RateLimiter {
       // Window has expired, reset
       this.storage.set(key, {
         count: 1,
-        resetTime: now + this.windowMs
+        resetTime: now + this.windowMs,
       });
       return true;
     }
@@ -61,7 +62,7 @@ class RateLimiter {
   getResetTime(key: string): number {
     const entry = this.storage.get(key);
     if (!entry) return 0;
-    
+
     const now = Date.now();
     return Math.max(0, entry.resetTime - now);
   }
@@ -72,12 +73,12 @@ class RateLimiter {
   getRemainingAttempts(key: string): number {
     const entry = this.storage.get(key);
     if (!entry) return this.maxAttempts;
-    
+
     const now = Date.now();
     if (now > entry.resetTime) {
       return this.maxAttempts;
     }
-    
+
     return Math.max(0, this.maxAttempts - entry.count);
   }
 
@@ -113,18 +114,18 @@ export function getClientId(): string {
     navigator.language,
     screen.width,
     screen.height,
-    new Date().getTimezoneOffset()
+    new Date().getTimezoneOffset(),
   ];
-  
+
   // Create a simple hash
   let hash = 0;
   const str = factors.join('|');
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash; // Convert to 32-bit integer
   }
-  
+
   return Math.abs(hash).toString(36);
 }
 
@@ -134,14 +135,17 @@ export function formatTimeRemaining(ms: number): string {
   if (seconds < 60) {
     return `${seconds} second${seconds !== 1 ? 's' : ''}`;
   }
-  
+
   const minutes = Math.ceil(seconds / 60);
   return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
 }
 
 // Clean up expired entries every 5 minutes
 if (typeof window !== 'undefined') {
-  setInterval(() => {
-    waitlistRateLimiter.cleanup();
-  }, 5 * 60 * 1000);
+  setInterval(
+    () => {
+      waitlistRateLimiter.cleanup();
+    },
+    5 * 60 * 1000
+  );
 }

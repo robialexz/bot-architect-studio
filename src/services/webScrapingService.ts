@@ -26,19 +26,20 @@ export interface ScrapingResult {
 }
 
 export class WebScrapingService {
-  private static readonly DEFAULT_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+  private static readonly DEFAULT_USER_AGENT =
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
   private static readonly DEFAULT_HEADERS = {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
     'Accept-Language': 'en-US,en;q=0.5',
     'Accept-Encoding': 'gzip, deflate, br',
-    'DNT': '1',
-    'Connection': 'keep-alive',
+    DNT: '1',
+    Connection: 'keep-alive',
     'Upgrade-Insecure-Requests': '1',
   };
 
   static async scrapeWebsite(options: ScrapingOptions): Promise<ScrapingResult> {
     const startTime = Date.now();
-    
+
     logger.info('Starting web scraping', { url: options.url });
 
     try {
@@ -51,7 +52,7 @@ export class WebScrapingService {
       const headers = {
         ...this.DEFAULT_HEADERS,
         'User-Agent': options.userAgent || this.DEFAULT_USER_AGENT,
-        ...options.headers
+        ...options.headers,
       };
 
       // Add delay to avoid being blocked
@@ -62,15 +63,15 @@ export class WebScrapingService {
       // Make the request with retries
       const maxRetries = options.maxRetries || 3;
       let lastError: Error | null = null;
-      
+
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
           logger.info(`Scraping attempt ${attempt}/${maxRetries}`, { url: options.url });
-          
+
           const response = await fetch(options.url, {
             method: 'GET',
             headers,
-            signal: AbortSignal.timeout(30000) // 30 second timeout
+            signal: AbortSignal.timeout(30000), // 30 second timeout
           });
 
           if (!response.ok) {
@@ -79,27 +80,26 @@ export class WebScrapingService {
 
           const html = await response.text();
           const result = await this.parseHtml(html, options);
-          
-          logger.info('Web scraping completed successfully', { 
-            url: options.url, 
+
+          logger.info('Web scraping completed successfully', {
+            url: options.url,
             contentLength: result.content?.length || 0,
-            processingTime: Date.now() - startTime
+            processingTime: Date.now() - startTime,
           });
 
           return {
             ...result,
             success: true,
             url: options.url,
-            timestamp: Date.now()
+            timestamp: Date.now(),
           };
-
         } catch (error) {
           lastError = error instanceof Error ? error : new Error('Unknown error');
-          logger.warn(`Scraping attempt ${attempt} failed`, { 
-            url: options.url, 
-            error: lastError.message 
+          logger.warn(`Scraping attempt ${attempt} failed`, {
+            url: options.url,
+            error: lastError.message,
           });
-          
+
           if (attempt < maxRetries) {
             // Exponential backoff
             await this.delay(1000 * Math.pow(2, attempt - 1));
@@ -109,26 +109,28 @@ export class WebScrapingService {
 
       // All attempts failed
       throw lastError || new Error('All scraping attempts failed');
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
-      logger.error('Web scraping failed', { 
-        url: options.url, 
+
+      logger.error('Web scraping failed', {
+        url: options.url,
         error: errorMessage,
-        processingTime: Date.now() - startTime
+        processingTime: Date.now() - startTime,
       });
 
       return {
         success: false,
         url: options.url,
         error: errorMessage,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
     }
   }
 
-  private static async parseHtml(html: string, options: ScrapingOptions): Promise<Partial<ScrapingResult>> {
+  private static async parseHtml(
+    html: string,
+    options: ScrapingOptions
+  ): Promise<Partial<ScrapingResult>> {
     // Create a DOM parser
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
@@ -185,7 +187,7 @@ export class WebScrapingService {
       '.entry-content',
       '.article-content',
       '#content',
-      '#main'
+      '#main',
     ];
 
     for (const selector of contentSelectors) {
@@ -199,12 +201,21 @@ export class WebScrapingService {
     const body = doc.querySelector('body');
     if (body) {
       // Remove unwanted elements
-      const unwantedSelectors = ['nav', 'header', 'footer', '.navigation', '.menu', '.sidebar', 'script', 'style'];
+      const unwantedSelectors = [
+        'nav',
+        'header',
+        'footer',
+        '.navigation',
+        '.menu',
+        '.sidebar',
+        'script',
+        'style',
+      ];
       unwantedSelectors.forEach(selector => {
         const elements = body.querySelectorAll(selector);
         elements.forEach(el => el.remove());
       });
-      
+
       return this.cleanText(body.textContent || '');
     }
 
@@ -227,7 +238,7 @@ export class WebScrapingService {
       .map(link => {
         const href = link.getAttribute('href');
         if (!href) return null;
-        
+
         try {
           return new URL(href, baseUrl).href;
         } catch {
@@ -244,7 +255,7 @@ export class WebScrapingService {
       .map(img => {
         const src = img.getAttribute('src');
         if (!src) return null;
-        
+
         try {
           return new URL(src, baseUrl).href;
         } catch {
@@ -264,7 +275,7 @@ export class WebScrapingService {
     metaTags.forEach(meta => {
       const name = meta.getAttribute('name') || meta.getAttribute('property');
       const content = meta.getAttribute('content');
-      
+
       if (name && content) {
         metadata[name] = content;
       }
@@ -273,7 +284,7 @@ export class WebScrapingService {
     // Extract structured data
     const jsonLdScripts = doc.querySelectorAll('script[type="application/ld+json"]');
     const structuredData: any[] = [];
-    
+
     jsonLdScripts.forEach(script => {
       try {
         const data = JSON.parse(script.textContent || '');
@@ -318,7 +329,7 @@ export class WebScrapingService {
       extractText: true,
       extractLinks: true,
       waitFor: 1000,
-      maxRetries: 3
+      maxRetries: 3,
     });
   }
 
@@ -331,8 +342,8 @@ export class WebScrapingService {
       waitFor: 2000,
       maxRetries: 3,
       headers: {
-        'Accept-Language': 'ro-RO,ro;q=0.9,en;q=0.8'
-      }
+        'Accept-Language': 'ro-RO,ro;q=0.9,en;q=0.8',
+      },
     });
   }
 }

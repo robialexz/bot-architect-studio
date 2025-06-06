@@ -280,7 +280,9 @@ export const preloadRouteComponents = (route: string) => {
 };
 
 // Preload components when user shows intent (hover, focus, etc.)
-export const createPreloadTrigger = (importFn: () => Promise<{ default: ComponentType<unknown> }>) => {
+export const createPreloadTrigger = (
+  importFn: () => Promise<{ default: ComponentType<unknown> }>
+) => {
   let isPreloaded = false;
 
   const preload = () => {

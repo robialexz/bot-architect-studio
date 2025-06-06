@@ -4,7 +4,8 @@ import { describe, it, expect } from 'vitest';
 describe('WaitlistService Email Validation', () => {
   // Test email validation logic directly
   const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return emailRegex.test(email.trim().toLowerCase());
   };
 
@@ -17,17 +18,10 @@ describe('WaitlistService Email Validation', () => {
       'test@example.com',
       'user.name@domain.co.uk',
       'user+tag@example.org',
-      'user123@test-domain.com'
+      'user123@test-domain.com',
     ];
 
-    const invalidEmails = [
-      'invalid-email',
-      '@example.com',
-      'test@',
-      '',
-      'test@.',
-      'test@.com'
-    ];
+    const invalidEmails = ['invalid-email', '@example.com', 'test@', '', 'test@.', 'test@.com'];
 
     validEmails.forEach(email => {
       it(`should accept valid email: ${email}`, () => {
@@ -49,5 +43,4 @@ describe('WaitlistService Email Validation', () => {
       expect(normalizeEmail('test@example.com')).toBe('test@example.com');
     });
   });
-
 });

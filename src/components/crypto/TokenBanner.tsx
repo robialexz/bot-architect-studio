@@ -19,7 +19,7 @@ import {
   ChevronDown,
   ChevronUp,
   Zap,
-  Star
+  Star,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { solanaTokenService, TokenData } from '@/services/solanaTokenService';
@@ -35,7 +35,7 @@ interface TokenBannerProps {
 const TokenBanner: React.FC<TokenBannerProps> = ({
   tokenAddress,
   className = '',
-  compact = false
+  compact = false,
 }) => {
   const tokenConfig = getTokenConfig();
   const tradingLinks = getTradingLinks();
@@ -70,7 +70,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
         logoControls.start({
           scale: [1, 1.1, 1],
           rotate: [0, 360],
-          transition: { duration: 0.8, ease: "easeInOut" }
+          transition: { duration: 0.8, ease: 'easeInOut' },
         });
 
         // Clear animation after delay
@@ -84,7 +84,6 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
         const newHistory = [...prev, data.price].slice(-20); // Keep last 20 points
         return newHistory;
       });
-
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch token data');
     } finally {
@@ -110,7 +109,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
     const shareData = {
       title: `${tokenConfig.name} (${tokenConfig.symbol})`,
       text: `Check out ${tokenConfig.name} - Current price: ${formatCurrency(tokenData?.price || 0)}`,
-      url: window.location.href
+      url: window.location.href,
     };
 
     if (navigator.share) {
@@ -140,7 +139,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
     holders: 15420,
     liquidity: 2850000,
     volume24h: tokenData?.volume24h || 125000,
-    marketCap: tokenData?.marketCap || 2450000
+    marketCap: tokenData?.marketCap || 2450000,
   });
 
   useEffect(() => {
@@ -160,46 +159,43 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
   }, [actualTokenAddress, tokenConfig.autoRefresh, tokenConfig.refreshInterval]);
 
   // Mini Chart Component
-  const MiniChart: React.FC<{ data: number[]; className?: string }> = ({ data, className = '' }) => {
+  const MiniChart: React.FC<{ data: number[]; className?: string }> = ({
+    data,
+    className = '',
+  }) => {
     if (data.length < 2) return null;
 
     const max = Math.max(...data);
     const min = Math.min(...data);
     const range = max - min || 1;
 
-    const points = data.map((value, index) => {
-      const x = (index / (data.length - 1)) * 100;
-      const y = 100 - ((value - min) / range) * 100;
-      return `${x},${y}`;
-    }).join(' ');
+    const points = data
+      .map((value, index) => {
+        const x = (index / (data.length - 1)) * 100;
+        const y = 100 - ((value - min) / range) * 100;
+        return `${x},${y}`;
+      })
+      .join(' ');
 
     const isPositive = data[data.length - 1] > data[0];
 
     return (
       <div className={`relative ${className}`}>
-        <svg
-          width="100%"
-          height="40"
-          viewBox="0 0 100 100"
-          className="overflow-visible"
-        >
+        <svg width="100%" height="40" viewBox="0 0 100 100" className="overflow-visible">
           <defs>
             <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor={isPositive ? "#10b981" : "#ef4444"} stopOpacity="0.3" />
-              <stop offset="100%" stopColor={isPositive ? "#10b981" : "#ef4444"} stopOpacity="0" />
+              <stop offset="0%" stopColor={isPositive ? '#10b981' : '#ef4444'} stopOpacity="0.3" />
+              <stop offset="100%" stopColor={isPositive ? '#10b981' : '#ef4444'} stopOpacity="0" />
             </linearGradient>
           </defs>
           <polyline
             points={points}
             fill="none"
-            stroke={isPositive ? "#10b981" : "#ef4444"}
+            stroke={isPositive ? '#10b981' : '#ef4444'}
             strokeWidth="2"
             className="drop-shadow-sm"
           />
-          <polygon
-            points={`0,100 ${points} 100,100`}
-            fill="url(#chartGradient)"
-          />
+          <polygon points={`0,100 ${points} 100,100`} fill="url(#chartGradient)" />
         </svg>
       </div>
     );
@@ -247,15 +243,23 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                   <motion.span
                     ref={priceRef}
                     className={`text-xs text-muted-foreground transition-colors duration-300 ${
-                      priceChangeAnimation === 'up' ? 'text-emerald-400' :
-                      priceChangeAnimation === 'down' ? 'text-red-400' : ''
+                      priceChangeAnimation === 'up'
+                        ? 'text-emerald-400'
+                        : priceChangeAnimation === 'down'
+                          ? 'text-red-400'
+                          : ''
                     }`}
-                    animate={priceChangeAnimation ? {
-                      scale: [1, 1.1, 1],
-                      backgroundColor: priceChangeAnimation === 'up' ?
-                        ['transparent', 'rgba(34, 197, 94, 0.2)', 'transparent'] :
-                        ['transparent', 'rgba(239, 68, 68, 0.2)', 'transparent']
-                    } : {}}
+                    animate={
+                      priceChangeAnimation
+                        ? {
+                            scale: [1, 1.1, 1],
+                            backgroundColor:
+                              priceChangeAnimation === 'up'
+                                ? ['transparent', 'rgba(34, 197, 94, 0.2)', 'transparent']
+                                : ['transparent', 'rgba(239, 68, 68, 0.2)', 'transparent'],
+                          }
+                        : {}
+                    }
                     transition={{ duration: 0.5 }}
                   >
                     {formatCurrency(tokenData?.price || 0)}
@@ -267,9 +271,11 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                   ) : (
                     <TrendingDown className="w-3 h-3 text-red-400" />
                   )}
-                  <span className={`text-xs font-medium ${
-                    (tokenData?.priceChange24h || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'
-                  }`}>
+                  <span
+                    className={`text-xs font-medium ${
+                      (tokenData?.priceChange24h || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'
+                    }`}
+                  >
                     {formatPercentage(tokenData?.priceChange24h || 0)}
                   </span>
                   {priceHistory.length > 1 && (
@@ -329,7 +335,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
         transition={{
           duration: 8,
           repeat: Infinity,
-          ease: 'linear'
+          ease: 'linear',
         }}
         style={{ backgroundSize: '200% 200%' }}
       />
@@ -340,9 +346,11 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
           <motion.div
             key={i}
             className={`absolute rounded-full ${
-              i % 3 === 0 ? 'w-2 h-2 bg-gold/40' :
-              i % 3 === 1 ? 'w-1 h-1 bg-primary/30' :
-              'w-1.5 h-1.5 bg-emerald-400/20'
+              i % 3 === 0
+                ? 'w-2 h-2 bg-gold/40'
+                : i % 3 === 1
+                  ? 'w-1 h-1 bg-primary/30'
+                  : 'w-1.5 h-1.5 bg-emerald-400/20'
             }`}
             animate={{
               x: [0, Math.random() * 200 - 100, 0],
@@ -355,11 +363,11 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
               duration: 6 + Math.random() * 4,
               repeat: Infinity,
               delay: i * 0.3,
-              ease: 'easeInOut'
+              ease: 'easeInOut',
             }}
             style={{
               left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`
+              top: `${Math.random() * 100}%`,
             }}
           />
         ))}
@@ -376,7 +384,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
               whileHover={{
                 scale: 1.1,
                 rotate: 5,
-                boxShadow: "0 0 30px rgba(255, 215, 0, 0.6)"
+                boxShadow: '0 0 30px rgba(255, 215, 0, 0.6)',
               }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300 }}
@@ -406,10 +414,14 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
               {/* Main Icon */}
               <motion.div
                 className="relative z-10"
-                animate={isHovered ? {
-                  rotate: [0, 10, -10, 0],
-                  scale: [1, 1.1, 1]
-                } : {}}
+                animate={
+                  isHovered
+                    ? {
+                        rotate: [0, 10, -10, 0],
+                        scale: [1, 1.1, 1],
+                      }
+                    : {}
+                }
                 transition={{ duration: 0.5 }}
               >
                 <Coins className="w-8 h-8 text-white" />
@@ -420,9 +432,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                 <motion.div
                   key={i}
                   className={`absolute ${
-                    i === 0 ? 'top-1 right-1' :
-                    i === 1 ? 'bottom-1 left-1' :
-                    'top-1 left-1'
+                    i === 0 ? 'top-1 right-1' : i === 1 ? 'bottom-1 left-1' : 'top-1 left-1'
                   }`}
                   animate={{
                     scale: [0, 1, 0],
@@ -511,15 +521,23 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                   <motion.span
                     ref={priceRef}
                     className={`text-2xl font-bold text-foreground transition-colors duration-300 ${
-                      priceChangeAnimation === 'up' ? 'text-emerald-400' :
-                      priceChangeAnimation === 'down' ? 'text-red-400' : ''
+                      priceChangeAnimation === 'up'
+                        ? 'text-emerald-400'
+                        : priceChangeAnimation === 'down'
+                          ? 'text-red-400'
+                          : ''
                     }`}
-                    animate={priceChangeAnimation ? {
-                      scale: [1, 1.1, 1],
-                      backgroundColor: priceChangeAnimation === 'up' ?
-                        ['transparent', 'rgba(34, 197, 94, 0.2)', 'transparent'] :
-                        ['transparent', 'rgba(239, 68, 68, 0.2)', 'transparent']
-                    } : {}}
+                    animate={
+                      priceChangeAnimation
+                        ? {
+                            scale: [1, 1.1, 1],
+                            backgroundColor:
+                              priceChangeAnimation === 'up'
+                                ? ['transparent', 'rgba(34, 197, 94, 0.2)', 'transparent']
+                                : ['transparent', 'rgba(239, 68, 68, 0.2)', 'transparent'],
+                          }
+                        : {}
+                    }
                     transition={{ duration: 0.5 }}
                   >
                     {formatCurrency(tokenData?.price || 0)}
@@ -536,18 +554,18 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                         <TrendingDown className="w-4 h-4 text-red-400" />
                       )}
                     </motion.div>
-                    <span className={`text-sm font-semibold ${
-                      (tokenData?.priceChange24h || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'
-                    }`}>
+                    <span
+                      className={`text-sm font-semibold ${
+                        (tokenData?.priceChange24h || 0) >= 0 ? 'text-emerald-400' : 'text-red-400'
+                      }`}
+                    >
                       {formatPercentage(tokenData?.priceChange24h || 0)}
                     </span>
                   </div>
                 </div>
 
                 {/* Mini Chart */}
-                {priceHistory.length > 1 && (
-                  <MiniChart data={priceHistory} className="w-20 h-8" />
-                )}
+                {priceHistory.length > 1 && <MiniChart data={priceHistory} className="w-20 h-8" />}
               </div>
 
               {/* Market Stats with Progress Bars */}
@@ -563,7 +581,9 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                     <motion.div
                       className="bg-gradient-to-r from-primary to-gold h-1 rounded-full"
                       initial={{ width: 0 }}
-                      animate={{ width: `${Math.min((mockData.marketCap / 10000000) * 100, 100)}%` }}
+                      animate={{
+                        width: `${Math.min((mockData.marketCap / 10000000) * 100, 100)}%`,
+                      }}
                       transition={{ duration: 1, delay: 0.5 }}
                     />
                   </div>
@@ -636,7 +656,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                       <input
                         type="number"
                         value={buyAmount}
-                        onChange={(e) => setBuyAmount(e.target.value)}
+                        onChange={e => setBuyAmount(e.target.value)}
                         placeholder="0.1"
                         className="flex-1 px-2 py-1 bg-background/50 border border-border rounded text-sm"
                         step="0.1"
@@ -652,7 +672,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                       </Button>
                     </div>
                     <div className="flex gap-1">
-                      {['0.1', '0.5', '1.0'].map((amount) => (
+                      {['0.1', '0.5', '1.0'].map(amount => (
                         <button
                           key={amount}
                           onClick={() => setBuyAmount(amount)}
@@ -746,7 +766,12 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                     Share
                   </Button>
                   <Button
-                    onClick={() => window.open(`https://twitter.com/intent/tweet?text=Check out ${tokenConfig.name} (${tokenConfig.symbol}) - ${formatCurrency(tokenData?.price || 0)}&url=${window.location.href}`, '_blank')}
+                    onClick={() =>
+                      window.open(
+                        `https://twitter.com/intent/tweet?text=Check out ${tokenConfig.name} (${tokenConfig.symbol}) - ${formatCurrency(tokenData?.price || 0)}&url=${window.location.href}`,
+                        '_blank'
+                      )
+                    }
                     size="sm"
                     variant="outline"
                     className="border-blue-500/30 text-blue-400 hover:bg-blue-500/10"
@@ -770,7 +795,8 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
           <div className="flex items-center gap-2 text-sm">
             <Sparkles className="w-4 h-4 text-gold" />
             <span className="text-foreground font-medium">
-              🚀 Token Launch Coming Soon! Join our waitlist for early access and exclusive benefits.
+              🚀 Token Launch Coming Soon! Join our waitlist for early access and exclusive
+              benefits.
             </span>
           </div>
         </motion.div>

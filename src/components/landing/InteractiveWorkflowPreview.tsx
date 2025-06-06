@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  Sparkles, 
-  Zap, 
+import {
+  Play,
+  Pause,
+  RotateCcw,
+  Sparkles,
+  Zap,
   Brain,
   MessageSquare,
   Image,
   FileText,
   ArrowRight,
-  CheckCircle
+  CheckCircle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +29,9 @@ interface WorkflowNode {
 const InteractiveWorkflowPreview: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [selectedDemo, setSelectedDemo] = useState<'content' | 'analysis' | 'automation'>('content');
+  const [selectedDemo, setSelectedDemo] = useState<'content' | 'analysis' | 'automation'>(
+    'content'
+  );
 
   const demoWorkflows = {
     content: [
@@ -40,7 +42,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <MessageSquare className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Write a blog post about AI trends',
-        color: 'from-blue-500 to-cyan-500'
+        color: 'from-blue-500 to-cyan-500',
       },
       {
         id: '2',
@@ -49,7 +51,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <Brain className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Gather latest AI industry insights',
-        color: 'from-purple-500 to-pink-500'
+        color: 'from-purple-500 to-pink-500',
       },
       {
         id: '3',
@@ -58,7 +60,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <FileText className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Create comprehensive blog post',
-        color: 'from-emerald-500 to-teal-500'
+        color: 'from-emerald-500 to-teal-500',
       },
       {
         id: '4',
@@ -67,8 +69,8 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <CheckCircle className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Professional blog post ready for publishing',
-        color: 'from-gold to-yellow-500'
-      }
+        color: 'from-gold to-yellow-500',
+      },
     ],
     analysis: [
       {
@@ -78,7 +80,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <Image className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Upload business documents',
-        color: 'from-blue-500 to-cyan-500'
+        color: 'from-blue-500 to-cyan-500',
       },
       {
         id: '2',
@@ -87,7 +89,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <Brain className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Extract key insights and patterns',
-        color: 'from-purple-500 to-pink-500'
+        color: 'from-purple-500 to-pink-500',
       },
       {
         id: '3',
@@ -96,7 +98,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <FileText className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Create detailed analysis report',
-        color: 'from-emerald-500 to-teal-500'
+        color: 'from-emerald-500 to-teal-500',
       },
       {
         id: '4',
@@ -105,8 +107,8 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <CheckCircle className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Interactive dashboard with actionable insights',
-        color: 'from-gold to-yellow-500'
-      }
+        color: 'from-gold to-yellow-500',
+      },
     ],
     automation: [
       {
@@ -116,7 +118,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <Zap className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'New customer inquiry received',
-        color: 'from-blue-500 to-cyan-500'
+        color: 'from-blue-500 to-cyan-500',
       },
       {
         id: '2',
@@ -125,7 +127,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <Brain className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Categorize inquiry type and urgency',
-        color: 'from-purple-500 to-pink-500'
+        color: 'from-purple-500 to-pink-500',
       },
       {
         id: '3',
@@ -134,7 +136,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <MessageSquare className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Generate personalized response',
-        color: 'from-emerald-500 to-teal-500'
+        color: 'from-emerald-500 to-teal-500',
       },
       {
         id: '4',
@@ -143,19 +145,19 @@ const InteractiveWorkflowPreview: React.FC = () => {
         icon: <CheckCircle className="w-5 h-5" />,
         status: 'idle' as const,
         description: 'Customer receives instant, relevant response',
-        color: 'from-gold to-yellow-500'
-      }
-    ]
+        color: 'from-gold to-yellow-500',
+      },
+    ],
   };
 
   const currentWorkflow = demoWorkflows[selectedDemo];
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    
+
     if (isPlaying) {
       interval = setInterval(() => {
-        setCurrentStep((prev) => {
+        setCurrentStep(prev => {
           if (prev >= currentWorkflow.length - 1) {
             setIsPlaying(false);
             return prev;
@@ -172,7 +174,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
     setIsPlaying(false);
     setCurrentStep(0);
     // Reset all node statuses
-    currentWorkflow.forEach(node => node.status = 'idle');
+    currentWorkflow.forEach(node => (node.status = 'idle'));
   };
 
   const startDemo = () => {
@@ -208,7 +210,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
             See FlowsyAI in Action
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Watch how our AI workflows transform complex tasks into simple, automated processes. 
+            Watch how our AI workflows transform complex tasks into simple, automated processes.
             Choose a demo scenario and see the magic happen.
           </p>
         </motion.div>
@@ -260,8 +262,8 @@ const InteractiveWorkflowPreview: React.FC = () => {
                     node.status === 'processing'
                       ? 'border-primary/50 bg-primary/5 shadow-lg shadow-primary/20'
                       : node.status === 'complete'
-                      ? 'border-emerald-500/50 bg-emerald-500/5'
-                      : 'border-border/30 bg-card/20'
+                        ? 'border-emerald-500/50 bg-emerald-500/5'
+                        : 'border-border/30 bg-card/20'
                   }`}
                 >
                   {/* Status Indicator */}
@@ -287,7 +289,9 @@ const InteractiveWorkflowPreview: React.FC = () => {
                   </div>
 
                   {/* Node Icon */}
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${node.color} flex items-center justify-center text-white mb-4`}>
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-gradient-to-r ${node.color} flex items-center justify-center text-white mb-4`}
+                  >
                     {node.icon}
                   </div>
 
@@ -308,16 +312,20 @@ const InteractiveWorkflowPreview: React.FC = () => {
 
                 {/* Arrow Connector */}
                 {index < currentWorkflow.length - 1 && (
-                  <div className="hidden md:flex items-center justify-center absolute top-1/2 transform -translate-y-1/2"
-                       style={{ left: `${((index + 1) * 25) - 2}%` }}>
+                  <div
+                    className="hidden md:flex items-center justify-center absolute top-1/2 transform -translate-y-1/2"
+                    style={{ left: `${(index + 1) * 25 - 2}%` }}
+                  >
                     <motion.div
                       animate={{
                         opacity: currentStep > index ? 1 : 0.3,
-                        scale: currentStep > index ? 1.1 : 1
+                        scale: currentStep > index ? 1.1 : 1,
                       }}
                       transition={{ duration: 0.3 }}
                     >
-                      <ArrowRight className={`w-6 h-6 ${currentStep > index ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <ArrowRight
+                        className={`w-6 h-6 ${currentStep > index ? 'text-primary' : 'text-muted-foreground'}`}
+                      />
                     </motion.div>
                   </div>
                 )}
@@ -342,7 +350,7 @@ const InteractiveWorkflowPreview: React.FC = () => {
             <Play className="w-4 h-4 mr-2" />
             {isPlaying ? 'Running...' : 'Start Demo'}
           </Button>
-          
+
           <Button
             onClick={resetDemo}
             variant="outline"
@@ -362,7 +370,8 @@ const InteractiveWorkflowPreview: React.FC = () => {
           className="text-center mt-12"
         >
           <p className="text-muted-foreground mb-6">
-            Ready to build your own AI workflows? Join thousands of users already automating their tasks.
+            Ready to build your own AI workflows? Join thousands of users already automating their
+            tasks.
           </p>
           <Button
             size="lg"

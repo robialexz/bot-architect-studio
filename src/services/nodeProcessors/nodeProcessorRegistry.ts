@@ -29,9 +29,9 @@ export class NodeProcessorRegistry {
     this.registerProcessor('webhook', new WebhookProcessor());
     this.registerProcessor('http', new WebhookProcessor()); // Alias
 
-    logger.info('Node processors registered', { 
+    logger.info('Node processors registered', {
       count: this.processors.size,
-      types: Array.from(this.processors.keys())
+      types: Array.from(this.processors.keys()),
     });
   }
 
@@ -69,7 +69,7 @@ export class NodeProcessorRegistry {
   getProcessorInfo(): Array<{ nodeType: string; canProcess: boolean }> {
     return Array.from(this.processors.entries()).map(([nodeType, processor]) => ({
       nodeType,
-      canProcess: processor.canProcess(nodeType)
+      canProcess: processor.canProcess(nodeType),
     }));
   }
 }

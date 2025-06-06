@@ -2,11 +2,15 @@
 
 ## Overview
 
-This document describes the comprehensive interactive cryptocurrency display widget implemented for the FlowsyAI Solana token launch. The widget provides real-time token data, market information, and trading functionality with a modern, animated interface.
+This document describes the comprehensive interactive cryptocurrency display
+widget implemented for the FlowsyAI Solana token launch. The widget provides
+real-time token data, market information, and trading functionality with a
+modern, animated interface.
 
 ## 🎯 Features Implemented
 
 ### **Core Widget Features**
+
 - **Real-time Token Data**: Price, market cap, volume, and 24h change
 - **Interactive Design**: Smooth animations and hover effects
 - **Trading Integration**: Direct links to DEX platforms (Raydium, Jupiter)
@@ -16,6 +20,7 @@ This document describes the comprehensive interactive cryptocurrency display wid
 - **Auto-refresh**: Configurable data updates (default: 60 seconds)
 
 ### **Visual Design**
+
 - **Premium Styling**: Matches existing FlowsyAI aesthetic
 - **Gradient Effects**: Primary to gold color scheme
 - **Animated Elements**: Floating particles, pulsing effects, sparkles
@@ -23,6 +28,7 @@ This document describes the comprehensive interactive cryptocurrency display wid
 - **Error Handling**: Graceful fallbacks and error messages
 
 ### **Configuration System**
+
 - **Easy Token Management**: Centralized configuration file
 - **Environment Support**: Development and production settings
 - **Trading Links**: Configurable DEX and explorer URLs
@@ -48,6 +54,7 @@ src/
 ## 🔧 Technical Implementation
 
 ### **Token Widget Component** (`SolanaTokenWidget.tsx`)
+
 - Full-featured widget with comprehensive token information
 - Supports both compact and full display modes
 - Real-time data fetching with error handling
@@ -55,6 +62,7 @@ src/
 - Responsive design for mobile and desktop
 
 ### **Token Banner Component** (`TokenBanner.tsx`)
+
 - Compact banner version for prominent page placement
 - Optimized for horizontal layout
 - Quick access to trading and chart links
@@ -62,6 +70,7 @@ src/
 - Floating particle animations
 
 ### **Solana Token Service** (`solanaTokenService.ts`)
+
 - Multi-API integration (Jupiter, Birdeye, CoinGecko)
 - Fallback system for API reliability
 - Demo data for development
@@ -69,6 +78,7 @@ src/
 - Price history for charts
 
 ### **Configuration Management** (`tokenConfig.ts`)
+
 - Centralized token settings
 - Environment-specific overrides
 - Trading platform URLs
@@ -76,6 +86,7 @@ src/
 - Launch countdown functionality
 
 ### **Formatting Utilities** (`formatters.ts`)
+
 - Currency formatting with dynamic precision
 - Large number abbreviations (K, M, B, T)
 - Percentage formatting with color coding
@@ -85,21 +96,32 @@ src/
 ## 🎨 Styling and Animations
 
 ### **CSS Animations** (Added to `index.css`)
+
 ```css
 /* Token-specific animations */
-@keyframes token-pulse { /* Pulsing token logo */ }
-@keyframes price-flash { /* Price change highlights */ }
-@keyframes sparkle { /* Sparkle effects */ }
-@keyframes token-glow { /* Glowing effects */ }
+@keyframes token-pulse {
+  /* Pulsing token logo */
+}
+@keyframes price-flash {
+  /* Price change highlights */
+}
+@keyframes sparkle {
+  /* Sparkle effects */
+}
+@keyframes token-glow {
+  /* Glowing effects */
+}
 ```
 
 ### **Responsive Design**
+
 - Mobile-first approach
 - Flexible grid layouts
 - Adaptive button sizing
 - Optimized touch targets
 
 ### **Premium Effects**
+
 - Gradient backgrounds
 - Backdrop blur effects
 - Animated borders
@@ -109,6 +131,7 @@ src/
 ## 🔗 Integration Points
 
 ### **Main Landing Page** (`Index.tsx`)
+
 ```tsx
 // Prominently positioned after hero section
 <section className="relative z-10 py-8 px-6">
@@ -119,12 +142,14 @@ src/
 ```
 
 ### **API Integration**
+
 - **Jupiter API**: Fast price data for Solana tokens
 - **Birdeye API**: Comprehensive market data and transactions
 - **CoinGecko API**: Fallback for additional market data
 - **Solana RPC**: Direct blockchain interaction (future)
 
 ### **Trading Platform Links**
+
 - **Raydium**: Primary DEX for trading
 - **Jupiter**: Aggregated trading
 - **DexScreener**: Chart analysis
@@ -133,6 +158,7 @@ src/
 ## ⚙️ Configuration Guide
 
 ### **Token Deployment Setup**
+
 When your Solana token is deployed, update `src/config/tokenConfig.ts`:
 
 ```typescript
@@ -141,11 +167,12 @@ export const FLOWSY_TOKEN_CONFIG: TokenConfig = {
   contractAddress: 'YOUR_ACTUAL_TOKEN_ADDRESS',
   name: 'FlowsyAI Token',
   symbol: 'FLOWSY',
-  
+
   // UPDATE TRADING LINKS
-  raydiumUrl: 'https://raydium.io/swap/?inputCurrency=sol&outputCurrency=YOUR_TOKEN',
+  raydiumUrl:
+    'https://raydium.io/swap/?inputCurrency=sol&outputCurrency=YOUR_TOKEN',
   dexScreenerUrl: 'https://dexscreener.com/solana/YOUR_TOKEN',
-  
+
   // LAUNCH SETTINGS
   isLaunched: true,
   isPreLaunch: false,
@@ -154,13 +181,16 @@ export const FLOWSY_TOKEN_CONFIG: TokenConfig = {
 ```
 
 ### **API Keys Configuration**
+
 Add to your `.env` file:
+
 ```env
 VITE_BIRDEYE_API_KEY=your_birdeye_api_key
 VITE_COINGECKO_API_KEY=your_coingecko_api_key
 ```
 
 ### **Display Customization**
+
 ```typescript
 // Customize widget behavior
 showInBanner: true,           // Show on main page
@@ -172,6 +202,7 @@ refreshInterval: 60000,      // Update every 60 seconds
 ## 🚀 Deployment Checklist
 
 ### **Pre-Launch (Current State)**
+
 - [x] Demo widget with placeholder data
 - [x] Complete UI/UX implementation
 - [x] Responsive design
@@ -180,6 +211,7 @@ refreshInterval: 60000,      // Update every 60 seconds
 - [x] Error handling
 
 ### **Token Launch Day**
+
 - [ ] Update `contractAddress` in config
 - [ ] Set `isLaunched: true`
 - [ ] Configure API keys
@@ -188,6 +220,7 @@ refreshInterval: 60000,      // Update every 60 seconds
 - [ ] Test all integrations
 
 ### **Post-Launch**
+
 - [ ] Monitor API performance
 - [ ] Track user engagement
 - [ ] Optimize refresh rates
@@ -197,11 +230,14 @@ refreshInterval: 60000,      // Update every 60 seconds
 ## 📊 Data Sources and APIs
 
 ### **Primary APIs**
+
 1. **Jupiter API** - Fast price data
+
    - Endpoint: `https://price.jup.ag/v4/price`
    - Use: Real-time price feeds
 
 2. **Birdeye API** - Comprehensive data
+
    - Endpoint: `https://public-api.birdeye.so/public`
    - Use: Market data, transactions, history
 
@@ -210,7 +246,9 @@ refreshInterval: 60000,      // Update every 60 seconds
    - Use: Fallback market data
 
 ### **Demo Data**
+
 Currently using realistic demo data for development:
+
 - Price: $0.0245 with realistic variations
 - Market Cap: $2.45M
 - Volume: $125K daily
@@ -219,18 +257,21 @@ Currently using realistic demo data for development:
 ## 🎯 Future Enhancements
 
 ### **Phase 1 - Launch Features**
+
 - Real API integration
 - Live transaction feeds
 - Price alerts
 - Portfolio tracking
 
 ### **Phase 2 - Advanced Features**
+
 - Price charts integration
 - Technical indicators
 - Social sentiment analysis
 - Staking information
 
 ### **Phase 3 - Community Features**
+
 - Holder analytics
 - Community voting
 - Governance integration
@@ -239,12 +280,14 @@ Currently using realistic demo data for development:
 ## 🔧 Maintenance and Updates
 
 ### **Regular Tasks**
+
 - Monitor API rate limits
 - Update trading platform URLs
 - Refresh token metadata
 - Performance optimization
 
 ### **Troubleshooting**
+
 - Check API key validity
 - Verify token address
 - Monitor error logs
@@ -253,12 +296,14 @@ Currently using realistic demo data for development:
 ## 📱 Mobile Optimization
 
 ### **Responsive Features**
+
 - Compact mobile layout
 - Touch-friendly buttons
 - Optimized font sizes
 - Simplified animations
 
 ### **Performance**
+
 - Lazy loading
 - Optimized images
 - Minimal API calls

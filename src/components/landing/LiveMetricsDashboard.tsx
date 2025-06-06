@@ -44,7 +44,7 @@ import {
   Settings,
   BarChart,
   PieChart,
-  LineChart
+  LineChart,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -115,11 +115,12 @@ const LiveMetricsDashboard: React.FC = () => {
       trend: 'up',
       trendValue: 12.5,
       description: 'Users actively building AI workflows',
-      tooltip: 'Real-time count of users currently using the platform to create and manage AI workflows',
+      tooltip:
+        'Real-time count of users currently using the platform to create and manage AI workflows',
       target: 15000,
       category: 'usage',
       isClickable: true,
-      chartData: [8234, 9156, 10234, 11456, 12847]
+      chartData: [8234, 9156, 10234, 11456, 12847],
     },
     {
       id: 'workflows',
@@ -131,11 +132,12 @@ const LiveMetricsDashboard: React.FC = () => {
       trend: 'up',
       trendValue: 8.3,
       description: 'AI workflows successfully deployed',
-      tooltip: 'Total number of AI automation workflows created and deployed by users in the last 24 hours',
+      tooltip:
+        'Total number of AI automation workflows created and deployed by users in the last 24 hours',
       target: 50000,
       category: 'business',
       isClickable: true,
-      chartData: [32145, 36789, 41234, 43567, 45623]
+      chartData: [32145, 36789, 41234, 43567, 45623],
     },
     {
       id: 'ai_calls',
@@ -147,11 +149,12 @@ const LiveMetricsDashboard: React.FC = () => {
       trend: 'up',
       trendValue: 23.7,
       description: 'Successful AI model integrations',
-      tooltip: 'Real-time count of successful API calls to various AI models (GPT, Claude, Gemini, etc.)',
+      tooltip:
+        'Real-time count of successful API calls to various AI models (GPT, Claude, Gemini, etc.)',
       target: 3000000,
       category: 'technical',
       isClickable: true,
-      chartData: [1234567, 1567890, 2123456, 2456789, 2847392]
+      chartData: [1234567, 1567890, 2123456, 2456789, 2847392],
     },
     {
       id: 'uptime',
@@ -163,11 +166,12 @@ const LiveMetricsDashboard: React.FC = () => {
       trend: 'stable',
       trendValue: 0.1,
       description: '30-day service availability',
-      tooltip: 'Platform availability over the last 30 days - we maintain 99.9%+ uptime with enterprise-grade infrastructure',
+      tooltip:
+        'Platform availability over the last 30 days - we maintain 99.9%+ uptime with enterprise-grade infrastructure',
       target: 99.99,
       category: 'performance',
       isClickable: true,
-      chartData: [99.94, 99.96, 99.98, 99.97, 99.97]
+      chartData: [99.94, 99.96, 99.98, 99.97, 99.97],
     },
     {
       id: 'response_time',
@@ -183,7 +187,7 @@ const LiveMetricsDashboard: React.FC = () => {
       target: 100,
       category: 'performance',
       isClickable: true,
-      chartData: [156, 143, 134, 129, 127]
+      chartData: [156, 143, 134, 129, 127],
     },
     {
       id: 'revenue',
@@ -199,7 +203,7 @@ const LiveMetricsDashboard: React.FC = () => {
       target: 1000000,
       category: 'business',
       isClickable: true,
-      chartData: [456789, 567890, 678901, 789012, 847392]
+      chartData: [456789, 567890, 678901, 789012, 847392],
     },
     {
       id: 'countries',
@@ -215,7 +219,7 @@ const LiveMetricsDashboard: React.FC = () => {
       target: 100,
       category: 'business',
       isClickable: true,
-      chartData: [67, 73, 81, 86, 89]
+      chartData: [67, 73, 81, 86, 89],
     },
     {
       id: 'satisfaction',
@@ -231,8 +235,8 @@ const LiveMetricsDashboard: React.FC = () => {
       target: 5.0,
       category: 'business',
       isClickable: true,
-      chartData: [4.6, 4.7, 4.8, 4.85, 4.9]
-    }
+      chartData: [4.6, 4.7, 4.8, 4.85, 4.9],
+    },
   ]);
 
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([
@@ -244,7 +248,7 @@ const LiveMetricsDashboard: React.FC = () => {
       type: 'workflow',
       location: 'San Francisco, CA',
       impact: 'high',
-      status: 'success'
+      status: 'success',
     },
     {
       id: '2',
@@ -254,7 +258,7 @@ const LiveMetricsDashboard: React.FC = () => {
       type: 'token',
       location: 'London, UK',
       impact: 'medium',
-      status: 'success'
+      status: 'success',
     },
     {
       id: '3',
@@ -264,7 +268,7 @@ const LiveMetricsDashboard: React.FC = () => {
       type: 'ai',
       location: 'Tokyo, JP',
       impact: 'high',
-      status: 'success'
+      status: 'success',
     },
     {
       id: '4',
@@ -274,7 +278,7 @@ const LiveMetricsDashboard: React.FC = () => {
       type: 'user',
       location: 'Berlin, DE',
       impact: 'medium',
-      status: 'success'
+      status: 'success',
     },
     {
       id: '5',
@@ -284,8 +288,8 @@ const LiveMetricsDashboard: React.FC = () => {
       type: 'workflow',
       location: 'New York, NY',
       impact: 'high',
-      status: 'success'
-    }
+      status: 'success',
+    },
   ]);
 
   const [systemStatus, setSystemStatus] = useState<SystemStatus[]>([
@@ -295,7 +299,7 @@ const LiveMetricsDashboard: React.FC = () => {
       status: 'operational',
       uptime: 99.98,
       responseTime: 89,
-      lastCheck: '30 seconds ago'
+      lastCheck: '30 seconds ago',
     },
     {
       id: 'ai',
@@ -303,7 +307,7 @@ const LiveMetricsDashboard: React.FC = () => {
       status: 'operational',
       uptime: 99.95,
       responseTime: 234,
-      lastCheck: '15 seconds ago'
+      lastCheck: '15 seconds ago',
     },
     {
       id: 'database',
@@ -311,7 +315,7 @@ const LiveMetricsDashboard: React.FC = () => {
       status: 'operational',
       uptime: 99.99,
       responseTime: 12,
-      lastCheck: '45 seconds ago'
+      lastCheck: '45 seconds ago',
     },
     {
       id: 'cdn',
@@ -319,8 +323,8 @@ const LiveMetricsDashboard: React.FC = () => {
       status: 'operational',
       uptime: 100.0,
       responseTime: 67,
-      lastCheck: '20 seconds ago'
-    }
+      lastCheck: '20 seconds ago',
+    },
   ]);
 
   // Enhanced real-time simulation
@@ -328,56 +332,58 @@ const LiveMetricsDashboard: React.FC = () => {
     if (!isPlaying) return;
 
     const updateMetrics = () => {
-      setMetrics(prev => prev.map(metric => {
-        let newValue = metric.value;
-        let newTrend = metric.trend;
-        let newTrendValue = metric.trendValue;
+      setMetrics(prev =>
+        prev.map(metric => {
+          let newValue = metric.value;
+          let newTrend = metric.trend;
+          let newTrendValue = metric.trendValue;
 
-        // More realistic updates based on metric type
-        switch (metric.id) {
-          case 'users':
-            newValue += Math.floor(Math.random() * 20) - 5;
-            break;
-          case 'workflows':
-            newValue += Math.floor(Math.random() * 50);
-            break;
-          case 'ai_calls':
-            newValue += Math.floor(Math.random() * 1000) + 500;
-            break;
-          case 'response_time':
-            newValue += Math.floor(Math.random() * 10) - 5;
-            newValue = Math.max(50, Math.min(300, newValue));
-            break;
-          case 'revenue':
-            newValue += Math.floor(Math.random() * 1000) + 200;
-            break;
-          case 'satisfaction':
-            newValue += (Math.random() - 0.5) * 0.02;
-            newValue = Math.max(4.0, Math.min(5.0, newValue));
-            break;
-          default:
-            newValue += Math.floor(Math.random() * 5) - 2;
-        }
+          // More realistic updates based on metric type
+          switch (metric.id) {
+            case 'users':
+              newValue += Math.floor(Math.random() * 20) - 5;
+              break;
+            case 'workflows':
+              newValue += Math.floor(Math.random() * 50);
+              break;
+            case 'ai_calls':
+              newValue += Math.floor(Math.random() * 1000) + 500;
+              break;
+            case 'response_time':
+              newValue += Math.floor(Math.random() * 10) - 5;
+              newValue = Math.max(50, Math.min(300, newValue));
+              break;
+            case 'revenue':
+              newValue += Math.floor(Math.random() * 1000) + 200;
+              break;
+            case 'satisfaction':
+              newValue += (Math.random() - 0.5) * 0.02;
+              newValue = Math.max(4.0, Math.min(5.0, newValue));
+              break;
+            default:
+              newValue += Math.floor(Math.random() * 5) - 2;
+          }
 
-        // Update trend
-        if (Math.random() > 0.8) {
-          newTrendValue += (Math.random() - 0.5) * 5;
-          newTrend = newTrendValue > 0 ? 'up' : newTrendValue < -0.5 ? 'down' : 'stable';
-        }
+          // Update trend
+          if (Math.random() > 0.8) {
+            newTrendValue += (Math.random() - 0.5) * 5;
+            newTrend = newTrendValue > 0 ? 'up' : newTrendValue < -0.5 ? 'down' : 'stable';
+          }
 
-        // Update chart data
-        const newChartData = [...(metric.chartData || [])];
-        newChartData.push(newValue);
-        if (newChartData.length > 10) newChartData.shift();
+          // Update chart data
+          const newChartData = [...(metric.chartData || [])];
+          newChartData.push(newValue);
+          if (newChartData.length > 10) newChartData.shift();
 
-        return {
-          ...metric,
-          value: Math.max(0, newValue),
-          trend: newTrend,
-          trendValue: newTrendValue,
-          chartData: newChartData
-        };
-      }));
+          return {
+            ...metric,
+            value: Math.max(0, newValue),
+            trend: newTrend,
+            trendValue: newTrendValue,
+            chartData: newChartData,
+          };
+        })
+      );
     };
 
     const updateActivity = () => {
@@ -391,19 +397,40 @@ const LiveMetricsDashboard: React.FC = () => {
         'Launched marketing automation',
         'Deployed inventory management system',
         'Integrated payment processing workflow',
-        'Set up lead qualification automation'
+        'Set up lead qualification automation',
       ];
 
       const users = [
-        'Jennifer S.', 'Michael R.', 'Sarah L.', 'David K.', 'Emma W.',
-        'James P.', 'Lisa M.', 'Robert T.', 'Anna C.', 'Chris B.',
-        'Maria G.', 'John H.', 'Sophie D.', 'Alex V.', 'Rachel N.'
+        'Jennifer S.',
+        'Michael R.',
+        'Sarah L.',
+        'David K.',
+        'Emma W.',
+        'James P.',
+        'Lisa M.',
+        'Robert T.',
+        'Anna C.',
+        'Chris B.',
+        'Maria G.',
+        'John H.',
+        'Sophie D.',
+        'Alex V.',
+        'Rachel N.',
       ];
 
       const locations = [
-        'San Francisco, CA', 'New York, NY', 'London, UK', 'Berlin, DE',
-        'Tokyo, JP', 'Sydney, AU', 'Toronto, CA', 'Paris, FR',
-        'Amsterdam, NL', 'Singapore, SG', 'Stockholm, SE', 'Zurich, CH'
+        'San Francisco, CA',
+        'New York, NY',
+        'London, UK',
+        'Berlin, DE',
+        'Tokyo, JP',
+        'Sydney, AU',
+        'Toronto, CA',
+        'Paris, FR',
+        'Amsterdam, NL',
+        'Singapore, SG',
+        'Stockholm, SE',
+        'Zurich, CH',
       ];
 
       const types: RecentActivity['type'][] = ['workflow', 'ai', 'user', 'system'];
@@ -419,9 +446,9 @@ const LiveMetricsDashboard: React.FC = () => {
           type: types[Math.floor(Math.random() * types.length)],
           location: locations[Math.floor(Math.random() * locations.length)],
           impact: impacts[Math.floor(Math.random() * impacts.length)],
-          status: statuses[Math.floor(Math.random() * statuses.length)]
+          status: statuses[Math.floor(Math.random() * statuses.length)],
         },
-        ...prev.slice(0, 7)
+        ...prev.slice(0, 7),
       ]);
     };
 
@@ -459,32 +486,48 @@ const LiveMetricsDashboard: React.FC = () => {
 
   const getActivityIcon = (type: RecentActivity['type']) => {
     switch (type) {
-      case 'workflow': return <Zap className="w-5 h-5 text-emerald-500" />;
-      case 'token': return <Star className="w-5 h-5 text-gold" />;
-      case 'ai': return <Brain className="w-5 h-5 text-purple-500" />;
-      case 'user': return <Users className="w-5 h-5 text-blue-500" />;
-      case 'system': return <Server className="w-5 h-5 text-orange-500" />;
-      case 'security': return <Shield className="w-5 h-5 text-red-500" />;
-      default: return <Activity className="w-5 h-5 text-muted-foreground" />;
+      case 'workflow':
+        return <Zap className="w-5 h-5 text-emerald-500" />;
+      case 'token':
+        return <Star className="w-5 h-5 text-gold" />;
+      case 'ai':
+        return <Brain className="w-5 h-5 text-purple-500" />;
+      case 'user':
+        return <Users className="w-5 h-5 text-blue-500" />;
+      case 'system':
+        return <Server className="w-5 h-5 text-orange-500" />;
+      case 'security':
+        return <Shield className="w-5 h-5 text-red-500" />;
+      default:
+        return <Activity className="w-5 h-5 text-muted-foreground" />;
     }
   };
 
   const getStatusIcon = (status: RecentActivity['status']) => {
     switch (status) {
-      case 'success': return <CheckCircle className="w-4 h-4 text-emerald-500" />;
-      case 'warning': return <AlertCircle className="w-4 h-4 text-yellow-500" />;
-      case 'error': return <AlertCircle className="w-4 h-4 text-red-500" />;
-      case 'info': return <Info className="w-4 h-4 text-blue-500" />;
-      default: return <Info className="w-4 h-4 text-muted-foreground" />;
+      case 'success':
+        return <CheckCircle className="w-4 h-4 text-emerald-500" />;
+      case 'warning':
+        return <AlertCircle className="w-4 h-4 text-yellow-500" />;
+      case 'error':
+        return <AlertCircle className="w-4 h-4 text-red-500" />;
+      case 'info':
+        return <Info className="w-4 h-4 text-blue-500" />;
+      default:
+        return <Info className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
   const getImpactColor = (impact: RecentActivity['impact']) => {
     switch (impact) {
-      case 'high': return 'text-red-500 bg-red-500/10';
-      case 'medium': return 'text-yellow-500 bg-yellow-500/10';
-      case 'low': return 'text-green-500 bg-green-500/10';
-      default: return 'text-muted-foreground bg-muted/10';
+      case 'high':
+        return 'text-red-500 bg-red-500/10';
+      case 'medium':
+        return 'text-yellow-500 bg-yellow-500/10';
+      case 'low':
+        return 'text-green-500 bg-green-500/10';
+      default:
+        return 'text-muted-foreground bg-muted/10';
     }
   };
 
@@ -499,9 +542,9 @@ const LiveMetricsDashboard: React.FC = () => {
   const getFilteredMetrics = () => {
     if (activeTab === 'overview') return metrics;
     return metrics.filter(metric =>
-      activeTab === 'performance' ?
-        ['performance', 'technical'].includes(metric.category) :
-        metric.category === activeTab
+      activeTab === 'performance'
+        ? ['performance', 'technical'].includes(metric.category)
+        : metric.category === activeTab
     );
   };
 
@@ -534,15 +577,16 @@ const LiveMetricsDashboard: React.FC = () => {
           </h2>
 
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
-            Experience FlowsyAI's live platform activity with interactive metrics showing real user engagement,
-            AI workflow deployments, revenue generation, and global performance data updated every second.
+            Experience FlowsyAI's live platform activity with interactive metrics showing real user
+            engagement, AI workflow deployments, revenue generation, and global performance data
+            updated every second.
           </p>
 
           {/* Interactive Controls */}
           <div className="flex items-center justify-center gap-4 mb-8">
             <Button
               onClick={togglePlayPause}
-              variant={isPlaying ? "default" : "outline"}
+              variant={isPlaying ? 'default' : 'outline'}
               size="lg"
               className="gap-2 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
             >
@@ -561,8 +605,8 @@ const LiveMetricsDashboard: React.FC = () => {
             {[
               { id: 'overview', label: 'Overview', icon: BarChart3 },
               { id: 'performance', label: 'Performance', icon: Activity },
-              { id: 'business', label: 'Business', icon: TrendingUp }
-            ].map((tab) => (
+              { id: 'business', label: 'Business', icon: TrendingUp },
+            ].map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
@@ -597,20 +641,29 @@ const LiveMetricsDashboard: React.FC = () => {
               } ${selectedMetric === metric.id ? 'border-primary ring-2 ring-primary/20' : ''}`}
             >
               {/* Background Glow Effect */}
-              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${metric.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+              <div
+                className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${metric.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}
+              />
 
               {/* Header */}
               <div className="flex items-start justify-between mb-6">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${metric.color} flex items-center justify-center text-white shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
+                <div
+                  className={`w-14 h-14 rounded-2xl bg-gradient-to-r ${metric.color} flex items-center justify-center text-white shadow-lg group-hover:shadow-xl transition-shadow duration-300`}
+                >
                   {metric.icon}
                 </div>
 
                 <div className="flex flex-col items-end gap-2">
                   {/* Trend Indicator */}
-                  <div className={`flex items-center gap-1 text-sm font-semibold px-2 py-1 rounded-full ${
-                    metric.trend === 'up' ? 'text-emerald-500 bg-emerald-500/10' :
-                    metric.trend === 'down' ? 'text-red-500 bg-red-500/10' : 'text-muted-foreground bg-muted/10'
-                  }`}>
+                  <div
+                    className={`flex items-center gap-1 text-sm font-semibold px-2 py-1 rounded-full ${
+                      metric.trend === 'up'
+                        ? 'text-emerald-500 bg-emerald-500/10'
+                        : metric.trend === 'down'
+                          ? 'text-red-500 bg-red-500/10'
+                          : 'text-muted-foreground bg-muted/10'
+                    }`}
+                  >
                     {metric.trend === 'up' && <ArrowUp className="w-3 h-3" />}
                     {metric.trend === 'down' && <ArrowDown className="w-3 h-3" />}
                     {Math.abs(metric.trendValue).toFixed(1)}%
@@ -633,10 +686,15 @@ const LiveMetricsDashboard: React.FC = () => {
                   animate={{ scale: 1, opacity: 1 }}
                   className="text-3xl font-bold text-foreground"
                 >
-                  {metric.id === 'revenue' ? formatCurrency(metric.value) : formatNumber(metric.value)}{metric.id !== 'revenue' ? metric.unit : ''}
+                  {metric.id === 'revenue'
+                    ? formatCurrency(metric.value)
+                    : formatNumber(metric.value)}
+                  {metric.id !== 'revenue' ? metric.unit : ''}
                 </motion.div>
                 <div className="text-base font-semibold text-foreground">{metric.label}</div>
-                <div className="text-sm text-muted-foreground leading-relaxed">{metric.description}</div>
+                <div className="text-sm text-muted-foreground leading-relaxed">
+                  {metric.description}
+                </div>
               </div>
 
               {/* Progress Bar (if target exists) */}
@@ -646,10 +704,7 @@ const LiveMetricsDashboard: React.FC = () => {
                     <span>Progress to target</span>
                     <span>{Math.round((metric.value / metric.target) * 100)}%</span>
                   </div>
-                  <Progress
-                    value={(metric.value / metric.target) * 100}
-                    className="h-2"
-                  />
+                  <Progress value={(metric.value / metric.target) * 100} className="h-2" />
                 </div>
               )}
 
@@ -732,9 +787,7 @@ const LiveMetricsDashboard: React.FC = () => {
                     layout
                     className="group flex items-start gap-4 p-4 bg-muted/20 hover:bg-muted/30 rounded-xl border border-border/20 hover:border-border/40 transition-all duration-300"
                   >
-                    <div className="flex-shrink-0 mt-1">
-                      {getActivityIcon(activity.type)}
-                    </div>
+                    <div className="flex-shrink-0 mt-1">{getActivityIcon(activity.type)}</div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <div className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
@@ -742,7 +795,10 @@ const LiveMetricsDashboard: React.FC = () => {
                         </div>
                         <div className="flex items-center gap-1">
                           {getStatusIcon(activity.status)}
-                          <Badge variant="outline" className={`text-xs ${getImpactColor(activity.impact)}`}>
+                          <Badge
+                            variant="outline"
+                            className={`text-xs ${getImpactColor(activity.impact)}`}
+                          >
                             {activity.impact}
                           </Badge>
                         </div>
@@ -800,10 +856,15 @@ const LiveMetricsDashboard: React.FC = () => {
                   className="flex items-center justify-between p-4 bg-muted/20 rounded-xl border border-border/20"
                 >
                   <div className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-full ${
-                      system.status === 'operational' ? 'bg-emerald-500' :
-                      system.status === 'degraded' ? 'bg-yellow-500' : 'bg-red-500'
-                    }`} />
+                    <div
+                      className={`w-3 h-3 rounded-full ${
+                        system.status === 'operational'
+                          ? 'bg-emerald-500'
+                          : system.status === 'degraded'
+                            ? 'bg-yellow-500'
+                            : 'bg-red-500'
+                      }`}
+                    />
                     <div>
                       <div className="font-semibold text-sm">{system.service}</div>
                       <div className="text-xs text-muted-foreground">
@@ -811,9 +872,7 @@ const LiveMetricsDashboard: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="text-xs text-muted-foreground">
-                    {system.lastCheck}
-                  </div>
+                  <div className="text-xs text-muted-foreground">{system.lastCheck}</div>
                 </motion.div>
               ))}
             </div>
@@ -870,7 +929,7 @@ const LiveMetricsDashboard: React.FC = () => {
             <div className="relative z-10">
               <motion.div
                 animate={{ rotate: [0, 360] }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                 className="w-16 h-16 mx-auto mb-6"
               >
                 <Sparkles className="w-16 h-16 text-gold" />
@@ -881,8 +940,9 @@ const LiveMetricsDashboard: React.FC = () => {
               </h3>
 
               <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-                Join <span className="text-primary font-bold">12,847+ active users</span> who are already automating their workflows,
-                generating revenue, and scaling their operations with FlowsyAI's intelligent platform.
+                Join <span className="text-primary font-bold">12,847+ active users</span> who are
+                already automating their workflows, generating revenue, and scaling their operations
+                with FlowsyAI's intelligent platform.
               </p>
 
               {/* Key Benefits */}
@@ -935,15 +995,22 @@ const LiveMetricsDashboard: React.FC = () => {
                 <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                    <span><span className="text-foreground font-semibold">2,847</span> workflows deployed today</span>
+                    <span>
+                      <span className="text-foreground font-semibold">2,847</span> workflows
+                      deployed today
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                    <span><span className="text-foreground font-semibold">89</span> countries served</span>
+                    <span>
+                      <span className="text-foreground font-semibold">89</span> countries served
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
-                    <span><span className="text-foreground font-semibold">4.9/5</span> user rating</span>
+                    <span>
+                      <span className="text-foreground font-semibold">4.9/5</span> user rating
+                    </span>
                   </div>
                 </div>
               </div>

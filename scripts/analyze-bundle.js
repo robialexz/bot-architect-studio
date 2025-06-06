@@ -34,19 +34,21 @@ function analyzeBundle() {
   const files = fs.readdirSync(ASSETS_DIR);
   const jsFiles = files.filter(file => file.endsWith('.js'));
   const cssFiles = files.filter(file => file.endsWith('.css'));
-  
+
   console.log('📊 JavaScript Chunks:');
   console.log('=====================');
-  
-  const jsStats = jsFiles.map(file => {
-    const filePath = path.join(ASSETS_DIR, file);
-    const stats = fs.statSync(filePath);
-    return {
-      name: file,
-      size: stats.size,
-      type: getChunkType(file)
-    };
-  }).sort((a, b) => b.size - a.size);
+
+  const jsStats = jsFiles
+    .map(file => {
+      const filePath = path.join(ASSETS_DIR, file);
+      const stats = fs.statSync(filePath);
+      return {
+        name: file,
+        size: stats.size,
+        type: getChunkType(file),
+      };
+    })
+    .sort((a, b) => b.size - a.size);
 
   let totalJsSize = 0;
   jsStats.forEach(file => {
@@ -58,15 +60,17 @@ function analyzeBundle() {
 
   console.log('\n📊 CSS Files:');
   console.log('==============');
-  
-  const cssStats = cssFiles.map(file => {
-    const filePath = path.join(ASSETS_DIR, file);
-    const stats = fs.statSync(filePath);
-    return {
-      name: file,
-      size: stats.size
-    };
-  }).sort((a, b) => b.size - a.size);
+
+  const cssStats = cssFiles
+    .map(file => {
+      const filePath = path.join(ASSETS_DIR, file);
+      const stats = fs.statSync(filePath);
+      return {
+        name: file,
+        size: stats.size,
+      };
+    })
+    .sort((a, b) => b.size - a.size);
 
   let totalCssSize = 0;
   cssStats.forEach(file => {
@@ -96,18 +100,19 @@ function analyzeBundle() {
   // Check for optimization opportunities
   console.log('\n💡 Optimization Recommendations:');
   console.log('=================================');
-  
-  if (totalJsSize > 2 * 1024 * 1024) { // > 2MB
+
+  if (totalJsSize > 2 * 1024 * 1024) {
+    // > 2MB
     console.log('  • Consider more aggressive code splitting');
     console.log('  • Review and remove unused dependencies');
     console.log('  • Implement dynamic imports for heavy features');
   }
-  
+
   if (jsStats.length < 5) {
     console.log('  • Consider splitting large chunks into smaller ones');
     console.log('  • Use manual chunking for better caching');
   }
-  
+
   if (jsStats.length > 20) {
     console.log('  • Too many chunks may hurt performance');
     console.log('  • Consider consolidating smaller chunks');

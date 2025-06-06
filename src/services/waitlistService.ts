@@ -42,7 +42,8 @@ class WaitlistService {
    * Validates email format using a comprehensive regex
    */
   private validateEmail(email: string): boolean {
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     return emailRegex.test(email.trim().toLowerCase());
   }
 
@@ -62,7 +63,7 @@ class WaitlistService {
     }
 
     const urlParams = new URLSearchParams(window.location.search);
-    
+
     return {
       user_agent: navigator.userAgent,
       referrer: document.referrer || undefined,
@@ -75,7 +76,9 @@ class WaitlistService {
   /**
    * Submits an email to the waitlist
    */
-  async submitEmail(email: string): Promise<{ success: boolean; message: string; data?: WaitlistEmail }> {
+  async submitEmail(
+    email: string
+  ): Promise<{ success: boolean; message: string; data?: WaitlistEmail }> {
     try {
       // Validate email format
       if (!this.validateEmail(email)) {
@@ -114,10 +117,10 @@ class WaitlistService {
           // Reactivate unsubscribed email
           const { data: updatedEmail, error: updateError } = await supabase
             .from(this.TABLE_NAME)
-            .update({ 
+            .update({
               status: 'active',
               ...clientInfo,
-              updated_at: new Date().toISOString()
+              updated_at: new Date().toISOString(),
             })
             .eq('id', existingEmail.id)
             .select()
@@ -134,7 +137,7 @@ class WaitlistService {
           logger.info('Email reactivated on waitlist:', { email: normalizedEmail });
           return {
             success: true,
-            message: 'Welcome back! You\'re now on our waitlist.',
+            message: "Welcome back! You're now on our waitlist.",
             data: updatedEmail,
           };
         }
@@ -153,7 +156,7 @@ class WaitlistService {
 
       if (insertError) {
         logger.error('Error inserting email:', insertError);
-        
+
         // Handle unique constraint violation
         if (insertError.code === '23505') {
           return {
@@ -171,10 +174,9 @@ class WaitlistService {
       logger.info('New email added to waitlist:', { email: normalizedEmail });
       return {
         success: true,
-        message: 'Success! You\'re now on our waitlist. We\'ll notify you when we launch!',
+        message: "Success! You're now on our waitlist. We'll notify you when we launch!",
         data: newEmail,
       };
-
     } catch (error) {
       logger.error('Unexpected error in submitEmail:', error);
       return {
@@ -200,14 +202,14 @@ class WaitlistService {
         .select('status')
         .then(result => {
           if (result.error) throw result.error;
-          
+
           const counts = {
             total_emails: result.data.length,
             active_emails: result.data.filter(item => item.status === 'active').length,
             unsubscribed_emails: result.data.filter(item => item.status === 'unsubscribed').length,
             bounced_emails: result.data.filter(item => item.status === 'bounced').length,
           };
-          
+
           return { data: counts, error: null };
         });
 
@@ -246,7 +248,6 @@ class WaitlistService {
         success: true,
         data: stats,
       };
-
     } catch (error) {
       logger.error('Error getting waitlist stats:', error);
       return {
@@ -259,7 +260,10 @@ class WaitlistService {
   /**
    * Gets all waitlist emails (admin function)
    */
-  async getAllEmails(limit = 100, offset = 0): Promise<{ success: boolean; data?: WaitlistEmail[]; count?: number; message?: string }> {
+  async getAllEmails(
+    limit = 100,
+    offset = 0
+  ): Promise<{ success: boolean; data?: WaitlistEmail[]; count?: number; message?: string }> {
     try {
       const { data, error, count } = await supabase
         .from(this.TABLE_NAME)
@@ -276,7 +280,6 @@ class WaitlistService {
         data: data || [],
         count: count || 0,
       };
-
     } catch (error) {
       logger.error('Error getting all emails:', error);
       return {
@@ -309,24 +312,34 @@ class WaitlistService {
       }
 
       // Generate CSV
-      const headers = ['Email', 'Status', 'Signup Date', 'UTM Source', 'UTM Medium', 'UTM Campaign'];
+      const headers = [
+        'Email',
+        'Status',
+        'Signup Date',
+        'UTM Source',
+        'UTM Medium',
+        'UTM Campaign',
+      ];
       const csvRows = [
         headers.join(','),
-        ...data.map(row => [
-          row.email,
-          row.status,
-          new Date(row.created_at).toLocaleDateString(),
-          row.utm_source || '',
-          row.utm_medium || '',
-          row.utm_campaign || '',
-        ].map(field => `"${field}"`).join(','))
+        ...data.map(row =>
+          [
+            row.email,
+            row.status,
+            new Date(row.created_at).toLocaleDateString(),
+            row.utm_source || '',
+            row.utm_medium || '',
+            row.utm_campaign || '',
+          ]
+            .map(field => `"${field}"`)
+            .join(',')
+        ),
       ];
 
       return {
         success: true,
         csv: csvRows.join('\n'),
       };
-
     } catch (error) {
       logger.error('Error exporting emails:', error);
       return {
@@ -345,9 +358,9 @@ class WaitlistService {
 
       const { error } = await supabase
         .from(this.TABLE_NAME)
-        .update({ 
+        .update({
           status: 'unsubscribed',
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq('email', normalizedEmail);
 
@@ -360,7 +373,6 @@ class WaitlistService {
         success: true,
         message: 'You have been successfully unsubscribed from our waitlist.',
       };
-
     } catch (error) {
       logger.error('Error unsubscribing email:', error);
       return {

@@ -187,8 +187,6 @@ const VisualWorkflowBuilder: React.FC = () => {
   const [generatedWorkflowDescription, setGeneratedWorkflowDescription] = useState('');
   const [finalResults, setFinalResults] = useState<string>('');
 
-
-
   // Initialize Smart Templates and AI Features - Run only once
   useEffect(() => {
     // Load workflow templates
@@ -411,7 +409,8 @@ const VisualWorkflowBuilder: React.FC = () => {
         {
           id: 'welcome-message',
           type: 'completion',
-          message: '🎯 Click "Create Workflow" to tell us what you want to accomplish - AI will build and execute it for you!',
+          message:
+            '🎯 Click "Create Workflow" to tell us what you want to accomplish - AI will build and execute it for you!',
           confidence: 1.0,
         },
         {
@@ -436,8 +435,6 @@ const VisualWorkflowBuilder: React.FC = () => {
       ]);
     }, 2000);
   }, []); // No dependencies needed
-
-
 
   // Smart Template Loading
   const loadTemplate = useCallback(
@@ -681,7 +678,8 @@ const VisualWorkflowBuilder: React.FC = () => {
       color: 'bg-gradient-to-r from-green-500 to-blue-600',
       inputs: 1,
       outputs: 2,
-      description: 'Advanced text analysis with Google Gemini Pro: sentiment, entities, topics, intent',
+      description:
+        'Advanced text analysis with Google Gemini Pro: sentiment, entities, topics, intent',
       category: 'AI Models',
       processingTime: 2.1,
       sampleOutput: {
@@ -698,7 +696,8 @@ const VisualWorkflowBuilder: React.FC = () => {
       color: 'bg-gradient-to-r from-blue-500 to-purple-600',
       inputs: 1,
       outputs: 2,
-      description: 'Advanced text analysis powered by Google AI: sentiment, entities, topics, intent',
+      description:
+        'Advanced text analysis powered by Google AI: sentiment, entities, topics, intent',
       category: 'AI Models',
       processingTime: 2.3,
       sampleOutput: {
@@ -1185,7 +1184,7 @@ const VisualWorkflowBuilder: React.FC = () => {
             model: getModelFromNodeType(node.type),
             prompt: getPromptFromNodeType(node.type),
             inputs: inputData || { prompt: 'Process this workflow step.' },
-            parameters: { temperature: 0.7, maxTokens: 1000 }
+            parameters: { temperature: 0.7, maxTokens: 1000 },
           };
 
           const aiResult = await aiServiceProxy.executeAIRequest(aiRequest, 'demo-user');
@@ -1196,7 +1195,7 @@ const VisualWorkflowBuilder: React.FC = () => {
               model: aiResult.model,
               tokensUsed: aiResult.tokensUsed,
               processingTime: aiResult.processingTime,
-              timestamp: Date.now()
+              timestamp: Date.now(),
             };
           } else {
             // Fallback to template output if AI service fails
@@ -1328,19 +1327,28 @@ const VisualWorkflowBuilder: React.FC = () => {
   const getPromptFromNodeType = (nodeType: string): string => {
     const prompts: Record<string, string> = {
       'web-scraper': 'SCRAPE_WEBSITE:{{input}}', // Special marker for web scraping
-      'gpt4-analyzer': 'Analyze and provide detailed insights about: {{input}}. Include key points, trends, and actionable recommendations.',
-      'gemini-analyzer': 'Analyze and provide detailed insights about: {{input}}. Include key points, trends, and actionable recommendations.',
-      'claude-writer': 'Write high-quality, engaging content about: {{input}}. Make it informative, well-structured, and compelling for readers.',
-      'content-writer': 'Write high-quality, engaging content about: {{input}}. Make it informative, well-structured, and compelling for readers.',
-      'data-analyzer': 'Analyze the following topic and provide data-driven insights: {{input}}. Include statistics, trends, and actionable recommendations.',
-      'code-interpreter': 'Generate clean, well-documented code for: {{input}}. Include explanations and best practices.',
+      'gpt4-analyzer':
+        'Analyze and provide detailed insights about: {{input}}. Include key points, trends, and actionable recommendations.',
+      'gemini-analyzer':
+        'Analyze and provide detailed insights about: {{input}}. Include key points, trends, and actionable recommendations.',
+      'claude-writer':
+        'Write high-quality, engaging content about: {{input}}. Make it informative, well-structured, and compelling for readers.',
+      'content-writer':
+        'Write high-quality, engaging content about: {{input}}. Make it informative, well-structured, and compelling for readers.',
+      'data-analyzer':
+        'Analyze the following topic and provide data-driven insights: {{input}}. Include statistics, trends, and actionable recommendations.',
+      'code-interpreter':
+        'Generate clean, well-documented code for: {{input}}. Include explanations and best practices.',
       'image-generator': 'Create a detailed description for an image about: {{input}}',
-      'translator': 'Translate and localize the following content: {{input}}',
-      'summarizer': 'Create a comprehensive summary of: {{input}}',
-      'researcher': 'Conduct thorough research about: {{input}}. Provide detailed information, recent developments, and expert insights.',
+      translator: 'Translate and localize the following content: {{input}}',
+      summarizer: 'Create a comprehensive summary of: {{input}}',
+      researcher:
+        'Conduct thorough research about: {{input}}. Provide detailed information, recent developments, and expert insights.',
       'email-composer': 'Compose a professional, well-structured email about: {{input}}',
-      'social-media': 'Create engaging social media content about: {{input}}. Make it shareable and compelling.',
-      'seo-optimizer': 'Optimize content for SEO about: {{input}}. Include keywords, meta descriptions, and SEO best practices.'
+      'social-media':
+        'Create engaging social media content about: {{input}}. Make it shareable and compelling.',
+      'seo-optimizer':
+        'Optimize content for SEO about: {{input}}. Include keywords, meta descriptions, and SEO best practices.',
     };
 
     return prompts[nodeType] || 'Provide comprehensive information and insights about: {{input}}';
@@ -1353,7 +1361,7 @@ const VisualWorkflowBuilder: React.FC = () => {
       'gpt4-analyzer': `Analysis of "${input}": Based on comprehensive evaluation, this topic demonstrates strong potential with multiple applications. Key insights include strategic advantages, implementation considerations, and measurable benefits. Confidence level: 94%.`,
       'gemini-analyzer': `Detailed analysis of "${input}": Advanced AI processing reveals important patterns and trends. The analysis indicates significant opportunities for optimization and growth. Recommended actions include strategic planning and systematic implementation.`,
       'claude-writer': `# ${input}\n\nThis comprehensive guide explores the essential aspects of ${input.toLowerCase()}. Through careful research and analysis, we've identified key principles and best practices that drive success.\n\n## Key Benefits\n- Enhanced efficiency and productivity\n- Improved user experience\n- Sustainable long-term growth\n\n## Implementation Strategy\nA systematic approach ensures optimal results and measurable outcomes.`,
-      'content-writer': `# ${input}\n\nThis comprehensive guide explores the essential aspects of ${input.toLowerCase()}. Through careful research and analysis, we've identified key principles and best practices that drive success.\n\n## Key Benefits\n- Enhanced efficiency and productivity\n- Improved user experience\n- Sustainable long-term growth\n\n## Implementation Strategy\nA systematic approach ensures optimal results and measurable outcomes.`
+      'content-writer': `# ${input}\n\nThis comprehensive guide explores the essential aspects of ${input.toLowerCase()}. Through careful research and analysis, we've identified key principles and best practices that drive success.\n\n## Key Benefits\n- Enhanced efficiency and productivity\n- Improved user experience\n- Sustainable long-term growth\n\n## Implementation Strategy\nA systematic approach ensures optimal results and measurable outcomes.`,
     };
 
     const defaultResponse = `Comprehensive analysis of "${input}": This topic presents significant opportunities for innovation and growth. Key findings include strategic advantages, implementation best practices, and measurable outcomes. The analysis demonstrates strong potential for positive impact and sustainable development.`;
@@ -1362,7 +1370,7 @@ const VisualWorkflowBuilder: React.FC = () => {
       response: responses[nodeType] || defaultResponse,
       model: 'gemini-pro',
       timestamp: Date.now(),
-      type: 'ai_generated'
+      type: 'ai_generated',
     };
   };
 
@@ -1414,7 +1422,8 @@ const VisualWorkflowBuilder: React.FC = () => {
       const aiRequest = {
         service: 'google' as const,
         model: 'gemini-2.0-flash-lite',
-        prompt: 'Scrie un articol de blog cuprinzător și captivant despre tehnologia sustenabilă. Include o introducere, beneficiile principale, tendințele actuale, exemple din lumea reală și o concluzie. Fă-l informativ și bine structurat pentru cititorii obișnuiți.',
+        prompt:
+          'Scrie un articol de blog cuprinzător și captivant despre tehnologia sustenabilă. Include o introducere, beneficiile principale, tendințele actuale, exemple din lumea reală și o concluzie. Fă-l informativ și bine structurat pentru cititorii obișnuiți.',
         parameters: {
           maxTokens: 1500,
           temperature: 0.7,
@@ -1429,11 +1438,13 @@ const VisualWorkflowBuilder: React.FC = () => {
         const blogPost = String(aiResult.data);
 
         // Complete the node animation
-        setNodes(prev => prev.map(node => ({
-          ...node,
-          status: 'completed' as const,
-          outputData: { content: blogPost }
-        })));
+        setNodes(prev =>
+          prev.map(node => ({
+            ...node,
+            status: 'completed' as const,
+            outputData: { content: blogPost },
+          }))
+        );
 
         setFinalResults(blogPost);
 
@@ -1459,11 +1470,13 @@ const VisualWorkflowBuilder: React.FC = () => {
         setShowResults(true);
       } else {
         // Complete the node animation with fallback
-        setNodes(prev => prev.map(node => ({
-          ...node,
-          status: 'completed' as const,
-          outputData: { content: 'Sample blog post generated' }
-        })));
+        setNodes(prev =>
+          prev.map(node => ({
+            ...node,
+            status: 'completed' as const,
+            outputData: { content: 'Sample blog post generated' },
+          }))
+        );
 
         // Fallback to a sample blog post
         const fallbackBlogPost = `# Sustainable Technology: Shaping a Greener Future
@@ -1522,7 +1535,6 @@ The transition to sustainable technology requires continued investment, policy s
           },
         ]);
       }
-
     } catch (error) {
       console.error('Quick test error:', error);
       setAiSuggestions(prev => [
@@ -1553,9 +1565,7 @@ The transition to sustainable technology requires continued investment, policy s
 
       // Update node status to processing
       setNodes(prev =>
-        prev.map(n =>
-          n.id === node.id ? { ...n, status: 'processing' as const } : n
-        )
+        prev.map(n => (n.id === node.id ? { ...n, status: 'processing' as const } : n))
       );
 
       // Simulate processing delay
@@ -1687,7 +1697,6 @@ The transition to sustainable technology requires continued investment, policy s
       setTimeout(() => {
         runWorkflowWithUserInputDirect(input, generatedNodes);
       }, 1500);
-
     } catch (error) {
       console.error('Error generating workflow:', error);
       setIsGeneratingWorkflow(false);
@@ -1704,7 +1713,9 @@ The transition to sustainable technology requires continued investment, policy s
   };
 
   // Analyze user input to determine workflow structure
-  const analyzeUserInput = (input: string): {
+  const analyzeUserInput = (
+    input: string
+  ): {
     description: string;
     steps: Array<{
       name: string;
@@ -1715,15 +1726,24 @@ The transition to sustainable technology requires continued investment, policy s
     const lowerInput = input.toLowerCase();
 
     // Content creation workflows
-    if (lowerInput.includes('write') || lowerInput.includes('content') || lowerInput.includes('article') || lowerInput.includes('blog')) {
+    if (
+      lowerInput.includes('write') ||
+      lowerInput.includes('content') ||
+      lowerInput.includes('article') ||
+      lowerInput.includes('blog')
+    ) {
       return {
         description: `Content creation workflow for: "${input}"`,
         steps: [
           { name: 'Research', description: 'Research the topic', agentType: 'web-scraper' },
           { name: 'Analyze', description: 'Analyze research data', agentType: 'gpt4-analyzer' },
-          { name: 'Write Content', description: 'Generate the content', agentType: 'claude-writer' },
-          { name: 'Optimize', description: 'Optimize for SEO', agentType: 'gpt4-analyzer' }
-        ]
+          {
+            name: 'Write Content',
+            description: 'Generate the content',
+            agentType: 'claude-writer',
+          },
+          { name: 'Optimize', description: 'Optimize for SEO', agentType: 'gpt4-analyzer' },
+        ],
       };
     }
 
@@ -1734,21 +1754,29 @@ The transition to sustainable technology requires continued investment, policy s
         steps: [
           { name: 'Analyze Text', description: 'Analyze source text', agentType: 'gpt4-analyzer' },
           { name: 'Translate', description: 'Perform translation', agentType: 'claude-writer' },
-          { name: 'Review', description: 'Review translation quality', agentType: 'gpt4-analyzer' }
-        ]
+          { name: 'Review', description: 'Review translation quality', agentType: 'gpt4-analyzer' },
+        ],
       };
     }
 
     // Data analysis workflows
-    if (lowerInput.includes('analyze') || lowerInput.includes('data') || lowerInput.includes('insights')) {
+    if (
+      lowerInput.includes('analyze') ||
+      lowerInput.includes('data') ||
+      lowerInput.includes('insights')
+    ) {
       return {
         description: `Data analysis workflow for: "${input}"`,
         steps: [
           { name: 'Collect Data', description: 'Gather relevant data', agentType: 'web-scraper' },
-          { name: 'Process Data', description: 'Clean and process data', agentType: 'code-interpreter' },
+          {
+            name: 'Process Data',
+            description: 'Clean and process data',
+            agentType: 'code-interpreter',
+          },
           { name: 'Analyze', description: 'Generate insights', agentType: 'gpt4-analyzer' },
-          { name: 'Summarize', description: 'Create summary report', agentType: 'claude-writer' }
-        ]
+          { name: 'Summarize', description: 'Create summary report', agentType: 'claude-writer' },
+        ],
       };
     }
 
@@ -1757,22 +1785,39 @@ The transition to sustainable technology requires continued investment, policy s
       return {
         description: `Email composition workflow for: "${input}"`,
         steps: [
-          { name: 'Analyze Request', description: 'Understand email requirements', agentType: 'gpt4-analyzer' },
+          {
+            name: 'Analyze Request',
+            description: 'Understand email requirements',
+            agentType: 'gpt4-analyzer',
+          },
           { name: 'Compose Email', description: 'Write the email', agentType: 'claude-writer' },
-          { name: 'Review', description: 'Review and optimize', agentType: 'gpt4-analyzer' }
-        ]
+          { name: 'Review', description: 'Review and optimize', agentType: 'gpt4-analyzer' },
+        ],
       };
     }
 
     // Social media workflows
-    if (lowerInput.includes('social') || lowerInput.includes('post') || lowerInput.includes('twitter') || lowerInput.includes('facebook')) {
+    if (
+      lowerInput.includes('social') ||
+      lowerInput.includes('post') ||
+      lowerInput.includes('twitter') ||
+      lowerInput.includes('facebook')
+    ) {
       return {
         description: `Social media workflow for: "${input}"`,
         steps: [
-          { name: 'Research Trends', description: 'Research current trends', agentType: 'web-scraper' },
-          { name: 'Create Post', description: 'Generate social media content', agentType: 'claude-writer' },
-          { name: 'Optimize', description: 'Optimize for engagement', agentType: 'gpt4-analyzer' }
-        ]
+          {
+            name: 'Research Trends',
+            description: 'Research current trends',
+            agentType: 'web-scraper',
+          },
+          {
+            name: 'Create Post',
+            description: 'Generate social media content',
+            agentType: 'claude-writer',
+          },
+          { name: 'Optimize', description: 'Optimize for engagement', agentType: 'gpt4-analyzer' },
+        ],
       };
     }
 
@@ -1780,15 +1825,22 @@ The transition to sustainable technology requires continued investment, policy s
     return {
       description: `Custom workflow for: "${input}"`,
       steps: [
-        { name: 'Analyze Request', description: 'Understand the request', agentType: 'gpt4-analyzer' },
+        {
+          name: 'Analyze Request',
+          description: 'Understand the request',
+          agentType: 'gpt4-analyzer',
+        },
         { name: 'Process', description: 'Process the request', agentType: 'claude-writer' },
-        { name: 'Summarize', description: 'Provide final summary', agentType: 'gpt4-analyzer' }
-      ]
+        { name: 'Summarize', description: 'Provide final summary', agentType: 'gpt4-analyzer' },
+      ],
     };
   };
 
   // Execute workflow with user input using direct nodes (to avoid state timing issues)
-  const runWorkflowWithUserInputDirect = async (originalInput: string, workflowNodes: AgentNode[]) => {
+  const runWorkflowWithUserInputDirect = async (
+    originalInput: string,
+    workflowNodes: AgentNode[]
+  ) => {
     if (workflowNodes.length === 0) {
       return;
     }
@@ -1812,9 +1864,7 @@ The transition to sustainable technology requires continued investment, policy s
 
         // Update node status to processing
         setNodes(prev =>
-          prev.map(n =>
-            n.id === node.id ? { ...n, status: 'processing' as const } : n
-          )
+          prev.map(n => (n.id === node.id ? { ...n, status: 'processing' as const } : n))
         );
 
         // Simulate processing time
@@ -1832,7 +1882,10 @@ The transition to sustainable technology requires continued investment, policy s
             let url = originalInput;
             if (originalInput.toLowerCase().includes('gsp.ro')) {
               url = 'https://www.gsp.ro';
-            } else if (originalInput.toLowerCase().includes('stiri') && originalInput.toLowerCase().includes('gsp')) {
+            } else if (
+              originalInput.toLowerCase().includes('stiri') &&
+              originalInput.toLowerCase().includes('gsp')
+            ) {
               url = 'https://www.gsp.ro';
             } else if (!originalInput.startsWith('http')) {
               // If no URL provided, try to extract domain or use a default
@@ -1850,7 +1903,7 @@ The transition to sustainable technology requires continued investment, policy s
               extractText: true,
               extractLinks: false,
               waitFor: 2000,
-              maxRetries: 3
+              maxRetries: 3,
             });
 
             if (scrapingResult.success) {
@@ -1860,7 +1913,7 @@ The transition to sustainable technology requires continued investment, policy s
                 tokensUsed: Math.floor((scrapingResult.content?.length || 0) / 4), // Rough token estimate
                 processingTime: Date.now() - new Date().getTime(),
                 timestamp: Date.now(),
-                scrapingData: scrapingResult
+                scrapingData: scrapingResult,
               };
             } else {
               throw new Error(scrapingResult.error || 'Web scraping failed');
@@ -1876,7 +1929,7 @@ The transition to sustainable technology requires continued investment, policy s
               model: getModelFromNodeType(node.type),
               prompt: getPromptFromNodeType(node.type).replace('{{input}}', originalInput),
               inputs: { userRequest: originalInput, currentInput: currentInput },
-              parameters: { temperature: 0.7, maxTokens: 1000 }
+              parameters: { temperature: 0.7, maxTokens: 1000 },
             };
 
             const aiResult = await aiServiceProxy.executeAIRequest(aiRequest, 'demo-user');
@@ -1887,7 +1940,7 @@ The transition to sustainable technology requires continued investment, policy s
                 model: aiResult.model,
                 tokensUsed: aiResult.tokensUsed,
                 processingTime: aiResult.processingTime,
-                timestamp: Date.now()
+                timestamp: Date.now(),
               };
             } else {
               // Fallback to realistic mock response
@@ -1916,7 +1969,10 @@ The transition to sustainable technology requires continued investment, policy s
           // Store result
           const result: ProcessingResult = {
             nodeId: node.id,
-            input: { userRequest: originalInput, currentInput: i === 0 ? originalInput : results[i-1]?.output.response },
+            input: {
+              userRequest: originalInput,
+              currentInput: i === 0 ? originalInput : results[i - 1]?.output.response,
+            },
             output,
             metrics: {
               processingTime: output.processingTime || Math.random() * 3 + 0.5,
@@ -1929,7 +1985,6 @@ The transition to sustainable technology requires continued investment, policy s
 
           results.push(result);
           setProcessingResults(prev => [...prev, result]);
-
         } catch (error) {
           console.error(`Error processing node ${node.id}:`, error);
 
@@ -1956,7 +2011,10 @@ The transition to sustainable technology requires continued investment, policy s
 
           const result: ProcessingResult = {
             nodeId: node.id,
-            input: { userRequest: originalInput, currentInput: i === 0 ? originalInput : results[i-1]?.output.response },
+            input: {
+              userRequest: originalInput,
+              currentInput: i === 0 ? originalInput : results[i - 1]?.output.response,
+            },
             output,
             metrics: {
               processingTime: Math.random() * 3 + 0.5,
@@ -1987,7 +2045,8 @@ The transition to sustainable technology requires continued investment, policy s
       // Calculate metrics
       const totalTime = results.reduce((sum, r) => sum + r.metrics.processingTime, 0);
       const totalTokens = results.reduce((sum, r) => sum + (r.metrics.tokensProcessed || 0), 0);
-      const avgAccuracy = results.reduce((sum, r) => sum + (r.metrics.accuracy || 0), 0) / results.length;
+      const avgAccuracy =
+        results.reduce((sum, r) => sum + (r.metrics.accuracy || 0), 0) / results.length;
 
       setWorkflowMetrics({
         totalProcessingTime: totalTime,
@@ -2006,7 +2065,6 @@ The transition to sustainable technology requires continued investment, policy s
           confidence: 1.0,
         },
       ]);
-
     } catch (error) {
       console.error('Workflow execution failed:', error);
       setAiSuggestions(prev => [
@@ -2051,9 +2109,7 @@ The transition to sustainable technology requires continued investment, policy s
 
         // Update node status to processing
         setNodes(prev =>
-          prev.map(n =>
-            n.id === node.id ? { ...n, status: 'processing' as const } : n
-          )
+          prev.map(n => (n.id === node.id ? { ...n, status: 'processing' as const } : n))
         );
 
         // Simulate processing time
@@ -2071,7 +2127,10 @@ The transition to sustainable technology requires continued investment, policy s
             let url = originalInput;
             if (originalInput.toLowerCase().includes('gsp.ro')) {
               url = 'https://www.gsp.ro';
-            } else if (originalInput.toLowerCase().includes('stiri') && originalInput.toLowerCase().includes('gsp')) {
+            } else if (
+              originalInput.toLowerCase().includes('stiri') &&
+              originalInput.toLowerCase().includes('gsp')
+            ) {
               url = 'https://www.gsp.ro';
             } else if (!originalInput.startsWith('http')) {
               // If no URL provided, try to extract domain or use a default
@@ -2089,7 +2148,7 @@ The transition to sustainable technology requires continued investment, policy s
               extractText: true,
               extractLinks: false,
               waitFor: 2000,
-              maxRetries: 3
+              maxRetries: 3,
             });
 
             if (scrapingResult.success) {
@@ -2099,7 +2158,7 @@ The transition to sustainable technology requires continued investment, policy s
                 tokensUsed: Math.floor((scrapingResult.content?.length || 0) / 4), // Rough token estimate
                 processingTime: Date.now() - new Date().getTime(),
                 timestamp: Date.now(),
-                scrapingData: scrapingResult
+                scrapingData: scrapingResult,
               };
             } else {
               throw new Error(scrapingResult.error || 'Web scraping failed');
@@ -2115,7 +2174,7 @@ The transition to sustainable technology requires continued investment, policy s
               model: getModelFromNodeType(node.type),
               prompt: getPromptFromNodeType(node.type).replace('{{input}}', originalInput),
               inputs: { userRequest: originalInput, currentInput: currentInput },
-              parameters: { temperature: 0.7, maxTokens: 1000 }
+              parameters: { temperature: 0.7, maxTokens: 1000 },
             };
 
             const aiResult = await aiServiceProxy.executeAIRequest(aiRequest, 'demo-user');
@@ -2126,7 +2185,7 @@ The transition to sustainable technology requires continued investment, policy s
                 model: aiResult.model,
                 tokensUsed: aiResult.tokensUsed,
                 processingTime: aiResult.processingTime,
-                timestamp: Date.now()
+                timestamp: Date.now(),
               };
             } else {
               // Fallback to mock response
@@ -2155,7 +2214,10 @@ The transition to sustainable technology requires continued investment, policy s
           // Store result
           const result: ProcessingResult = {
             nodeId: node.id,
-            input: { userRequest: originalInput, currentInput: i === 0 ? originalInput : results[i-1]?.output.response },
+            input: {
+              userRequest: originalInput,
+              currentInput: i === 0 ? originalInput : results[i - 1]?.output.response,
+            },
             output,
             metrics: {
               processingTime: output.processingTime || Math.random() * 3 + 0.5,
@@ -2168,7 +2230,6 @@ The transition to sustainable technology requires continued investment, policy s
 
           results.push(result);
           setProcessingResults(prev => [...prev, result]);
-
         } catch (error) {
           console.error(`Error processing node ${node.id}:`, error);
 
@@ -2195,7 +2256,10 @@ The transition to sustainable technology requires continued investment, policy s
 
           const result: ProcessingResult = {
             nodeId: node.id,
-            input: { userRequest: originalInput, currentInput: i === 0 ? originalInput : results[i-1]?.output.response },
+            input: {
+              userRequest: originalInput,
+              currentInput: i === 0 ? originalInput : results[i - 1]?.output.response,
+            },
             output,
             metrics: {
               processingTime: Math.random() * 3 + 0.5,
@@ -2212,7 +2276,8 @@ The transition to sustainable technology requires continued investment, policy s
       }
 
       // Set final results
-      const finalOutput = results[results.length - 1]?.output?.response || 'Workflow completed successfully!';
+      const finalOutput =
+        results[results.length - 1]?.output?.response || 'Workflow completed successfully!';
       console.log('Setting final results:', finalOutput);
       console.log('Results array:', results);
       setFinalResults(finalOutput);
@@ -2220,7 +2285,8 @@ The transition to sustainable technology requires continued investment, policy s
       // Calculate metrics
       const totalTime = results.reduce((sum, r) => sum + r.metrics.processingTime, 0);
       const totalTokens = results.reduce((sum, r) => sum + (r.metrics.tokensProcessed || 0), 0);
-      const avgAccuracy = results.reduce((sum, r) => sum + (r.metrics.accuracy || 0), 0) / results.length;
+      const avgAccuracy =
+        results.reduce((sum, r) => sum + (r.metrics.accuracy || 0), 0) / results.length;
 
       setWorkflowMetrics({
         totalProcessingTime: totalTime,
@@ -2239,7 +2305,6 @@ The transition to sustainable technology requires continued investment, policy s
           confidence: 1.0,
         },
       ]);
-
     } catch (error) {
       console.error('Workflow execution failed:', error);
       setAiSuggestions(prev => [
@@ -2262,26 +2327,38 @@ The transition to sustainable technology requires continued investment, policy s
   // Generate mock response based on node type
   const generateMockResponse = (nodeType: string, input: string) => {
     const responses: Record<string, (input: string) => string> = {
-      'web-scraper': (input) => `Research data collected for "${input}": Found 15 relevant sources, 3 trending topics, and 8 competitor insights.`,
-      'gpt4-analyzer': (input) => `Analysis of "${input}": Key insights include market trends, user preferences, and optimization opportunities. Confidence: 87%.`,
-      'claude-writer': (input) => `Content generated for "${input}": High-quality, engaging content tailored to your audience with SEO optimization and clear call-to-actions.`,
-      'seo-optimizer': (input) => `SEO optimization for "${input}": Improved keyword density, meta descriptions, and readability score. Expected 25% traffic increase.`,
-      'translator': (input) => `Translation of "${input}": Professional translation completed with cultural context and linguistic accuracy maintained.`,
-      'summarizer': (input) => `Summary of "${input}": Concise overview highlighting key points, main conclusions, and actionable insights.`,
-      'email-composer': (input) => `Email composed for "${input}": Professional, engaging email with clear subject line and compelling call-to-action.`,
-      'social-media': (input) => `Social media post for "${input}": Engaging content optimized for platform algorithms with relevant hashtags and visual suggestions.`,
-      'code-interpreter': (input) => `Code analysis for "${input}": Clean, efficient implementation with performance optimizations and best practices applied.`,
-      'dalle-generator': (input) => `Image generated for "${input}": High-quality visual content created with artistic composition and brand alignment.`
+      'web-scraper': input =>
+        `Research data collected for "${input}": Found 15 relevant sources, 3 trending topics, and 8 competitor insights.`,
+      'gpt4-analyzer': input =>
+        `Analysis of "${input}": Key insights include market trends, user preferences, and optimization opportunities. Confidence: 87%.`,
+      'claude-writer': input =>
+        `Content generated for "${input}": High-quality, engaging content tailored to your audience with SEO optimization and clear call-to-actions.`,
+      'seo-optimizer': input =>
+        `SEO optimization for "${input}": Improved keyword density, meta descriptions, and readability score. Expected 25% traffic increase.`,
+      translator: input =>
+        `Translation of "${input}": Professional translation completed with cultural context and linguistic accuracy maintained.`,
+      summarizer: input =>
+        `Summary of "${input}": Concise overview highlighting key points, main conclusions, and actionable insights.`,
+      'email-composer': input =>
+        `Email composed for "${input}": Professional, engaging email with clear subject line and compelling call-to-action.`,
+      'social-media': input =>
+        `Social media post for "${input}": Engaging content optimized for platform algorithms with relevant hashtags and visual suggestions.`,
+      'code-interpreter': input =>
+        `Code analysis for "${input}": Clean, efficient implementation with performance optimizations and best practices applied.`,
+      'dalle-generator': input =>
+        `Image generated for "${input}": High-quality visual content created with artistic composition and brand alignment.`,
     };
 
-    const responseGenerator = responses[nodeType] || ((input) => `Processed "${input}" successfully with advanced AI capabilities.`);
+    const responseGenerator =
+      responses[nodeType] ||
+      (input => `Processed "${input}" successfully with advanced AI capabilities.`);
 
     return {
       response: responseGenerator(input),
       model: getModelFromNodeType(nodeType),
       tokensUsed: Math.floor(Math.random() * 500) + 100,
       processingTime: Math.random() * 3 + 0.5,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
   };
 
@@ -2800,10 +2877,6 @@ The transition to sustainable technology requires continued investment, policy s
           </div>
         </motion.div>
 
-
-
-
-
         {/* Template Gallery Modal */}
         <AnimatePresence>
           {showTemplateGallery && (
@@ -2970,7 +3043,7 @@ The transition to sustainable technology requires continued investment, policy s
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 className="bg-card border border-border-alt rounded-2xl p-6 max-w-lg w-full shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -2978,7 +3051,9 @@ The transition to sustainable technology requires continued investment, policy s
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-foreground">Create AI Workflow</h3>
-                    <p className="text-sm text-muted-foreground">Tell us what you want to accomplish</p>
+                    <p className="text-sm text-muted-foreground">
+                      Tell us what you want to accomplish
+                    </p>
                   </div>
                 </div>
 
@@ -2989,7 +3064,7 @@ The transition to sustainable technology requires continued investment, policy s
                     </label>
                     <textarea
                       value={userInput}
-                      onChange={(e) => setUserInput(e.target.value)}
+                      onChange={e => setUserInput(e.target.value)}
                       placeholder="e.g., Write a blog post about AI trends, Translate this text to Spanish, Analyze my sales data..."
                       className="w-full h-24 px-3 py-2 bg-background border border-border-alt rounded-lg text-foreground placeholder-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30"
                       disabled={isGeneratingWorkflow}
@@ -2998,7 +3073,9 @@ The transition to sustainable technology requires continued investment, policy s
 
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span>AI will automatically create and execute the perfect workflow for your request</span>
+                    <span>
+                      AI will automatically create and execute the perfect workflow for your request
+                    </span>
                   </div>
 
                   <div className="flex gap-3 pt-2">
@@ -3065,11 +3142,8 @@ The transition to sustainable technology requires continued investment, policy s
                 </pre>
               </div>
             </div>
-
-
           </motion.div>
         )}
-
       </div>
     </section>
   );

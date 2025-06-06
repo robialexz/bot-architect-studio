@@ -4,7 +4,6 @@ import { supabase } from '@/lib/supabase';
 import { aiServiceProxy } from '../aiServiceProxy';
 
 export class AIAgentProcessor implements NodeProcessor {
-  
   canProcess(nodeType: string): boolean {
     return ['ai-agent', 'ai-processor', 'chat', 'gpt', 'claude'].includes(nodeType);
   }
@@ -12,47 +11,47 @@ export class AIAgentProcessor implements NodeProcessor {
   getRequiredInputs(node: any): string[] {
     // Basic required inputs for AI processing
     const required = [];
-    
+
     if (node.data?.requiresPrompt !== false) {
       required.push('prompt');
     }
-    
+
     // Add custom required inputs from node configuration
     if (node.data?.requiredInputs) {
       required.push(...node.data.requiredInputs);
     }
-    
+
     return required;
   }
 
   validateInputs(node: any, inputs: Record<string, any>): boolean {
     const required = this.getRequiredInputs(node);
-    
+
     for (const input of required) {
       if (!(input in inputs) || inputs[input] === undefined || inputs[input] === null) {
-        logger.warn('Missing required input for AI node', { 
-          nodeId: node.id, 
+        logger.warn('Missing required input for AI node', {
+          nodeId: node.id,
           missingInput: input,
-          availableInputs: Object.keys(inputs)
+          availableInputs: Object.keys(inputs),
         });
         return false;
       }
     }
-    
+
     return true;
   }
 
   async processNode(
-    node: any, 
-    inputs: Record<string, any>, 
+    node: any,
+    inputs: Record<string, any>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
-    
-    logger.info('Processing AI agent node', { 
-      nodeId: node.id, 
+
+    logger.info('Processing AI agent node', {
+      nodeId: node.id,
       nodeType: node.type,
-      executionId: context.executionId
+      executionId: context.executionId,
     });
 
     try {
@@ -71,17 +70,17 @@ export class AIAgentProcessor implements NodeProcessor {
 
       // Prepare AI request
       const aiRequest = this.prepareAIRequest(node, inputs);
-      
+
       // Execute AI request
       const aiResponse = await aiServiceProxy.executeAIRequest(aiRequest, context.userId);
-      
+
       if (!aiResponse.success) {
         throw new Error(aiResponse.error || 'AI request failed');
       }
 
       // Process AI response
       const outputs = this.processAIResponse(node, aiResponse);
-      
+
       // Track AI usage (disabled temporarily to avoid Supabase errors)
       if (aiResponse.tokensUsed || aiResponse.estimatedCost) {
         // TODO: Re-enable when ai_usage table is created in Supabase
@@ -90,7 +89,7 @@ export class AIAgentProcessor implements NodeProcessor {
           nodeId: node.id,
           service: aiRequest.service,
           model: aiRequest.model,
-          tokens: aiResponse.tokensUsed
+          tokens: aiResponse.tokensUsed,
         });
       }
 
@@ -102,7 +101,7 @@ export class AIAgentProcessor implements NodeProcessor {
         status: 'completed',
         outputs,
         completedAt: endTime,
-        processingTimeMs: processingTime
+        processingTimeMs: processingTime,
       });
 
       const result: NodeExecutionResult = {
@@ -111,24 +110,23 @@ export class AIAgentProcessor implements NodeProcessor {
         status: 'completed',
         inputs,
         outputs,
-        processingTime
+        processingTime,
       };
 
-      logger.info('AI agent node completed', { 
-        nodeId: node.id, 
+      logger.info('AI agent node completed', {
+        nodeId: node.id,
         processingTime,
-        tokensUsed: aiResponse.tokensUsed
+        tokensUsed: aiResponse.tokensUsed,
       });
 
       return result;
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
-      logger.error('AI agent node failed', { 
-        nodeId: node.id, 
+
+      logger.error('AI agent node failed', {
+        nodeId: node.id,
         error: errorMessage,
-        executionId: context.executionId
+        executionId: context.executionId,
       });
 
       // Update node execution with error
@@ -137,7 +135,7 @@ export class AIAgentProcessor implements NodeProcessor {
         await this.updateNodeExecution(nodeExecution.id, {
           status: 'failed',
           errorMessage,
-          completedAt: new Date()
+          completedAt: new Date(),
         });
       }
 
@@ -148,32 +146,32 @@ export class AIAgentProcessor implements NodeProcessor {
         inputs,
         outputs: {},
         error: errorMessage,
-        processingTime: Date.now() - startTime.getTime()
+        processingTime: Date.now() - startTime.getTime(),
       };
     }
   }
 
   private prepareAIRequest(node: any, inputs: Record<string, any>): AIRequest {
     const nodeData = node.data || {};
-    
+
     // Determine service and model
     const service = nodeData.service || nodeData.provider || 'openai';
     const model = nodeData.model || this.getDefaultModel(service);
-    
+
     // Prepare prompt
     let prompt = inputs.prompt || inputs.text || inputs.message;
-    
+
     // Apply prompt template if configured
     if (nodeData.promptTemplate) {
       prompt = this.applyPromptTemplate(nodeData.promptTemplate, inputs);
     }
-    
+
     // Prepare parameters
     const parameters = {
       temperature: nodeData.temperature || 0.7,
       maxTokens: nodeData.maxTokens || 1000,
       topP: nodeData.topP || 1,
-      ...nodeData.parameters
+      ...nodeData.parameters,
     };
 
     return {
@@ -183,7 +181,7 @@ export class AIAgentProcessor implements NodeProcessor {
       model,
       prompt,
       inputs,
-      parameters
+      parameters,
     };
   }
 
@@ -193,27 +191,27 @@ export class AIAgentProcessor implements NodeProcessor {
       anthropic: 'claude-3-sonnet-20240229',
       huggingface: 'microsoft/DialoGPT-medium',
       cohere: 'command',
-      stability: 'stable-diffusion-xl-1024-v1-0'
+      stability: 'stable-diffusion-xl-1024-v1-0',
     };
-    
+
     return defaults[service as keyof typeof defaults] || 'gpt-3.5-turbo';
   }
 
   private applyPromptTemplate(template: string, inputs: Record<string, any>): string {
     let result = template;
-    
+
     // Replace placeholders like {{input_name}}
     Object.entries(inputs).forEach(([key, value]) => {
       const placeholder = `{{${key}}}`;
       result = result.replace(new RegExp(placeholder, 'g'), String(value));
     });
-    
+
     return result;
   }
 
   private processAIResponse(node: any, aiResponse: any): Record<string, any> {
     const outputs: Record<string, any> = {};
-    
+
     // Extract main response
     if (aiResponse.data) {
       if (typeof aiResponse.data === 'string') {
@@ -230,18 +228,18 @@ export class AIAgentProcessor implements NodeProcessor {
         outputs.text = outputs.response;
       }
     }
-    
+
     // Add metadata
     outputs.model = aiResponse.model;
     outputs.tokensUsed = aiResponse.tokensUsed || 0;
     outputs.processingTime = aiResponse.processingTime || 0;
-    
+
     // Apply output transformations if configured
     const nodeData = node.data || {};
     if (nodeData.outputTransform) {
       return this.applyOutputTransform(outputs, nodeData.outputTransform);
     }
-    
+
     return outputs;
   }
 
@@ -257,15 +255,15 @@ export class AIAgentProcessor implements NodeProcessor {
         logger.warn('Failed to extract JSON from response', { error });
       }
     }
-    
+
     if (transform.toLowerCase && outputs.response) {
       outputs.response = outputs.response.toLowerCase();
     }
-    
+
     if (transform.trim && outputs.response) {
       outputs.response = outputs.response.trim();
     }
-    
+
     return outputs;
   }
 
@@ -284,7 +282,7 @@ export class AIAgentProcessor implements NodeProcessor {
         node_type: node.type,
         inputs,
         status: 'running',
-        started_at: startTime.toISOString()
+        started_at: startTime.toISOString(),
       })
       .select()
       .single();
@@ -330,25 +328,23 @@ export class AIAgentProcessor implements NodeProcessor {
     response: any
   ): Promise<void> {
     try {
-      await supabase
-        .from('ai_usage')
-        .insert({
-          user_id: context.userId,
-          execution_id: context.executionId,
-          node_execution_id: nodeExecutionId,
-          service_provider: request.service,
-          model_name: request.model,
-          tokens_used: response.tokensUsed || 0,
-          estimated_cost: response.estimatedCost || 0,
-          request_data: {
-            prompt: request.prompt,
-            parameters: request.parameters
-          },
-          response_data: {
-            response: response.data,
-            processingTime: response.processingTime
-          }
-        });
+      await supabase.from('ai_usage').insert({
+        user_id: context.userId,
+        execution_id: context.executionId,
+        node_execution_id: nodeExecutionId,
+        service_provider: request.service,
+        model_name: request.model,
+        tokens_used: response.tokensUsed || 0,
+        estimated_cost: response.estimatedCost || 0,
+        request_data: {
+          prompt: request.prompt,
+          parameters: request.parameters,
+        },
+        response_data: {
+          response: response.data,
+          processingTime: response.processingTime,
+        },
+      });
     } catch (error) {
       logger.error('Failed to track AI usage', { error });
     }

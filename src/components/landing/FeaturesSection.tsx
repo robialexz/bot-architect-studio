@@ -177,8 +177,6 @@ const FeaturesSection: React.FC = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-
-
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
@@ -232,8 +230,6 @@ const FeaturesSection: React.FC = () => {
             </motion.div>
           ))}
         </motion.div>
-
-
 
         {/* CTA Section */}
         <motion.div

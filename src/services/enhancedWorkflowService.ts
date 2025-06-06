@@ -1,17 +1,7 @@
 // Enhanced workflow service for AI automation platform
 import { supabase } from '@/lib/supabase';
-import {
-  Workflow,
-  WorkflowNode,
-  Edge,
-  WorkflowStatus,
-  WorkflowCategory,
-} from '@/types/workflow';
-import {
-  ExecutionResult,
-  NodeExecutionResult,
-  ExecutionStatus,
-} from '@/types/execution';
+import { Workflow, WorkflowNode, Edge, WorkflowStatus, WorkflowCategory } from '@/types/workflow';
+import { ExecutionResult, NodeExecutionResult, ExecutionStatus } from '@/types/execution';
 import {
   NodeTemplate,
   WorkflowTemplate,

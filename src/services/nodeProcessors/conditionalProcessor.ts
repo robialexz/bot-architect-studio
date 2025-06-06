@@ -2,14 +2,13 @@ import { NodeProcessor, NodeExecutionResult, ExecutionContext } from '@/types/ex
 import { logger } from '@/lib/logger';
 
 export class ConditionalProcessor implements NodeProcessor {
-  
   canProcess(nodeType: string): boolean {
     return ['conditional', 'if-else', 'switch', 'decision'].includes(nodeType);
   }
 
   getRequiredInputs(node: any): string[] {
     const conditionType = node.data?.conditionType || 'simple';
-    
+
     switch (conditionType) {
       case 'simple':
         return ['value', 'condition'];
@@ -24,31 +23,31 @@ export class ConditionalProcessor implements NodeProcessor {
 
   validateInputs(node: any, inputs: Record<string, any>): boolean {
     const required = this.getRequiredInputs(node);
-    
+
     for (const input of required) {
       if (!(input in inputs) || inputs[input] === undefined) {
-        logger.warn('Missing required input for conditional node', { 
-          nodeId: node.id, 
-          missingInput: input 
+        logger.warn('Missing required input for conditional node', {
+          nodeId: node.id,
+          missingInput: input,
         });
         return false;
       }
     }
-    
+
     return true;
   }
 
   async processNode(
-    node: any, 
-    inputs: Record<string, any>, 
+    node: any,
+    inputs: Record<string, any>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
-    
-    logger.info('Processing conditional node', { 
-      nodeId: node.id, 
+
+    logger.info('Processing conditional node', {
+      nodeId: node.id,
       conditionType: node.data?.conditionType,
-      executionId: context.executionId
+      executionId: context.executionId,
     });
 
     try {
@@ -58,14 +57,14 @@ export class ConditionalProcessor implements NodeProcessor {
 
       const conditionType = node.data?.conditionType || 'simple';
       const result = this.evaluateCondition(conditionType, node.data, inputs);
-      
+
       const outputs = {
         ...inputs,
         conditionResult: result.passed,
         conditionValue: result.value,
         conditionType,
         branch: result.branch || (result.passed ? 'true' : 'false'),
-        evaluatedAt: new Date().toISOString()
+        evaluatedAt: new Date().toISOString(),
       };
 
       // Add branch-specific outputs
@@ -77,11 +76,11 @@ export class ConditionalProcessor implements NodeProcessor {
 
       const processingTime = Date.now() - startTime.getTime();
 
-      logger.info('Conditional node completed', { 
-        nodeId: node.id, 
+      logger.info('Conditional node completed', {
+        nodeId: node.id,
         conditionResult: result.passed,
         branch: result.branch,
-        processingTime
+        processingTime,
       });
 
       return {
@@ -90,16 +89,15 @@ export class ConditionalProcessor implements NodeProcessor {
         status: 'completed',
         inputs,
         outputs,
-        processingTime
+        processingTime,
       };
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
-      logger.error('Conditional node failed', { 
-        nodeId: node.id, 
+
+      logger.error('Conditional node failed', {
+        nodeId: node.id,
         error: errorMessage,
-        executionId: context.executionId
+        executionId: context.executionId,
       });
 
       return {
@@ -109,40 +107,39 @@ export class ConditionalProcessor implements NodeProcessor {
         inputs,
         outputs: {},
         error: errorMessage,
-        processingTime: Date.now() - startTime.getTime()
+        processingTime: Date.now() - startTime.getTime(),
       };
     }
   }
 
   private evaluateCondition(
-    conditionType: string, 
-    nodeData: any, 
+    conditionType: string,
+    nodeData: any,
     inputs: Record<string, any>
   ): { passed: boolean; value: any; branch?: string } {
-    
     switch (conditionType) {
       case 'simple':
         return this.evaluateSimpleCondition(nodeData, inputs);
-      
+
       case 'expression':
         return this.evaluateExpression(nodeData, inputs);
-      
+
       case 'switch':
         return this.evaluateSwitch(nodeData, inputs);
-      
+
       case 'range':
         return this.evaluateRange(nodeData, inputs);
-      
+
       case 'regex':
         return this.evaluateRegex(nodeData, inputs);
-      
+
       default:
         throw new Error(`Unknown condition type: ${conditionType}`);
     }
   }
 
   private evaluateSimpleCondition(
-    nodeData: any, 
+    nodeData: any,
     inputs: Record<string, any>
   ): { passed: boolean; value: any } {
     const value = inputs.value;
@@ -204,11 +201,11 @@ export class ConditionalProcessor implements NodeProcessor {
   }
 
   private evaluateExpression(
-    nodeData: any, 
+    nodeData: any,
     inputs: Record<string, any>
   ): { passed: boolean; value: any } {
     const expression = inputs.expression || nodeData.expression;
-    
+
     if (!expression) {
       throw new Error('No expression provided');
     }
@@ -223,7 +220,7 @@ export class ConditionalProcessor implements NodeProcessor {
   }
 
   private evaluateSwitch(
-    nodeData: any, 
+    nodeData: any,
     inputs: Record<string, any>
   ): { passed: boolean; value: any; branch: string } {
     const value = inputs.value;
@@ -233,32 +230,32 @@ export class ConditionalProcessor implements NodeProcessor {
     // Check each case
     for (const [caseValue, caseResult] of Object.entries(cases)) {
       if (String(value) === String(caseValue)) {
-        return { 
-          passed: true, 
-          value: caseResult, 
-          branch: caseValue 
+        return {
+          passed: true,
+          value: caseResult,
+          branch: caseValue,
         };
       }
     }
 
     // Default case
     if (defaultCase !== undefined) {
-      return { 
-        passed: true, 
-        value: defaultCase, 
-        branch: 'default' 
+      return {
+        passed: true,
+        value: defaultCase,
+        branch: 'default',
       };
     }
 
-    return { 
-      passed: false, 
-      value: null, 
-      branch: 'none' 
+    return {
+      passed: false,
+      value: null,
+      branch: 'none',
     };
   }
 
   private evaluateRange(
-    nodeData: any, 
+    nodeData: any,
     inputs: Record<string, any>
   ): { passed: boolean; value: any } {
     const value = Number(inputs.value);
@@ -277,7 +274,7 @@ export class ConditionalProcessor implements NodeProcessor {
   }
 
   private evaluateRegex(
-    nodeData: any, 
+    nodeData: any,
     inputs: Record<string, any>
   ): { passed: boolean; value: any } {
     const value = String(inputs.value);
@@ -291,10 +288,10 @@ export class ConditionalProcessor implements NodeProcessor {
     try {
       const regex = new RegExp(pattern, flags);
       const match = regex.exec(value);
-      
-      return { 
-        passed: !!match, 
-        value: match ? match[0] : null 
+
+      return {
+        passed: !!match,
+        value: match ? match[0] : null,
       };
     } catch (error) {
       throw new Error(`Invalid regex pattern: ${pattern}`);
@@ -305,7 +302,7 @@ export class ConditionalProcessor implements NodeProcessor {
     // Simple and safe expression evaluator
     // Replace input variables in the expression
     let processedExpression = expression;
-    
+
     Object.entries(inputs).forEach(([key, value]) => {
       const placeholder = new RegExp(`\\b${key}\\b`, 'g');
       const safeValue = typeof value === 'string' ? `"${value}"` : String(value);

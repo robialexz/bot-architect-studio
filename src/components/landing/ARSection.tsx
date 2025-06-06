@@ -29,28 +29,32 @@ const ARSection = () => {
     {
       icon: Hand,
       title: 'Spatial Workflow Design',
-      description: 'Build enterprise-grade AI workflows in 3D space with 95% faster setup than traditional tools',
+      description:
+        'Build enterprise-grade AI workflows in 3D space with 95% faster setup than traditional tools',
       benefit: '10x faster deployment',
       demo: 'gesture-demo',
     },
     {
       icon: Eye,
       title: 'Computer Vision Integration',
-      description: 'Real-time object recognition and spatial mapping powered by advanced ML algorithms',
+      description:
+        'Real-time object recognition and spatial mapping powered by advanced ML algorithms',
       benefit: '99.7% accuracy rate',
       demo: 'recognition-demo',
     },
     {
       icon: Layers,
       title: 'Multi-Modal AI Orchestration',
-      description: 'Seamlessly connect text, image, and voice AI models in intuitive visual workflows',
+      description:
+        'Seamlessly connect text, image, and voice AI models in intuitive visual workflows',
       benefit: 'Connect 50+ AI services',
       demo: 'workflow-demo',
     },
     {
       icon: Zap,
       title: 'Real-Time Collaboration',
-      description: 'Multiple users can build and modify workflows simultaneously in shared AR space',
+      description:
+        'Multiple users can build and modify workflows simultaneously in shared AR space',
       benefit: 'Team productivity +300%',
       demo: 'connection-demo',
     },
@@ -151,7 +155,9 @@ const ARSection = () => {
         >
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/20 to-gold/20 rounded-full px-6 py-2 mb-6">
             <Crown className="w-4 h-4 text-gold" />
-            <span className="text-sm font-semibold text-foreground">PRODUCTION-READY AR TECHNOLOGY</span>
+            <span className="text-sm font-semibold text-foreground">
+              PRODUCTION-READY AR TECHNOLOGY
+            </span>
           </div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
@@ -164,7 +170,9 @@ const ARSection = () => {
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Build, deploy, and manage AI workflows using spatial interfaces on any mobile device.
             Reduce automation setup time by 95% while increasing team productivity by 300%.
-            <span className="text-primary font-semibold">Join 2,000+ companies already transforming their operations.</span>
+            <span className="text-primary font-semibold">
+              Join 2,000+ companies already transforming their operations.
+            </span>
           </p>
         </motion.div>
 
@@ -366,7 +374,7 @@ const ARSection = () => {
                   key={i}
                   className="absolute w-2 h-2 bg-primary rounded-full"
                   style={{
-                    left: `${20 + (i * 10)}%`,
+                    left: `${20 + i * 10}%`,
                     top: `${30 + (i % 3) * 20}%`,
                   }}
                   animate={{
@@ -376,7 +384,7 @@ const ARSection = () => {
                     scale: [0.5, 1, 0.5],
                   }}
                   transition={{
-                    duration: 3 + (i * 0.2),
+                    duration: 3 + i * 0.2,
                     repeat: Infinity,
                     delay: i * 0.3,
                   }}
@@ -439,9 +447,13 @@ const ARSection = () => {
               </h3>
 
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Deploy enterprise-grade AI workflows using intuitive spatial interfaces. Our platform
-                combines proven automation technology with cutting-edge AR visualization, delivering
-                <span className="text-primary font-semibold"> measurable business results from day one.</span>
+                Deploy enterprise-grade AI workflows using intuitive spatial interfaces. Our
+                platform combines proven automation technology with cutting-edge AR visualization,
+                delivering
+                <span className="text-primary font-semibold">
+                  {' '}
+                  measurable business results from day one.
+                </span>
               </p>
 
               {/* Key Metrics */}
@@ -479,9 +491,11 @@ const ARSection = () => {
                   onClick={() => setCurrentDemo(index)}
                 >
                   {/* Background Glow Effect */}
-                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-                    currentDemo === index ? 'opacity-100' : ''
-                  }`}>
+                  <div
+                    className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                      currentDemo === index ? 'opacity-100' : ''
+                    }`}
+                  >
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-gold/5" />
                     <div className="absolute top-0 left-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
                     <div className="absolute bottom-0 right-0 w-32 h-32 bg-gold/20 rounded-full blur-3xl" />
@@ -496,7 +510,7 @@ const ARSection = () => {
                           : 'bg-primary/10 text-primary group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-gold group-hover:text-white'
                       }`}
                       whileHover={{ rotate: 5, scale: 1.1 }}
-                      transition={{ type: "spring", stiffness: 300 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
                     >
                       <feature.icon className="w-8 h-8" />
                     </motion.div>
@@ -580,7 +594,9 @@ const ARSection = () => {
                       {/* Benefits */}
                       <div className="flex flex-wrap gap-2">
                         <div className="inline-flex items-center gap-1 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-full px-3 py-1 border border-emerald-500/20">
-                          <span className="text-xs font-semibold text-emerald-600">{useCase.timesSaved}</span>
+                          <span className="text-xs font-semibold text-emerald-600">
+                            {useCase.timesSaved}
+                          </span>
                         </div>
                         <div className="inline-flex items-center gap-1 bg-gradient-to-r from-primary/10 to-gold/10 rounded-full px-3 py-1 border border-primary/20">
                           <span className="text-xs font-semibold text-primary">{useCase.roi}</span>
@@ -625,8 +641,11 @@ const ARSection = () => {
                       Start Automating Your Business Today
                     </h4>
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                      Join 2,000+ companies already saving 25+ hours per week with FlowsyAI automation.
-                      <span className="text-primary font-semibold">Get early access to our spatial computing platform</span>
+                      Join 2,000+ companies already saving 25+ hours per week with FlowsyAI
+                      automation.
+                      <span className="text-primary font-semibold">
+                        Get early access to our spatial computing platform
+                      </span>
                       and transform your operations in days, not months.
                     </p>
                   </div>
@@ -655,7 +674,8 @@ const ARSection = () => {
                       >
                         <a href="/ai-workflow-studio">
                           <Play className="mr-3 h-6 w-6" />
-                          Try Free Demo</a>
+                          Try Free Demo
+                        </a>
                       </Button>
                     </motion.div>
                   </div>
@@ -671,10 +691,10 @@ const ARSection = () => {
                 className="grid grid-cols-1 md:grid-cols-3 gap-6"
               >
                 <div className="text-center p-6 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-2xl border border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/20 transition-all duration-300">
-                  <div className="w-10 h-10 mx-auto mb-4 text-emerald-500 text-2xl font-bold">💰</div>
-                  <h5 className="text-lg font-bold text-foreground mb-2">
-                    Immediate ROI
-                  </h5>
+                  <div className="w-10 h-10 mx-auto mb-4 text-emerald-500 text-2xl font-bold">
+                    💰
+                  </div>
+                  <h5 className="text-lg font-bold text-foreground mb-2">Immediate ROI</h5>
                   <p className="text-sm text-muted-foreground">
                     Average 400% ROI within 3 months of deployment
                   </p>
@@ -682,9 +702,7 @@ const ARSection = () => {
 
                 <div className="text-center p-6 bg-gradient-to-br from-primary/10 to-blue-500/10 rounded-2xl border border-primary/30 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300">
                   <div className="w-10 h-10 mx-auto mb-4 text-primary text-2xl font-bold">⚡</div>
-                  <h5 className="text-lg font-bold text-foreground mb-2">
-                    Rapid Deployment
-                  </h5>
+                  <h5 className="text-lg font-bold text-foreground mb-2">Rapid Deployment</h5>
                   <p className="text-sm text-muted-foreground">
                     Deploy enterprise workflows in hours, not weeks
                   </p>
@@ -692,9 +710,7 @@ const ARSection = () => {
 
                 <div className="text-center p-6 bg-gradient-to-br from-gold/10 to-amber-500/10 rounded-2xl border border-gold/30 hover:shadow-lg hover:shadow-gold/20 transition-all duration-300">
                   <div className="w-10 h-10 mx-auto mb-4 text-gold text-2xl font-bold">🏆</div>
-                  <h5 className="text-lg font-bold text-foreground mb-2">
-                    Enterprise Ready
-                  </h5>
+                  <h5 className="text-lg font-bold text-foreground mb-2">Enterprise Ready</h5>
                   <p className="text-sm text-muted-foreground">
                     SOC 2 compliant with 99.9% uptime guarantee
                   </p>

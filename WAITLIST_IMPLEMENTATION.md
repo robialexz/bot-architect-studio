@@ -2,11 +2,14 @@
 
 ## Overview
 
-This document describes the production-ready email collection system implemented for the FlowsyAI waitlist page. The system is designed to capture user emails for the upcoming Solana token launch and platform notifications.
+This document describes the production-ready email collection system implemented
+for the FlowsyAI waitlist page. The system is designed to capture user emails
+for the upcoming Solana token launch and platform notifications.
 
 ## Features
 
 ### ✅ Core Functionality
+
 - **Email Collection**: Secure form with validation and duplicate prevention
 - **Database Storage**: Supabase-powered backend with proper indexing
 - **Admin Interface**: Management dashboard for viewing and exporting emails
@@ -15,6 +18,7 @@ This document describes the production-ready email collection system implemented
 - **Analytics**: Signup statistics and tracking
 
 ### ✅ Production Features
+
 - **Form Validation**: Comprehensive email format validation
 - **Error Handling**: Graceful error messages and user feedback
 - **Loading States**: Visual feedback during form submission
@@ -43,11 +47,13 @@ CREATE TABLE public.waitlist_emails (
 ```
 
 ### Indexes
+
 - `idx_waitlist_emails_email` - Fast email lookups
 - `idx_waitlist_emails_created_at` - Time-based queries
 - `idx_waitlist_emails_status` - Status filtering
 
 ### Row Level Security (RLS)
+
 - Anonymous users can insert emails (waitlist signup)
 - Authenticated users can view emails (admin access)
 - Anyone can update email status (unsubscribe)
@@ -57,33 +63,39 @@ CREATE TABLE public.waitlist_emails (
 ### WaitlistService Methods
 
 #### `submitEmail(email: string)`
+
 - Validates email format
 - Checks for duplicates
 - Handles reactivation of unsubscribed emails
 - Tracks UTM parameters and client info
 
 #### `getStats()`
+
 - Returns waitlist statistics
 - Total, active, unsubscribed, and bounced counts
 - Time-based signup metrics
 
 #### `getAllEmails(limit, offset)`
+
 - Paginated email list for admin interface
 - Supports filtering and search
 
 #### `exportEmails()`
+
 - Generates CSV export of active emails
 - Includes UTM tracking data
 
 #### `unsubscribeEmail(email: string)`
+
 - GDPR-compliant unsubscribe functionality
 - Updates status to 'unsubscribed'
 
 ## Pages and Components
 
 ### `/waitlist` - Main Waitlist Page
+
 - **Location**: `src/pages/WaitlistPage.tsx`
-- **Features**: 
+- **Features**:
   - Email collection form
   - Real-time validation
   - Success/error messaging
@@ -91,6 +103,7 @@ CREATE TABLE public.waitlist_emails (
   - Animated UI with Framer Motion
 
 ### `/admin/waitlist` - Admin Dashboard
+
 - **Location**: `src/pages/WaitlistAdmin.tsx`
 - **Features**:
   - Statistics overview
@@ -100,6 +113,7 @@ CREATE TABLE public.waitlist_emails (
   - Real-time data refresh
 
 ### `/waitlist/unsubscribe` - Unsubscribe Page
+
 - **Location**: `src/pages/WaitlistUnsubscribe.tsx`
 - **Features**:
   - GDPR-compliant unsubscribe
@@ -110,18 +124,21 @@ CREATE TABLE public.waitlist_emails (
 ## Security Features
 
 ### Rate Limiting
+
 - **Implementation**: `src/utils/rateLimiter.ts`
 - **Limits**: 3 attempts per minute per client
 - **Client ID**: Generated from browser fingerprint
 - **Cleanup**: Automatic cleanup of expired entries
 
 ### Data Protection
+
 - Email normalization (lowercase, trimmed)
 - Input sanitization
 - SQL injection prevention via Supabase
 - XSS protection via React
 
 ### Privacy Compliance
+
 - UTM parameter tracking (optional)
 - IP address logging (for abuse prevention)
 - User agent tracking (analytics)
@@ -131,6 +148,7 @@ CREATE TABLE public.waitlist_emails (
 ## Usage Instructions
 
 ### For Users
+
 1. Visit `/waitlist` page
 2. Enter email address
 3. Submit form
@@ -138,6 +156,7 @@ CREATE TABLE public.waitlist_emails (
 5. Optionally unsubscribe at `/waitlist/unsubscribe`
 
 ### For Administrators
+
 1. Visit `/admin/waitlist` page
 2. View signup statistics
 3. Browse email list with search/filter
@@ -147,13 +166,17 @@ CREATE TABLE public.waitlist_emails (
 ## Marketing Integration
 
 ### UTM Parameter Tracking
+
 The system automatically captures:
+
 - `utm_source` - Traffic source
 - `utm_medium` - Marketing medium
 - `utm_campaign` - Campaign name
 
 ### Email Export Format
+
 CSV includes:
+
 - Email address
 - Signup date
 - Status (active/unsubscribed/bounced)
@@ -163,6 +186,7 @@ CSV includes:
 ## Technical Implementation
 
 ### Dependencies
+
 - **Supabase**: Database and authentication
 - **React**: Frontend framework
 - **TypeScript**: Type safety
@@ -171,6 +195,7 @@ CSV includes:
 - **Zod**: Validation (via env.ts)
 
 ### File Structure
+
 ```
 src/
 ├── pages/
@@ -186,6 +211,7 @@ src/
 ```
 
 ### Database Setup
+
 1. Run the SQL script in `supabase-setup.sql`
 2. Verify RLS policies are enabled
 3. Test table creation and indexes
@@ -194,12 +220,14 @@ src/
 ## Testing
 
 ### Unit Tests
+
 - Email validation testing
 - Duplicate handling
 - Error scenarios
 - Rate limiting functionality
 
 ### Manual Testing Checklist
+
 - [ ] Valid email submission
 - [ ] Invalid email rejection
 - [ ] Duplicate email handling
@@ -214,12 +242,17 @@ src/
 ## Deployment Notes
 
 ### Environment Variables
-No additional environment variables required - uses existing Supabase configuration.
+
+No additional environment variables required - uses existing Supabase
+configuration.
 
 ### Database Migration
-Run the updated `supabase-setup.sql` script to add the waitlist_emails table and related objects.
+
+Run the updated `supabase-setup.sql` script to add the waitlist_emails table and
+related objects.
 
 ### Monitoring
+
 - Monitor signup rates via admin dashboard
 - Track UTM parameter effectiveness
 - Monitor for abuse patterns
@@ -228,6 +261,7 @@ Run the updated `supabase-setup.sql` script to add the waitlist_emails table and
 ## Future Enhancements
 
 ### Potential Improvements
+
 - Email verification (double opt-in)
 - Advanced analytics dashboard
 - A/B testing for form variations
@@ -238,6 +272,7 @@ Run the updated `supabase-setup.sql` script to add the waitlist_emails table and
 - Mobile app integration
 
 ### Scalability Considerations
+
 - Database partitioning for large volumes
 - CDN integration for global performance
 - Advanced rate limiting with Redis
@@ -247,6 +282,7 @@ Run the updated `supabase-setup.sql` script to add the waitlist_emails table and
 ## Support and Maintenance
 
 ### Regular Tasks
+
 - Monitor signup rates and trends
 - Export emails for marketing campaigns
 - Clean up bounced/invalid emails
@@ -254,6 +290,7 @@ Run the updated `supabase-setup.sql` script to add the waitlist_emails table and
 - Review and update privacy policies
 
 ### Troubleshooting
+
 - Check Supabase connection for database issues
 - Verify RLS policies for access problems
 - Monitor rate limiting for user complaints

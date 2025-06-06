@@ -18,7 +18,7 @@ import {
   Award,
   Timer,
   Target,
-  Flame
+  Flame,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -63,7 +63,7 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
   hoveredSection,
   setHoveredSection,
   getHolderTypeIcon,
-  getHolderTypeBadge
+  getHolderTypeBadge,
 }) => {
   if (selectedTab === 'distribution') {
     return (
@@ -85,17 +85,17 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
             className="inline-flex items-center gap-3 bg-gradient-to-r from-emerald-500/20 via-orange-500/20 to-blue-500/20 rounded-full px-8 py-4 mb-6 border border-emerald-500/30"
             animate={{
               boxShadow: [
-                "0 0 20px rgba(16, 185, 129, 0.3)",
-                "0 0 40px rgba(249, 115, 22, 0.3)",
-                "0 0 20px rgba(59, 130, 246, 0.3)",
-                "0 0 20px rgba(16, 185, 129, 0.3)"
-              ]
+                '0 0 20px rgba(16, 185, 129, 0.3)',
+                '0 0 40px rgba(249, 115, 22, 0.3)',
+                '0 0 20px rgba(59, 130, 246, 0.3)',
+                '0 0 20px rgba(16, 185, 129, 0.3)',
+              ],
             }}
             transition={{ duration: 4, repeat: Infinity }}
           >
             <motion.div
               animate={{ rotate: [0, 360] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
             >
               <PieChart className="w-6 h-6 text-emerald-500" />
             </motion.div>
@@ -111,7 +111,8 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
             Token Distribution
           </h3>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            The most <span className="text-emerald-500 font-semibold">community-focused</span> tokenomics in DeFi with
+            The most <span className="text-emerald-500 font-semibold">community-focused</span>{' '}
+            tokenomics in DeFi with
             <span className="text-orange-500 font-semibold"> automatic burns</span> and
             <span className="text-blue-500 font-semibold"> ultra-locked</span> developer funds
           </p>
@@ -124,30 +125,32 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
               key={item.category}
               initial={{ opacity: 0, y: 50, rotateX: -15 }}
               animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{ delay: index * 0.2, duration: 0.8, type: "spring" }}
+              transition={{ delay: index * 0.2, duration: 0.8, type: 'spring' }}
               whileHover={{
                 scale: 1.05,
                 rotateY: 5,
                 z: 50,
-                transition: { duration: 0.3 }
+                transition: { duration: 0.3 },
               }}
               onMouseEnter={() => setHoveredSection(item.category)}
               onMouseLeave={() => setHoveredSection(null)}
               className="relative group cursor-pointer"
-              style={{ perspective: "1000px" }}
+              style={{ perspective: '1000px' }}
             >
-              <Card className={`premium-card relative overflow-hidden rounded-3xl border-2 transition-all duration-500 ${
-                item.highlight
-                  ? `bg-gradient-to-br ${item.color}/20 border-current shadow-2xl`
-                  : 'bg-gradient-to-br from-muted/20 to-muted/10 border-border/30'
-              }`}>
+              <Card
+                className={`premium-card relative overflow-hidden rounded-3xl border-2 transition-all duration-500 ${
+                  item.highlight
+                    ? `bg-gradient-to-br ${item.color}/20 border-current shadow-2xl`
+                    : 'bg-gradient-to-br from-muted/20 to-muted/10 border-border/30'
+                }`}
+              >
                 {/* Animated Background Effects */}
                 <div className="absolute inset-0 opacity-30">
                   <motion.div
                     className={`absolute top-0 left-0 w-full h-full bg-gradient-to-br ${item.color}`}
                     animate={{
                       opacity: [0.3, 0.6, 0.3],
-                      scale: [1, 1.05, 1]
+                      scale: [1, 1.05, 1],
                     }}
                     transition={{ duration: 3, repeat: Infinity }}
                   />
@@ -165,12 +168,12 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                     animate={{
                       y: [0, -20, 0],
                       opacity: [0.3, 1, 0.3],
-                      scale: [1, 1.5, 1]
+                      scale: [1, 1.5, 1],
                     }}
                     transition={{
                       duration: 2 + i * 0.5,
                       repeat: Infinity,
-                      delay: i * 0.3
+                      delay: i * 0.3,
                     }}
                   />
                 ))}
@@ -184,8 +187,12 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                       transition={{ duration: 0.6 }}
                     >
                       {item.category === 'Public Sale' && <Users className="w-8 h-8 text-white" />}
-                      {item.category === 'Liquidity Pool' && <Flame className="w-8 h-8 text-white" />}
-                      {item.category === 'Developer Fund' && <Shield className="w-8 h-8 text-white" />}
+                      {item.category === 'Liquidity Pool' && (
+                        <Flame className="w-8 h-8 text-white" />
+                      )}
+                      {item.category === 'Developer Fund' && (
+                        <Shield className="w-8 h-8 text-white" />
+                      )}
                     </motion.div>
 
                     <h4 className="text-xl font-bold text-white mb-2">{item.category}</h4>
@@ -196,7 +203,7 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                       key={`${item.category}-${hoveredSection}`}
                       initial={{ scale: 1.2, opacity: 0.8 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      transition={{ type: "spring", stiffness: 300 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
                     >
                       {item.percentage}%
                     </motion.div>
@@ -215,10 +222,10 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                       className="bg-orange-500/20 border border-orange-500/30 rounded-xl p-3 mb-4"
                       animate={{
                         boxShadow: [
-                          "0 0 0 rgba(249, 115, 22, 0.5)",
-                          "0 0 20px rgba(249, 115, 22, 0.5)",
-                          "0 0 0 rgba(249, 115, 22, 0.5)"
-                        ]
+                          '0 0 0 rgba(249, 115, 22, 0.5)',
+                          '0 0 20px rgba(249, 115, 22, 0.5)',
+                          '0 0 0 rgba(249, 115, 22, 0.5)',
+                        ],
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
@@ -239,10 +246,10 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                       className="bg-blue-500/20 border border-blue-500/30 rounded-xl p-3 mb-4"
                       animate={{
                         borderColor: [
-                          "rgba(59, 130, 246, 0.3)",
-                          "rgba(59, 130, 246, 0.6)",
-                          "rgba(59, 130, 246, 0.3)"
-                        ]
+                          'rgba(59, 130, 246, 0.3)',
+                          'rgba(59, 130, 246, 0.6)',
+                          'rgba(59, 130, 246, 0.3)',
+                        ],
                       }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
@@ -271,14 +278,14 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                   <motion.div
                     className="mt-4 h-2 bg-white/20 rounded-full overflow-hidden"
                     initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
+                    animate={{ width: '100%' }}
                     transition={{ delay: index * 0.3 + 0.5, duration: 1 }}
                   >
                     <motion.div
                       className={`h-full bg-gradient-to-r ${item.color} rounded-full`}
                       initial={{ width: 0 }}
                       animate={{ width: `${item.percentage}%` }}
-                      transition={{ delay: index * 0.3 + 1, duration: 1.5, ease: "easeOut" }}
+                      transition={{ delay: index * 0.3 + 1, duration: 1.5, ease: 'easeOut' }}
                     />
                   </motion.div>
                 </CardContent>
@@ -287,9 +294,9 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                 <motion.div
                   className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br ${item.color}`}
                   style={{
-                    filter: "blur(20px)",
-                    transform: "scale(1.1)",
-                    zIndex: -1
+                    filter: 'blur(20px)',
+                    transform: 'scale(1.1)',
+                    zIndex: -1,
                   }}
                 />
               </Card>
@@ -307,25 +314,25 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
           {[
             {
               icon: Users,
-              title: "Community First",
-              description: "60% public ownership - highest in DeFi",
-              color: "text-emerald-500",
-              bgColor: "bg-emerald-500/10"
+              title: 'Community First',
+              description: '60% public ownership - highest in DeFi',
+              color: 'text-emerald-500',
+              bgColor: 'bg-emerald-500/10',
             },
             {
               icon: Flame,
-              title: "Deflationary Burn",
-              description: "30% supply burn at $10M market cap",
-              color: "text-orange-500",
-              bgColor: "bg-orange-500/10"
+              title: 'Deflationary Burn',
+              description: '30% supply burn at $10M market cap',
+              color: 'text-orange-500',
+              bgColor: 'bg-orange-500/10',
             },
             {
               icon: Shield,
-              title: "Anti-Rug Guarantee",
-              description: "Only 10% dev fund locked until $1B",
-              color: "text-blue-500",
-              bgColor: "bg-blue-500/10"
-            }
+              title: 'Anti-Rug Guarantee',
+              description: 'Only 10% dev fund locked until $1B',
+              color: 'text-blue-500',
+              bgColor: 'bg-blue-500/10',
+            },
           ].map((feature, index) => (
             <motion.div
               key={feature.title}
@@ -386,11 +393,17 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                     </div>
                     {getHolderTypeIcon(holder.type)}
                   </div>
-                  
+
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <code className="text-sm font-mono bg-muted/30 px-2 py-1 rounded">{holder.address}</code>
-                      <Button variant="ghost" size="sm" className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <code className="text-sm font-mono bg-muted/30 px-2 py-1 rounded">
+                        {holder.address}
+                      </code>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
                         <Copy className="w-3 h-3" />
                       </Button>
                     </div>
@@ -399,14 +412,17 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                         {holder.type}
                       </Badge>
                       {holder.locked && (
-                        <Badge variant="outline" className="bg-orange-500/10 text-orange-500 border-orange-500/30">
+                        <Badge
+                          variant="outline"
+                          className="bg-orange-500/10 text-orange-500 border-orange-500/30"
+                        >
                           <Lock className="w-3 h-3 mr-1" />
                           Locked
                         </Badge>
                       )}
                     </div>
                   </div>
-                  
+
                   <div className="text-right">
                     <div className="text-lg font-bold text-foreground">{holder.percentage}%</div>
                     <div className="text-sm text-muted-foreground">{holder.amount}</div>
@@ -421,8 +437,8 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                 <span className="font-semibold text-blue-500">Transparency Note</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                All wallet addresses are publicly verifiable on the Solana blockchain. 
-                Locked tokens are secured by smart contracts and cannot be moved until unlock conditions are met.
+                All wallet addresses are publicly verifiable on the Solana blockchain. Locked tokens
+                are secured by smart contracts and cannot be moved until unlock conditions are met.
               </p>
             </div>
           </CardContent>
@@ -453,31 +469,39 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
               <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5" />
               <div>
                 <div className="font-semibold text-emerald-500">Smart Contract Audited</div>
-                <div className="text-sm text-muted-foreground">Independently verified by blockchain security experts</div>
+                <div className="text-sm text-muted-foreground">
+                  Independently verified by blockchain security experts
+                </div>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-3 p-3 bg-emerald-500/10 rounded-lg">
               <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5" />
               <div>
                 <div className="font-semibold text-emerald-500">Multi-Signature Wallet</div>
-                <div className="text-sm text-muted-foreground">Requires multiple signatures for critical operations</div>
+                <div className="text-sm text-muted-foreground">
+                  Requires multiple signatures for critical operations
+                </div>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-3 p-3 bg-emerald-500/10 rounded-lg">
               <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5" />
               <div>
                 <div className="font-semibold text-emerald-500">Time-Locked Contracts</div>
-                <div className="text-sm text-muted-foreground">Developer funds locked until $1B market cap milestone</div>
+                <div className="text-sm text-muted-foreground">
+                  Developer funds locked until $1B market cap milestone
+                </div>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-3 p-3 bg-emerald-500/10 rounded-lg">
               <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5" />
               <div>
                 <div className="font-semibold text-emerald-500">Immutable Code</div>
-                <div className="text-sm text-muted-foreground">Core tokenomics cannot be changed after deployment</div>
+                <div className="text-sm text-muted-foreground">
+                  Core tokenomics cannot be changed after deployment
+                </div>
               </div>
             </div>
           </CardContent>
@@ -513,8 +537,7 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
               <div className="flex items-center justify-between mb-2">
                 <span className="font-semibold text-purple-500">Liquidity Lock</span>
                 <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
-                  <Timer className="w-3 h-3 mr-1" />
-                  2 Years
+                  <Timer className="w-3 h-3 mr-1" />2 Years
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground">

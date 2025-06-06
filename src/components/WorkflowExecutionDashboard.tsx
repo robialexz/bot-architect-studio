@@ -4,17 +4,17 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
-  Play, 
-  Pause, 
-  Square, 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
+import {
+  Play,
+  Pause,
+  Square,
+  Clock,
+  CheckCircle,
+  XCircle,
   AlertCircle,
   Activity,
   Zap,
-  DollarSign
+  DollarSign,
 } from 'lucide-react';
 import { WorkflowExecution, ExecutionStatus } from '@/types/execution';
 import { workflowExecutionService } from '@/services/workflowExecutionInstance';
@@ -27,7 +27,7 @@ interface WorkflowExecutionDashboardProps {
 
 export const WorkflowExecutionDashboard: React.FC<WorkflowExecutionDashboardProps> = ({
   workflowId,
-  onExecutionSelect
+  onExecutionSelect,
 }) => {
   const [executions, setExecutions] = useState<WorkflowExecution[]>([]);
   const [selectedExecution, setSelectedExecution] = useState<WorkflowExecution | null>(null);
@@ -43,7 +43,7 @@ export const WorkflowExecutionDashboard: React.FC<WorkflowExecutionDashboardProp
       setLoading(true);
       const executionHistory = await workflowExecutionService.getExecutionHistory(workflowId, 20);
       setExecutions(executionHistory);
-      
+
       if (executionHistory.length > 0 && !selectedExecution) {
         setSelectedExecution(executionHistory[0]);
         onExecutionSelect?.(executionHistory[0]);
@@ -132,16 +132,9 @@ export const WorkflowExecutionDashboard: React.FC<WorkflowExecutionDashboardProp
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle>Workflow Executions</CardTitle>
-            <CardDescription>
-              Recent execution history for this workflow
-            </CardDescription>
+            <CardDescription>Recent execution history for this workflow</CardDescription>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={refreshExecutions}
-            disabled={refreshing}
-          >
+          <Button variant="outline" size="sm" onClick={refreshExecutions} disabled={refreshing}>
             {refreshing ? (
               <Activity className="h-4 w-4 animate-spin" />
             ) : (
@@ -163,11 +156,11 @@ export const WorkflowExecutionDashboard: React.FC<WorkflowExecutionDashboardProp
                 <TabsTrigger value="list">Execution List</TabsTrigger>
                 <TabsTrigger value="details">Execution Details</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="list" className="space-y-2">
                 <ScrollArea className="h-64">
-                  {executions.map((execution) => (
-                    <Card 
+                  {executions.map(execution => (
+                    <Card
                       key={execution.id}
                       className={`cursor-pointer transition-colors hover:bg-muted/50 ${
                         selectedExecution?.id === execution.id ? 'ring-2 ring-primary' : ''
@@ -201,7 +194,7 @@ export const WorkflowExecutionDashboard: React.FC<WorkflowExecutionDashboardProp
                   ))}
                 </ScrollArea>
               </TabsContent>
-              
+
               <TabsContent value="details">
                 {selectedExecution ? (
                   <ExecutionDetails execution={selectedExecution} />
@@ -239,7 +232,7 @@ const ExecutionDetails: React.FC<ExecutionDetailsProps> = ({ execution }) => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
@@ -249,14 +242,13 @@ const ExecutionDetails: React.FC<ExecutionDetailsProps> = ({ execution }) => {
                 <p className="font-medium">
                   {execution.startedAt && execution.completedAt
                     ? `${((execution.completedAt.getTime() - execution.startedAt.getTime()) / 1000).toFixed(1)}s`
-                    : 'N/A'
-                  }
+                    : 'N/A'}
                 </p>
               </div>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
@@ -268,7 +260,7 @@ const ExecutionDetails: React.FC<ExecutionDetailsProps> = ({ execution }) => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center space-x-2">
@@ -281,7 +273,7 @@ const ExecutionDetails: React.FC<ExecutionDetailsProps> = ({ execution }) => {
           </CardContent>
         </Card>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
@@ -295,7 +287,7 @@ const ExecutionDetails: React.FC<ExecutionDetailsProps> = ({ execution }) => {
             </ScrollArea>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle className="text-sm">Execution Outputs</CardTitle>
@@ -309,16 +301,14 @@ const ExecutionDetails: React.FC<ExecutionDetailsProps> = ({ execution }) => {
           </CardContent>
         </Card>
       </div>
-      
+
       {execution.errorMessage && (
         <Card>
           <CardHeader>
             <CardTitle className="text-sm text-red-600">Error Details</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-red-600 bg-red-50 p-2 rounded">
-              {execution.errorMessage}
-            </p>
+            <p className="text-sm text-red-600 bg-red-50 p-2 rounded">{execution.errorMessage}</p>
           </CardContent>
         </Card>
       )}

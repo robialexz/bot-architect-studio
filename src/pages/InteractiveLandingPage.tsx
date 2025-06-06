@@ -168,7 +168,10 @@ const InteractiveLandingPage: React.FC = () => {
                 key={i}
                 className="bg-card/50 backdrop-blur-sm border border-border rounded-lg overflow-hidden"
               >
-                <button type="button" className="flex justify-between items-center w-full p-4 text-left">
+                <button
+                  type="button"
+                  className="flex justify-between items-center w-full p-4 text-left"
+                >
                   <span className="font-medium">Question {i + 1}?</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

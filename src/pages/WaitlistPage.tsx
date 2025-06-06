@@ -31,7 +31,7 @@ const WaitlistPage: React.FC = () => {
       setCounters({
         waiting: Math.floor(targets.waiting * progress),
         today: Math.floor(targets.today * progress),
-        satisfaction: Math.floor(targets.satisfaction * progress)
+        satisfaction: Math.floor(targets.satisfaction * progress),
       });
 
       if (currentStep >= steps) {
@@ -59,7 +59,9 @@ const WaitlistPage: React.FC = () => {
     const clientId = getClientId();
     if (!waitlistRateLimiter.isAllowed(clientId)) {
       const resetTime = waitlistRateLimiter.getResetTime(clientId);
-      setError(`Too many attempts. Please wait ${formatTimeRemaining(resetTime)} before trying again.`);
+      setError(
+        `Too many attempts. Please wait ${formatTimeRemaining(resetTime)} before trying again.`
+      );
       return;
     }
 
@@ -78,7 +80,7 @@ const WaitlistPage: React.FC = () => {
 
         // Show success toast
         toast({
-          title: "Welcome to the waitlist!",
+          title: 'Welcome to the waitlist!',
           description: result.message,
         });
 
@@ -86,16 +88,16 @@ const WaitlistPage: React.FC = () => {
         setCounters(prev => ({
           ...prev,
           waiting: prev.waiting + 1,
-          today: prev.today + 1
+          today: prev.today + 1,
         }));
       } else {
         setError(result.message);
 
         // Show error toast
         toast({
-          title: "Signup failed",
+          title: 'Signup failed',
           description: result.message,
-          variant: "destructive",
+          variant: 'destructive',
         });
       }
     } catch (err) {
@@ -103,9 +105,9 @@ const WaitlistPage: React.FC = () => {
       setError(errorMessage);
 
       toast({
-        title: "Error",
+        title: 'Error',
         description: errorMessage,
-        variant: "destructive",
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -157,17 +159,17 @@ const WaitlistPage: React.FC = () => {
                 >
                   <Rocket className="w-12 h-12 text-white" />
                 </motion.div>
-                
+
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                   <span className="block text-foreground">Be the First to Experience</span>
                   <span className="block bg-gradient-to-r from-primary via-gold to-sapphire bg-clip-text text-transparent">
                     FlowsyAI
                   </span>
                 </h1>
-                
+
                 <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                  Join thousands of professionals waiting for the most advanced AI workflow automation platform. 
-                  We'll contact you when the platform launches officially.
+                  Join thousands of professionals waiting for the most advanced AI workflow
+                  automation platform. We'll contact you when the platform launches officially.
                 </p>
               </div>
 
@@ -181,7 +183,9 @@ const WaitlistPage: React.FC = () => {
                 >
                   <Star className="w-8 h-8 text-gold mx-auto mb-4" />
                   <h3 className="font-semibold mb-2">Early Access</h3>
-                  <p className="text-sm text-muted-foreground">Be among the first 1000 users to access the platform</p>
+                  <p className="text-sm text-muted-foreground">
+                    Be among the first 1000 users to access the platform
+                  </p>
                 </motion.div>
 
                 <motion.div
@@ -192,7 +196,9 @@ const WaitlistPage: React.FC = () => {
                 >
                   <Gift className="w-8 h-8 text-primary mx-auto mb-4" />
                   <h3 className="font-semibold mb-2">Exclusive Benefits</h3>
-                  <p className="text-sm text-muted-foreground">Free FlowsyAI tokens and premium features for early adopters</p>
+                  <p className="text-sm text-muted-foreground">
+                    Free FlowsyAI tokens and premium features for early adopters
+                  </p>
                 </motion.div>
 
                 <motion.div
@@ -203,7 +209,9 @@ const WaitlistPage: React.FC = () => {
                 >
                   <Zap className="w-8 h-8 text-emerald-500 mx-auto mb-4" />
                   <h3 className="font-semibold mb-2">Priority Support</h3>
-                  <p className="text-sm text-muted-foreground">Direct access to our team and priority customer support</p>
+                  <p className="text-sm text-muted-foreground">
+                    Direct access to our team and priority customer support
+                  </p>
                 </motion.div>
               </div>
 
@@ -221,7 +229,7 @@ const WaitlistPage: React.FC = () => {
                       type="email"
                       placeholder="Enter your email address"
                       value={email}
-                      onChange={(e) => {
+                      onChange={e => {
                         setEmail(e.target.value);
                         setError(''); // Clear error when user types
                       }}
@@ -251,7 +259,7 @@ const WaitlistPage: React.FC = () => {
                     {isLoading ? (
                       <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                         className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
                       />
                     ) : (
@@ -284,16 +292,16 @@ const WaitlistPage: React.FC = () => {
                       animate={{
                         scale: [1.5, 1.1, 1],
                         opacity: [0, 0.8, 1],
-                        y: [-20, 5, 0]
+                        y: [-20, 5, 0],
                       }}
                       transition={{
                         duration: 0.6,
-                        ease: "easeOut",
-                        times: [0, 0.6, 1]
+                        ease: 'easeOut',
+                        times: [0, 0.6, 1],
                       }}
                       whileHover={{
                         scale: 1.1,
-                        transition: { duration: 0.2 }
+                        transition: { duration: 0.2 },
                       }}
                     >
                       {counters.waiting.toLocaleString()}
@@ -314,17 +322,17 @@ const WaitlistPage: React.FC = () => {
                       animate={{
                         scale: [1.5, 1.1, 1],
                         opacity: [0, 0.8, 1],
-                        y: [-20, 5, 0]
+                        y: [-20, 5, 0],
                       }}
                       transition={{
                         duration: 0.6,
-                        ease: "easeOut",
+                        ease: 'easeOut',
                         delay: 0.2,
-                        times: [0, 0.6, 1]
+                        times: [0, 0.6, 1],
                       }}
                       whileHover={{
                         scale: 1.1,
-                        transition: { duration: 0.2 }
+                        transition: { duration: 0.2 },
                       }}
                     >
                       +{counters.today}
@@ -345,17 +353,17 @@ const WaitlistPage: React.FC = () => {
                       animate={{
                         scale: [1.5, 1.1, 1],
                         opacity: [0, 0.8, 1],
-                        y: [-20, 5, 0]
+                        y: [-20, 5, 0],
                       }}
                       transition={{
                         duration: 0.6,
-                        ease: "easeOut",
+                        ease: 'easeOut',
                         delay: 0.4,
-                        times: [0, 0.6, 1]
+                        times: [0, 0.6, 1],
                       }}
                       whileHover={{
                         scale: 1.1,
-                        transition: { duration: 0.2 }
+                        transition: { duration: 0.2 },
                       }}
                     >
                       {counters.satisfaction}%
@@ -412,21 +420,22 @@ const WaitlistPage: React.FC = () => {
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
                 className="w-24 h-24 mx-auto mb-6 bg-gradient-to-r from-emerald-500 to-green-600 rounded-full flex items-center justify-center"
               >
                 <CheckCircle className="w-12 h-12 text-white" />
               </motion.div>
-              
+
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
                 <span className="block text-foreground">You're In!</span>
                 <span className="block bg-gradient-to-r from-emerald-500 to-green-600 bg-clip-text text-transparent">
                   Welcome to the Future
                 </span>
               </h1>
-              
+
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-                {successMessage || "Thank you for joining our waitlist! We'll send you exclusive updates about our progress and notify you as soon as the platform is ready for early access."}
+                {successMessage ||
+                  "Thank you for joining our waitlist! We'll send you exclusive updates about our progress and notify you as soon as the platform is ready for early access."}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

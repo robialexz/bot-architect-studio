@@ -2,16 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  X, 
-  Rocket, 
-  Calendar, 
-  Star, 
-  Bell, 
-  ArrowRight,
-  Clock,
-  Zap
-} from 'lucide-react';
+import { X, Rocket, Calendar, Star, Bell, ArrowRight, Clock, Zap } from 'lucide-react';
 
 interface ComingSoonModalProps {
   isOpen: boolean;
@@ -24,9 +15,9 @@ interface ComingSoonModalProps {
 const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
   isOpen,
   onClose,
-  feature = "This Feature",
-  expectedDate = "Q1 2025",
-  description = "We're working hard to bring you this amazing feature as part of our comprehensive AI workflow platform."
+  feature = 'This Feature',
+  expectedDate = 'Q1 2025',
+  description = "We're working hard to bring you this amazing feature as part of our comprehensive AI workflow platform.",
 }) => {
   return (
     <AnimatePresence>
@@ -47,12 +38,12 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: "spring", duration: 0.5 }}
+            transition={{ type: 'spring', duration: 0.5 }}
           >
             <div className="relative w-full max-w-md">
               {/* Background Effects */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-gold/10 to-sapphire/20 rounded-3xl blur-xl" />
-              
+
               {/* Modal Content */}
               <div className="relative premium-card bg-background/95 backdrop-blur-lg border border-primary/20 rounded-3xl p-8 shadow-2xl">
                 {/* Close Button */}
@@ -71,7 +62,7 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
                     className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r from-primary via-gold to-sapphire text-white mb-4"
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2, type: "spring", duration: 0.8 }}
+                    transition={{ delay: 0.2, type: 'spring', duration: 0.8 }}
                   >
                     <Rocket className="w-8 h-8" />
                   </motion.div>
@@ -130,7 +121,10 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
                       <Calendar className="w-5 h-5 text-primary" />
                       <span className="font-medium">Expected Launch</span>
                     </div>
-                    <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
+                    <Badge
+                      variant="secondary"
+                      className="bg-primary/10 text-primary border-primary/20"
+                    >
                       {expectedDate}
                     </Badge>
                   </div>
@@ -151,9 +145,12 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
                       'Advanced AI Integration',
                       'Intuitive Interface',
                       'Real-time Collaboration',
-                      'Enterprise Security'
+                      'Enterprise Security',
                     ].map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 text-sm text-muted-foreground"
+                      >
                         <Star className="w-3 h-3 text-gold" />
                         <span>{feature}</span>
                       </div>
@@ -175,7 +172,7 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
                     <Bell className="w-4 h-4 mr-2" />
                     Notify Me When Ready
                   </Button>
-                  
+
                   <Button
                     variant="outline"
                     className="w-full border-primary/30 hover:bg-primary/10"

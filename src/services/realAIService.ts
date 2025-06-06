@@ -106,24 +106,31 @@ class RealAIService {
 
     try {
       // Always use real Google AI since we have a valid API key
-      const response = await fetch(`${this.baseUrls.google}/models/${model}:generateContent?key=${this.apiKeys.google}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: input
-            }]
-          }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 1000,
-            topP: 1
-          }
-        }),
-      });
+      const response = await fetch(
+        `${this.baseUrls.google}/models/${model}:generateContent?key=${this.apiKeys.google}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: input,
+                  },
+                ],
+              },
+            ],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 1000,
+              topP: 1,
+            },
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -385,7 +392,10 @@ class RealAIService {
           );
 
         case 'data-analyzer':
-          return await this.analyzeData(node.inputs.data, String(node.inputs.analysisType || 'summary'));
+          return await this.analyzeData(
+            node.inputs.data,
+            String(node.inputs.analysisType || 'summary')
+          );
 
         default:
           throw new Error(`Unsupported node type: ${node.type}`);

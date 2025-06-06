@@ -2,7 +2,6 @@ import { NodeProcessor, NodeExecutionResult, ExecutionContext } from '@/types/ex
 import { logger } from '@/lib/logger';
 
 export class WebhookProcessor implements NodeProcessor {
-  
   canProcess(nodeType: string): boolean {
     return ['webhook', 'http', 'api-call', 'rest'].includes(nodeType);
   }
@@ -13,45 +12,45 @@ export class WebhookProcessor implements NodeProcessor {
 
   validateInputs(node: any, inputs: Record<string, any>): boolean {
     const required = this.getRequiredInputs(node);
-    
+
     for (const input of required) {
       if (!(input in inputs) || inputs[input] === undefined || inputs[input] === '') {
-        logger.warn('Missing required input for webhook node', { 
-          nodeId: node.id, 
-          missingInput: input 
+        logger.warn('Missing required input for webhook node', {
+          nodeId: node.id,
+          missingInput: input,
         });
         return false;
       }
     }
-    
+
     // Validate URL format
     if (inputs.url && !this.isValidUrl(inputs.url)) {
       logger.warn('Invalid URL format', { nodeId: node.id, url: inputs.url });
       return false;
     }
-    
+
     // Validate HTTP method
     const validMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
     if (inputs.method && !validMethods.includes(inputs.method.toUpperCase())) {
       logger.warn('Invalid HTTP method', { nodeId: node.id, method: inputs.method });
       return false;
     }
-    
+
     return true;
   }
 
   async processNode(
-    node: any, 
-    inputs: Record<string, any>, 
+    node: any,
+    inputs: Record<string, any>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
-    
-    logger.info('Processing webhook node', { 
-      nodeId: node.id, 
+
+    logger.info('Processing webhook node', {
+      nodeId: node.id,
       url: inputs.url,
       method: inputs.method,
-      executionId: context.executionId
+      executionId: context.executionId,
     });
 
     try {
@@ -61,10 +60,10 @@ export class WebhookProcessor implements NodeProcessor {
 
       // Prepare request data
       const requestData = this.prepareRequestData(node, inputs);
-      
+
       // Make HTTP request
       const response = await this.makeHttpRequest(requestData);
-      
+
       const outputs = {
         statusCode: response.status,
         responseData: response.data,
@@ -73,15 +72,15 @@ export class WebhookProcessor implements NodeProcessor {
         requestMethod: requestData.method,
         success: response.status >= 200 && response.status < 300,
         executedAt: new Date().toISOString(),
-        ...inputs
+        ...inputs,
       };
 
       const processingTime = Date.now() - startTime.getTime();
 
-      logger.info('Webhook node completed', { 
-        nodeId: node.id, 
+      logger.info('Webhook node completed', {
+        nodeId: node.id,
         statusCode: response.status,
-        processingTime
+        processingTime,
       });
 
       return {
@@ -90,16 +89,15 @@ export class WebhookProcessor implements NodeProcessor {
         status: 'completed',
         inputs,
         outputs,
-        processingTime
+        processingTime,
       };
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
-      logger.error('Webhook node failed', { 
-        nodeId: node.id, 
+
+      logger.error('Webhook node failed', {
+        nodeId: node.id,
         error: errorMessage,
-        executionId: context.executionId
+        executionId: context.executionId,
       });
 
       return {
@@ -110,17 +108,17 @@ export class WebhookProcessor implements NodeProcessor {
         outputs: {
           success: false,
           error: errorMessage,
-          ...inputs
+          ...inputs,
         },
         error: errorMessage,
-        processingTime: Date.now() - startTime.getTime()
+        processingTime: Date.now() - startTime.getTime(),
       };
     }
   }
 
   private prepareRequestData(node: any, inputs: Record<string, any>): any {
     const nodeData = node.data || {};
-    
+
     const requestData = {
       url: inputs.url,
       method: (inputs.method || 'GET').toUpperCase(),
@@ -128,10 +126,10 @@ export class WebhookProcessor implements NodeProcessor {
         'Content-Type': 'application/json',
         'User-Agent': 'FlowsyAI-Workflow-Engine/1.0',
         ...nodeData.headers,
-        ...inputs.headers
+        ...inputs.headers,
       },
       timeout: inputs.timeout || nodeData.timeout || 30000,
-      body: undefined as any
+      body: undefined as any,
     };
 
     // Add request body for methods that support it
@@ -169,12 +167,12 @@ export class WebhookProcessor implements NodeProcessor {
       case 'bearer':
         requestData.headers['Authorization'] = `Bearer ${auth.token}`;
         break;
-      
+
       case 'basic':
         const credentials = btoa(`${auth.username}:${auth.password}`);
         requestData.headers['Authorization'] = `Basic ${credentials}`;
         break;
-      
+
       case 'api-key':
         if (auth.header) {
           requestData.headers[auth.header] = auth.key;
@@ -182,7 +180,7 @@ export class WebhookProcessor implements NodeProcessor {
           requestData.headers['X-API-Key'] = auth.key;
         }
         break;
-      
+
       case 'custom':
         if (auth.headers) {
           Object.assign(requestData.headers, auth.headers);
@@ -199,7 +197,7 @@ export class WebhookProcessor implements NodeProcessor {
       const fetchOptions: RequestInit = {
         method: requestData.method,
         headers: requestData.headers,
-        signal: controller.signal
+        signal: controller.signal,
       };
 
       // Add body for methods that support it
@@ -212,13 +210,13 @@ export class WebhookProcessor implements NodeProcessor {
       }
 
       const response = await fetch(requestData.url, fetchOptions);
-      
+
       clearTimeout(timeoutId);
 
       // Parse response data
       let responseData;
       const contentType = response.headers.get('content-type');
-      
+
       if (contentType?.includes('application/json')) {
         try {
           responseData = await response.json();
@@ -240,16 +238,15 @@ export class WebhookProcessor implements NodeProcessor {
         statusText: response.statusText,
         data: responseData,
         headers: responseHeaders,
-        ok: response.ok
+        ok: response.ok,
       };
-
     } catch (error) {
       clearTimeout(timeoutId);
-      
+
       if (error instanceof Error && error.name === 'AbortError') {
         throw new Error(`Request timeout after ${requestData.timeout}ms`);
       }
-      
+
       throw error;
     }
   }

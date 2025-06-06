@@ -68,8 +68,6 @@ const HeroSection: React.FC = () => {
       ref={sectionRef}
       className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-24 md:pt-32"
     >
-
-
       {/* Subtle Hero Enhancement - Let global background shine */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-[1]">
         {/* Subtle overlay for text readability */}
@@ -82,14 +80,17 @@ const HeroSection: React.FC = () => {
           <motion.div
             key={i}
             className={`absolute w-3 h-3 rounded-full ${
-              i % 4 === 0 ? 'bg-gradient-to-r from-blue-500 to-purple-500' :
-              i % 4 === 1 ? 'bg-gradient-to-r from-emerald-500 to-teal-500' :
-              i % 4 === 2 ? 'bg-gradient-to-r from-gold to-orange-500' :
-              'bg-gradient-to-r from-pink-500 to-rose-500'
+              i % 4 === 0
+                ? 'bg-gradient-to-r from-blue-500 to-purple-500'
+                : i % 4 === 1
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500'
+                  : i % 4 === 2
+                    ? 'bg-gradient-to-r from-gold to-orange-500'
+                    : 'bg-gradient-to-r from-pink-500 to-rose-500'
             }`}
             style={{
-              left: `${10 + (i * 8) % 80}%`,
-              top: `${15 + (i * 12) % 70}%`,
+              left: `${10 + ((i * 8) % 80)}%`,
+              top: `${15 + ((i * 12) % 70)}%`,
             }}
             animate={{
               y: [0, -30, 0],
@@ -101,13 +102,11 @@ const HeroSection: React.FC = () => {
               duration: 4 + i * 0.5,
               repeat: Infinity,
               delay: i * 0.3,
-              ease: "easeInOut"
+              ease: 'easeInOut',
             }}
           />
         ))}
       </div>
-
-
 
       {/* Hero Content */}
       <motion.div
@@ -136,7 +135,7 @@ const HeroSection: React.FC = () => {
         >
           <motion.div
             animate={{ rotate: [0, 360] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
           >
             <Sparkles className="w-5 h-5 text-gold" />
           </motion.div>
@@ -173,8 +172,10 @@ const HeroSection: React.FC = () => {
             Experience AR-Powered Workflow Building
           </div>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-center">
-            Build AI workflows in <span className="text-primary font-semibold">3D space</span> using your mobile camera.
-            Connect <span className="text-gold font-semibold">real AI services</span> with gesture controls and watch your
+            Build AI workflows in <span className="text-primary font-semibold">3D space</span> using
+            your mobile camera. Connect{' '}
+            <span className="text-gold font-semibold">real AI services</span> with gesture controls
+            and watch your
             <span className="text-sapphire font-semibold"> automation come to life</span>.
           </p>
         </motion.div>
@@ -193,7 +194,7 @@ const HeroSection: React.FC = () => {
               color: 'text-gold',
               bgColor: 'bg-gold/10',
               borderColor: 'border-gold/30',
-              description: 'Mobile AR'
+              description: 'Mobile AR',
             },
             {
               icon: Brain,
@@ -201,7 +202,7 @@ const HeroSection: React.FC = () => {
               color: 'text-primary',
               bgColor: 'bg-primary/10',
               borderColor: 'border-primary/30',
-              description: 'Live Services'
+              description: 'Live Services',
             },
             {
               icon: Zap,
@@ -209,7 +210,7 @@ const HeroSection: React.FC = () => {
               color: 'text-emerald-500',
               bgColor: 'bg-emerald-500/10',
               borderColor: 'border-emerald-500/30',
-              description: 'Real-time'
+              description: 'Real-time',
             },
             {
               icon: Layers,
@@ -217,7 +218,7 @@ const HeroSection: React.FC = () => {
               color: 'text-sapphire',
               bgColor: 'bg-sapphire/10',
               borderColor: 'border-sapphire/30',
-              description: 'Spatial UI'
+              description: 'Spatial UI',
             },
           ].map((feature, index) => (
             <motion.div

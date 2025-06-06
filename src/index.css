@@ -898,7 +898,8 @@
 
 /* Token Widget Specific Animations */
 @keyframes token-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
   }
@@ -909,7 +910,8 @@
 }
 
 @keyframes price-flash {
-  0%, 100% {
+  0%,
+  100% {
     background-color: transparent;
   }
   50% {
@@ -918,7 +920,8 @@
 }
 
 @keyframes price-flash-red {
-  0%, 100% {
+  0%,
+  100% {
     background-color: transparent;
   }
   50% {
@@ -927,7 +930,8 @@
 }
 
 @keyframes sparkle {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
     transform: scale(0) rotate(0deg);
   }
@@ -938,7 +942,8 @@
 }
 
 @keyframes token-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow:
       0 0 5px rgba(255, 215, 0, 0.3),
       0 0 10px rgba(255, 215, 0, 0.2),
@@ -974,7 +979,8 @@
 
 /* Advanced Token Widget Animations */
 @keyframes particle-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate3d(0, 0, 0) scale(1);
     opacity: 0.3;
   }
@@ -993,7 +999,8 @@
 }
 
 @keyframes data-morph {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1) rotate(0deg);
   }
   50% {
@@ -1023,7 +1030,8 @@
 }
 
 @keyframes glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow:
       0 0 5px rgba(255, 215, 0, 0.2),
       0 0 10px rgba(255, 215, 0, 0.1),
@@ -1106,12 +1114,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.5s ease;
 }
 

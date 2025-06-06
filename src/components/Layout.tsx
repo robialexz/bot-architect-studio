@@ -50,14 +50,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           className="absolute inset-0"
           animate={{
             background: [
-              "linear-gradient(45deg, rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25))",
-              "linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25))",
-              "linear-gradient(225deg, rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25))",
-              "linear-gradient(315deg, rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25))",
-              "linear-gradient(45deg, rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25))"
-            ]
+              'linear-gradient(45deg, rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25))',
+              'linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25))',
+              'linear-gradient(225deg, rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25))',
+              'linear-gradient(315deg, rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25))',
+              'linear-gradient(45deg, rgba(147, 51, 234, 0.25), rgba(59, 130, 246, 0.25), rgba(16, 185, 129, 0.25), rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25), rgba(147, 51, 234, 0.25))',
+            ],
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
         />
 
         {/* Floating Orbs */}
@@ -68,7 +68,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             y: [0, -50, 100, 0],
             scale: [1, 1.2, 0.8, 1],
           }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
         />
 
         <motion.div
@@ -78,7 +78,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             y: [0, 80, -40, 0],
             scale: [1, 0.7, 1.3, 1],
           }}
-          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
         />
 
         <motion.div
@@ -88,7 +88,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             y: [0, -80, 80, 0],
             scale: [1, 1.1, 0.9, 1],
           }}
-          transition={{ duration: 35, repeat: Infinity, ease: "easeInOut", delay: 10 }}
+          transition={{ duration: 35, repeat: Infinity, ease: 'easeInOut', delay: 10 }}
         />
 
         {/* Mesh Gradient Overlay */}
@@ -96,13 +96,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           className="absolute inset-0 opacity-40"
           animate={{
             background: [
-              "radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.3) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(245, 158, 11, 0.3) 0%, transparent 50%), radial-gradient(circle at 70% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)",
-              "radial-gradient(circle at 80% 50%, rgba(16, 185, 129, 0.3) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.3) 0%, transparent 50%), radial-gradient(circle at 60% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%), radial-gradient(circle at 40% 70%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)",
-              "radial-gradient(circle at 40% 20%, rgba(245, 158, 11, 0.3) 0%, transparent 50%), radial-gradient(circle at 60% 80%, rgba(147, 51, 234, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.3) 0%, transparent 50%)",
-              "radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.3) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(245, 158, 11, 0.3) 0%, transparent 50%), radial-gradient(circle at 70% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)"
-            ]
+              'radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.3) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(245, 158, 11, 0.3) 0%, transparent 50%), radial-gradient(circle at 70% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
+              'radial-gradient(circle at 80% 50%, rgba(16, 185, 129, 0.3) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.3) 0%, transparent 50%), radial-gradient(circle at 60% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%), radial-gradient(circle at 40% 70%, rgba(59, 130, 246, 0.3) 0%, transparent 50%)',
+              'radial-gradient(circle at 40% 20%, rgba(245, 158, 11, 0.3) 0%, transparent 50%), radial-gradient(circle at 60% 80%, rgba(147, 51, 234, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.3) 0%, transparent 50%)',
+              'radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.3) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(245, 158, 11, 0.3) 0%, transparent 50%), radial-gradient(circle at 70% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%)',
+            ],
           }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
         />
       </div>
 

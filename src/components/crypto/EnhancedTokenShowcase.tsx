@@ -26,7 +26,7 @@ import {
   ArrowRight,
   Timer,
   Award,
-  Flame
+  Flame,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -68,7 +68,9 @@ interface MarketData {
 }
 
 const EnhancedTokenShowcase: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<'overview' | 'distribution' | 'holders' | 'security'>('overview');
+  const [selectedTab, setSelectedTab] = useState<
+    'overview' | 'distribution' | 'holders' | 'security'
+  >('overview');
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [marketData, setMarketData] = useState<MarketData>({
     price: 0.008234,
@@ -78,7 +80,7 @@ const EnhancedTokenShowcase: React.FC = () => {
     holders: 3247,
     totalSupply: 100000000,
     circulatingSupply: 45000000,
-    fdv: 823400
+    fdv: 823400,
   });
 
   const tokenDistribution: TokenDistribution[] = [
@@ -89,7 +91,7 @@ const EnhancedTokenShowcase: React.FC = () => {
       color: 'from-emerald-500 to-teal-500',
       description: 'Maximum allocation for community ownership and decentralized trading',
       locked: false,
-      highlight: true
+      highlight: true,
     },
     {
       category: 'Liquidity Pool',
@@ -100,7 +102,7 @@ const EnhancedTokenShowcase: React.FC = () => {
       locked: false,
       unlockDate: 'BURN at $10M market cap',
       burnScheduled: true,
-      highlight: true
+      highlight: true,
     },
     {
       category: 'Developer Fund',
@@ -110,16 +112,52 @@ const EnhancedTokenShowcase: React.FC = () => {
       description: 'Ultra-locked until $1B market cap - Maximum trust & anti-rug guarantee',
       locked: true,
       unlockDate: 'Ultra-locked until $1B market cap',
-      highlight: true
-    }
+      highlight: true,
+    },
   ];
 
   const topHolders: TopHolder[] = [
-    { rank: 1, address: '7xKXtg2CW...9rKhTYXs', percentage: 30.0, amount: '30M FLOWSY', type: 'liquidity', locked: false, burnScheduled: true },
-    { rank: 2, address: '4mNpkTGm...8vLqWxRt', percentage: 10.0, amount: '10M FLOWSY', type: 'team', locked: true },
-    { rank: 3, address: '9kLmVwXr...3hPqZtYs', percentage: 8.5, amount: '8.5M FLOWSY', type: 'public', locked: false },
-    { rank: 4, address: '2nBxRtKm...7wQpLxVs', percentage: 7.2, amount: '7.2M FLOWSY', type: 'public', locked: false },
-    { rank: 5, address: '8vCxMnPq...5tRzWxKs', percentage: 6.8, amount: '6.8M FLOWSY', type: 'public', locked: false }
+    {
+      rank: 1,
+      address: '7xKXtg2CW...9rKhTYXs',
+      percentage: 30.0,
+      amount: '30M FLOWSY',
+      type: 'liquidity',
+      locked: false,
+      burnScheduled: true,
+    },
+    {
+      rank: 2,
+      address: '4mNpkTGm...8vLqWxRt',
+      percentage: 10.0,
+      amount: '10M FLOWSY',
+      type: 'team',
+      locked: true,
+    },
+    {
+      rank: 3,
+      address: '9kLmVwXr...3hPqZtYs',
+      percentage: 8.5,
+      amount: '8.5M FLOWSY',
+      type: 'public',
+      locked: false,
+    },
+    {
+      rank: 4,
+      address: '2nBxRtKm...7wQpLxVs',
+      percentage: 7.2,
+      amount: '7.2M FLOWSY',
+      type: 'public',
+      locked: false,
+    },
+    {
+      rank: 5,
+      address: '8vCxMnPq...5tRzWxKs',
+      percentage: 6.8,
+      amount: '6.8M FLOWSY',
+      type: 'public',
+      locked: false,
+    },
   ];
 
   // Simulate real-time updates (will be replaced with live API data on launch)
@@ -150,7 +188,7 @@ const EnhancedTokenShowcase: React.FC = () => {
           volume24h: newVolume,
           change24h: newChange,
           holders: newHolders,
-          fdv: newMarketCap
+          fdv: newMarketCap,
         };
       });
     }, 3000);
@@ -179,12 +217,18 @@ const EnhancedTokenShowcase: React.FC = () => {
 
   const getHolderTypeIcon = (type: TopHolder['type']) => {
     switch (type) {
-      case 'treasury': return <Shield className="w-4 h-4 text-blue-500" />;
-      case 'team': return <Users className="w-4 h-4 text-purple-500" />;
-      case 'investor': return <Star className="w-4 h-4 text-gold" />;
-      case 'liquidity': return <Activity className="w-4 h-4 text-emerald-500" />;
-      case 'public': return <Globe className="w-4 h-4 text-orange-500" />;
-      default: return <Coins className="w-4 h-4 text-muted-foreground" />;
+      case 'treasury':
+        return <Shield className="w-4 h-4 text-blue-500" />;
+      case 'team':
+        return <Users className="w-4 h-4 text-purple-500" />;
+      case 'investor':
+        return <Star className="w-4 h-4 text-gold" />;
+      case 'liquidity':
+        return <Activity className="w-4 h-4 text-emerald-500" />;
+      case 'public':
+        return <Globe className="w-4 h-4 text-orange-500" />;
+      default:
+        return <Coins className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
@@ -194,7 +238,7 @@ const EnhancedTokenShowcase: React.FC = () => {
       team: 'bg-purple-500/10 text-purple-500 border-purple-500/30',
       investor: 'bg-gold/10 text-gold border-gold/30',
       liquidity: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30',
-      public: 'bg-orange-500/10 text-orange-500 border-orange-500/30'
+      public: 'bg-orange-500/10 text-orange-500 border-orange-500/30',
     };
     return styles[type] || 'bg-muted/10 text-muted-foreground border-muted/30';
   };
@@ -205,7 +249,7 @@ const EnhancedTokenShowcase: React.FC = () => {
       <div className="absolute inset-0 bg-grid-pattern opacity-5" />
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-      
+
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Header */}
         <motion.div
@@ -219,18 +263,20 @@ const EnhancedTokenShowcase: React.FC = () => {
             <span className="text-base font-bold text-foreground">FLOWSY TOKEN ECOSYSTEM</span>
             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
           </div>
-          
+
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
             <span className="block text-foreground">Transparent & Secure</span>
             <span className="block bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
               Tokenomics
             </span>
           </h2>
-          
+
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Revolutionary tokenomics: <span className="text-emerald-500 font-semibold">60% public ownership</span>,
+            Revolutionary tokenomics:{' '}
+            <span className="text-emerald-500 font-semibold">60% public ownership</span>,
             <span className="text-orange-500 font-semibold">30% burn at $10M</span>, and
-            <span className="text-blue-500 font-semibold">only 10% developer fund</span> locked until $1B market cap.
+            <span className="text-blue-500 font-semibold">only 10% developer fund</span> locked
+            until $1B market cap.
           </p>
 
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20">
@@ -259,27 +305,27 @@ const EnhancedTokenShowcase: React.FC = () => {
               animate={{
                 x: [0, 30, -20, 0],
                 y: [0, -20, 30, 0],
-                scale: [1, 1.2, 0.8, 1]
+                scale: [1, 1.2, 0.8, 1],
               }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
             />
             <motion.div
               className="absolute top-3/4 right-1/4 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl"
               animate={{
                 x: [0, -25, 35, 0],
                 y: [0, 25, -15, 0],
-                scale: [1, 0.9, 1.3, 1]
+                scale: [1, 0.9, 1.3, 1],
               }}
-              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
             />
             <motion.div
               className="absolute bottom-1/4 left-3/4 w-20 h-20 bg-purple-500/20 rounded-full blur-xl"
               animate={{
                 x: [0, 20, -30, 0],
                 y: [0, -30, 20, 0],
-                scale: [1, 1.4, 0.7, 1]
+                scale: [1, 1.4, 0.7, 1],
               }}
-              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+              transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
             />
 
             <div className="relative z-10 text-center">
@@ -303,13 +349,13 @@ const EnhancedTokenShowcase: React.FC = () => {
                 key={marketData.marketCap}
                 initial={{ scale: 1.1, opacity: 0.8, y: 10 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className="mb-6"
               >
                 <motion.div
                   className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 bg-clip-text text-transparent"
                   whileHover={{ scale: 1.05 }}
-                  transition={{ type: "spring", stiffness: 400 }}
+                  transition={{ type: 'spring', stiffness: 400 }}
                 >
                   {formatCurrency(marketData.marketCap)}
                 </motion.div>
@@ -327,11 +373,11 @@ const EnhancedTokenShowcase: React.FC = () => {
                   className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ delay: 0.5, type: "spring" }}
+                  transition={{ delay: 0.5, type: 'spring' }}
                 >
                   <motion.div
                     animate={{ rotate: [0, 360] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
                   >
                     <TrendingUp className="w-4 h-4 text-emerald-500" />
                   </motion.div>
@@ -343,33 +389,33 @@ const EnhancedTokenShowcase: React.FC = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
                 {[
                   {
-                    label: "Token Price",
+                    label: 'Token Price',
                     value: `$${marketData.price.toFixed(6)}`,
                     icon: DollarSign,
-                    color: "text-emerald-500",
-                    bgColor: "bg-emerald-500/10"
+                    color: 'text-emerald-500',
+                    bgColor: 'bg-emerald-500/10',
                   },
                   {
-                    label: "24h Volume",
+                    label: '24h Volume',
                     value: formatNumber(marketData.volume24h),
                     icon: BarChart3,
-                    color: "text-blue-500",
-                    bgColor: "bg-blue-500/10"
+                    color: 'text-blue-500',
+                    bgColor: 'bg-blue-500/10',
                   },
                   {
-                    label: "Token Holders",
+                    label: 'Token Holders',
                     value: formatNumber(marketData.holders),
                     icon: Users,
-                    color: "text-purple-500",
-                    bgColor: "bg-purple-500/10"
+                    color: 'text-purple-500',
+                    bgColor: 'bg-purple-500/10',
                   },
                   {
-                    label: "24h Change",
+                    label: '24h Change',
                     value: `${marketData.change24h >= 0 ? '+' : ''}${marketData.change24h.toFixed(2)}%`,
                     icon: marketData.change24h >= 0 ? TrendingUp : TrendingDown,
-                    color: marketData.change24h >= 0 ? "text-emerald-500" : "text-red-500",
-                    bgColor: marketData.change24h >= 0 ? "bg-emerald-500/10" : "bg-red-500/10"
-                  }
+                    color: marketData.change24h >= 0 ? 'text-emerald-500' : 'text-red-500',
+                    bgColor: marketData.change24h >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/10',
+                  },
                 ].map((metric, index) => (
                   <motion.div
                     key={metric.label}
@@ -380,10 +426,7 @@ const EnhancedTokenShowcase: React.FC = () => {
                     className={`p-4 ${metric.bgColor} rounded-xl border border-border/30 hover:border-border/50 transition-all duration-300 cursor-pointer group/metric`}
                   >
                     <div className="flex items-center justify-center mb-2">
-                      <motion.div
-                        whileHover={{ rotate: 360 }}
-                        transition={{ duration: 0.5 }}
-                      >
+                      <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.5 }}>
                         <metric.icon className={`w-5 h-5 ${metric.color}`} />
                       </motion.div>
                     </div>
@@ -432,8 +475,8 @@ const EnhancedTokenShowcase: React.FC = () => {
             { id: 'overview', label: 'Overview', icon: BarChart3 },
             { id: 'distribution', label: 'Distribution', icon: PieChart },
             { id: 'holders', label: 'Top Holders', icon: Users },
-            { id: 'security', label: 'Security', icon: Shield }
-          ].map((tab) => (
+            { id: 'security', label: 'Security', icon: Shield },
+          ].map(tab => (
             <button
               key={tab.id}
               onClick={() => setSelectedTab(tab.id as any)}
@@ -477,20 +520,26 @@ const EnhancedTokenShowcase: React.FC = () => {
                     <div className="p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                       <div className="flex items-center gap-2 mb-2">
                         <Shield className="w-5 h-5 text-blue-500" />
-                        <span className="font-semibold text-blue-500">Only 10M FLOWSY (10%) Developer Fund</span>
+                        <span className="font-semibold text-blue-500">
+                          Only 10M FLOWSY (10%) Developer Fund
+                        </span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Ultra-minimal developer allocation locked until $1B market cap - Maximum community ownership with anti-rug guarantee.
+                        Ultra-minimal developer allocation locked until $1B market cap - Maximum
+                        community ownership with anti-rug guarantee.
                       </p>
                     </div>
 
                     <div className="p-4 bg-orange-500/10 rounded-xl border border-orange-500/20">
                       <div className="flex items-center gap-2 mb-2">
                         <Flame className="w-5 h-5 text-orange-500" />
-                        <span className="font-semibold text-orange-500">30M FLOWSY Burn Scheduled</span>
+                        <span className="font-semibold text-orange-500">
+                          30M FLOWSY Burn Scheduled
+                        </span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        Liquidity tokens will be permanently burned at $10M market cap, reducing supply and increasing value for all holders.
+                        Liquidity tokens will be permanently burned at $10M market cap, reducing
+                        supply and increasing value for all holders.
                       </p>
                     </div>
 
@@ -529,19 +578,27 @@ const EnhancedTokenShowcase: React.FC = () => {
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-3 bg-muted/20 rounded-lg">
-                      <div className="text-lg font-bold text-foreground">{formatNumber(marketData.totalSupply)}</div>
+                      <div className="text-lg font-bold text-foreground">
+                        {formatNumber(marketData.totalSupply)}
+                      </div>
                       <div className="text-xs text-muted-foreground">Total Supply</div>
                     </div>
                     <div className="p-3 bg-muted/20 rounded-lg">
-                      <div className="text-lg font-bold text-foreground">{formatNumber(marketData.circulatingSupply)}</div>
+                      <div className="text-lg font-bold text-foreground">
+                        {formatNumber(marketData.circulatingSupply)}
+                      </div>
                       <div className="text-xs text-muted-foreground">Circulating</div>
                     </div>
                     <div className="p-3 bg-muted/20 rounded-lg">
-                      <div className="text-lg font-bold text-foreground">{formatCurrency(marketData.fdv)}</div>
+                      <div className="text-lg font-bold text-foreground">
+                        {formatCurrency(marketData.fdv)}
+                      </div>
                       <div className="text-xs text-muted-foreground">Fully Diluted</div>
                     </div>
                     <div className="p-3 bg-muted/20 rounded-lg">
-                      <div className="text-lg font-bold text-foreground">{formatNumber(marketData.holders)}</div>
+                      <div className="text-lg font-bold text-foreground">
+                        {formatNumber(marketData.holders)}
+                      </div>
                       <div className="text-xs text-muted-foreground">Holders</div>
                     </div>
                   </div>
@@ -549,7 +606,9 @@ const EnhancedTokenShowcase: React.FC = () => {
                   <div className="mt-4 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
                     <div className="flex items-center gap-2 mb-1">
                       <Activity className="w-4 h-4 text-emerald-500" />
-                      <span className="text-sm font-semibold text-emerald-500">Growing Community</span>
+                      <span className="text-sm font-semibold text-emerald-500">
+                        Growing Community
+                      </span>
                     </div>
                     <p className="text-xs text-muted-foreground">
                       Active holder base growing by 50+ new wallets daily

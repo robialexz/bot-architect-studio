@@ -1,15 +1,15 @@
 import { supabase } from '@/lib/supabase';
 import { logger } from '@/lib/logger';
-import { 
-  WorkflowExecutor, 
-  ExecutionResult, 
-  WorkflowExecution, 
+import {
+  WorkflowExecutor,
+  ExecutionResult,
+  WorkflowExecution,
   NodeExecution,
   ExecutionContext,
   NodeExecutionResult,
   ExecutionStatus,
   ExecutionEvent,
-  ExecutionEventListener
+  ExecutionEventListener,
 } from '@/types/execution';
 import { Workflow } from '@/types/workflow';
 import { NodeProcessorRegistry } from './nodeProcessors/nodeProcessorRegistry';
@@ -36,7 +36,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
 
       // Create execution record
       const execution = await this.createExecution(workflowId, inputs);
-      
+
       // Create execution context
       const context: ExecutionContext = {
         executionId: execution.id,
@@ -44,14 +44,14 @@ export class WorkflowExecutionService implements WorkflowExecutor {
         workflowId,
         variables: { ...inputs },
         nodeResults: new Map(),
-        startTime
+        startTime,
       };
 
       this.activeExecutions.set(execution.id, context);
       this.emitEvent({
         type: 'execution_started',
         executionId: execution.id,
-        timestamp: startTime
+        timestamp: startTime,
       });
 
       // Update execution status to running
@@ -60,7 +60,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
       try {
         // Execute workflow nodes
         const nodeResults = await this.executeWorkflowNodes(workflow, context);
-        
+
         // Calculate total processing time
         const endTime = new Date();
         const totalProcessingTime = endTime.getTime() - startTime.getTime();
@@ -68,7 +68,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
         // Update execution as completed
         await this.updateExecutionStatus(execution.id, 'completed', {
           completedAt: endTime,
-          outputs: this.collectOutputs(nodeResults)
+          outputs: this.collectOutputs(nodeResults),
         });
 
         const result: ExecutionResult = {
@@ -79,49 +79,47 @@ export class WorkflowExecutionService implements WorkflowExecutor {
           endTime,
           nodeResults,
           totalProcessingTime,
-          aiUsage: await this.getAIUsageForExecution(execution.id)
+          aiUsage: await this.getAIUsageForExecution(execution.id),
         };
 
         this.emitEvent({
           type: 'execution_completed',
           executionId: execution.id,
           data: result,
-          timestamp: endTime
+          timestamp: endTime,
         });
 
-        logger.info('Workflow execution completed', { 
-          executionId: execution.id, 
-          processingTime: totalProcessingTime 
+        logger.info('Workflow execution completed', {
+          executionId: execution.id,
+          processingTime: totalProcessingTime,
         });
 
         return result;
-
       } catch (error) {
         // Handle execution failure
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        
+
         await this.updateExecutionStatus(execution.id, 'failed', {
           errorMessage,
-          completedAt: new Date()
+          completedAt: new Date(),
         });
 
         this.emitEvent({
           type: 'execution_failed',
           executionId: execution.id,
           data: { error: errorMessage },
-          timestamp: new Date()
+          timestamp: new Date(),
         });
 
-        logger.error('Workflow execution failed', { 
-          executionId: execution.id, 
-          error: errorMessage 
+        logger.error('Workflow execution failed', {
+          executionId: execution.id,
+          error: errorMessage,
         });
 
         throw error;
       } finally {
         this.activeExecutions.delete(execution.id);
       }
-
     } catch (error) {
       logger.error('Failed to start workflow execution', { workflowId, error });
       throw error;
@@ -153,7 +151,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     this.emitEvent({
       type: 'execution_paused',
       executionId,
-      timestamp: new Date()
+      timestamp: new Date(),
     });
   }
 
@@ -259,7 +257,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
         createdAt: data.created_at,
         updatedAt: data.updated_at,
         executionCount: 0,
-        settings: data.data?.settings || {}
+        settings: data.data?.settings || {},
       };
     } catch (error) {
       logger.error('Error getting workflow', { workflowId, error });
@@ -267,7 +265,10 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     }
   }
 
-  private async createExecution(workflowId: string, inputs: Record<string, any>): Promise<WorkflowExecution> {
+  private async createExecution(
+    workflowId: string,
+    inputs: Record<string, any>
+  ): Promise<WorkflowExecution> {
     try {
       const { data: userData } = await supabase.auth.getUser();
       if (!userData.user) {
@@ -280,7 +281,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
           workflow_id: workflowId,
           user_id: userData.user.id,
           inputs,
-          status: 'pending'
+          status: 'pending',
         })
         .select()
         .single();
@@ -331,7 +332,10 @@ export class WorkflowExecutionService implements WorkflowExecutor {
     }
   }
 
-  private async executeWorkflowNodes(workflow: Workflow, context: ExecutionContext): Promise<NodeExecutionResult[]> {
+  private async executeWorkflowNodes(
+    workflow: Workflow,
+    context: ExecutionContext
+  ): Promise<NodeExecutionResult[]> {
     const results: NodeExecutionResult[] = [];
     const processedNodes = new Set<string>();
 
@@ -372,7 +376,6 @@ export class WorkflowExecutionService implements WorkflowExecutor {
             nodeQueue.push(node);
           }
         });
-
       } catch (error) {
         logger.error('Node processing failed', { nodeId: currentNode.id, error });
         throw error;
@@ -389,9 +392,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
   }
 
   private getNodeDependencies(workflow: Workflow, nodeId: string): string[] {
-    return workflow.edges
-      .filter(edge => edge.target === nodeId)
-      .map(edge => edge.source);
+    return workflow.edges.filter(edge => edge.target === nodeId).map(edge => edge.source);
   }
 
   private getNodeDependents(workflow: Workflow, nodeId: string): any[] {
@@ -409,7 +410,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
       type: 'node_started',
       executionId: context.executionId,
       nodeId: node.id,
-      timestamp: startTime
+      timestamp: startTime,
     });
 
     try {
@@ -430,11 +431,10 @@ export class WorkflowExecutionService implements WorkflowExecutor {
         executionId: context.executionId,
         nodeId: node.id,
         data: result,
-        timestamp: new Date()
+        timestamp: new Date(),
       });
 
       return result;
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 
@@ -443,7 +443,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
         executionId: context.executionId,
         nodeId: node.id,
         data: { error: errorMessage },
-        timestamp: new Date()
+        timestamp: new Date(),
       });
 
       throw error;
@@ -507,7 +507,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
       startedAt: data.started_at ? new Date(data.started_at) : undefined,
       completedAt: data.completed_at ? new Date(data.completed_at) : undefined,
       createdAt: new Date(data.created_at),
-      updatedAt: new Date(data.updated_at)
+      updatedAt: new Date(data.updated_at),
     };
   }
 
@@ -524,7 +524,7 @@ export class WorkflowExecutionService implements WorkflowExecutor {
       startedAt: data.started_at ? new Date(data.started_at) : undefined,
       completedAt: data.completed_at ? new Date(data.completed_at) : undefined,
       processingTimeMs: data.processing_time_ms,
-      createdAt: new Date(data.created_at)
+      createdAt: new Date(data.created_at),
     };
   }
 }

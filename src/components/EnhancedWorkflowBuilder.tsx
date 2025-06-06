@@ -360,7 +360,7 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
       const inputs = {
         workflowId: workflow.id,
         triggeredBy: 'manual',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
 
       // Execute workflow using the new execution engine

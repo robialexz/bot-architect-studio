@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Play, 
-  Pause, 
-  RotateCcw, 
-  Settings,
-  Info,
-  Sparkles,
-  Zap
-} from 'lucide-react';
+import { Play, Pause, RotateCcw, Settings, Info, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import TokenBanner from './TokenBanner';
 import SolanaTokenWidget from './SolanaTokenWidget';
@@ -17,9 +9,7 @@ interface InteractiveTokenDemoProps {
   className?: string;
 }
 
-const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({
-  className = ''
-}) => {
+const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({ className = '' }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [demoMode, setDemoMode] = useState<'banner' | 'widget' | 'both'>('both');
   const [showFeatures, setShowFeatures] = useState(false);
@@ -29,33 +19,33 @@ const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({
     {
       title: 'Real-time Price Updates',
       description: 'Live price changes with flash animations',
-      icon: <Zap className="w-4 h-4" />
+      icon: <Zap className="w-4 h-4" />,
     },
     {
       title: 'Interactive Hover Effects',
       description: 'Hover over elements to reveal additional information',
-      icon: <Sparkles className="w-4 h-4" />
+      icon: <Sparkles className="w-4 h-4" />,
     },
     {
       title: 'Expandable Details',
       description: 'Click the token logo or expand button for more data',
-      icon: <Info className="w-4 h-4" />
+      icon: <Info className="w-4 h-4" />,
     },
     {
       title: 'Quick Trading',
       description: 'One-click access to trading platforms',
-      icon: <Play className="w-4 h-4" />
+      icon: <Play className="w-4 h-4" />,
     },
     {
       title: 'Social Features',
       description: 'Favorite tokens and share with friends',
-      icon: <Sparkles className="w-4 h-4" />
+      icon: <Sparkles className="w-4 h-4" />,
     },
     {
       title: 'Mini Charts',
       description: 'Visual price history and trend indicators',
-      icon: <Settings className="w-4 h-4" />
-    }
+      icon: <Settings className="w-4 h-4" />,
+    },
   ];
 
   return (
@@ -78,7 +68,7 @@ const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({
               {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               {isPlaying ? 'Pause' : 'Play'}
             </Button>
-            
+
             <Button
               onClick={() => setShowFeatures(!showFeatures)}
               size="sm"
@@ -95,7 +85,7 @@ const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({
         <div className="flex items-center gap-2 mb-4">
           <span className="text-sm text-muted-foreground">Display Mode:</span>
           <div className="flex items-center gap-1">
-            {(['banner', 'widget', 'both'] as const).map((mode) => (
+            {(['banner', 'widget', 'both'] as const).map(mode => (
               <button
                 key={mode}
                 onClick={() => setDemoMode(mode)}
@@ -152,15 +142,14 @@ const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({
             transition={{ duration: 0.5 }}
           >
             <div className="mb-3">
-              <h4 className="text-sm font-medium text-muted-foreground mb-1">Token Banner (Compact)</h4>
+              <h4 className="text-sm font-medium text-muted-foreground mb-1">
+                Token Banner (Compact)
+              </h4>
               <p className="text-xs text-muted-foreground">
                 Perfect for page headers and prominent placement
               </p>
             </div>
-            <TokenBanner 
-              className="w-full"
-              tokenAddress="DEMO_TOKEN"
-            />
+            <TokenBanner className="w-full" tokenAddress="DEMO_TOKEN" />
           </motion.div>
         )}
 
@@ -177,7 +166,7 @@ const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({
                 Complete widget with transaction history and detailed information
               </p>
             </div>
-            <SolanaTokenWidget 
+            <SolanaTokenWidget
               className="w-full"
               tokenAddress="DEMO_TOKEN"
               showTransactions={true}
@@ -199,14 +188,28 @@ const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({
             <Sparkles className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">Try the Interactive Features!</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-2">
+              Try the Interactive Features!
+            </h3>
             <div className="space-y-2 text-sm text-muted-foreground">
-              <p>• <strong>Hover</strong> over the token logo to see sparkle effects</p>
-              <p>• <strong>Click</strong> the heart icon to favorite the token</p>
-              <p>• <strong>Click</strong> the expand button to see detailed information</p>
-              <p>• <strong>Try</strong> the quick buy feature with preset amounts</p>
-              <p>• <strong>Watch</strong> for price change animations (green/red flashes)</p>
-              <p>• <strong>Share</strong> the token using the share button</p>
+              <p>
+                • <strong>Hover</strong> over the token logo to see sparkle effects
+              </p>
+              <p>
+                • <strong>Click</strong> the heart icon to favorite the token
+              </p>
+              <p>
+                • <strong>Click</strong> the expand button to see detailed information
+              </p>
+              <p>
+                • <strong>Try</strong> the quick buy feature with preset amounts
+              </p>
+              <p>
+                • <strong>Watch</strong> for price change animations (green/red flashes)
+              </p>
+              <p>
+                • <strong>Share</strong> the token using the share button
+              </p>
             </div>
           </div>
         </div>

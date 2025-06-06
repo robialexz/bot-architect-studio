@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Clock, 
-  Users, 
-  Gift, 
-  Star, 
+import {
+  Clock,
+  Users,
+  Gift,
+  Star,
   Zap,
   Crown,
   TrendingUp,
@@ -12,7 +12,7 @@ import {
   Sparkles,
   ArrowRight,
   CheckCircle,
-  Timer
+  Timer,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +29,12 @@ const EnhancedWaitlistCTA: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [countdown, setCountdown] = useState<CountdownTime>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [countdown, setCountdown] = useState<CountdownTime>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
   const [currentWaitlistSize] = useState(Math.floor(Math.random() * 2000) + 8500); // Simulated
 
   // Token launch countdown (June 2025)
@@ -45,7 +50,7 @@ const EnhancedWaitlistCTA: React.FC = () => {
           days: Math.floor(distance / (1000 * 60 * 60 * 24)),
           hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
           minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000)
+          seconds: Math.floor((distance % (1000 * 60)) / 1000),
         });
       }
     };
@@ -60,10 +65,10 @@ const EnhancedWaitlistCTA: React.FC = () => {
     if (!email) return;
 
     setIsSubmitting(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     setIsSubmitting(false);
     setIsSubmitted(true);
   };
@@ -73,26 +78,26 @@ const EnhancedWaitlistCTA: React.FC = () => {
       icon: <Crown className="w-5 h-5" />,
       title: 'Early Access',
       description: 'Be among the first 1,000 users to access FlowsyAI',
-      color: 'from-gold to-yellow-500'
+      color: 'from-gold to-yellow-500',
     },
     {
       icon: <TrendingUp className="w-5 h-5" />,
       title: 'Token Bonus',
       description: '25% bonus tokens for early supporters',
-      color: 'from-emerald-500 to-teal-500'
+      color: 'from-emerald-500 to-teal-500',
     },
     {
       icon: <Shield className="w-5 h-5" />,
       title: 'Exclusive Features',
       description: 'Access to premium AI models and workflows',
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-blue-500 to-cyan-500',
     },
     {
       icon: <Gift className="w-5 h-5" />,
       title: 'Founder Perks',
       description: 'Lifetime discounts and special recognition',
-      color: 'from-purple-500 to-pink-500'
-    }
+      color: 'from-purple-500 to-pink-500',
+    },
   ];
 
   if (isSubmitted) {
@@ -112,12 +117,12 @@ const EnhancedWaitlistCTA: React.FC = () => {
             >
               <CheckCircle className="w-10 h-10 text-white" />
             </motion.div>
-            
+
             <h2 className="text-3xl font-bold mb-4 text-foreground">Welcome to the Future! 🚀</h2>
             <p className="text-xl text-muted-foreground mb-6">
               You're now on the FlowsyAI waitlist. Get ready for an incredible journey!
             </p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
               <div className="p-4 bg-primary/5 rounded-lg border border-primary/10">
                 <div className="text-2xl font-bold text-primary">#{currentWaitlistSize + 1}</div>
@@ -128,9 +133,10 @@ const EnhancedWaitlistCTA: React.FC = () => {
                 <div className="text-sm text-muted-foreground">Token bonus secured</div>
               </div>
             </div>
-            
+
             <p className="text-muted-foreground">
-              Check your email for confirmation and next steps. Follow us on social media for updates!
+              Check your email for confirmation and next steps. Follow us on social media for
+              updates!
             </p>
           </motion.div>
         </div>
@@ -155,8 +161,8 @@ const EnhancedWaitlistCTA: React.FC = () => {
             Join the AI Revolution
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Be part of the exclusive group that gets early access to FlowsyAI and our upcoming Solana token launch. 
-            Limited spots available with incredible founder benefits.
+            Be part of the exclusive group that gets early access to FlowsyAI and our upcoming
+            Solana token launch. Limited spots available with incredible founder benefits.
           </p>
         </motion.div>
 
@@ -174,13 +180,13 @@ const EnhancedWaitlistCTA: React.FC = () => {
                 <h3 className="text-2xl font-bold mb-2">Token Launch Countdown</h3>
                 <p className="text-muted-foreground">Early access ends soon!</p>
               </div>
-              
+
               <div className="grid grid-cols-4 gap-4">
                 {[
                   { label: 'Days', value: countdown.days },
                   { label: 'Hours', value: countdown.hours },
                   { label: 'Minutes', value: countdown.minutes },
-                  { label: 'Seconds', value: countdown.seconds }
+                  { label: 'Seconds', value: countdown.seconds },
                 ].map((item, index) => (
                   <motion.div
                     key={item.label}
@@ -215,10 +221,12 @@ const EnhancedWaitlistCTA: React.FC = () => {
                 className="premium-card bg-card/30 backdrop-blur-lg border border-border/30 rounded-xl p-6 text-center"
               >
                 <Users className="w-8 h-8 text-primary mx-auto mb-3" />
-                <div className="text-2xl font-bold text-foreground">{currentWaitlistSize.toLocaleString()}</div>
+                <div className="text-2xl font-bold text-foreground">
+                  {currentWaitlistSize.toLocaleString()}
+                </div>
                 <div className="text-sm text-muted-foreground">Users Waiting</div>
               </motion.div>
-              
+
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -243,7 +251,9 @@ const EnhancedWaitlistCTA: React.FC = () => {
                   transition={{ delay: index * 0.1 }}
                   className="flex items-start gap-3 p-4 bg-card/20 rounded-lg border border-border/20"
                 >
-                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-r ${benefit.color} flex items-center justify-center text-white flex-shrink-0`}>
+                  <div
+                    className={`w-10 h-10 rounded-lg bg-gradient-to-r ${benefit.color} flex items-center justify-center text-white flex-shrink-0`}
+                  >
                     {benefit.icon}
                   </div>
                   <div>
@@ -276,7 +286,7 @@ const EnhancedWaitlistCTA: React.FC = () => {
                   type="email"
                   placeholder="Enter your email address"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   className="h-12 text-lg border-primary/20 focus:border-primary/50"
                   required
                 />
@@ -305,7 +315,7 @@ const EnhancedWaitlistCTA: React.FC = () => {
 
             <div className="mt-6 text-center">
               <p className="text-xs text-muted-foreground">
-                By joining, you agree to receive updates about FlowsyAI and our token launch. 
+                By joining, you agree to receive updates about FlowsyAI and our token launch.
                 Unsubscribe anytime.
               </p>
             </div>

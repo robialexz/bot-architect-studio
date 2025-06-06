@@ -40,7 +40,7 @@ const RoadmapPage: React.FC = () => {
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-3xl font-bold mb-8 text-center">Roadmap Details</h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="premium-card p-6 rounded-2xl">
                 <h3 className="text-xl font-semibold mb-4 text-primary">Current Focus</h3>
@@ -71,7 +71,8 @@ const RoadmapPage: React.FC = () => {
                   Stay Updated
                 </h3>
                 <p className="text-muted-foreground mb-6">
-                  Follow our progress and be the first to know about major updates, token launches, and platform releases.
+                  Follow our progress and be the first to know about major updates, token launches,
+                  and platform releases.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Button

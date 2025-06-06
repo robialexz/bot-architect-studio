@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Download, 
-  Mail, 
-  Users, 
-  TrendingUp, 
+import {
+  Download,
+  Mail,
+  Users,
+  TrendingUp,
   Calendar,
   RefreshCw,
   Search,
   Filter,
-  ArrowLeft
+  ArrowLeft,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,7 +23,9 @@ const WaitlistAdmin: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'unsubscribed' | 'bounced'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'unsubscribed' | 'bounced'>(
+    'all'
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const itemsPerPage = 50;
@@ -43,7 +45,7 @@ const WaitlistAdmin: React.FC = () => {
 
       // Load emails
       const emailsResult = await waitlistService.getAllEmails(
-        itemsPerPage, 
+        itemsPerPage,
         (currentPage - 1) * itemsPerPage
       );
       if (emailsResult.success && emailsResult.data) {
@@ -52,9 +54,9 @@ const WaitlistAdmin: React.FC = () => {
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to load waitlist data.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to load waitlist data.',
+        variant: 'destructive',
       });
     } finally {
       setIsLoading(false);
@@ -78,17 +80,17 @@ const WaitlistAdmin: React.FC = () => {
         window.URL.revokeObjectURL(url);
 
         toast({
-          title: "Export successful",
-          description: "Waitlist emails have been exported to CSV.",
+          title: 'Export successful',
+          description: 'Waitlist emails have been exported to CSV.',
         });
       } else {
         throw new Error(result.message || 'Export failed');
       }
     } catch (error) {
       toast({
-        title: "Export failed",
-        description: "Failed to export waitlist emails.",
-        variant: "destructive",
+        title: 'Export failed',
+        description: 'Failed to export waitlist emails.',
+        variant: 'destructive',
       });
     } finally {
       setIsExporting(false);
@@ -103,10 +105,10 @@ const WaitlistAdmin: React.FC = () => {
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
-  const StatCard: React.FC<{ 
-    title: string; 
-    value: number; 
-    icon: React.ReactNode; 
+  const StatCard: React.FC<{
+    title: string;
+    value: number;
+    icon: React.ReactNode;
     color: string;
     description?: string;
   }> = ({ title, value, icon, color, description }) => (
@@ -124,9 +126,7 @@ const WaitlistAdmin: React.FC = () => {
           <div className="text-sm text-muted-foreground">{title}</div>
         </div>
       </div>
-      {description && (
-        <div className="text-xs text-muted-foreground mt-2">{description}</div>
-      )}
+      {description && <div className="text-xs text-muted-foreground mt-2">{description}</div>}
     </motion.div>
   );
 
@@ -152,12 +152,7 @@ const WaitlistAdmin: React.FC = () => {
               <h1 className="text-2xl font-bold">Waitlist Administration</h1>
             </div>
             <div className="flex items-center gap-3">
-              <Button
-                onClick={loadData}
-                variant="outline"
-                size="sm"
-                disabled={isLoading}
-              >
+              <Button onClick={loadData} variant="outline" size="sm" disabled={isLoading}>
                 <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
                 Refresh
               </Button>
@@ -219,7 +214,7 @@ const WaitlistAdmin: React.FC = () => {
                 <Input
                   placeholder="Search emails..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className="pl-10"
                 />
               </div>
@@ -227,7 +222,7 @@ const WaitlistAdmin: React.FC = () => {
                 <Filter className="w-4 h-4 text-muted-foreground" />
                 <select
                   value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value as any)}
+                  onChange={e => setStatusFilter(e.target.value as any)}
                   className="px-3 py-2 border border-border rounded-md bg-background"
                 >
                   <option value="all">All Status</option>
@@ -278,25 +273,23 @@ const WaitlistAdmin: React.FC = () => {
                     >
                       <td className="p-4 font-medium">{email.email}</td>
                       <td className="p-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          email.status === 'active' 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                            : email.status === 'unsubscribed'
-                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
-                            : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
-                        }`}>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            email.status === 'active'
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                              : email.status === 'unsubscribed'
+                                ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+                                : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                          }`}
+                        >
                           {email.status}
                         </span>
                       </td>
                       <td className="p-4 text-muted-foreground">
                         {new Date(email.created_at).toLocaleDateString()}
                       </td>
-                      <td className="p-4 text-muted-foreground">
-                        {email.utm_source || '-'}
-                      </td>
-                      <td className="p-4 text-muted-foreground">
-                        {email.utm_campaign || '-'}
-                      </td>
+                      <td className="p-4 text-muted-foreground">{email.utm_source || '-'}</td>
+                      <td className="p-4 text-muted-foreground">{email.utm_campaign || '-'}</td>
                     </motion.tr>
                   ))}
                 </tbody>

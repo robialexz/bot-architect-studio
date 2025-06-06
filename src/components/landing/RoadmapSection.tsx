@@ -1,10 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Calendar, CheckCircle, Clock, Rocket, Zap, Brain, Layers, Star, ChevronDown, ChevronUp,
-  Target, TrendingUp, Users, DollarSign, Globe, Smartphone, Code, Shield, Award,
-  Play, Pause, BarChart3, Coins, Crown, Sparkles, ArrowRight, ExternalLink,
-  Twitter, MessageCircle, Youtube, Instagram, Linkedin, Mail, Bell, Gift
+  Calendar,
+  CheckCircle,
+  Clock,
+  Rocket,
+  Zap,
+  Brain,
+  Layers,
+  Star,
+  ChevronDown,
+  ChevronUp,
+  Target,
+  TrendingUp,
+  Users,
+  DollarSign,
+  Globe,
+  Smartphone,
+  Code,
+  Shield,
+  Award,
+  Play,
+  Pause,
+  BarChart3,
+  Coins,
+  Crown,
+  Sparkles,
+  ArrowRight,
+  ExternalLink,
+  Twitter,
+  MessageCircle,
+  Youtube,
+  Instagram,
+  Linkedin,
+  Mail,
+  Bell,
+  Gift,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -52,7 +83,8 @@ const roadmapPhases: RoadmapPhase[] = [
     id: 'foundation-complete',
     title: 'Foundation & Platform Architecture',
     subtitle: '✅ COMPLETED - Ready for Launch',
-    description: 'Complete platform foundation with production-ready infrastructure, stunning UI/UX, and comprehensive backend systems',
+    description:
+      'Complete platform foundation with production-ready infrastructure, stunning UI/UX, and comprehensive backend systems',
     timeline: 'Q1 2025',
     duration: '3 months',
     status: 'completed',
@@ -63,32 +95,47 @@ const roadmapPhases: RoadmapPhase[] = [
         name: 'Production Website & Landing Pages',
         description: 'Fully responsive, animated website with global background effects',
         status: 'done',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Waitlist System & Database',
         description: 'Supabase-powered waitlist with admin panel and analytics',
         status: 'done',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Token Integration Framework',
         description: 'Solana token widgets and real-time market data integration',
         status: 'done',
-        impact: 'medium'
+        impact: 'medium',
       },
       {
         name: 'Brand Identity & Visual System',
         description: 'Complete branding with premium logo, colors, and design system',
         status: 'done',
-        impact: 'high'
-      }
+        impact: 'high',
+      },
     ],
     metrics: [
-      { label: 'Website Performance', value: '98/100', target: '95+', icon: <Zap className="w-4 h-4" /> },
-      { label: 'Mobile Responsiveness', value: '100%', target: '100%', icon: <Smartphone className="w-4 h-4" /> },
+      {
+        label: 'Website Performance',
+        value: '98/100',
+        target: '95+',
+        icon: <Zap className="w-4 h-4" />,
+      },
+      {
+        label: 'Mobile Responsiveness',
+        value: '100%',
+        target: '100%',
+        icon: <Smartphone className="w-4 h-4" />,
+      },
       { label: 'Code Quality', value: 'A+', target: 'A', icon: <Code className="w-4 h-4" /> },
-      { label: 'Security Score', value: '95/100', target: '90+', icon: <Shield className="w-4 h-4" /> }
+      {
+        label: 'Security Score',
+        value: '95/100',
+        target: '90+',
+        icon: <Shield className="w-4 h-4" />,
+      },
     ],
     marketingActions: [],
     icon: <CheckCircle className="w-6 h-6" />,
@@ -98,13 +145,14 @@ const roadmapPhases: RoadmapPhase[] = [
     expectedROI: 'Foundation for $1M+ valuation',
     keyPartners: ['Supabase', 'Vercel', 'GitHub'],
     risks: ['None - Completed successfully'],
-    successMetrics: ['Website live', 'Waitlist functional', 'Brand established']
+    successMetrics: ['Website live', 'Waitlist functional', 'Brand established'],
   },
   {
     id: 'aggressive-marketing',
     title: 'Aggressive Marketing Blitz',
     subtitle: '🚀 CRITICAL PHASE - Maximum Impact',
-    description: 'Intensive 60-day marketing campaign across all channels with $50K budget to achieve viral growth and massive community building',
+    description:
+      'Intensive 60-day marketing campaign across all channels with $50K budget to achieve viral growth and massive community building',
     timeline: 'June 2025',
     duration: '60 days',
     status: 'critical',
@@ -115,32 +163,52 @@ const roadmapPhases: RoadmapPhase[] = [
         name: 'Multi-Channel Advertising Campaign',
         description: 'Google Ads, Facebook, Instagram, TikTok, LinkedIn, Twitter campaigns',
         status: 'progress',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Influencer Partnership Program',
         description: 'Collaborate with 50+ tech influencers and AI thought leaders',
         status: 'progress',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Content Marketing Blitz',
         description: 'Daily content: videos, blogs, tutorials, case studies',
         status: 'planned',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Community Building & Engagement',
         description: 'Discord, Telegram, Reddit communities with daily engagement',
         status: 'planned',
-        impact: 'medium'
-      }
+        impact: 'medium',
+      },
     ],
     metrics: [
-      { label: 'Waitlist Signups', value: '2,847', target: '50,000', icon: <Users className="w-4 h-4" /> },
-      { label: 'Social Media Reach', value: '125K', target: '1M+', icon: <Globe className="w-4 h-4" /> },
-      { label: 'Conversion Rate', value: '3.2%', target: '5%+', icon: <Target className="w-4 h-4" /> },
-      { label: 'Brand Awareness', value: '15%', target: '60%', icon: <TrendingUp className="w-4 h-4" /> }
+      {
+        label: 'Waitlist Signups',
+        value: '2,847',
+        target: '50,000',
+        icon: <Users className="w-4 h-4" />,
+      },
+      {
+        label: 'Social Media Reach',
+        value: '125K',
+        target: '1M+',
+        icon: <Globe className="w-4 h-4" />,
+      },
+      {
+        label: 'Conversion Rate',
+        value: '3.2%',
+        target: '5%+',
+        icon: <Target className="w-4 h-4" />,
+      },
+      {
+        label: 'Brand Awareness',
+        value: '15%',
+        target: '60%',
+        icon: <TrendingUp className="w-4 h-4" />,
+      },
     ],
     marketingActions: [
       {
@@ -148,29 +216,29 @@ const roadmapPhases: RoadmapPhase[] = [
         action: 'Search & Display campaigns targeting AI keywords',
         budget: '$15,000',
         roi: '300%+',
-        icon: <Target className="w-4 h-4" />
+        icon: <Target className="w-4 h-4" />,
       },
       {
         channel: 'Social Media',
         action: 'Facebook, Instagram, TikTok, LinkedIn ads',
         budget: '$20,000',
         roi: '250%+',
-        icon: <Instagram className="w-4 h-4" />
+        icon: <Instagram className="w-4 h-4" />,
       },
       {
         channel: 'Influencers',
         action: 'Tech YouTubers, AI experts, business leaders',
         budget: '$10,000',
         roi: '400%+',
-        icon: <Youtube className="w-4 h-4" />
+        icon: <Youtube className="w-4 h-4" />,
       },
       {
         channel: 'Content Marketing',
         action: 'SEO blogs, tutorials, case studies',
         budget: '$5,000',
         roi: '500%+',
-        icon: <Mail className="w-4 h-4" />
-      }
+        icon: <Mail className="w-4 h-4" />,
+      },
     ],
     icon: <Rocket className="w-6 h-6" />,
     color: 'from-red-500 to-orange-600',
@@ -179,13 +247,14 @@ const roadmapPhases: RoadmapPhase[] = [
     expectedROI: '500%+ (50K waitlist = $2.5M valuation)',
     keyPartners: ['Google Ads', 'Meta Business', 'TikTok Ads', 'LinkedIn Marketing'],
     risks: ['Ad spend efficiency', 'Market saturation', 'Competition response'],
-    successMetrics: ['50K waitlist signups', '1M social reach', '60% brand awareness']
+    successMetrics: ['50K waitlist signups', '1M social reach', '60% brand awareness'],
   },
   {
     id: 'token-launch',
     title: 'FlowsyAI Token Launch & Distribution',
     subtitle: '💎 TOKENOMICS - Building Trust & Value',
-    description: 'Strategic token launch with transparent distribution, community rewards, and liquidity burning mechanism to ensure long-term value growth',
+    description:
+      'Strategic token launch with transparent distribution, community rewards, and liquidity burning mechanism to ensure long-term value growth',
     timeline: 'July 2025',
     duration: '30 days',
     status: 'upcoming',
@@ -196,32 +265,47 @@ const roadmapPhases: RoadmapPhase[] = [
         name: 'Token Smart Contract Deployment',
         description: 'Solana-based token with advanced tokenomics and security features',
         status: 'planned',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Community Airdrop Program',
         description: '60% of tokens distributed to waitlist members and early supporters',
         status: 'planned',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Liquidity Pool & DEX Listing',
         description: 'Initial liquidity on Raydium, Jupiter, and major Solana DEXs',
         status: 'planned',
-        impact: 'medium'
+        impact: 'medium',
       },
       {
         name: 'Burn Mechanism Implementation',
         description: 'Automatic liquidity burning at 10M market cap milestone',
         status: 'planned',
-        impact: 'high'
-      }
+        impact: 'high',
+      },
     ],
     metrics: [
-      { label: 'Token Distribution', value: '0%', target: '100%', icon: <Coins className="w-4 h-4" /> },
-      { label: 'Market Cap Target', value: '$0', target: '$10M+', icon: <DollarSign className="w-4 h-4" /> },
+      {
+        label: 'Token Distribution',
+        value: '0%',
+        target: '100%',
+        icon: <Coins className="w-4 h-4" />,
+      },
+      {
+        label: 'Market Cap Target',
+        value: '$0',
+        target: '$10M+',
+        icon: <DollarSign className="w-4 h-4" />,
+      },
       { label: 'Holder Count', value: '0', target: '10,000+', icon: <Users className="w-4 h-4" /> },
-      { label: 'Liquidity Locked', value: '0%', target: '30%', icon: <Shield className="w-4 h-4" /> }
+      {
+        label: 'Liquidity Locked',
+        value: '0%',
+        target: '30%',
+        icon: <Shield className="w-4 h-4" />,
+      },
     ],
     marketingActions: [
       {
@@ -229,29 +313,29 @@ const roadmapPhases: RoadmapPhase[] = [
         action: 'Token announcement, tokenomics reveal, community building',
         budget: '$5,000',
         roi: '1000%+',
-        icon: <Twitter className="w-4 h-4" />
+        icon: <Twitter className="w-4 h-4" />,
       },
       {
         channel: 'Crypto Influencers',
         action: 'Token reviews, analysis videos, community AMAs',
         budget: '$15,000',
         roi: '800%+',
-        icon: <Crown className="w-4 h-4" />
+        icon: <Crown className="w-4 h-4" />,
       },
       {
         channel: 'DEX Listings',
         action: 'Raydium, Jupiter, Orca listings with marketing support',
         budget: '$10,000',
         roi: '600%+',
-        icon: <Sparkles className="w-4 h-4" />
+        icon: <Sparkles className="w-4 h-4" />,
       },
       {
         channel: 'Community Rewards',
         action: 'Airdrop campaigns, staking rewards, loyalty programs',
         budget: '$20,000',
         roi: '500%+',
-        icon: <Gift className="w-4 h-4" />
-      }
+        icon: <Gift className="w-4 h-4" />,
+      },
     ],
     icon: <Coins className="w-6 h-6" />,
     color: 'from-yellow-500 to-orange-500',
@@ -260,13 +344,14 @@ const roadmapPhases: RoadmapPhase[] = [
     expectedROI: '2000%+ (Token appreciation + ecosystem value)',
     keyPartners: ['Solana Foundation', 'Raydium', 'Jupiter', 'Crypto KOLs'],
     risks: ['Market volatility', 'Regulatory changes', 'Competition'],
-    successMetrics: ['$10M market cap', '10K holders', 'Top 100 Solana tokens']
+    successMetrics: ['$10M market cap', '10K holders', 'Top 100 Solana tokens'],
   },
   {
     id: 'platform-development',
     title: 'AI Platform Development & Beta Launch',
     subtitle: '🤖 CORE PRODUCT - Revolutionary AI Workflows',
-    description: 'Develop and launch the core AI workflow automation platform with AR capabilities, real AI integrations, and production-ready features',
+    description:
+      'Develop and launch the core AI workflow automation platform with AR capabilities, real AI integrations, and production-ready features',
     timeline: 'August - October 2025',
     duration: '90 days',
     status: 'upcoming',
@@ -277,32 +362,42 @@ const roadmapPhases: RoadmapPhase[] = [
         name: 'AR Workflow Builder',
         description: 'Mobile AR interface for building AI workflows in 3D space',
         status: 'planned',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Real AI Service Integrations',
         description: 'OpenAI, Google AI, Anthropic, and 50+ AI service connections',
         status: 'planned',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Visual Workflow Designer',
         description: 'Drag-and-drop interface for complex automation workflows',
         status: 'planned',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Beta Testing Program',
         description: 'Invite 1000 early users for comprehensive platform testing',
         status: 'planned',
-        impact: 'medium'
-      }
+        impact: 'medium',
+      },
     ],
     metrics: [
-      { label: 'Development Progress', value: '0%', target: '100%', icon: <Code className="w-4 h-4" /> },
+      {
+        label: 'Development Progress',
+        value: '0%',
+        target: '100%',
+        icon: <Code className="w-4 h-4" />,
+      },
       { label: 'Beta Users', value: '0', target: '1,000', icon: <Users className="w-4 h-4" /> },
       { label: 'AI Integrations', value: '0', target: '50+', icon: <Brain className="w-4 h-4" /> },
-      { label: 'Platform Uptime', value: '0%', target: '99.9%', icon: <Shield className="w-4 h-4" /> }
+      {
+        label: 'Platform Uptime',
+        value: '0%',
+        target: '99.9%',
+        icon: <Shield className="w-4 h-4" />,
+      },
     ],
     marketingActions: [
       {
@@ -310,22 +405,22 @@ const roadmapPhases: RoadmapPhase[] = [
         action: 'Product launches, demo videos, tech reviews',
         budget: '$15,000',
         roi: '400%+',
-        icon: <Youtube className="w-4 h-4" />
+        icon: <Youtube className="w-4 h-4" />,
       },
       {
         channel: 'Beta Program',
         action: 'Exclusive access, user feedback, testimonials',
         budget: '$10,000',
         roi: '600%+',
-        icon: <Users className="w-4 h-4" />
+        icon: <Users className="w-4 h-4" />,
       },
       {
         channel: 'Developer Community',
         action: 'API documentation, developer tools, integrations',
         budget: '$8,000',
         roi: '300%+',
-        icon: <Code className="w-4 h-4" />
-      }
+        icon: <Code className="w-4 h-4" />,
+      },
     ],
     icon: <Brain className="w-6 h-6" />,
     color: 'from-purple-500 to-pink-600',
@@ -334,13 +429,14 @@ const roadmapPhases: RoadmapPhase[] = [
     expectedROI: '1000%+ (Platform value + subscription revenue)',
     keyPartners: ['OpenAI', 'Google Cloud', 'AWS', 'Microsoft Azure'],
     risks: ['Technical complexity', 'AI API costs', 'User adoption'],
-    successMetrics: ['Platform launch', '1K beta users', '99.9% uptime']
+    successMetrics: ['Platform launch', '1K beta users', '99.9% uptime'],
   },
   {
     id: 'scale-monetize',
     title: 'Scale & Monetization',
     subtitle: '💰 REVENUE GENERATION - Sustainable Growth',
-    description: 'Scale platform to 100K+ users, implement subscription tiers, enterprise solutions, and achieve $10M+ ARR with global expansion',
+    description:
+      'Scale platform to 100K+ users, implement subscription tiers, enterprise solutions, and achieve $10M+ ARR with global expansion',
     timeline: 'Q4 2025 - Q2 2026',
     duration: '6 months',
     status: 'upcoming',
@@ -351,32 +447,42 @@ const roadmapPhases: RoadmapPhase[] = [
         name: 'Subscription Tier System',
         description: 'Free, Pro ($29/mo), Enterprise ($299/mo) with advanced features',
         status: 'planned',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Enterprise Solutions',
         description: 'Custom workflows, dedicated support, on-premise deployment',
         status: 'planned',
-        impact: 'high'
+        impact: 'high',
       },
       {
         name: 'Global Expansion',
         description: 'Multi-language support, regional partnerships, local marketing',
         status: 'planned',
-        impact: 'medium'
+        impact: 'medium',
       },
       {
         name: 'Advanced AI Features',
         description: 'Custom AI models, advanced analytics, enterprise integrations',
         status: 'planned',
-        impact: 'high'
-      }
+        impact: 'high',
+      },
     ],
     metrics: [
       { label: 'Monthly Users', value: '0', target: '100K+', icon: <Users className="w-4 h-4" /> },
-      { label: 'Annual Revenue', value: '$0', target: '$10M+', icon: <DollarSign className="w-4 h-4" /> },
-      { label: 'Enterprise Clients', value: '0', target: '500+', icon: <Award className="w-4 h-4" /> },
-      { label: 'Global Markets', value: '0', target: '25+', icon: <Globe className="w-4 h-4" /> }
+      {
+        label: 'Annual Revenue',
+        value: '$0',
+        target: '$10M+',
+        icon: <DollarSign className="w-4 h-4" />,
+      },
+      {
+        label: 'Enterprise Clients',
+        value: '0',
+        target: '500+',
+        icon: <Award className="w-4 h-4" />,
+      },
+      { label: 'Global Markets', value: '0', target: '25+', icon: <Globe className="w-4 h-4" /> },
     ],
     marketingActions: [
       {
@@ -384,22 +490,22 @@ const roadmapPhases: RoadmapPhase[] = [
         action: 'B2B sales team, enterprise demos, custom solutions',
         budget: '$100,000',
         roi: '500%+',
-        icon: <Award className="w-4 h-4" />
+        icon: <Award className="w-4 h-4" />,
       },
       {
         channel: 'Global Marketing',
         action: 'International campaigns, local partnerships, regional events',
         budget: '$200,000',
         roi: '400%+',
-        icon: <Globe className="w-4 h-4" />
+        icon: <Globe className="w-4 h-4" />,
       },
       {
         channel: 'Product Marketing',
         action: 'Feature announcements, case studies, success stories',
         budget: '$50,000',
         roi: '600%+',
-        icon: <TrendingUp className="w-4 h-4" />
-      }
+        icon: <TrendingUp className="w-4 h-4" />,
+      },
     ],
     icon: <TrendingUp className="w-6 h-6" />,
     color: 'from-green-500 to-emerald-600',
@@ -408,14 +514,16 @@ const roadmapPhases: RoadmapPhase[] = [
     expectedROI: '2000%+ ($10M ARR target)',
     keyPartners: ['Salesforce', 'Microsoft', 'Google Workspace', 'Slack'],
     risks: ['Market competition', 'Scaling challenges', 'Customer acquisition costs'],
-    successMetrics: ['100K users', '$10M ARR', '500 enterprise clients']
-  }
+    successMetrics: ['100K users', '$10M ARR', '500 enterprise clients'],
+  },
 ];
 
 const RoadmapSection: React.FC = () => {
   const [expandedPhase, setExpandedPhase] = useState<string | null>('aggressive-marketing');
   const [hoveredPhase, setHoveredPhase] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'marketing' | 'metrics'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'marketing' | 'metrics'>(
+    'overview'
+  );
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentPhaseIndex, setCurrentPhaseIndex] = useState(1);
 
@@ -424,7 +532,7 @@ const RoadmapSection: React.FC = () => {
     if (!isPlaying) return;
 
     const interval = setInterval(() => {
-      setCurrentPhaseIndex((prev) => (prev + 1) % roadmapPhases.length);
+      setCurrentPhaseIndex(prev => (prev + 1) % roadmapPhases.length);
     }, 8000);
 
     return () => clearInterval(interval);
@@ -509,8 +617,13 @@ const RoadmapSection: React.FC = () => {
           </h2>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-8">
-            Our aggressive go-to-market strategy with <span className="text-primary font-semibold">${getTotalInvestment().toLocaleString()}</span> total investment
-            to achieve <span className="text-gold font-semibold">$10M+ valuation</span> and become the leading AI workflow automation platform.
+            Our aggressive go-to-market strategy with{' '}
+            <span className="text-primary font-semibold">
+              ${getTotalInvestment().toLocaleString()}
+            </span>{' '}
+            total investment to achieve{' '}
+            <span className="text-gold font-semibold">$10M+ valuation</span> and become the leading
+            AI workflow automation platform.
           </p>
 
           {/* Investment Overview */}
@@ -522,7 +635,9 @@ const RoadmapSection: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="premium-card p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10">
-              <div className="text-2xl font-bold text-emerald-400">${getCompletedInvestment().toLocaleString()}</div>
+              <div className="text-2xl font-bold text-emerald-400">
+                ${getCompletedInvestment().toLocaleString()}
+              </div>
               <div className="text-sm text-muted-foreground">Invested</div>
             </div>
             <div className="premium-card p-4 rounded-xl border border-blue-500/30 bg-blue-500/10">
@@ -594,7 +709,11 @@ const RoadmapSection: React.FC = () => {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">Overall Progress</h3>
                 <div className="text-2xl font-bold text-primary">
-                  {Math.round(roadmapPhases.reduce((acc, phase) => acc + phase.progress, 0) / roadmapPhases.length)}%
+                  {Math.round(
+                    roadmapPhases.reduce((acc, phase) => acc + phase.progress, 0) /
+                      roadmapPhases.length
+                  )}
+                  %
                 </div>
               </div>
               <div className="w-full bg-muted rounded-full h-3 mb-4">
@@ -602,20 +721,24 @@ const RoadmapSection: React.FC = () => {
                   className="h-3 rounded-full bg-gradient-to-r from-primary to-gold"
                   initial={{ width: 0 }}
                   whileInView={{
-                    width: `${roadmapPhases.reduce((acc, phase) => acc + phase.progress, 0) / roadmapPhases.length}%`
+                    width: `${roadmapPhases.reduce((acc, phase) => acc + phase.progress, 0) / roadmapPhases.length}%`,
                   }}
                   viewport={{ once: true }}
-                  transition={{ duration: 2, ease: "easeOut" }}
+                  transition={{ duration: 2, ease: 'easeOut' }}
                 />
               </div>
               <div className="grid grid-cols-5 gap-2">
                 {roadmapPhases.map((phase, index) => (
                   <div key={phase.id} className="text-center">
-                    <div className={`w-full h-2 rounded-full mb-1 ${
-                      phase.status === 'completed' ? 'bg-emerald-500' :
-                      phase.status === 'in-progress' || phase.status === 'critical' ? 'bg-blue-500' :
-                      'bg-muted'
-                    }`} />
+                    <div
+                      className={`w-full h-2 rounded-full mb-1 ${
+                        phase.status === 'completed'
+                          ? 'bg-emerald-500'
+                          : phase.status === 'in-progress' || phase.status === 'critical'
+                            ? 'bg-blue-500'
+                            : 'bg-muted'
+                      }`}
+                    />
                     <div className="text-xs text-muted-foreground">Q{index + 1}</div>
                   </div>
                 ))}
@@ -662,7 +785,7 @@ const RoadmapSection: React.FC = () => {
                         <motion.div
                           className="absolute -top-1 -left-1 w-8 h-8 bg-background rounded-full p-1"
                           animate={{ rotate: 360 }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                         >
                           <Clock className="w-6 h-6 text-blue-500" />
                         </motion.div>
@@ -694,7 +817,9 @@ const RoadmapSection: React.FC = () => {
                   </div>
 
                   {/* Enhanced Interactive Content Card */}
-                  <div className={`w-full md:w-6/12 ml-20 md:ml-0 ${index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'}`}>
+                  <div
+                    className={`w-full md:w-6/12 ml-20 md:ml-0 ${index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'}`}
+                  >
                     <motion.div
                       className={`premium-card p-8 rounded-3xl border-2 transition-all duration-500 group cursor-pointer relative overflow-hidden ${
                         expandedPhase === phase.id
@@ -721,7 +846,9 @@ const RoadmapSection: React.FC = () => {
                       {/* Header with Status and Timeline */}
                       <div className="flex items-center justify-between mb-6 relative z-10">
                         <div className="flex items-center gap-3">
-                          <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r ${phase.color} text-white shadow-lg`}>
+                          <div
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r ${phase.color} text-white shadow-lg`}
+                          >
                             {phase.icon}
                             <span className="capitalize">{phase.status.replace('-', ' ')}</span>
                           </div>
@@ -791,7 +918,7 @@ const RoadmapSection: React.FC = () => {
                             initial={{ width: 0 }}
                             whileInView={{ width: `${phase.progress}%` }}
                             viewport={{ once: true }}
-                            transition={{ duration: 2, delay: index * 0.1, ease: "easeOut" }}
+                            transition={{ duration: 2, delay: index * 0.1, ease: 'easeOut' }}
                           >
                             {phase.progress > 0 && (
                               <motion.div
@@ -816,15 +943,15 @@ const RoadmapSection: React.FC = () => {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                            transition={{ duration: 0.5, ease: 'easeInOut' }}
                             className="overflow-hidden relative z-10"
                           >
                             {/* Tab Navigation */}
                             <div className="flex items-center gap-2 mb-6 p-1 bg-muted/30 rounded-xl">
-                              {['features', 'marketing', 'metrics'].map((tab) => (
+                              {['features', 'marketing', 'metrics'].map(tab => (
                                 <button
                                   key={tab}
-                                  onClick={(e) => {
+                                  onClick={e => {
                                     e.stopPropagation();
                                     setActiveTab(tab as any);
                                   }}
@@ -864,25 +991,37 @@ const RoadmapSection: React.FC = () => {
                                         className="premium-card p-4 rounded-xl border border-border/30 hover:border-primary/30 transition-all duration-300 group"
                                       >
                                         <div className="flex items-start gap-3">
-                                          <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                                            feature.status === 'done' ? 'bg-emerald-500/20 text-emerald-500' :
-                                            feature.status === 'progress' ? 'bg-blue-500/20 text-blue-500' :
-                                            'bg-muted text-muted-foreground'
-                                          }`}>
-                                            {feature.status === 'done' ? <CheckCircle className="w-4 h-4" /> :
-                                             feature.status === 'progress' ? <Clock className="w-4 h-4" /> :
-                                             <Star className="w-4 h-4" />}
+                                          <div
+                                            className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                              feature.status === 'done'
+                                                ? 'bg-emerald-500/20 text-emerald-500'
+                                                : feature.status === 'progress'
+                                                  ? 'bg-blue-500/20 text-blue-500'
+                                                  : 'bg-muted text-muted-foreground'
+                                            }`}
+                                          >
+                                            {feature.status === 'done' ? (
+                                              <CheckCircle className="w-4 h-4" />
+                                            ) : feature.status === 'progress' ? (
+                                              <Clock className="w-4 h-4" />
+                                            ) : (
+                                              <Star className="w-4 h-4" />
+                                            )}
                                           </div>
                                           <div className="flex-1">
                                             <div className="flex items-center gap-2 mb-1">
                                               <h5 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                                                 {feature.name}
                                               </h5>
-                                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                                feature.impact === 'high' ? 'bg-red-500/20 text-red-400' :
-                                                feature.impact === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                                                'bg-green-500/20 text-green-400'
-                                              }`}>
+                                              <span
+                                                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                  feature.impact === 'high'
+                                                    ? 'bg-red-500/20 text-red-400'
+                                                    : feature.impact === 'medium'
+                                                      ? 'bg-yellow-500/20 text-yellow-400'
+                                                      : 'bg-green-500/20 text-green-400'
+                                                }`}
+                                              >
                                                 {feature.impact} impact
                                               </span>
                                             </div>
@@ -929,8 +1068,12 @@ const RoadmapSection: React.FC = () => {
                                                 {action.channel}
                                               </h5>
                                               <div className="flex items-center gap-2 text-sm">
-                                                <span className="text-gold font-bold">{action.budget}</span>
-                                                <span className="text-emerald-500 font-medium">ROI: {action.roi}</span>
+                                                <span className="text-gold font-bold">
+                                                  {action.budget}
+                                                </span>
+                                                <span className="text-emerald-500 font-medium">
+                                                  ROI: {action.roi}
+                                                </span>
                                               </div>
                                             </div>
                                             <p className="text-sm text-muted-foreground leading-relaxed">
@@ -970,7 +1113,9 @@ const RoadmapSection: React.FC = () => {
                                         <div className="w-8 h-8 rounded-lg bg-sapphire/20 text-sapphire flex items-center justify-center mx-auto mb-2">
                                           {metric.icon}
                                         </div>
-                                        <div className="text-xs text-muted-foreground mb-1">{metric.label}</div>
+                                        <div className="text-xs text-muted-foreground mb-1">
+                                          {metric.label}
+                                        </div>
                                         <div className="text-lg font-bold text-foreground group-hover:text-sapphire transition-colors">
                                           {metric.value}
                                         </div>
@@ -1087,8 +1232,15 @@ const RoadmapSection: React.FC = () => {
                 </h3>
 
                 <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-8 leading-relaxed">
-                  We're investing <span className="text-gold font-bold">${getTotalInvestment().toLocaleString()}</span> to become the world's leading AI workflow platform.
-                  <span className="text-primary font-semibold"> Early supporters get exclusive tokens, priority access, and lifetime benefits.</span>
+                  We're investing{' '}
+                  <span className="text-gold font-bold">
+                    ${getTotalInvestment().toLocaleString()}
+                  </span>{' '}
+                  to become the world's leading AI workflow platform.
+                  <span className="text-primary font-semibold">
+                    {' '}
+                    Early supporters get exclusive tokens, priority access, and lifetime benefits.
+                  </span>
                 </p>
 
                 {/* Live Stats Grid */}
@@ -1143,7 +1295,12 @@ const RoadmapSection: React.FC = () => {
                     className="border-2 border-gold/50 text-gold hover:bg-gold/10 hover:border-gold transition-all duration-300 px-12 py-6 text-lg font-bold rounded-xl group"
                     asChild
                   >
-                    <a href="https://github.com/robialexz/bot-architect-studio" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3">
+                    <a
+                      href="https://github.com/robialexz/bot-architect-studio"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3"
+                    >
                       <ExternalLink className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                       View on GitHub
                     </a>
@@ -1157,7 +1314,8 @@ const RoadmapSection: React.FC = () => {
                       <Gift className="w-4 h-4" />
                     </div>
                     <span className="text-muted-foreground">
-                      <span className="text-emerald-400 font-semibold">Free tokens</span> for early supporters
+                      <span className="text-emerald-400 font-semibold">Free tokens</span> for early
+                      supporters
                     </span>
                   </div>
                   <div className="flex items-center gap-3 justify-center">
@@ -1165,7 +1323,8 @@ const RoadmapSection: React.FC = () => {
                       <Crown className="w-4 h-4" />
                     </div>
                     <span className="text-muted-foreground">
-                      <span className="text-blue-400 font-semibold">Priority access</span> to platform
+                      <span className="text-blue-400 font-semibold">Priority access</span> to
+                      platform
                     </span>
                   </div>
                   <div className="flex items-center gap-3 justify-center">
@@ -1173,7 +1332,8 @@ const RoadmapSection: React.FC = () => {
                       <Bell className="w-4 h-4" />
                     </div>
                     <span className="text-muted-foreground">
-                      <span className="text-gold font-semibold">Exclusive updates</span> & insider access
+                      <span className="text-gold font-semibold">Exclusive updates</span> & insider
+                      access
                     </span>
                   </div>
                 </div>

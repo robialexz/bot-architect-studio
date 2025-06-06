@@ -2,7 +2,6 @@ import { NodeProcessor, NodeExecutionResult, ExecutionContext } from '@/types/ex
 import { logger } from '@/lib/logger';
 
 export class TriggerProcessor implements NodeProcessor {
-  
   canProcess(nodeType: string): boolean {
     return ['trigger', 'start', 'input', 'manual'].includes(nodeType);
   }
@@ -19,16 +18,16 @@ export class TriggerProcessor implements NodeProcessor {
   }
 
   async processNode(
-    node: any, 
-    inputs: Record<string, any>, 
+    node: any,
+    inputs: Record<string, any>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
-    
-    logger.info('Processing trigger node', { 
-      nodeId: node.id, 
+
+    logger.info('Processing trigger node', {
+      nodeId: node.id,
       nodeType: node.type,
-      executionId: context.executionId
+      executionId: context.executionId,
     });
 
     try {
@@ -38,7 +37,7 @@ export class TriggerProcessor implements NodeProcessor {
         triggeredAt: startTime.toISOString(),
         triggerType: node.data?.triggerType || 'manual',
         workflowId: context.workflowId,
-        executionId: context.executionId
+        executionId: context.executionId,
       };
 
       // Add any configured default values
@@ -53,10 +52,10 @@ export class TriggerProcessor implements NodeProcessor {
 
       const processingTime = Date.now() - startTime.getTime();
 
-      logger.info('Trigger node completed', { 
-        nodeId: node.id, 
+      logger.info('Trigger node completed', {
+        nodeId: node.id,
         processingTime,
-        outputKeys: Object.keys(outputs)
+        outputKeys: Object.keys(outputs),
       });
 
       return {
@@ -65,16 +64,15 @@ export class TriggerProcessor implements NodeProcessor {
         status: 'completed',
         inputs,
         outputs,
-        processingTime
+        processingTime,
       };
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      
-      logger.error('Trigger node failed', { 
-        nodeId: node.id, 
+
+      logger.error('Trigger node failed', {
+        nodeId: node.id,
         error: errorMessage,
-        executionId: context.executionId
+        executionId: context.executionId,
       });
 
       return {
@@ -84,7 +82,7 @@ export class TriggerProcessor implements NodeProcessor {
         inputs,
         outputs: {},
         error: errorMessage,
-        processingTime: Date.now() - startTime.getTime()
+        processingTime: Date.now() - startTime.getTime(),
       };
     }
   }
@@ -99,16 +97,19 @@ export class TriggerProcessor implements NodeProcessor {
               delete outputs[transform.from];
             }
             break;
-          
+
           case 'default':
             if (transform.field && outputs[transform.field] === undefined) {
               outputs[transform.field] = transform.value;
             }
             break;
-          
+
           case 'format':
             if (transform.field && outputs[transform.field] !== undefined) {
-              outputs[transform.field] = this.formatValue(outputs[transform.field], transform.format);
+              outputs[transform.field] = this.formatValue(
+                outputs[transform.field],
+                transform.format
+              );
             }
             break;
         }

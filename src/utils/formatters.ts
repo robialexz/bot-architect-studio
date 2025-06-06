@@ -5,16 +5,15 @@
 /**
  * Format a number as currency (USD)
  */
-export function formatCurrency(value: number, options?: {
-  minimumFractionDigits?: number;
-  maximumFractionDigits?: number;
-  showSymbol?: boolean;
-}): string {
-  const {
-    minimumFractionDigits = 2,
-    maximumFractionDigits = 6,
-    showSymbol = true
-  } = options || {};
+export function formatCurrency(
+  value: number,
+  options?: {
+    minimumFractionDigits?: number;
+    maximumFractionDigits?: number;
+    showSymbol?: boolean;
+  }
+): string {
+  const { minimumFractionDigits = 2, maximumFractionDigits = 6, showSymbol = true } = options || {};
 
   // Handle very small numbers
   if (value < 0.000001 && value > 0) {
@@ -26,7 +25,7 @@ export function formatCurrency(value: number, options?: {
     style: showSymbol ? 'currency' : 'decimal',
     currency: 'USD',
     minimumFractionDigits: value < 1 ? Math.min(maximumFractionDigits, 4) : minimumFractionDigits,
-    maximumFractionDigits: value < 1 ? maximumFractionDigits : Math.max(minimumFractionDigits, 2)
+    maximumFractionDigits: value < 1 ? maximumFractionDigits : Math.max(minimumFractionDigits, 2),
   });
 
   return formatter.format(value);
@@ -35,22 +34,21 @@ export function formatCurrency(value: number, options?: {
 /**
  * Format a percentage with proper sign and color coding
  */
-export function formatPercentage(value: number, options?: {
-  minimumFractionDigits?: number;
-  maximumFractionDigits?: number;
-  showSign?: boolean;
-}): string {
-  const {
-    minimumFractionDigits = 2,
-    maximumFractionDigits = 2,
-    showSign = true
-  } = options || {};
+export function formatPercentage(
+  value: number,
+  options?: {
+    minimumFractionDigits?: number;
+    maximumFractionDigits?: number;
+    showSign?: boolean;
+  }
+): string {
+  const { minimumFractionDigits = 2, maximumFractionDigits = 2, showSign = true } = options || {};
 
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'percent',
     minimumFractionDigits,
     maximumFractionDigits,
-    signDisplay: showSign ? 'always' : 'auto'
+    signDisplay: showSign ? 'always' : 'auto',
   });
 
   return formatter.format(value / 100);
@@ -59,21 +57,24 @@ export function formatPercentage(value: number, options?: {
 /**
  * Format large numbers with appropriate suffixes (K, M, B, T)
  */
-export function formatLargeNumber(value: number, options?: {
-  minimumFractionDigits?: number;
-  maximumFractionDigits?: number;
-  showFullNumber?: boolean;
-}): string {
+export function formatLargeNumber(
+  value: number,
+  options?: {
+    minimumFractionDigits?: number;
+    maximumFractionDigits?: number;
+    showFullNumber?: boolean;
+  }
+): string {
   const {
     minimumFractionDigits = 0,
     maximumFractionDigits = 2,
-    showFullNumber = false
+    showFullNumber = false,
   } = options || {};
 
   if (showFullNumber || value < 1000) {
     return new Intl.NumberFormat('en-US', {
       minimumFractionDigits,
-      maximumFractionDigits
+      maximumFractionDigits,
     }).format(value);
   }
 
@@ -81,37 +82,38 @@ export function formatLargeNumber(value: number, options?: {
     { value: 1e12, suffix: 'T' },
     { value: 1e9, suffix: 'B' },
     { value: 1e6, suffix: 'M' },
-    { value: 1e3, suffix: 'K' }
+    { value: 1e3, suffix: 'K' },
   ];
 
   for (const { value: threshold, suffix } of suffixes) {
     if (value >= threshold) {
       const formatted = new Intl.NumberFormat('en-US', {
         minimumFractionDigits,
-        maximumFractionDigits
+        maximumFractionDigits,
       }).format(value / threshold);
-      
+
       return `${formatted}${suffix}`;
     }
   }
 
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits,
-    maximumFractionDigits
+    maximumFractionDigits,
   }).format(value);
 }
 
 /**
  * Format a token amount with proper decimal places
  */
-export function formatTokenAmount(amount: number, decimals: number = 9, options?: {
-  maximumFractionDigits?: number;
-  showFullPrecision?: boolean;
-}): string {
-  const {
-    maximumFractionDigits = 4,
-    showFullPrecision = false
-  } = options || {};
+export function formatTokenAmount(
+  amount: number,
+  decimals: number = 9,
+  options?: {
+    maximumFractionDigits?: number;
+    showFullPrecision?: boolean;
+  }
+): string {
+  const { maximumFractionDigits = 4, showFullPrecision = false } = options || {};
 
   // Convert from smallest unit to token amount
   const tokenAmount = amount / Math.pow(10, decimals);
@@ -122,7 +124,7 @@ export function formatTokenAmount(amount: number, decimals: number = 9, options?
 
   // For display, limit decimal places based on magnitude
   let fractionDigits = maximumFractionDigits;
-  
+
   if (tokenAmount >= 1000) {
     fractionDigits = 0;
   } else if (tokenAmount >= 1) {
@@ -135,7 +137,7 @@ export function formatTokenAmount(amount: number, decimals: number = 9, options?
 
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 0,
-    maximumFractionDigits: fractionDigits
+    maximumFractionDigits: fractionDigits,
   }).format(tokenAmount);
 }
 
@@ -174,7 +176,7 @@ export function formatRelativeTime(timestamp: number): string {
     { unit: 'day', ms: 86400000 },
     { unit: 'hour', ms: 3600000 },
     { unit: 'minute', ms: 60000 },
-    { unit: 'second', ms: 1000 }
+    { unit: 'second', ms: 1000 },
   ] as const;
 
   for (const { unit, ms } of intervals) {
@@ -190,15 +192,15 @@ export function formatRelativeTime(timestamp: number): string {
 /**
  * Format a Solana address for display (truncated with ellipsis)
  */
-export function formatAddress(address: string, options?: {
-  startChars?: number;
-  endChars?: number;
-  showFullOnHover?: boolean;
-}): string {
-  const {
-    startChars = 4,
-    endChars = 4
-  } = options || {};
+export function formatAddress(
+  address: string,
+  options?: {
+    startChars?: number;
+    endChars?: number;
+    showFullOnHover?: boolean;
+  }
+): string {
+  const { startChars = 4, endChars = 4 } = options || {};
 
   if (address.length <= startChars + endChars) {
     return address;
@@ -212,7 +214,7 @@ export function formatAddress(address: string, options?: {
  */
 export function formatMarketCap(value: number): string {
   if (value === 0) return '$0';
-  
+
   return `$${formatLargeNumber(value, { maximumFractionDigits: 1 })}`;
 }
 
@@ -221,7 +223,7 @@ export function formatMarketCap(value: number): string {
  */
 export function formatVolume(value: number): string {
   if (value === 0) return '$0';
-  
+
   return `$${formatLargeNumber(value, { maximumFractionDigits: 1 })}`;
 }
 
@@ -248,7 +250,7 @@ export function getTrendDirection(change: number): 'up' | 'down' | 'neutral' {
  */
 export function formatPrice(price: number): string {
   if (price === 0) return '$0.00';
-  
+
   if (price >= 1000) {
     return formatCurrency(price, { maximumFractionDigits: 2 });
   } else if (price >= 1) {
@@ -274,6 +276,6 @@ export function isValidSolanaAddress(address: string): boolean {
 export function formatNumber(value: number, decimals: number = 0): string {
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals
+    maximumFractionDigits: decimals,
   }).format(value);
 }

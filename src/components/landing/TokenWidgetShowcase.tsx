@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Sparkles, 
-  TrendingUp, 
-  Heart, 
-  Share2, 
+import {
+  Sparkles,
+  TrendingUp,
+  Heart,
+  Share2,
   Zap,
   Eye,
   Users,
@@ -13,7 +13,7 @@ import {
   Pause,
   RotateCcw,
   Trophy,
-  Star
+  Star,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -41,7 +41,7 @@ const TokenWidgetShowcase: React.FC = () => {
       description: 'Hover over the token logo to see sparkle effects and rotating rings',
       icon: <Sparkles className="w-5 h-5" />,
       action: 'Try hovering over the token logo',
-      color: 'from-gold to-yellow-500'
+      color: 'from-gold to-yellow-500',
     },
     {
       id: 'favorite',
@@ -49,7 +49,7 @@ const TokenWidgetShowcase: React.FC = () => {
       description: 'Click the heart icon to add tokens to your personal watchlist',
       icon: <Heart className="w-5 h-5" />,
       action: 'Click the heart icon',
-      color: 'from-red-500 to-pink-500'
+      color: 'from-red-500 to-pink-500',
     },
     {
       id: 'share',
@@ -57,7 +57,7 @@ const TokenWidgetShowcase: React.FC = () => {
       description: 'Share interesting tokens with friends using native sharing',
       icon: <Share2 className="w-5 h-5" />,
       action: 'Try the share button',
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-blue-500 to-cyan-500',
     },
     {
       id: 'quickbuy',
@@ -65,7 +65,7 @@ const TokenWidgetShowcase: React.FC = () => {
       description: 'One-click access to trading with preset amounts',
       icon: <Zap className="w-5 h-5" />,
       action: 'Click Quick Buy',
-      color: 'from-emerald-500 to-teal-500'
+      color: 'from-emerald-500 to-teal-500',
     },
     {
       id: 'realtime',
@@ -73,16 +73,16 @@ const TokenWidgetShowcase: React.FC = () => {
       description: 'Watch real-time price changes with flash animations',
       icon: <TrendingUp className="w-5 h-5" />,
       action: 'Watch the price updates',
-      color: 'from-purple-500 to-indigo-500'
-    }
+      color: 'from-purple-500 to-indigo-500',
+    },
   ];
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    
+
     if (isAutoPlaying) {
       interval = setInterval(() => {
-        setCurrentFeature((prev) => (prev + 1) % features.length);
+        setCurrentFeature(prev => (prev + 1) % features.length);
       }, 4000);
     }
 
@@ -124,8 +124,8 @@ const TokenWidgetShowcase: React.FC = () => {
             Experience Next-Gen Token Widgets
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Our enhanced token widgets aren't just displays—they're interactive experiences that engage users 
-            and drive action. Try the features below and see the difference.
+            Our enhanced token widgets aren't just displays—they're interactive experiences that
+            engage users and drive action. Try the features below and see the difference.
           </p>
         </motion.div>
 
@@ -233,10 +233,12 @@ const TokenWidgetShowcase: React.FC = () => {
                 }}
               >
                 <div className="flex items-start gap-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center text-white flex-shrink-0`}>
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.color} flex items-center justify-center text-white flex-shrink-0`}
+                  >
                     {feature.icon}
                   </div>
-                  
+
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <h3 className="font-semibold text-foreground">{feature.title}</h3>
@@ -280,8 +282,8 @@ const TokenWidgetShowcase: React.FC = () => {
                 <Star className="w-8 h-8 text-gold mx-auto mb-3" />
                 <h3 className="text-lg font-semibold mb-2">Ready for Early Access?</h3>
                 <p className="text-muted-foreground mb-4">
-                  Join our waitlist to be the first to experience these interactive features 
-                  and get exclusive access to the FlowsyAI token launch.
+                  Join our waitlist to be the first to experience these interactive features and get
+                  exclusive access to the FlowsyAI token launch.
                 </p>
                 <Button
                   className="bg-gradient-to-r from-gold to-yellow-500 text-black hover:shadow-xl hover:shadow-gold/30 transition-all duration-300"
