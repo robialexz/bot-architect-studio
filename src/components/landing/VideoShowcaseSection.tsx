@@ -21,26 +21,26 @@ const VideoShowcaseSection: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<{ [key: string]: boolean }>({});
   const [isMuted, setIsMuted] = useState<{ [key: string]: boolean }>({});
 
-  // Simple video showcase - just 2 videos
+  // Real video showcase - 2 actual videos
   const videos: VideoItem[] = [
     {
-      id: 'hero-animation',
-      title: 'FlowsyAI Brand Animation',
-      description: 'Our signature animated logo showcasing the future of AI automation',
+      id: 'videoclip-1',
+      title: 'FlowsyAI Platform Demo',
+      description: 'Discover the power and capabilities of our AI automation platform',
       thumbnail: '/flowsy-logo.svg',
-      videoUrl: '/background-animation.mp4',
-      duration: '0:15',
-      category: 'Branding',
+      videoUrl: '/videoclip-1.mp4',
+      duration: '1:30',
+      category: 'Platform Demo',
       featured: true,
     },
     {
-      id: 'workflow-demo',
-      title: 'AR Workflow Building Demo',
-      description: 'Experience building AI workflows in 3D space using mobile AR',
+      id: 'videoclip-2',
+      title: 'AI Workflow Showcase',
+      description: 'See how FlowsyAI transforms complex workflows into simple automation',
       thumbnail: '/hero-visual-coming-soon.svg',
-      videoUrl: '/background-animation.mp4', // Placeholder
-      duration: '2:30',
-      category: 'Product Demo',
+      videoUrl: '/videoclip-2.mp4',
+      duration: '2:15',
+      category: 'Workflow Demo',
       featured: true,
     },
   ];
