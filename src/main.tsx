@@ -31,4 +31,10 @@ registerSW({
   },
 });
 
-createRoot(document.getElementById('root')!).render(<App />);
+// Mount the React application to the DOM
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  createRoot(rootElement).render(<App />);
+} else {
+  console.error('Root element not found');
+}
