@@ -103,10 +103,9 @@ const Navbar = () => {
   // Different navigation for authenticated vs unauthenticated users
   const unauthenticatedNavItems = [
     { to: '/platform-showcase', label: 'Platform' },
-    { to: '/workflow-templates', label: 'Templates' },
+    { to: '/roadmap', label: 'Roadmap', featured: true },
     { to: '/pricing', label: 'Pricing' },
     { to: '/features', label: 'Features' },
-    { to: '/roadmap', label: 'Roadmap' },
     { to: '/documentation', label: 'Documentation' },
   ];
 
@@ -145,7 +144,7 @@ const Navbar = () => {
         >
           <PremiumLogo
             size={isDesktop ? 'xl' : 'lg'}
-            showText={true}
+            showText={false}
             animated={true}
             className="drop-shadow-sm"
           />

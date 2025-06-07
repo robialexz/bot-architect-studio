@@ -17,7 +17,7 @@ const HeroSection3D: React.FC = () => {
 
   // For parallax scrolling effects
   const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const opacity = useTransform(scrollY, [0, 500], [1, 0.3]);
 
   // Handle video play/pause
   const toggleVideo = () => {

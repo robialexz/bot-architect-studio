@@ -836,6 +836,60 @@
   animation: pulse;
 }
 
+/* Animation delay classes for background elements */
+.animate-pulse-delay-1 {
+  animation: pulse 2s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-pulse-delay-2 {
+  animation: pulse 2s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Gradient radial utility */
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Professional workflow background animations */
+.animate-workflow-flow {
+  animation: workflow-flow 25s linear infinite;
+}
+
+.animate-data-pulse {
+  animation: data-pulse 4s ease-in-out infinite;
+}
+
+.animate-data-pulse-delay-1 {
+  animation: data-pulse 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-data-pulse-delay-2 {
+  animation: data-pulse 4s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-data-pulse-delay-3 {
+  animation: data-pulse 4s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+.animate-processing-bar-1 {
+  animation: processing-bar 6s ease-in-out infinite;
+}
+
+.animate-processing-bar-2 {
+  animation: processing-bar 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-processing-bar-3 {
+  animation: processing-bar 6s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
 .workflow-canvas-container {
   height: 100%;
   width: 100%;
@@ -1138,6 +1192,119 @@
   }
 }
 
+/* Premium background animations */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.4;
+  }
+  33% {
+    transform: translate3d(30px, -30px, 0) scale(1.1);
+    opacity: 0.6;
+  }
+  66% {
+    transform: translate3d(-20px, 20px, 0) scale(0.9);
+    opacity: 0.3;
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate3d(-40px, 30px, 0) rotate(180deg);
+    opacity: 0.5;
+  }
+}
+
+@keyframes morph {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    border-radius: 50%;
+    opacity: 0.2;
+  }
+  25% {
+    transform: scale(1.2) rotate(90deg);
+    border-radius: 30%;
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(0.8) rotate(180deg);
+    border-radius: 60%;
+    opacity: 0.3;
+  }
+  75% {
+    transform: scale(1.1) rotate(270deg);
+    border-radius: 40%;
+    opacity: 0.5;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translate3d(100px, -50px, 0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate3d(200px, 0, 0);
+    opacity: 0.3;
+  }
+  75% {
+    transform: translate3d(100px, 50px, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.2;
+  }
+}
+
+/* Professional workflow animations */
+@keyframes workflow-flow {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes data-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes processing-bar {
+  0%, 100% {
+    opacity: 0.1;
+    transform: scaleY(0.5);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scaleY(1.5);
+  }
+}
+
 /* Token Banner Responsive Styles */
 .token-banner-mobile {
   @apply flex-col space-y-4;
@@ -1173,4 +1340,77 @@
   .token-action-buttons {
     @apply flex-row space-x-3;
   }
+}
+
+/* Enhanced dynamic animations for hero section */
+@keyframes gradient-shift {
+  0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); opacity: 0.8; }
+  33% { transform: translateX(-30%) translateY(-30%) rotate(120deg); opacity: 1; }
+  66% { transform: translateX(-70%) translateY(-70%) rotate(240deg); opacity: 0.9; }
+  100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); opacity: 0.8; }
+}
+
+@keyframes gradient-shift-reverse {
+  0% { transform: translateX(50%) translateY(50%) rotate(0deg); opacity: 0.7; }
+  33% { transform: translateX(30%) translateY(70%) rotate(-120deg); opacity: 0.9; }
+  66% { transform: translateX(70%) translateY(30%) rotate(-240deg); opacity: 0.8; }
+  100% { transform: translateX(50%) translateY(50%) rotate(-360deg); opacity: 0.7; }
+}
+
+@keyframes gradient-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes data-flow {
+  0% { transform: translateX(-100%); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+@keyframes node-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+@keyframes node-pulse-delay-1 {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.25); }
+}
+
+@keyframes node-pulse-delay-2 {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.35); }
+}
+
+@keyframes node-pulse-delay-3 {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.2); }
+}
+
+@keyframes node-pulse-delay-4 {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.15); }
+}
+
+@keyframes processing-wave {
+  0%, 100% { opacity: 0; transform: scaleY(0.5) scaleX(1); }
+  25% { opacity: 0.8; transform: scaleY(1.8) scaleX(1.2); }
+  50% { opacity: 1; transform: scaleY(2.2) scaleX(1.5); }
+  75% { opacity: 0.8; transform: scaleY(1.8) scaleX(1.2); }
+}
+
+@keyframes processing-wave-delay-1 {
+  0%, 100% { opacity: 0; transform: scaleY(0.3) scaleX(1); }
+  25% { opacity: 0.7; transform: scaleY(1.5) scaleX(1.1); }
+  50% { opacity: 0.9; transform: scaleY(1.8) scaleX(1.3); }
+  75% { opacity: 0.7; transform: scaleY(1.5) scaleX(1.1); }
+}
+
+@keyframes processing-wave-delay-2 {
+  0%, 100% { opacity: 0; transform: scaleY(0.4) scaleX(1); }
+  25% { opacity: 0.6; transform: scaleY(1.6) scaleX(1.15); }
+  50% { opacity: 0.8; transform: scaleY(2.0) scaleX(1.4); }
+  75% { opacity: 0.6; transform: scaleY(1.6) scaleX(1.15); }
 }

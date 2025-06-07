@@ -6,11 +6,11 @@ export class WebhookProcessor implements NodeProcessor {
     return ['webhook', 'http', 'api-call', 'rest'].includes(nodeType);
   }
 
-  getRequiredInputs(node: any): string[] {
+  getRequiredInputs(node: Record<string, unknown>): string[] {
     return ['url', 'method'];
   }
 
-  validateInputs(node: any, inputs: Record<string, any>): boolean {
+  validateInputs(node: Record<string, unknown>, inputs: Record<string, unknown>): boolean {
     const required = this.getRequiredInputs(node);
 
     for (const input of required) {
@@ -40,8 +40,8 @@ export class WebhookProcessor implements NodeProcessor {
   }
 
   async processNode(
-    node: any,
-    inputs: Record<string, any>,
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
@@ -116,7 +116,10 @@ export class WebhookProcessor implements NodeProcessor {
     }
   }
 
-  private prepareRequestData(node: any, inputs: Record<string, any>): any {
+  private prepareRequestData(
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): Record<string, unknown> {
     const nodeData = node.data || {};
 
     const requestData = {
@@ -129,7 +132,7 @@ export class WebhookProcessor implements NodeProcessor {
         ...inputs.headers,
       },
       timeout: inputs.timeout || nodeData.timeout || 30000,
-      body: undefined as any,
+      body: undefined as unknown,
     };
 
     // Add request body for methods that support it
@@ -162,16 +165,20 @@ export class WebhookProcessor implements NodeProcessor {
     return requestData;
   }
 
-  private addAuthentication(requestData: any, auth: any): void {
+  private addAuthentication(
+    requestData: Record<string, unknown>,
+    auth: Record<string, unknown>
+  ): void {
     switch (auth.type) {
       case 'bearer':
         requestData.headers['Authorization'] = `Bearer ${auth.token}`;
         break;
 
-      case 'basic':
-        const credentials = btoa(`${auth.username}:${auth.password}`);
-        requestData.headers['Authorization'] = `Basic ${credentials}`;
+      case 'basic': {
+        const credentials = btoa(`${auth.username as string}:${auth.password as string}`);
+        (requestData.headers as Record<string, string>)['Authorization'] = `Basic ${credentials}`;
         break;
+      }
 
       case 'api-key':
         if (auth.header) {
@@ -189,7 +196,9 @@ export class WebhookProcessor implements NodeProcessor {
     }
   }
 
-  private async makeHttpRequest(requestData: any): Promise<any> {
+  private async makeHttpRequest(
+    requestData: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), requestData.timeout);
 

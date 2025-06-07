@@ -8,23 +8,23 @@ export class AIAgentProcessor implements NodeProcessor {
     return ['ai-agent', 'ai-processor', 'chat', 'gpt', 'claude'].includes(nodeType);
   }
 
-  getRequiredInputs(node: any): string[] {
+  getRequiredInputs(node: Record<string, unknown>): string[] {
     // Basic required inputs for AI processing
     const required = [];
 
-    if (node.data?.requiresPrompt !== false) {
+    if ((node.data as Record<string, unknown>)?.requiresPrompt !== false) {
       required.push('prompt');
     }
 
     // Add custom required inputs from node configuration
-    if (node.data?.requiredInputs) {
-      required.push(...node.data.requiredInputs);
+    if ((node.data as Record<string, unknown>)?.requiredInputs) {
+      required.push(...((node.data as Record<string, unknown>).requiredInputs as string[]));
     }
 
     return required;
   }
 
-  validateInputs(node: any, inputs: Record<string, any>): boolean {
+  validateInputs(node: Record<string, unknown>, inputs: Record<string, unknown>): boolean {
     const required = this.getRequiredInputs(node);
 
     for (const input of required) {
@@ -42,8 +42,8 @@ export class AIAgentProcessor implements NodeProcessor {
   }
 
   async processNode(
-    node: any,
-    inputs: Record<string, any>,
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
@@ -151,33 +151,36 @@ export class AIAgentProcessor implements NodeProcessor {
     }
   }
 
-  private prepareAIRequest(node: any, inputs: Record<string, any>): AIRequest {
-    const nodeData = node.data || {};
+  private prepareAIRequest(
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): AIRequest {
+    const nodeData = (node.data as Record<string, unknown>) || {};
 
     // Determine service and model
-    const service = nodeData.service || nodeData.provider || 'openai';
-    const model = nodeData.model || this.getDefaultModel(service);
+    const service = (nodeData.service as string) || (nodeData.provider as string) || 'openai';
+    const model = (nodeData.model as string) || this.getDefaultModel(service);
 
     // Prepare prompt
-    let prompt = inputs.prompt || inputs.text || inputs.message;
+    let prompt = (inputs.prompt as string) || (inputs.text as string) || (inputs.message as string);
 
     // Apply prompt template if configured
     if (nodeData.promptTemplate) {
-      prompt = this.applyPromptTemplate(nodeData.promptTemplate, inputs);
+      prompt = this.applyPromptTemplate(nodeData.promptTemplate as string, inputs);
     }
 
     // Prepare parameters
     const parameters = {
-      temperature: nodeData.temperature || 0.7,
-      maxTokens: nodeData.maxTokens || 1000,
-      topP: nodeData.topP || 1,
-      ...nodeData.parameters,
+      temperature: (nodeData.temperature as number) || 0.7,
+      maxTokens: (nodeData.maxTokens as number) || 1000,
+      topP: (nodeData.topP as number) || 1,
+      ...(nodeData.parameters as Record<string, unknown>),
     };
 
     return {
-      nodeId: node.id,
-      nodeType: node.type,
-      service: service as any,
+      nodeId: node.id as string,
+      nodeType: node.type as string,
+      service: service as 'openai' | 'anthropic' | 'huggingface' | 'stability' | 'cohere',
       model,
       prompt,
       inputs,
@@ -197,7 +200,7 @@ export class AIAgentProcessor implements NodeProcessor {
     return defaults[service as keyof typeof defaults] || 'gpt-3.5-turbo';
   }
 
-  private applyPromptTemplate(template: string, inputs: Record<string, any>): string {
+  private applyPromptTemplate(template: string, inputs: Record<string, unknown>): string {
     let result = template;
 
     // Replace placeholders like {{input_name}}
@@ -209,8 +212,11 @@ export class AIAgentProcessor implements NodeProcessor {
     return result;
   }
 
-  private processAIResponse(node: any, aiResponse: any): Record<string, any> {
-    const outputs: Record<string, any> = {};
+  private processAIResponse(
+    node: Record<string, unknown>,
+    aiResponse: Record<string, unknown>
+  ): Record<string, unknown> {
+    const outputs: Record<string, unknown> = {};
 
     // Extract main response
     if (aiResponse.data) {
@@ -235,15 +241,21 @@ export class AIAgentProcessor implements NodeProcessor {
     outputs.processingTime = aiResponse.processingTime || 0;
 
     // Apply output transformations if configured
-    const nodeData = node.data || {};
+    const nodeData = (node.data as Record<string, unknown>) || {};
     if (nodeData.outputTransform) {
-      return this.applyOutputTransform(outputs, nodeData.outputTransform);
+      return this.applyOutputTransform(
+        outputs,
+        nodeData.outputTransform as Record<string, unknown>
+      );
     }
 
     return outputs;
   }
 
-  private applyOutputTransform(outputs: Record<string, any>, transform: any): Record<string, any> {
+  private applyOutputTransform(
+    outputs: Record<string, unknown>,
+    transform: Record<string, unknown>
+  ): Record<string, unknown> {
     // Simple output transformation logic
     if (transform.extractJson && outputs.response) {
       try {
@@ -270,10 +282,10 @@ export class AIAgentProcessor implements NodeProcessor {
   // Database operations
   private async createNodeExecution(
     executionId: string,
-    node: any,
-    inputs: Record<string, any>,
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>,
     startTime: Date
-  ): Promise<any> {
+  ): Promise<Record<string, unknown>> {
     const { data, error } = await supabase
       .from('node_executions')
       .insert({
@@ -294,7 +306,10 @@ export class AIAgentProcessor implements NodeProcessor {
     return data;
   }
 
-  private async updateNodeExecution(nodeExecutionId: string, updates: any): Promise<void> {
+  private async updateNodeExecution(
+    nodeExecutionId: string,
+    updates: Record<string, unknown>
+  ): Promise<void> {
     const { error } = await supabase
       .from('node_executions')
       .update(updates)
@@ -305,7 +320,10 @@ export class AIAgentProcessor implements NodeProcessor {
     }
   }
 
-  private async getNodeExecution(executionId: string, nodeId: string): Promise<any> {
+  private async getNodeExecution(
+    executionId: string,
+    nodeId: string
+  ): Promise<Record<string, unknown> | null> {
     const { data, error } = await supabase
       .from('node_executions')
       .select('*')
@@ -325,7 +343,7 @@ export class AIAgentProcessor implements NodeProcessor {
     context: ExecutionContext,
     nodeExecutionId: string,
     request: AIRequest,
-    response: any
+    response: Record<string, unknown>
   ): Promise<void> {
     try {
       await supabase.from('ai_usage').insert({

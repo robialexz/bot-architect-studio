@@ -7,7 +7,7 @@ export class WebScraperProcessor implements NodeProcessor {
     return ['web-scraper', 'scraper', 'web-crawler', 'url-fetcher'].includes(nodeType);
   }
 
-  getRequiredInputs(node: any): string[] {
+  getRequiredInputs(node: Record<string, unknown>): string[] {
     // URL is always required
     const required = ['url'];
 
@@ -19,7 +19,7 @@ export class WebScraperProcessor implements NodeProcessor {
     return required;
   }
 
-  validateInputs(node: any, inputs: Record<string, any>): boolean {
+  validateInputs(node: Record<string, unknown>, inputs: Record<string, unknown>): boolean {
     const required = this.getRequiredInputs(node);
 
     for (const input of required) {
@@ -43,8 +43,8 @@ export class WebScraperProcessor implements NodeProcessor {
   }
 
   async processNode(
-    node: any,
-    inputs: Record<string, any>,
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult> {
     const startTime = new Date();
@@ -117,7 +117,10 @@ export class WebScraperProcessor implements NodeProcessor {
     }
   }
 
-  private prepareScrapingOptions(node: any, inputs: Record<string, any>): ScrapingOptions {
+  private prepareScrapingOptions(
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>
+  ): ScrapingOptions {
     const nodeData = node.data || {};
 
     const options: ScrapingOptions = {
@@ -151,11 +154,11 @@ export class WebScraperProcessor implements NodeProcessor {
   }
 
   private processScrapingResult(
-    node: any,
-    result: any,
-    originalInputs: Record<string, any>
-  ): Record<string, any> {
-    const outputs: Record<string, any> = {
+    node: Record<string, unknown>,
+    result: Record<string, unknown>,
+    originalInputs: Record<string, unknown>
+  ): Record<string, unknown> {
+    const outputs: Record<string, unknown> = {
       success: result.success,
       url: result.url,
       title: result.title || '',
@@ -207,8 +210,8 @@ export class WebScraperProcessor implements NodeProcessor {
     return text.split(/\s+/).filter(word => word.length > 0).length;
   }
 
-  private extractNewsArticles(content: string, title: string): any[] {
-    const articles: any[] = [];
+  private extractNewsArticles(content: string, title: string): Record<string, unknown>[] {
+    const articles: Record<string, unknown>[] = [];
 
     // Split content into potential articles
     const sections = content.split(/\n\n+/);

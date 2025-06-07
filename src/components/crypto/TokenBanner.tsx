@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import {
   TrendingUp,
@@ -56,7 +56,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
   const logoControls = useAnimation();
   const priceRef = useRef<HTMLSpanElement>(null);
 
-  const fetchTokenData = async () => {
+  const fetchTokenData = useCallback(async () => {
     try {
       setError(null);
       const data = await solanaTokenService.getTokenData(actualTokenAddress);
@@ -89,7 +89,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [actualTokenAddress, tokenData, logoControls]);
 
   const handleTradeClick = () => {
     window.open(tradingLinks.raydium, '_blank');
@@ -675,6 +675,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                       {['0.1', '0.5', '1.0'].map(amount => (
                         <button
                           key={amount}
+                          type="button"
                           onClick={() => setBuyAmount(amount)}
                           className="px-2 py-1 text-xs bg-primary/10 hover:bg-primary/20 text-primary rounded transition-colors"
                         >

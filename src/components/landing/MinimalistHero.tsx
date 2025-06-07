@@ -21,8 +21,12 @@ const MinimalistHero: React.FC = () => {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className="mb-8"
         >
-          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-tr from-primary via-gold to-primary flex items-center justify-center mb-6 shadow-lg shadow-primary/20">
-            <Bot className="w-12 h-12 md:w-16 md:h-16 text-background" />
+          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-tr from-primary via-gold to-primary flex items-center justify-center mb-6 shadow-lg shadow-primary/20 p-4">
+            <img
+              src="/flowsy-new-logo.png"
+              alt="FlowsyAI Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
         </motion.div>
 

@@ -3,9 +3,7 @@ export enum ExecutionStatus {
   PENDING = 'pending',
   RUNNING = 'running',
   COMPLETED = 'completed',
-  SUCCESS = 'completed', // Alias for compatibility
   FAILED = 'failed',
-  ERROR = 'failed', // Alias for compatibility
   PAUSED = 'paused',
   CANCELLED = 'cancelled',
 }
@@ -23,8 +21,8 @@ export interface WorkflowExecution {
   workflowId: string;
   userId: string;
   status: ExecutionStatusType;
-  inputs: Record<string, any>;
-  outputs: Record<string, any>;
+  inputs: Record<string, unknown>;
+  outputs: Record<string, unknown>;
   errorMessage?: string;
   startedAt?: Date;
   completedAt?: Date;
@@ -38,8 +36,8 @@ export interface NodeExecution {
   nodeId: string;
   nodeType: string;
   status: ExecutionStatusType;
-  inputs: Record<string, any>;
-  outputs: Record<string, any>;
+  inputs: Record<string, unknown>;
+  outputs: Record<string, unknown>;
   errorMessage?: string;
   startedAt?: Date;
   completedAt?: Date;
@@ -56,15 +54,15 @@ export interface AIUsageRecord {
   modelName: string;
   tokensUsed: number;
   estimatedCost: number;
-  requestData: Record<string, any>;
-  responseData: Record<string, any>;
+  requestData: Record<string, unknown>;
+  responseData: Record<string, unknown>;
   createdAt: Date;
 }
 
 export interface ExecutionResult {
   executionId: string;
   status: ExecutionStatusType;
-  outputs: Record<string, any>;
+  outputs: Record<string, unknown>;
   error?: string;
   startTime: Date;
   endTime?: Date;
@@ -77,8 +75,8 @@ export interface NodeExecutionResult {
   nodeId: string;
   nodeType: string;
   status: ExecutionStatusType;
-  inputs: Record<string, any>;
-  outputs: Record<string, any>;
+  inputs: Record<string, unknown>;
+  outputs: Record<string, unknown>;
   error?: string;
   processingTime?: number;
   aiUsage?: AIUsageRecord;
@@ -88,27 +86,27 @@ export interface ExecutionContext {
   executionId: string;
   userId: string;
   workflowId: string;
-  variables: Record<string, any>;
+  variables: Record<string, unknown>;
   nodeResults: Map<string, NodeExecutionResult>;
   startTime: Date;
 }
 
 export interface NodeProcessor {
   processNode(
-    node: any,
-    inputs: Record<string, any>,
+    node: Record<string, unknown>,
+    inputs: Record<string, unknown>,
     context: ExecutionContext
   ): Promise<NodeExecutionResult>;
 
   canProcess(nodeType: string): boolean;
 
-  getRequiredInputs(node: any): string[];
+  getRequiredInputs(node: Record<string, unknown>): string[];
 
-  validateInputs(node: any, inputs: Record<string, any>): boolean;
+  validateInputs(node: Record<string, unknown>, inputs: Record<string, unknown>): boolean;
 }
 
 export interface WorkflowExecutor {
-  executeWorkflow(workflowId: string, inputs: Record<string, any>): Promise<ExecutionResult>;
+  executeWorkflow(workflowId: string, inputs: Record<string, unknown>): Promise<ExecutionResult>;
 
   getExecutionStatus(executionId: string): Promise<WorkflowExecution | null>;
 
@@ -127,16 +125,16 @@ export interface WorkflowExecutor {
 export interface AIRequest {
   nodeId: string;
   nodeType: string;
-  service: 'openai' | 'anthropic' | 'huggingface' | 'stability' | 'cohere';
+  service: 'openai' | 'anthropic' | 'google' | 'huggingface' | 'stability' | 'cohere';
   model: string;
   prompt?: string;
-  inputs: Record<string, any>;
-  parameters?: Record<string, any>;
+  inputs: Record<string, unknown>;
+  parameters?: Record<string, unknown>;
 }
 
 export interface AIResponse {
   success: boolean;
-  data: any;
+  data: unknown;
   error?: string;
   tokensUsed?: number;
   estimatedCost?: number;
@@ -182,7 +180,7 @@ export interface ExecutionEvent {
     | 'execution_paused';
   executionId: string;
   nodeId?: string;
-  data?: any;
+  data?: unknown;
   timestamp: Date;
 }
 

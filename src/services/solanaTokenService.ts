@@ -269,7 +269,7 @@ class SolanaTokenService {
   /**
    * Parse Birdeye API response
    */
-  private parseBirdeyeData(data: any): TokenData {
+  private parseBirdeyeData(data: Record<string, unknown>): TokenData {
     return {
       name: data.name || 'Unknown Token',
       symbol: data.symbol || 'UNKNOWN',
@@ -286,7 +286,7 @@ class SolanaTokenService {
   /**
    * Parse transaction data
    */
-  private parseTransactions(transactions: any[]): TransactionData[] {
+  private parseTransactions(transactions: Record<string, unknown>[]): TransactionData[] {
     return transactions.map(tx => ({
       signature: tx.txHash || tx.signature,
       type: tx.side === 'buy' ? 'buy' : 'sell',
@@ -301,7 +301,7 @@ class SolanaTokenService {
   /**
    * Parse price history data
    */
-  private parsePriceHistory(history: any[]): PriceHistory[] {
+  private parsePriceHistory(history: Record<string, unknown>[]): PriceHistory[] {
     return history.map(point => ({
       timestamp: point.unixTime * 1000,
       price: point.value,

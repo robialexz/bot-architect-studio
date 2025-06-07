@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Clock,
@@ -38,7 +38,7 @@ const EnhancedWaitlistCTA: React.FC = () => {
   const [currentWaitlistSize] = useState(Math.floor(Math.random() * 2000) + 8500); // Simulated
 
   // Token launch countdown (June 2025)
-  const launchDate = new Date('2025-06-01T00:00:00Z');
+  const launchDate = useMemo(() => new Date('2025-06-01T00:00:00Z'), []);
 
   useEffect(() => {
     const updateCountdown = () => {

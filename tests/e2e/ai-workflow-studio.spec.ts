@@ -4,10 +4,10 @@ import { test, expect, Page } from '@playwright/test';
 const BASE_URL = 'http://localhost:8080';
 const WORKFLOW_STUDIO_URL = `${BASE_URL}/workflow-builder`;
 
-// User credentials
+// Test user credentials (mock)
 const TEST_USER = {
-  email: 'robialexzi0@gmail.com',
-  password: 'Alexandur132!@?',
+  email: 'test@example.com',
+  password: 'testpassword123',
 };
 
 // Test utilities
