@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react';
 
 // Lazy load heavy components to reduce initial bundle size
 import {
-  LazyEnergyNetworkCanvas,
+  LazyPipelineCanvas,
   LazyHeroSection,
   LazyVisualWorkflowBuilder,
   LazyFeaturesSection,
@@ -17,23 +17,20 @@ import EnhancedWaitlistCTA from '@/components/landing/EnhancedWaitlistCTA';
 import LiveMetricsDashboard from '@/components/landing/LiveMetricsDashboard';
 import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection';
 
-
-
 const IndexPage: React.FC = () => {
   return (
-    <div className="index-page-container">
-      <div className="index-page-background">
-        <Suspense
-          fallback={
-            <div className="w-full h-full bg-gradient-to-br from-background via-background/95 to-background/90" />
-          }
-        >
-          <LazyEnergyNetworkCanvas />
-        </Suspense>
-      </div>
+    <div className="index-page-container relative">
+      {/* Pipeline Background - Fixed across entire page */}
+      <Suspense
+        fallback={
+          <div className="fixed inset-0 w-full h-full bg-gradient-to-br from-background via-background/95 to-background/90" />
+        }
+      >
+        <LazyPipelineCanvas />
+      </Suspense>
 
-      {/* Page Content Sections */}
-      <main className="bg-background">
+      {/* Page Content Sections - Transparent backgrounds to show pipeline */}
+      <main className="relative z-10">
         <Suspense
           fallback={
             <div className="min-h-screen flex items-center justify-center">
@@ -75,7 +72,6 @@ const IndexPage: React.FC = () => {
           <LazyFeaturesSection />
         </Suspense>
       </main>
-
 
       {/*
         The existing H1, P, and Button elements that were directly here for the hero

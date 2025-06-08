@@ -86,21 +86,22 @@ const EnhancedTokenShowcase: React.FC = () => {
   const tokenDistribution: TokenDistribution[] = [
     {
       category: 'Public Sale',
-      percentage: 60,
-      amount: '60M FLOWSY',
+      percentage: 80,
+      amount: '80M FLOWSY',
       color: 'from-emerald-500 to-teal-500',
       description: 'Maximum allocation for community ownership and decentralized trading',
       locked: false,
       highlight: true,
     },
     {
-      category: 'Liquidity Pool',
-      percentage: 30,
-      amount: '30M FLOWSY',
+      category: 'Burn Reserve',
+      percentage: 10,
+      amount: '10M FLOWSY',
       color: 'from-orange-500 to-red-500',
-      description: 'Will be BURNED at $10M market cap to permanently increase token value',
+      description:
+        'Strategic burns: 5% at $5M market cap, 5% at $10M market cap to permanently reduce supply and increase value',
       locked: false,
-      unlockDate: 'BURN at $10M market cap',
+      unlockDate: 'Burns at $5M and $10M milestones',
       burnScheduled: true,
       highlight: true,
     },
@@ -109,9 +110,10 @@ const EnhancedTokenShowcase: React.FC = () => {
       percentage: 10,
       amount: '10M FLOWSY',
       color: 'from-blue-500 to-indigo-500',
-      description: 'Ultra-locked until $1B market cap - Maximum trust & anti-rug guarantee',
+      description:
+        'Gradual unlock: 5% at $15M market cap, 5% at $25M market cap - Maximum trust & anti-rug guarantee',
       locked: true,
-      unlockDate: 'Ultra-locked until $1B market cap',
+      unlockDate: 'Unlocks at $15M and $25M milestones',
       highlight: true,
     },
   ];
@@ -119,20 +121,20 @@ const EnhancedTokenShowcase: React.FC = () => {
   const topHolders: TopHolder[] = [
     {
       rank: 1,
-      address: '7xKXtg2CW...9rKhTYXs',
-      percentage: 30.0,
-      amount: '30M FLOWSY',
-      type: 'liquidity',
-      locked: false,
-      burnScheduled: true,
-    },
-    {
-      rank: 2,
       address: '4mNpkTGm...8vLqWxRt',
       percentage: 10.0,
       amount: '10M FLOWSY',
       type: 'team',
       locked: true,
+    },
+    {
+      rank: 2,
+      address: '7xKXtg2CW...9rKhTYXs',
+      percentage: 10.0,
+      amount: '10M FLOWSY',
+      type: 'liquidity',
+      locked: false,
+      burnScheduled: true,
     },
     {
       rank: 3,
@@ -244,11 +246,9 @@ const EnhancedTokenShowcase: React.FC = () => {
   };
 
   return (
-    <section className="relative py-16 px-6 bg-gradient-to-br from-background via-background/95 to-primary/5">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+    <section className="relative py-16 px-6">
+      {/* Subtle overlay for text readability */}
+      <div className="absolute inset-0 bg-background/10 z-[5]"></div>
 
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Header */}
@@ -273,8 +273,8 @@ const EnhancedTokenShowcase: React.FC = () => {
 
           <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             Revolutionary tokenomics:{' '}
-            <span className="text-emerald-500 font-semibold">60% public ownership</span>,
-            <span className="text-orange-500 font-semibold">30% burn at $10M</span>, and
+            <span className="text-emerald-500 font-semibold">80% public ownership</span>,
+            <span className="text-orange-500 font-semibold">10% burn reserve</span>, and
             <span className="text-blue-500 font-semibold">only 10% developer fund</span> locked
             until $1B market cap.
           </p>
@@ -479,6 +479,7 @@ const EnhancedTokenShowcase: React.FC = () => {
           ].map(tab => (
             <button
               key={tab.id}
+              type="button"
               onClick={() =>
                 setSelectedTab(tab.id as 'overview' | 'distribution' | 'holders' | 'security')
               }

@@ -40,8 +40,10 @@ const VideoShowcaseSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-b from-background to-background/95">
-      <div className="container mx-auto px-6">
+    <section className="py-16 relative">
+      {/* Subtle overlay for text readability */}
+      <div className="absolute inset-0 bg-background/10 z-[5]"></div>
+      <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
         <motion.div
           className="text-center mb-12"
@@ -100,9 +102,13 @@ const VideoShowcaseSection: React.FC = () => {
                         {video.category}
                       </Badge>
                       <h4 className="text-foreground font-bold text-lg mb-2">{video.title}</h4>
-                      <p className="text-muted-foreground text-sm mb-3 leading-relaxed">{video.description}</p>
+                      <p className="text-muted-foreground text-sm mb-3 leading-relaxed">
+                        {video.description}
+                      </p>
                       <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground text-sm font-medium">{video.duration}</span>
+                        <span className="text-muted-foreground text-sm font-medium">
+                          {video.duration}
+                        </span>
                         <Badge variant="outline" className="text-muted-foreground">
                           HD Quality
                         </Badge>

@@ -285,7 +285,7 @@ const Settings: React.FC = () => {
                         <Input
                           id="email"
                           type="email"
-                          defaultValue="john.doe@example.com"
+                          defaultValue="user@example.com"
                           className="bg-background/50"
                         />
                       </div>

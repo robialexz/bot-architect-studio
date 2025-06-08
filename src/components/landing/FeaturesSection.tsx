@@ -141,40 +141,9 @@ const FeaturesSection: React.FC = () => {
   ];
 
   return (
-    <section
-      id="features"
-      ref={ref}
-      className="py-24 md:py-32 relative overflow-hidden premium-hero-bg"
-    >
-      {/* Background Elements */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-sapphire/10 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-96 bg-gradient-to-t from-gold/10 to-transparent"></div>
-        <motion.div
-          className="absolute -left-64 top-1/4 w-96 h-96 rounded-full bg-primary/15 blur-3xl"
-          animate={{
-            x: [0, 50, 0],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            repeatType: 'reverse',
-          }}
-        ></motion.div>
-        <motion.div
-          className="absolute -right-64 bottom-1/4 w-96 h-96 rounded-full bg-gold/15 blur-3xl"
-          animate={{
-            x: [0, -50, 0],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            repeatType: 'reverse',
-          }}
-        ></motion.div>
-      </div>
+    <section id="features" ref={ref} className="py-24 md:py-32 relative overflow-hidden">
+      {/* Subtle overlay for text readability */}
+      <div className="absolute inset-0 bg-background/10 z-[5]"></div>
 
       <div className="container mx-auto px-4 relative z-10">
         <motion.div

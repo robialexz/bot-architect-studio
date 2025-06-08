@@ -244,6 +244,93 @@
   will-change: transform;
 }
 
+/* Video background integration styles */
+.logo-video {
+  filter: brightness(1.2) contrast(1.4) saturate(1.1) hue-rotate(15deg);
+  mix-blend-mode: normal;
+  opacity: 0.9;
+}
+
+/* Pipeline Canvas Background */
+.pipeline-canvas {
+  z-index: -1;
+}
+
+/* Premium luxury animations for navbar logo */
+@keyframes luxury-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 5px rgba(255, 215, 0, 0.3),
+      0 0 10px rgba(59, 130, 246, 0.2),
+      0 0 15px rgba(168, 85, 247, 0.1);
+    transform: scale(1);
+  }
+  25% {
+    box-shadow:
+      0 0 8px rgba(255, 215, 0, 0.4),
+      0 0 15px rgba(59, 130, 246, 0.3),
+      0 0 20px rgba(168, 85, 247, 0.2);
+    transform: scale(1.02);
+  }
+  50% {
+    box-shadow:
+      0 0 12px rgba(255, 215, 0, 0.5),
+      0 0 20px rgba(59, 130, 246, 0.4),
+      0 0 25px rgba(168, 85, 247, 0.3);
+    transform: scale(1.05);
+  }
+  75% {
+    box-shadow:
+      0 0 8px rgba(255, 215, 0, 0.4),
+      0 0 15px rgba(59, 130, 246, 0.3),
+      0 0 20px rgba(168, 85, 247, 0.2);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes luxury-shimmer {
+  0% {
+    background-position: -200% 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 0;
+  }
+}
+
+@keyframes luxury-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* Luxury animation classes */
+.animate-luxury-glow {
+  animation: luxury-glow 6s ease-in-out infinite;
+}
+
+.animate-luxury-shimmer {
+  animation: luxury-shimmer 3s ease-in-out infinite;
+}
+
+.animate-luxury-pulse {
+  animation: luxury-pulse 4s ease-in-out infinite;
+}
+
+.hero-video {
+  filter: brightness(0.9) contrast(1.1) saturate(0.8);
+  mix-blend-mode: multiply;
+}
+
 @keyframes pulse {
   0% {
     opacity: 0.4;

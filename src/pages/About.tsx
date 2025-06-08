@@ -19,27 +19,27 @@ import { Link } from 'react-router-dom';
 const About: React.FC = () => {
   const teamMembers = [
     {
-      name: 'Alex Chen',
+      name: 'Lead Developer',
       role: 'CEO & Co-Founder',
-      bio: 'Former AI researcher at Google with 10+ years in machine learning and automation.',
+      bio: 'Experienced AI researcher with 10+ years in machine learning and automation systems.',
       image: '/api/placeholder/150/150',
     },
     {
-      name: 'Sarah Johnson',
+      name: 'Technical Lead',
       role: 'CTO & Co-Founder',
-      bio: 'Ex-Microsoft engineer specializing in distributed systems and AI infrastructure.',
+      bio: 'Senior engineer specializing in distributed systems and AI infrastructure development.',
       image: '/api/placeholder/150/150',
     },
     {
-      name: 'David Rodriguez',
+      name: 'Product Manager',
       role: 'Head of Product',
-      bio: 'Product leader with experience at Slack and Notion, passionate about user experience.',
+      bio: 'Product strategist with extensive experience in workflow automation and user experience.',
       image: '/api/placeholder/150/150',
     },
     {
-      name: 'Emily Zhang',
+      name: 'AI Researcher',
       role: 'Head of AI Research',
-      bio: 'PhD in Computer Science from Stanford, published researcher in neural networks.',
+      bio: 'Advanced degree in Computer Science with focus on neural networks and machine learning.',
       image: '/api/placeholder/150/150',
     },
   ];
@@ -71,10 +71,10 @@ const About: React.FC = () => {
   ];
 
   const milestones = [
-    { year: '2022', event: 'Company founded with $2M seed funding' },
-    { year: '2023', event: 'Launched beta platform with 1,000+ early adopters' },
-    { year: '2024', event: 'Series A funding of $15M, reached 10,000+ users' },
-    { year: '2025', event: 'FlowsyAI launch and global expansion' },
+    { year: '2022', event: 'Company founded with initial development funding' },
+    { year: '2023', event: 'Launched beta platform with early adopter community' },
+    { year: '2024', event: 'Secured growth funding and expanded user base significantly' },
+    { year: '2025', event: 'FlowsyAI platform launch and ecosystem expansion' },
   ];
 
   return (

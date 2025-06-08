@@ -4,195 +4,131 @@ interface GlobalPipelineBackgroundProps {
   className?: string;
 }
 
-// Utility functions from util.js
-const { PI, cos, sin, abs, sqrt, pow, round, random, atan2 } = Math;
-const HALF_PI = 0.5 * PI;
-const TAU = 2 * PI;
-const TO_RAD = PI / 180;
-const floor = (n: number) => n | 0;
-const rand = (n: number) => n * random();
-const randIn = (min: number, max: number) => rand(max - min) + min;
-const randRange = (n: number) => n - rand(2 * n);
-const fadeIn = (t: number, m: number) => t / m;
-const fadeOut = (t: number, m: number) => (m - t) / m;
-const fadeInOut = (t: number, m: number) => {
-  let hm = 0.5 * m;
-  return abs((t + hm) % m - hm) / hm;
-};
-
 const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ className = '' }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasARef = useRef<HTMLCanvasElement>(null);
-  const canvasBRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
 
   useEffect(() => {
-    const container = containerRef.current;
-    const canvasA = canvasARef.current;
-    const canvasB = canvasBRef.current;
-    
-    if (!container || !canvasA || !canvasB) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    const ctxA = canvasA.getContext('2d');
-    const ctxB = canvasB.getContext('2d');
-    
-    if (!ctxA || !ctxB) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    // Global Pipeline configuration - Subtle but visible for full page
-    const pipeCount = 18; // More pipes for better coverage
-    const pipePropCount = 8;
-    const pipePropsLength = pipeCount * pipePropCount;
-    const turnCount = 8;
-    const turnAmount = (360 / turnCount) * TO_RAD;
-    const turnChanceRange = 100; // More frequent turns for dynamic movement
-    const baseSpeed = 0.3; // Slightly faster
-    const rangeSpeed = 0.5; // Slightly faster range
-    const baseTTL = 200; // Longer life
-    const rangeTTL = 300; // Longer life range
-    const baseWidth = 1.2; // Slightly thicker pipes
-    const rangeWidth = 2; // Slightly thicker pipes
-    const baseHue = 180;
-    const rangeHue = 80; // More color variety
-    const backgroundColor = 'hsla(150,80%,1%,0.8)'; // Balanced transparency
-
-    let center: number[] = [];
-    let tick = 0;
-    let pipeProps: Float32Array;
-
-    const resize = () => {
-      const { innerWidth, innerHeight } = window;
-      
-      canvasA.width = innerWidth;
-      canvasA.height = innerHeight;
-      ctxA.drawImage(canvasB, 0, 0);
-      
-      canvasB.width = innerWidth;
-      canvasB.height = innerHeight;
-      ctxB.drawImage(canvasA, 0, 0);
-      
-      center[0] = 0.5 * canvasA.width;
-      center[1] = 0.5 * canvasA.height;
+    // Set canvas size
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
 
-    const initPipe = (i: number) => {
-      let x, y, direction, speed, life, ttl, width, hue;
-      
-      x = rand(canvasA.width);
-      y = rand(canvasA.height); // Start from random positions, not just center
-      direction = round(rand(1)) ? HALF_PI : TAU - HALF_PI;
-      speed = baseSpeed + rand(rangeSpeed);
-      life = 0;
-      ttl = baseTTL + rand(rangeTTL);
-      width = baseWidth + rand(rangeWidth);
-      hue = baseHue + rand(rangeHue);
-      
-      pipeProps.set([x, y, direction, speed, life, ttl, width, hue], i);
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Pipeline animation variables
+    const particles: Array<{
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      life: number;
+      maxLife: number;
+      hue: number;
+    }> = [];
+
+    const maxParticles = 50;
+    let frameCount = 0;
+
+    // Create particle
+    const createParticle = () => {
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        life: 0,
+        maxLife: 100 + Math.random() * 100,
+        hue: 180 + Math.random() * 60, // Blue to cyan range
+      };
     };
 
-    const initPipes = () => {
-      pipeProps = new Float32Array(pipePropsLength);
-      
-      for (let i = 0; i < pipePropsLength; i += pipePropCount) {
-        initPipe(i);
-      }
-    };
+    // Initialize particles
+    for (let i = 0; i < maxParticles; i++) {
+      particles.push(createParticle());
+    }
 
-    const drawPipe = (x: number, y: number, life: number, ttl: number, width: number, hue: number) => {
-      ctxA.save();
-      ctxA.strokeStyle = `hsla(${hue},85%,65%,${fadeInOut(life, ttl) * 0.3})`; // Visible but subtle
-      ctxA.beginPath();
-      ctxA.arc(x, y, width, 0, TAU);
-      ctxA.stroke();
-      ctxA.closePath();
-      ctxA.restore();
-    };
+    // Animation loop
+    const animate = () => {
+      frameCount++;
 
-    const checkBounds = (x: number, y: number) => {
-      if (x > canvasA.width) x = 0;
-      if (x < 0) x = canvasA.width;
-      if (y > canvasA.height) y = 0;
-      if (y < 0) y = canvasA.height;
-      return { x, y };
-    };
+      // Clear canvas with slight trail effect
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const updatePipe = (i: number) => {
-      const i2 = 1 + i, i3 = 2 + i, i4 = 3 + i, i5 = 4 + i, i6 = 5 + i, i7 = 6 + i, i8 = 7 + i;
-      
-      let x = pipeProps[i];
-      let y = pipeProps[i2];
-      let direction = pipeProps[i3];
-      let speed = pipeProps[i4];
-      let life = pipeProps[i5];
-      let ttl = pipeProps[i6];
-      let width = pipeProps[i7];
-      let hue = pipeProps[i8];
+      // Update and draw particles
+      particles.forEach((particle, index) => {
+        // Update particle
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.life++;
 
-      drawPipe(x, y, life, ttl, width, hue);
+        // Wrap around screen
+        if (particle.x < 0) particle.x = canvas.width;
+        if (particle.x > canvas.width) particle.x = 0;
+        if (particle.y < 0) particle.y = canvas.height;
+        if (particle.y > canvas.height) particle.y = 0;
 
-      life++;
-      x += cos(direction) * speed;
-      y += sin(direction) * speed;
+        // Calculate opacity based on life
+        const opacity = Math.sin((particle.life / particle.maxLife) * Math.PI) * 0.8;
 
-      const turnChance = !(tick % round(rand(turnChanceRange))) && (!(round(x) % 8) || !(round(y) % 8));
-      const turnBias = round(rand(1)) ? -1 : 1;
-      direction += turnChance ? turnAmount * turnBias : 0;
+        // Draw particle
+        ctx.save();
+        ctx.globalAlpha = opacity;
+        ctx.fillStyle = `hsl(${particle.hue}, 70%, 60%)`;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
 
-      pipeProps[i] = x;
-      pipeProps[i2] = y;
-      pipeProps[i3] = direction;
-      pipeProps[i5] = life;
+        // Draw connections to nearby particles
+        particles.forEach((otherParticle, otherIndex) => {
+          if (index !== otherIndex) {
+            const dx = particle.x - otherParticle.x;
+            const dy = particle.y - otherParticle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-      const bounds = checkBounds(x, y);
-      if (life > ttl) initPipe(i);
-    };
+            if (distance < 100) {
+              const lineOpacity = (1 - distance / 100) * opacity * 0.3;
+              ctx.save();
+              ctx.globalAlpha = lineOpacity;
+              ctx.strokeStyle = `hsl(${particle.hue}, 70%, 60%)`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(particle.x, particle.y);
+              ctx.lineTo(otherParticle.x, otherParticle.y);
+              ctx.stroke();
+              ctx.restore();
+            }
+          }
+        });
 
-    const updatePipes = () => {
-      tick++;
-      
-      for (let i = 0; i < pipePropsLength; i += pipePropCount) {
-        updatePipe(i);
-      }
-    };
+        // Reset particle if life is over
+        if (particle.life >= particle.maxLife) {
+          particles[index] = createParticle();
+        }
+      });
 
-    const render = () => {
-      // Very subtle background clearing
-      ctxB.save();
-      ctxB.fillStyle = backgroundColor;
-      ctxB.fillRect(0, 0, canvasB.width, canvasB.height);
-      ctxB.restore();
-
-      // Clear canvas A every 15 seconds (900 frames at 60fps)
-      if (tick % 900 === 0) {
-        ctxA.clearRect(0, 0, canvasA.width, canvasA.height);
+      // Clear every 15 seconds (900 frames at 60fps)
+      if (frameCount % 900 === 0) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
 
-      ctxB.save();
-      ctxB.filter = 'blur(2px)'; // Light blur for Pipeline effect
-      ctxB.drawImage(canvasA, 0, 0);
-      ctxB.restore();
-
-      ctxB.save();
-      ctxB.drawImage(canvasA, 0, 0);
-      ctxB.restore();
+      animationRef.current = requestAnimationFrame(animate);
     };
 
-    const draw = () => {
-      updatePipes();
-      render();
-      animationRef.current = requestAnimationFrame(draw);
-    };
-
-    const setup = () => {
-      resize();
-      initPipes();
-      draw();
-    };
-
-    setup();
-    window.addEventListener('resize', resize);
+    animate();
 
     return () => {
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', resizeCanvas);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
@@ -200,14 +136,11 @@ const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ cla
   }, []);
 
   return (
-    <div ref={containerRef} className={`absolute inset-0 w-full h-full ${className}`}>
+    <div className={`absolute inset-0 w-full h-full ${className}`}>
       <canvas
-        ref={canvasARef}
-        className="hidden"
-      />
-      <canvas
-        ref={canvasBRef}
+        ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ zIndex: -1 }}
       />
     </div>
   );

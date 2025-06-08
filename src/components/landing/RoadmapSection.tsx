@@ -578,11 +578,8 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
 
   return (
     <section className={`${compact ? 'py-8 md:py-12' : 'py-20 md:py-32'} relative overflow-hidden`}>
-      {/* Enhanced Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-gold/5" />
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-gold/20 to-orange-500/20 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-full blur-3xl" />
+      {/* Subtle overlay for text readability */}
+      <div className="absolute inset-0 bg-background/10 z-[5]"></div>
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced Header with Live Stats */}

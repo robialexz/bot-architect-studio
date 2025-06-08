@@ -42,6 +42,11 @@ export const LazyEnergyNetworkCanvas = createLazyComponent(
   'Energy Network'
 );
 
+export const LazyPipelineCanvas = createLazyComponent(
+  () => import('@/components/backgrounds/PipelineCanvas'),
+  'Pipeline Background'
+);
+
 export const LazyNexusCrystal = createLazyComponent(
   () => import('@/components/NexusCrystal'),
   'Nexus Crystal'

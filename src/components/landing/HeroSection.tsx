@@ -71,8 +71,6 @@ const HeroSection: React.FC = () => {
       {/* Subtle overlay for text readability over global background */}
       <div className="absolute inset-0 bg-background/5 z-[5]"></div>
 
-
-
       {/* Hero Content */}
       <motion.div
         style={{ opacity }}
@@ -81,7 +79,7 @@ const HeroSection: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1, ease: 'easeOut' }}
       >
-        {/* Animated Logo Video Display - Large and Beautiful */}
+        {/* Animated Logo Video Display - Wide and Seamless */}
         <motion.div
           className="mb-16 relative z-40"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -89,9 +87,9 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 1, delay: 0.3 }}
         >
           <div className="flex justify-center">
-            <div className="relative w-[600px] h-36 rounded-3xl overflow-hidden border border-primary/20 shadow-xl z-40">
+            <div className="relative w-full max-w-[1100px] h-24 sm:h-28 md:h-32 lg:h-36 rounded-3xl overflow-hidden border border-primary/20 shadow-xl z-40">
               <video
-                className="w-full h-full object-cover relative z-40"
+                className="w-full h-full object-cover relative z-40 hero-video"
                 autoPlay
                 loop
                 muted
@@ -101,8 +99,11 @@ const HeroSection: React.FC = () => {
                 <source src="/background-animation.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-              {/* Subtle overlay for better integration */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent z-41"></div>
+              {/* Enhanced overlay for seamless background integration */}
+              <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-background/40 z-41"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-background/20 to-background/20 z-42"></div>
+              {/* Subtle border glow */}
+              <div className="absolute inset-0 rounded-3xl border border-primary/10 bg-gradient-to-r from-primary/5 via-transparent to-primary/5"></div>
             </div>
           </div>
         </motion.div>
@@ -150,10 +151,10 @@ const HeroSection: React.FC = () => {
             Build Workflows in Augmented Reality
           </div>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-center">
-            Create powerful AI automations in <span className="text-primary font-semibold">3D space</span> using
-            your mobile device. Connect{' '}
-            <span className="text-gold font-semibold">enterprise AI models</span> with intuitive gesture controls
-            and transform how you
+            Create powerful AI automations in{' '}
+            <span className="text-primary font-semibold">3D space</span> using your mobile device.
+            Connect <span className="text-gold font-semibold">enterprise AI models</span> with
+            intuitive gesture controls and transform how you
             <span className="text-sapphire font-semibold"> build automation workflows</span>.
           </p>
         </motion.div>

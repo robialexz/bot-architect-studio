@@ -145,8 +145,10 @@ const EnhancedWaitlistCTA: React.FC = () => {
   }
 
   return (
-    <section className="py-20 px-6 bg-gradient-to-br from-primary/5 via-background to-gold/5">
-      <div className="container mx-auto max-w-6xl">
+    <section className="py-20 px-6 relative">
+      {/* Subtle overlay for text readability */}
+      <div className="absolute inset-0 bg-background/10 z-[5]"></div>
+      <div className="container mx-auto max-w-6xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

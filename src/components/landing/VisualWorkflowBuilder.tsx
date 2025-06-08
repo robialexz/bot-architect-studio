@@ -1725,8 +1725,8 @@ The transition to sustainable technology requires continued investment, policy s
 
   return (
     <section id="workflow-demo" className="py-16 md:py-20 relative overflow-hidden">
-      {/* Particles Background */}
-      <ParticlesBackground />
+      {/* Subtle overlay for text readability */}
+      <div className="absolute inset-0 bg-background/10 z-[5]"></div>
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Header */}

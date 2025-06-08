@@ -61,50 +61,50 @@ const Contact: React.FC = () => {
       icon: <Mail className="w-6 h-6" />,
       title: 'Email Support',
       description: 'Get help from our support team',
-      contact: 'support@aiflow.com',
-      action: 'Send Email',
-    },
-    {
-      icon: <Phone className="w-6 h-6" />,
-      title: 'Phone Support',
-      description: 'Speak directly with our team',
-      contact: '+1 (555) 123-4567',
-      action: 'Call Now',
+      contact: 'Use the contact form below',
+      action: 'Send Message',
     },
     {
       icon: <MessageSquare className="w-6 h-6" />,
       title: 'Live Chat',
       description: 'Chat with us in real-time',
-      contact: 'Available 24/7',
+      contact: 'Available during business hours',
       action: 'Start Chat',
     },
     {
       icon: <Users className="w-6 h-6" />,
-      title: 'Sales Team',
+      title: 'Business Inquiries',
       description: 'Discuss enterprise solutions',
-      contact: 'sales@aiflow.com',
-      action: 'Contact Sales',
+      contact: 'Use the contact form for business matters',
+      action: 'Contact Team',
+    },
+    {
+      icon: <Globe className="w-6 h-6" />,
+      title: 'Community Support',
+      description: 'Join our community channels',
+      contact: 'Discord & Telegram available',
+      action: 'Join Community',
     },
   ];
 
-  const offices = [
+  const supportChannels = [
     {
-      city: 'San Francisco',
-      address: '123 Innovation Drive, Suite 100',
-      zipCode: 'San Francisco, CA 94105',
-      phone: '+1 (555) 123-4567',
+      name: 'Documentation',
+      description: 'Comprehensive guides and tutorials',
+      availability: 'Available 24/7',
+      icon: <Building className="w-5 h-5" />,
     },
     {
-      city: 'New York',
-      address: '456 Tech Avenue, Floor 25',
-      zipCode: 'New York, NY 10001',
-      phone: '+1 (555) 987-6543',
+      name: 'Community Forum',
+      description: 'Connect with other users',
+      availability: 'Community moderated',
+      icon: <Users className="w-5 h-5" />,
     },
     {
-      city: 'London',
-      address: '789 AI Street, Level 10',
-      zipCode: 'London, UK EC1A 1BB',
-      phone: '+44 20 1234 5678',
+      name: 'Video Tutorials',
+      description: 'Step-by-step video guides',
+      availability: 'On-demand access',
+      icon: <Globe className="w-5 h-5" />,
     },
   ];
 
@@ -314,41 +314,43 @@ const Contact: React.FC = () => {
                   <CardContent className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Monday - Friday</span>
-                      <span>9:00 AM - 6:00 PM PST</span>
+                      <span>Business Hours</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Saturday</span>
-                      <span>10:00 AM - 4:00 PM PST</span>
+                      <span className="text-muted-foreground">Weekend</span>
+                      <span>Limited Support</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Sunday</span>
-                      <span>Closed</span>
+                      <span className="text-muted-foreground">Response Time</span>
+                      <span>Within 24 hours</span>
                     </div>
                     <div className="pt-2 border-t border-border-alt">
                       <div className="flex items-center gap-2 text-sm text-primary">
                         <Headphones className="w-4 h-4" />
-                        24/7 Emergency Support Available
+                        Community Support Always Available
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                {/* Office Locations */}
+                {/* Support Resources */}
                 <Card className="premium-card bg-card/80 backdrop-blur-lg border border-border-alt shadow-xl">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <MapPin className="w-5 h-5 text-primary" />
-                      Office Locations
+                      <Headphones className="w-5 h-5 text-primary" />
+                      Support Resources
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {offices.map((office, index) => (
+                    {supportChannels.map((channel, index) => (
                       <div key={index} className="space-y-1">
-                        <h4 className="font-semibold">{office.city}</h4>
-                        <p className="text-sm text-muted-foreground">{office.address}</p>
-                        <p className="text-sm text-muted-foreground">{office.zipCode}</p>
-                        <p className="text-sm text-primary">{office.phone}</p>
-                        {index < offices.length - 1 && (
+                        <div className="flex items-center gap-2">
+                          {channel.icon}
+                          <h4 className="font-semibold">{channel.name}</h4>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{channel.description}</p>
+                        <p className="text-sm text-primary">{channel.availability}</p>
+                        {index < supportChannels.length - 1 && (
                           <div className="border-b border-border-alt pt-2" />
                         )}
                       </div>
