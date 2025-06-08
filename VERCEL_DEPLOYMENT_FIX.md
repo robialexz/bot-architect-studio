@@ -12,6 +12,9 @@ Erorile MIME type pe Vercel sunt cauzate de:
 
 ### 1. Configurația Vercel Optimizată (`vercel.json`)
 
+**IMPORTANT:** Vercel nu permite folosirea simultană a `routes` cu `headers`.
+Configurația corectă folosește `rewrites` și `headers`:
+
 ```json
 {
   "version": 2,
@@ -19,32 +22,38 @@ Erorile MIME type pe Vercel sunt cauzate de:
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": "vite",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/assets/.*\\.js$",
-      "headers": {
-        "Content-Type": "application/javascript; charset=utf-8",
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
+      "source": "/((?!api|assets|_next|favicon.ico|manifest.webmanifest|sw.js|robots.txt).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*\\.js)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
-      "src": "/assets/.*\\.css$",
-      "headers": {
-        "Content-Type": "text/css; charset=utf-8",
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      "src": "/manifest.webmanifest",
-      "headers": {
-        "Content-Type": "application/manifest+json",
-        "Access-Control-Allow-Origin": "*",
-        "Cache-Control": "public, max-age=31536000"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/assets/(.*\\.css)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/css; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }
