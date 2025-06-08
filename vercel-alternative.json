@@ -22,7 +22,21 @@
       "src": "/manifest.webmanifest",
       "headers": {
         "Content-Type": "application/manifest+json",
+        "Access-Control-Allow-Origin": "*",
         "Cache-Control": "public, max-age=31536000"
+      }
+    },
+    {
+      "src": "/favicon.ico",
+      "headers": {
+        "Content-Type": "image/x-icon",
+        "Cache-Control": "public, max-age=31536000"
+      }
+    },
+    {
+      "src": "/(.*\\.(svg|png|jpg|jpeg|gif|webp|avif|mp4))",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
       }
     },
     {
