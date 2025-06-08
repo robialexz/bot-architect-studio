@@ -4,6 +4,7 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  root: '.',
   base: '/',
   server: {
     host: '::',
@@ -41,6 +42,7 @@ export default defineConfig({
       },
     },
     rollupOptions: {
+      input: path.resolve(__dirname, 'index.html'),
       output: {
         // Manual chunking strategy to optimize bundle size
         manualChunks: id => {
