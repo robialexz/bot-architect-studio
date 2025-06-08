@@ -1,5 +1,16 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  SafeAnimatePresence,
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { X, Rocket, Calendar, Star, Bell, ArrowRight, Clock, Zap } from 'lucide-react';
@@ -20,11 +31,11 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
   description = "We're working hard to bring you this amazing feature as part of our comprehensive AI workflow platform.",
 }) => {
   return (
-    <AnimatePresence>
+    <SafeAnimatePresence>
       {isOpen && (
         <>
           {/* Backdrop */}
-          <motion.div
+          <MotionDiv
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -33,7 +44,7 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
           />
 
           {/* Modal */}
-          <motion.div
+          <MotionDiv
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -58,36 +69,36 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
 
                 {/* Header */}
                 <div className="text-center mb-6">
-                  <motion.div
+                  <MotionDiv
                     className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r from-primary via-gold to-sapphire text-white mb-4"
                     initial={{ scale: 0, rotate: -180 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ delay: 0.2, type: 'spring', duration: 0.8 }}
                   >
                     <Rocket className="w-8 h-8" />
-                  </motion.div>
+                  </MotionDiv>
 
-                  <motion.h2
+                  <MotionH2
                     className="text-2xl font-bold mb-2 bg-gradient-to-r from-primary to-gold bg-clip-text text-transparent"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
                   >
                     Coming Soon!
-                  </motion.h2>
+                  </MotionH2>
 
-                  <motion.p
+                  <MotionP
                     className="text-muted-foreground"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                   >
                     {feature} is currently in development
-                  </motion.p>
+                  </MotionP>
                 </div>
 
                 {/* Status Badge */}
-                <motion.div
+                <MotionDiv
                   className="flex justify-center mb-6"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -97,20 +108,20 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
                     <Clock className="w-4 h-4 mr-2 animate-pulse" />
                     In Development
                   </Badge>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Description */}
-                <motion.p
+                <MotionP
                   className="text-center text-muted-foreground mb-6 leading-relaxed"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                 >
                   {description}
-                </motion.p>
+                </MotionP>
 
                 {/* Timeline */}
-                <motion.div
+                <MotionDiv
                   className="bg-muted/30 rounded-2xl p-4 mb-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -128,10 +139,10 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
                       {expectedDate}
                     </Badge>
                   </div>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Features Preview */}
-                <motion.div
+                <MotionDiv
                   className="space-y-3 mb-6"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -156,10 +167,10 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
                       </div>
                     ))}
                   </div>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Action Buttons */}
-                <motion.div
+                <MotionDiv
                   className="space-y-3"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -181,10 +192,10 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
                     <ArrowRight className="w-4 h-4 mr-2" />
                     Explore Other Features
                   </Button>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Footer Note */}
-                <motion.div
+                <MotionDiv
                   className="text-center mt-6 pt-4 border-t border-border/50"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -193,13 +204,13 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
                   <p className="text-xs text-muted-foreground">
                     Building the future of AI automation • Stay tuned for updates
                   </p>
-                </motion.div>
+                </MotionDiv>
               </div>
             </div>
-          </motion.div>
+          </MotionDiv>
         </>
       )}
-    </AnimatePresence>
+    </SafeAnimatePresence>
   );
 };
 

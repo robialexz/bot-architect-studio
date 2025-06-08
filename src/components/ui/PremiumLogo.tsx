@@ -1,5 +1,14 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import {
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
 
 interface PremiumLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
@@ -92,7 +101,7 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      <motion.div
+      <MotionDiv
         variants={animated ? logoVariants : undefined}
         initial="initial"
         animate={animated ? 'animate' : undefined}
@@ -132,7 +141,7 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
 
         {/* Enhanced Luxury Glow Effect with Pulsing - Only for large sizes */}
         {(size === 'xl' || size === 'xxl') && (
-          <motion.div
+          <MotionDiv
             className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/30 to-accent/30 blur-xl -z-10 scale-110"
             animate={{
               opacity: [0.2, 0.4, 0.2],
@@ -147,7 +156,7 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
 
         {/* Enhanced Background Glow for larger sizes with Rotation */}
         {(size === 'xl' || size === 'xxl') && (
-          <motion.div
+          <MotionDiv
             className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 blur-2xl -z-20 scale-125"
             animate={{
               opacity: [0.4, 0.8, 0.4],
@@ -170,7 +179,7 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
 
         {/* Luxury Glow Effect for navbar logos */}
         {size !== 'xxl' && (
-          <motion.div
+          <MotionDiv
             className="absolute inset-0 rounded-xl bg-gradient-to-r from-gold/20 via-primary/30 to-sapphire/20 blur-lg -z-10 scale-110"
             animate={{
               opacity: [0.3, 0.7, 0.3],
@@ -183,10 +192,10 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
             }}
           />
         )}
-      </motion.div>
+      </MotionDiv>
 
       {showText && (
-        <motion.div
+        <MotionDiv
           initial={animated ? { opacity: 0, x: -10 } : undefined}
           animate={animated ? { opacity: 1, x: 0 } : undefined}
           transition={animated ? { delay: 0.5, duration: 0.5 } : undefined}
@@ -205,7 +214,7 @@ const PremiumLogo: React.FC<PremiumLogoProps> = ({
           {size === 'lg' && (
             <span className="text-base font-semibold text-foreground tracking-tight">FlowsyAI</span>
           )}
-        </motion.div>
+        </MotionDiv>
       )}
     </div>
   );

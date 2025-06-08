@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import {
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import {
   Users,
   Share2,
@@ -371,7 +381,7 @@ const WorkflowCollaboration: React.FC = () => {
             {/* Workflows Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredWorkflows.map((workflow, index) => (
-                <motion.div
+                <MotionDiv
                   key={workflow.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -464,7 +474,7 @@ const WorkflowCollaboration: React.FC = () => {
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </MotionDiv>
               ))}
             </div>
           </TabsContent>
@@ -489,7 +499,7 @@ const WorkflowCollaboration: React.FC = () => {
             {/* Team Members Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredTeamMembers.map((member, index) => (
-                <motion.div
+                <MotionDiv
                   key={member.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -530,7 +540,7 @@ const WorkflowCollaboration: React.FC = () => {
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </MotionDiv>
               ))}
             </div>
           </TabsContent>

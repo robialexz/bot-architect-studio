@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  SafeAnimatePresence,
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import {
   Calendar,
   CheckCircle,
@@ -583,7 +594,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced Header with Live Stats */}
-        <motion.div
+        <MotionDiv
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -591,14 +602,14 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
           transition={{ duration: 0.8 }}
         >
           <div className="flex items-center justify-center gap-4 mb-6">
-            <motion.div
+            <MotionDiv
               className="flex items-center gap-2 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-full px-4 py-2 border border-emerald-500/30"
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
               <span className="text-sm font-medium text-emerald-400">LIVE ROADMAP</span>
-            </motion.div>
+            </MotionDiv>
             <Button
               variant="ghost"
               size="sm"
@@ -628,7 +639,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
           </p>
 
           {/* Investment Overview */}
-          <motion.div
+          <MotionDiv
             className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -653,10 +664,10 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
               <div className="text-2xl font-bold text-purple-400">$10M</div>
               <div className="text-sm text-muted-foreground">Valuation Goal</div>
             </div>
-          </motion.div>
+          </MotionDiv>
 
           {/* Interactive Phase Navigation */}
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -664,7 +675,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
             className="flex flex-wrap justify-center gap-2 mb-8"
           >
             {roadmapPhases.map((phase, index) => (
-              <motion.button
+              <MotionButton
                 key={phase.id}
                 type="button"
                 onClick={() => scrollToPhase(phase.id)}
@@ -682,24 +693,24 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                   <span className="sm:hidden">Phase {index + 1}</span>
                 </div>
                 {expandedPhase === phase.id && (
-                  <motion.div
+                  <MotionDiv
                     className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rounded-full"
                     layoutId="activePhase"
                   />
                 )}
                 {phase.status === 'critical' && (
-                  <motion.div
+                  <MotionDiv
                     className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 1, repeat: Infinity }}
                   />
                 )}
-              </motion.button>
+              </MotionButton>
             ))}
-          </motion.div>
+          </MotionDiv>
 
           {/* Progress Overview */}
-          <motion.div
+          <MotionDiv
             className="max-w-2xl mx-auto mb-8"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -718,7 +729,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                 </div>
               </div>
               <div className="w-full bg-muted rounded-full h-3 mb-4">
-                <motion.div
+                <MotionDiv
                   className="h-3 rounded-full bg-gradient-to-r from-primary to-gold"
                   initial={{ width: 0 }}
                   whileInView={{
@@ -745,8 +756,8 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                 ))}
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
 
         {/* Enhanced Interactive Timeline */}
         <div className="max-w-7xl mx-auto">
@@ -760,7 +771,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
             {/* Interactive Roadmap Phases */}
             <div className="space-y-16">
               {roadmapPhases.map((phase, index) => (
-                <motion.div
+                <MotionDiv
                   key={phase.id}
                   id={`phase-${phase.id}`}
                   className={`relative flex items-start ${
@@ -773,7 +784,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                 >
                   {/* Enhanced Timeline Node */}
                   <div className="absolute left-8 md:left-1/2 w-6 h-6 transform -translate-x-3 md:-translate-x-3 z-20">
-                    <motion.div
+                    <MotionDiv
                       className={`w-6 h-6 rounded-full bg-gradient-to-r ${phase.color} border-4 border-background shadow-xl relative`}
                       whileHover={{ scale: 1.2 }}
                       animate={expandedPhase === phase.id ? { scale: 1.1 } : { scale: 1 }}
@@ -783,13 +794,13 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                         <CheckCircle className="absolute -top-1 -left-1 w-8 h-8 text-emerald-500 bg-background rounded-full p-1" />
                       )}
                       {(phase.status === 'in-progress' || phase.status === 'critical') && (
-                        <motion.div
+                        <MotionDiv
                           className="absolute -top-1 -left-1 w-8 h-8 bg-background rounded-full p-1"
                           animate={{ rotate: 360 }}
                           transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                         >
                           <Clock className="w-6 h-6 text-blue-500" />
-                        </motion.div>
+                        </MotionDiv>
                       )}
                       {phase.status === 'upcoming' && (
                         <Star className="absolute -top-1 -left-1 w-8 h-8 text-gold bg-background rounded-full p-1" />
@@ -797,16 +808,16 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
 
                       {/* Priority Indicator */}
                       {phase.priority === 'high' && (
-                        <motion.div
+                        <MotionDiv
                           className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 rounded-full border-2 border-background"
                           animate={{ scale: [1, 1.2, 1] }}
                           transition={{ duration: 1, repeat: Infinity }}
                         />
                       )}
-                    </motion.div>
+                    </MotionDiv>
 
                     {/* Investment Badge */}
-                    <motion.div
+                    <MotionDiv
                       className={`absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${phase.bgGradient} border border-primary/20 whitespace-nowrap`}
                       initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -814,14 +825,14 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                       transition={{ delay: index * 0.1 }}
                     >
                       {phase.investment}
-                    </motion.div>
+                    </MotionDiv>
                   </div>
 
                   {/* Enhanced Interactive Content Card */}
                   <div
                     className={`w-full md:w-6/12 ml-20 md:ml-0 ${index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'}`}
                   >
-                    <motion.div
+                    <MotionDiv
                       className={`premium-card p-8 rounded-3xl border-2 transition-all duration-500 group cursor-pointer relative overflow-hidden ${
                         expandedPhase === phase.id
                           ? `border-primary/50 shadow-2xl shadow-primary/20 bg-gradient-to-br ${phase.bgGradient}`
@@ -836,7 +847,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                     >
                       {/* Background Glow Effect */}
                       {expandedPhase === phase.id && (
-                        <motion.div
+                        <MotionDiv
                           className={`absolute inset-0 bg-gradient-to-br ${phase.color} opacity-5 rounded-3xl`}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 0.05 }}
@@ -854,13 +865,13 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                             <span className="capitalize">{phase.status.replace('-', ' ')}</span>
                           </div>
                           {phase.priority === 'high' && (
-                            <motion.div
+                            <MotionDiv
                               className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30"
                               animate={{ scale: [1, 1.05, 1] }}
                               transition={{ duration: 2, repeat: Infinity }}
                             >
                               HIGH PRIORITY
-                            </motion.div>
+                            </MotionDiv>
                           )}
                         </div>
                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -882,7 +893,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                               {phase.subtitle}
                             </p>
                           </div>
-                          <motion.div
+                          <MotionDiv
                             animate={{ rotate: expandedPhase === phase.id ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
                             className="ml-4"
@@ -892,7 +903,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                             ) : (
                               <ChevronDown className="w-6 h-6 text-muted-foreground" />
                             )}
-                          </motion.div>
+                          </MotionDiv>
                         </div>
 
                         <p className="text-muted-foreground leading-relaxed text-base">
@@ -914,7 +925,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                         </div>
 
                         <div className="w-full bg-muted/50 rounded-full h-3 mb-2 overflow-hidden">
-                          <motion.div
+                          <MotionDiv
                             className={`h-3 rounded-full bg-gradient-to-r ${phase.color} relative`}
                             initial={{ width: 0 }}
                             whileInView={{ width: `${phase.progress}%` }}
@@ -922,13 +933,13 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                             transition={{ duration: 2, delay: index * 0.1, ease: 'easeOut' }}
                           >
                             {phase.progress > 0 && (
-                              <motion.div
+                              <MotionDiv
                                 className="absolute right-0 top-0 h-full w-1 bg-white/50"
                                 animate={{ opacity: [0.5, 1, 0.5] }}
                                 transition={{ duration: 1.5, repeat: Infinity }}
                               />
                             )}
-                          </motion.div>
+                          </MotionDiv>
                         </div>
 
                         <div className="flex items-center justify-between text-xs text-muted-foreground">
@@ -938,9 +949,9 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                       </div>
 
                       {/* Enhanced Expandable Content with Tabs */}
-                      <AnimatePresence>
+                      <SafeAnimatePresence>
                         {expandedPhase === phase.id && (
-                          <motion.div
+                          <MotionDiv
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
@@ -968,9 +979,9 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                             </div>
 
                             {/* Tab Content */}
-                            <AnimatePresence mode="wait">
+                            <SafeAnimatePresence mode="wait">
                               {activeTab === 'features' && (
-                                <motion.div
+                                <MotionDiv
                                   key="features"
                                   initial={{ opacity: 0, x: 20 }}
                                   animate={{ opacity: 1, x: 0 }}
@@ -984,7 +995,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                   </h4>
                                   <div className="grid gap-3">
                                     {phase.features.map((feature, featureIndex) => (
-                                      <motion.div
+                                      <MotionDiv
                                         key={featureIndex}
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
@@ -1031,14 +1042,14 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                             </p>
                                           </div>
                                         </div>
-                                      </motion.div>
+                                      </MotionDiv>
                                     ))}
                                   </div>
-                                </motion.div>
+                                </MotionDiv>
                               )}
 
                               {activeTab === 'marketing' && phase.marketingActions.length > 0 && (
-                                <motion.div
+                                <MotionDiv
                                   key="marketing"
                                   initial={{ opacity: 0, x: 20 }}
                                   animate={{ opacity: 1, x: 0 }}
@@ -1052,7 +1063,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                   </h4>
                                   <div className="grid gap-3">
                                     {phase.marketingActions.map((action, actionIndex) => (
-                                      <motion.div
+                                      <MotionDiv
                                         key={actionIndex}
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
@@ -1082,14 +1093,14 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                             </p>
                                           </div>
                                         </div>
-                                      </motion.div>
+                                      </MotionDiv>
                                     ))}
                                   </div>
-                                </motion.div>
+                                </MotionDiv>
                               )}
 
                               {activeTab === 'metrics' && (
-                                <motion.div
+                                <MotionDiv
                                   key="metrics"
                                   initial={{ opacity: 0, x: 20 }}
                                   animate={{ opacity: 1, x: 0 }}
@@ -1104,7 +1115,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
 
                                   <div className="grid grid-cols-2 gap-3 mb-4">
                                     {phase.metrics.map((metric, metricIndex) => (
-                                      <motion.div
+                                      <MotionDiv
                                         key={metricIndex}
                                         initial={{ opacity: 0, scale: 0.9 }}
                                         animate={{ opacity: 1, scale: 1 }}
@@ -1123,7 +1134,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                         <div className="text-xs text-emerald-500 font-medium">
                                           Target: {metric.target}
                                         </div>
-                                      </motion.div>
+                                      </MotionDiv>
                                     ))}
                                   </div>
 
@@ -1159,48 +1170,48 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                       </ul>
                                     </div>
                                   </div>
-                                </motion.div>
+                                </MotionDiv>
                               )}
-                            </AnimatePresence>
-                          </motion.div>
+                            </SafeAnimatePresence>
+                          </MotionDiv>
                         )}
-                      </AnimatePresence>
+                      </SafeAnimatePresence>
 
                       {/* Enhanced Click Hint */}
                       {expandedPhase !== phase.id && (
-                        <motion.div
+                        <MotionDiv
                           className="text-center mt-4 relative z-10"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.5 }}
                         >
                           <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground/80">
-                            <motion.div
+                            <MotionDiv
                               animate={{ y: [0, -2, 0] }}
                               transition={{ duration: 1.5, repeat: Infinity }}
                             >
                               <ChevronDown className="w-4 h-4" />
-                            </motion.div>
+                            </MotionDiv>
                             <span>Click to explore detailed strategy</span>
-                            <motion.div
+                            <MotionDiv
                               animate={{ y: [0, -2, 0] }}
                               transition={{ duration: 1.5, repeat: Infinity, delay: 0.1 }}
                             >
                               <ChevronDown className="w-4 h-4" />
-                            </motion.div>
+                            </MotionDiv>
                           </div>
-                        </motion.div>
+                        </MotionDiv>
                       )}
-                    </motion.div>
+                    </MotionDiv>
                   </div>
-                </motion.div>
+                </MotionDiv>
               ))}
             </div>
           </div>
         </div>
 
         {/* Enhanced Call to Action - Launch Ready */}
-        <motion.div
+        <MotionDiv
           className="text-center mt-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1216,7 +1227,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
               <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-gold/20 rounded-full blur-3xl" />
 
               <div className="relative z-10">
-                <motion.div
+                <MotionDiv
                   className="flex items-center justify-center gap-3 mb-6"
                   animate={{ scale: [1, 1.05, 1] }}
                   transition={{ duration: 3, repeat: Infinity }}
@@ -1226,7 +1237,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                     AGGRESSIVE MARKETING PHASE ACTIVE
                   </span>
                   <div className="w-4 h-4 bg-emerald-500 rounded-full animate-pulse" />
-                </motion.div>
+                </MotionDiv>
 
                 <h3 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-primary via-gold to-sapphire bg-clip-text text-transparent">
                   Join the FlowsyAI Revolution
@@ -1246,34 +1257,34 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
 
                 {/* Live Stats Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                  <motion.div
+                  <MotionDiv
                     className="premium-card p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10"
                     whileHover={{ scale: 1.05 }}
                   >
                     <div className="text-2xl font-bold text-emerald-400 mb-1">$15K</div>
                     <div className="text-xs text-muted-foreground">Foundation Complete</div>
-                  </motion.div>
-                  <motion.div
+                  </MotionDiv>
+                  <MotionDiv
                     className="premium-card p-4 rounded-xl border border-red-500/30 bg-red-500/10"
                     whileHover={{ scale: 1.05 }}
                   >
                     <div className="text-2xl font-bold text-red-400 mb-1">$50K</div>
                     <div className="text-xs text-muted-foreground">Marketing Blitz</div>
-                  </motion.div>
-                  <motion.div
+                  </MotionDiv>
+                  <MotionDiv
                     className="premium-card p-4 rounded-xl border border-gold/30 bg-gold/10"
                     whileHover={{ scale: 1.05 }}
                   >
                     <div className="text-2xl font-bold text-gold mb-1">50K</div>
                     <div className="text-xs text-muted-foreground">Waitlist Target</div>
-                  </motion.div>
-                  <motion.div
+                  </MotionDiv>
+                  <MotionDiv
                     className="premium-card p-4 rounded-xl border border-green-500/30 bg-green-500/10"
                     whileHover={{ scale: 1.05 }}
                   >
                     <div className="text-2xl font-bold text-green-400 mb-1">$10M</div>
                     <div className="text-xs text-muted-foreground">Valuation Goal</div>
-                  </motion.div>
+                  </MotionDiv>
                 </div>
 
                 {/* Action Buttons */}
@@ -1341,7 +1352,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
     </section>
   );

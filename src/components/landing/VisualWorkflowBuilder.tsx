@@ -1,5 +1,16 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  SafeAnimatePresence,
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import {
   Bot,
   MessageSquare,
@@ -1730,19 +1741,19 @@ The transition to sustainable technology requires continued investment, policy s
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Header */}
-        <motion.div
+        <MotionDiv
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <motion.div
+          <MotionDiv
             className="w-20 h-20 mx-auto mb-8 rounded-full premium-glass flex items-center justify-center border border-primary/20 shadow-lg premium-shadow relative overflow-hidden group"
             whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
-            <motion.div
+            <MotionDiv
               className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary via-gold to-primary bg-[length:200%_200%] animate-gradient-slow"
               animate={{
                 scale: [1, 1.1, 1],
@@ -1756,8 +1767,8 @@ The transition to sustainable technology requires continued investment, policy s
               <div className="w-full h-full flex items-center justify-center">
                 <Bot className="w-6 h-6 text-background animate-pulse-scale" />
               </div>
-            </motion.div>
-          </motion.div>
+            </MotionDiv>
+          </MotionDiv>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground font-serif">
             Build <span className="premium-gradient-text">AI Workflows</span> Visually
@@ -1766,10 +1777,10 @@ The transition to sustainable technology requires continued investment, policy s
             Drag and drop AI agents to create powerful workflows. Connect them to build complex
             automation pipelines without writing a single line of code.
           </p>
-        </motion.div>
+        </MotionDiv>
 
         {/* Workflow Builder Interface */}
-        <motion.div
+        <MotionDiv
           className="max-w-7xl mx-auto"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1869,9 +1880,9 @@ The transition to sustainable technology requires continued investment, policy s
               </div>
 
               {/* AI Suggestions Bar */}
-              <AnimatePresence>
+              <SafeAnimatePresence>
                 {aiSuggestions.length > 0 && (
-                  <motion.div
+                  <MotionDiv
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
@@ -1883,7 +1894,7 @@ The transition to sustainable technology requires continued investment, policy s
                     </div>
                     <div className="space-y-2">
                       {aiSuggestions.slice(-3).map(suggestion => (
-                        <motion.div
+                        <MotionDiv
                           key={suggestion.id}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
@@ -1926,12 +1937,12 @@ The transition to sustainable technology requires continued investment, policy s
                           >
                             ×
                           </Button>
-                        </motion.div>
+                        </MotionDiv>
                       ))}
                     </div>
-                  </motion.div>
+                  </MotionDiv>
                 )}
-              </AnimatePresence>
+              </SafeAnimatePresence>
             </div>
 
             {/* Main Interface */}
@@ -1950,7 +1961,7 @@ The transition to sustainable technology requires continued investment, policy s
 
                 <div className="space-y-3">
                   {agentLibrary.map((agent, index) => (
-                    <motion.div
+                    <MotionDiv
                       key={agent.type}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -1983,7 +1994,7 @@ The transition to sustainable technology requires continued investment, policy s
                           {agent.description}
                         </p>
                       </div>
-                    </motion.div>
+                    </MotionDiv>
                   ))}
                 </div>
 
@@ -2067,9 +2078,9 @@ The transition to sustainable technology requires continued investment, policy s
                   </svg>
 
                   {/* Workflow Nodes */}
-                  <AnimatePresence>
+                  <SafeAnimatePresence>
                     {nodes.map(node => (
-                      <motion.div
+                      <MotionDiv
                         key={node.id}
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -2220,9 +2231,9 @@ The transition to sustainable technology requires continued investment, policy s
                             </div>
                           )}
                         </div>
-                      </motion.div>
+                      </MotionDiv>
                     ))}
-                  </AnimatePresence>
+                  </SafeAnimatePresence>
 
                   {/* Connection Preview */}
                   {connectionStart && (
@@ -2236,19 +2247,19 @@ The transition to sustainable technology requires continued investment, policy s
               </div>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* User Input Dialog */}
-        <AnimatePresence>
+        <SafeAnimatePresence>
           {showInputDialog && (
-            <motion.div
+            <MotionDiv
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
               onClick={() => setShowInputDialog(false)}
             >
-              <motion.div
+              <MotionDiv
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
@@ -2320,14 +2331,14 @@ The transition to sustainable technology requires continued investment, policy s
                     </Button>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </MotionDiv>
+            </MotionDiv>
           )}
-        </AnimatePresence>
+        </SafeAnimatePresence>
 
         {/* Results Section Below Canvas */}
         {finalResults && (
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-8 bg-card border border-border-alt rounded-xl p-6"
@@ -2352,7 +2363,7 @@ The transition to sustainable technology requires continued investment, policy s
                 </pre>
               </div>
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </div>
     </section>

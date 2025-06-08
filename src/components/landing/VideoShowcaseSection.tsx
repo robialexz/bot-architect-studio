@@ -1,5 +1,15 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import {
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -45,7 +55,7 @@ const VideoShowcaseSection: React.FC = () => {
       <div className="absolute inset-0 bg-background/10 z-[5]"></div>
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <motion.div
+        <MotionDiv
           className="text-center mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,10 +71,10 @@ const VideoShowcaseSection: React.FC = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Watch our latest demos and brand content
           </p>
-        </motion.div>
+        </MotionDiv>
 
         {/* Simple Video Grid */}
-        <motion.div
+        <MotionDiv
           className="mb-8"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -73,7 +83,7 @@ const VideoShowcaseSection: React.FC = () => {
         >
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {videos.map((video, index) => (
-              <motion.div
+              <MotionDiv
                 key={video.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -116,10 +126,10 @@ const VideoShowcaseSection: React.FC = () => {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </MotionDiv>
             ))}
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
     </section>
   );

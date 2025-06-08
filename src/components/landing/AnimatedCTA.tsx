@@ -1,5 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { motion, useAnimation, useInView } from 'framer-motion';
+import {
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+import { useInView } from 'framer-motion';
+
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
@@ -93,7 +104,7 @@ const AnimatedCTA: React.FC = () => {
 
       {/* Content Container */}
       <div ref={containerRef} className="container mx-auto px-6 relative z-10">
-        <motion.div
+        <MotionDiv
           className="max-w-4xl mx-auto text-center"
           variants={{
             hidden: { opacity: 0, y: 50 },
@@ -104,7 +115,7 @@ const AnimatedCTA: React.FC = () => {
           transition={{ duration: 0.8 }}
         >
           {/* Animated Icon */}
-          <motion.div
+          <MotionDiv
             className="w-20 h-20 mx-auto mb-8 rounded-full bg-gradient-to-tr from-primary via-gold to-primary flex items-center justify-center"
             animate={{
               boxShadow: [
@@ -116,7 +127,7 @@ const AnimatedCTA: React.FC = () => {
             transition={{ duration: 3, repeat: Infinity }}
           >
             <Sparkles className="w-10 h-10 text-background" />
-          </motion.div>
+          </MotionDiv>
 
           {/* Heading with character animation */}
           <h2
@@ -147,7 +158,7 @@ const AnimatedCTA: React.FC = () => {
           </Button>
 
           {/* Trust indicators */}
-          <motion.div
+          <MotionDiv
             className="mt-12 flex flex-wrap justify-center items-center gap-8 opacity-70"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.7 }}
@@ -163,8 +174,8 @@ const AnimatedCTA: React.FC = () => {
                 <div key={i} className="w-24 h-8 bg-muted/30 rounded-md"></div>
               ))}
             </div>
-          </motion.div>
-        </motion.div>
+          </MotionDiv>
+        </MotionDiv>
       </div>
     </section>
   );

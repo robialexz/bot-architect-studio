@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  SafeAnimatePresence,
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import {
   TrendingUp,
   TrendingDown,
@@ -252,7 +263,7 @@ const EnhancedTokenShowcase: React.FC = () => {
 
       <div className="container mx-auto max-w-7xl relative z-10">
         {/* Header */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -285,10 +296,10 @@ const EnhancedTokenShowcase: React.FC = () => {
               Live data integration ready for launch • Currently showing simulated market activity
             </span>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Enhanced Interactive Market Cap Hero Section */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -300,7 +311,7 @@ const EnhancedTokenShowcase: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-blue-500/5 to-purple-500/5 group-hover:from-emerald-500/10 group-hover:via-blue-500/10 group-hover:to-purple-500/10 transition-all duration-500" />
 
             {/* Floating Particles */}
-            <motion.div
+            <MotionDiv
               className="absolute top-1/4 left-1/4 w-24 h-24 bg-emerald-500/20 rounded-full blur-2xl"
               animate={{
                 x: [0, 30, -20, 0],
@@ -309,7 +320,7 @@ const EnhancedTokenShowcase: React.FC = () => {
               }}
               transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
             />
-            <motion.div
+            <MotionDiv
               className="absolute top-3/4 right-1/4 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl"
               animate={{
                 x: [0, -25, 35, 0],
@@ -318,7 +329,7 @@ const EnhancedTokenShowcase: React.FC = () => {
               }}
               transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
             />
-            <motion.div
+            <MotionDiv
               className="absolute bottom-1/4 left-3/4 w-20 h-20 bg-purple-500/20 rounded-full blur-xl"
               animate={{
                 x: [0, 20, -30, 0],
@@ -330,60 +341,60 @@ const EnhancedTokenShowcase: React.FC = () => {
 
             <div className="relative z-10 text-center">
               {/* Live Data Indicator */}
-              <motion.div
+              <MotionDiv
                 className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-emerald-500/20 rounded-full border border-emerald-500/30"
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <motion.div
+                <MotionDiv
                   className="w-2 h-2 bg-emerald-500 rounded-full"
                   animate={{ opacity: [1, 0.3, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 />
                 <span className="text-sm font-semibold text-emerald-500">LIVE DATA</span>
                 <span className="text-xs text-muted-foreground">• Updates every 3s</span>
-              </motion.div>
+              </MotionDiv>
 
               {/* Dynamic Market Cap Display */}
-              <motion.div
+              <MotionDiv
                 key={marketData.marketCap}
                 initial={{ scale: 1.1, opacity: 0.8, y: 10 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className="mb-6"
               >
-                <motion.div
+                <MotionDiv
                   className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 bg-clip-text text-transparent"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: 'spring', stiffness: 400 }}
                 >
                   {formatCurrency(marketData.marketCap)}
-                </motion.div>
-                <motion.div
+                </MotionDiv>
+                <MotionDiv
                   className="text-xl md:text-2xl text-muted-foreground font-semibold mt-2"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
                 >
                   Market Capitalization
-                </motion.div>
+                </MotionDiv>
 
                 {/* Growth Indicator */}
-                <motion.div
+                <MotionDiv
                   className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.5, type: 'spring' }}
                 >
-                  <motion.div
+                  <MotionDiv
                     animate={{ rotate: [0, 360] }}
                     transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
                   >
                     <TrendingUp className="w-4 h-4 text-emerald-500" />
-                  </motion.div>
+                  </MotionDiv>
                   <span className="text-sm font-semibold text-emerald-500">Growing Fast</span>
-                </motion.div>
-              </motion.div>
+                </MotionDiv>
+              </MotionDiv>
 
               {/* Interactive Metrics Grid */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
@@ -417,7 +428,7 @@ const EnhancedTokenShowcase: React.FC = () => {
                     bgColor: marketData.change24h >= 0 ? 'bg-emerald-500/10' : 'bg-red-500/10',
                   },
                 ].map((metric, index) => (
-                  <motion.div
+                  <MotionDiv
                     key={metric.label}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -426,48 +437,48 @@ const EnhancedTokenShowcase: React.FC = () => {
                     className={`p-4 ${metric.bgColor} rounded-xl border border-border/30 hover:border-border/50 transition-all duration-300 cursor-pointer group/metric`}
                   >
                     <div className="flex items-center justify-center mb-2">
-                      <motion.div whileHover={{ rotate: 360 }} transition={{ duration: 0.5 }}>
+                      <MotionDiv whileHover={{ rotate: 360 }} transition={{ duration: 0.5 }}>
                         <metric.icon className={`w-5 h-5 ${metric.color}`} />
-                      </motion.div>
+                      </MotionDiv>
                     </div>
-                    <motion.div
+                    <MotionDiv
                       key={metric.value}
                       initial={{ scale: 1.1 }}
                       animate={{ scale: 1 }}
                       className="text-lg font-bold text-foreground group-hover/metric:scale-110 transition-transform duration-300"
                     >
                       {metric.value}
-                    </motion.div>
+                    </MotionDiv>
                     <div className="text-xs text-muted-foreground mt-1">{metric.label}</div>
-                  </motion.div>
+                  </MotionDiv>
                 ))}
               </div>
 
               {/* Interactive Call to Action */}
-              <motion.div
+              <MotionDiv
                 className="mt-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1 }}
               >
-                <motion.button
+                <MotionButton
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-blue-500 text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300"
                 >
                   <Eye className="w-4 h-4" />
                   <span>View Live Trading</span>
-                  <motion.div
+                  <MotionDiv
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
                   >
                     <ArrowRight className="w-4 h-4" />
-                  </motion.div>
-                </motion.button>
-              </motion.div>
+                  </MotionDiv>
+                </MotionButton>
+              </MotionDiv>
             </div>
           </Card>
-        </motion.div>
+        </MotionDiv>
 
         {/* Tab Navigation */}
         <div className="flex items-center justify-center gap-2 bg-card/50 backdrop-blur-lg rounded-xl p-1 max-w-2xl mx-auto mb-12 border border-border/30">
@@ -496,9 +507,9 @@ const EnhancedTokenShowcase: React.FC = () => {
         </div>
 
         {/* Tab Content */}
-        <AnimatePresence mode="wait">
+        <SafeAnimatePresence mode="wait">
           {selectedTab === 'overview' && (
-            <motion.div
+            <MotionDiv
               key="overview"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -619,7 +630,7 @@ const EnhancedTokenShowcase: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </MotionDiv>
           )}
 
           <TokenTabContent
@@ -631,7 +642,7 @@ const EnhancedTokenShowcase: React.FC = () => {
             getHolderTypeIcon={getHolderTypeIcon}
             getHolderTypeBadge={getHolderTypeBadge}
           />
-        </AnimatePresence>
+        </SafeAnimatePresence>
       </div>
     </section>
   );

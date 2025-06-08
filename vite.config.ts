@@ -19,8 +19,13 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      // Replace framer-motion with our polyfill in production
+      ...(process.env.NODE_ENV === 'production' && {
+        'framer-motion': path.resolve(__dirname, './src/lib/framer-motion-polyfill.ts'),
+      }),
     },
   },
+
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

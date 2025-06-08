@@ -112,6 +112,106 @@ export const MotionButton = React.forwardRef<HTMLButtonElement, ExtendedMotionPr
 
 MotionButton.displayName = 'MotionButton';
 
+// Wrapper pentru motion.li cu error boundary
+export const MotionLi = React.forwardRef<HTMLLIElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.li ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <li ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionLi.displayName = 'MotionLi';
+
+// Wrapper pentru motion.tr cu error boundary
+export const MotionTr = React.forwardRef<HTMLTableRowElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.tr ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <tr ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionTr.displayName = 'MotionTr';
+
+// Wrapper pentru motion.path cu error boundary
+export const MotionPath = React.forwardRef<SVGPathElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.path ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <path ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionPath.displayName = 'MotionPath';
+
+// Wrapper pentru motion.linearGradient cu error boundary
+export const MotionLinearGradient = React.forwardRef<SVGLinearGradientElement, ExtendedMotionProps>(
+  (props, ref) => {
+    try {
+      return <motion.linearGradient ref={ref} {...props} />;
+    } catch (error) {
+      console.warn('Framer Motion error:', error);
+      const fallbackProps: FallbackProps = {
+        className: props.className,
+        children: props.children,
+      };
+      return <linearGradient ref={ref} {...fallbackProps} />;
+    }
+  }
+);
+
+MotionLinearGradient.displayName = 'MotionLinearGradient';
+
+// Wrapper pentru motion.circle cu error boundary
+export const MotionCircle = React.forwardRef<SVGCircleElement, ExtendedMotionProps>(
+  (props, ref) => {
+    try {
+      return <motion.circle ref={ref} {...props} />;
+    } catch (error) {
+      console.warn('Framer Motion error:', error);
+      const fallbackProps: FallbackProps = {
+        className: props.className,
+        children: props.children,
+      };
+      return <circle ref={ref} {...fallbackProps} />;
+    }
+  }
+);
+
+MotionCircle.displayName = 'MotionCircle';
+
+// Wrapper pentru motion.svg cu error boundary
+export const MotionSvg = React.forwardRef<SVGSVGElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.svg ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <svg ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionSvg.displayName = 'MotionSvg';
+
 // Wrapper pentru AnimatePresence cu error boundary
 export const SafeAnimatePresence: React.FC<{
   children: React.ReactNode;

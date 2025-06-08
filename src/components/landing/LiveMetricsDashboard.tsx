@@ -1,5 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import {
+  SafeAnimatePresence,
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import {
   TrendingUp,
   Users,
@@ -555,7 +566,7 @@ const LiveMetricsDashboard: React.FC = () => {
 
       <div className="container mx-auto max-w-8xl relative z-10">
         {/* Enhanced Header */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -619,12 +630,12 @@ const LiveMetricsDashboard: React.FC = () => {
               </button>
             ))}
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Enhanced Metrics Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
           {getFilteredMetrics().map((metric, index) => (
-            <motion.div
+            <MotionDiv
               key={metric.id}
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
@@ -678,7 +689,7 @@ const LiveMetricsDashboard: React.FC = () => {
 
               {/* Value Display */}
               <div className="space-y-3 mb-4">
-                <motion.div
+                <MotionDiv
                   key={metric.value}
                   initial={{ scale: 1.1, opacity: 0.8 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -688,7 +699,7 @@ const LiveMetricsDashboard: React.FC = () => {
                     ? formatCurrency(metric.value)
                     : formatNumber(metric.value)}
                   {metric.id !== 'revenue' ? metric.unit : ''}
-                </motion.div>
+                </MotionDiv>
                 <div className="text-base font-semibold text-foreground">{metric.label}</div>
                 <div className="text-sm text-muted-foreground leading-relaxed">
                   {metric.description}
@@ -708,7 +719,7 @@ const LiveMetricsDashboard: React.FC = () => {
 
               {/* Mini Chart (if expanded) */}
               {selectedMetric === metric.id && metric.chartData && (
-                <motion.div
+                <MotionDiv
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
@@ -717,7 +728,7 @@ const LiveMetricsDashboard: React.FC = () => {
                   <div className="text-xs text-muted-foreground mb-2">Last 5 updates</div>
                   <div className="flex items-end gap-1 h-12">
                     {metric.chartData.map((value, i) => (
-                      <motion.div
+                      <MotionDiv
                         key={i}
                         initial={{ height: 0 }}
                         animate={{ height: `${(value / Math.max(...metric.chartData!)) * 100}%` }}
@@ -726,38 +737,38 @@ const LiveMetricsDashboard: React.FC = () => {
                       />
                     ))}
                   </div>
-                </motion.div>
+                </MotionDiv>
               )}
 
               {/* Tooltip on Hover */}
               {hoveredMetric === metric.id && (
-                <motion.div
+                <MotionDiv
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-popover text-popover-foreground text-xs rounded-lg shadow-lg border border-border/30 max-w-xs z-10"
                 >
                   {metric.tooltip}
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-popover" />
-                </motion.div>
+                </MotionDiv>
               )}
 
               {/* Pulse Animation for Active Metrics */}
               {metric.trend === 'up' && isPlaying && (
-                <motion.div
+                <MotionDiv
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1.5, opacity: 0 }}
                   transition={{ duration: 2, repeat: Infinity }}
                   className="absolute inset-0 rounded-2xl bg-emerald-500/20 pointer-events-none"
                 />
               )}
-            </motion.div>
+            </MotionDiv>
           ))}
         </div>
 
         {/* Enhanced Activity Feed and System Status */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Live Activity Feed */}
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -775,9 +786,9 @@ const LiveMetricsDashboard: React.FC = () => {
             </div>
 
             <div className="space-y-3 max-h-96 overflow-y-auto">
-              <AnimatePresence mode="popLayout">
+              <SafeAnimatePresence mode="popLayout">
                 {recentActivity.map((activity, index) => (
-                  <motion.div
+                  <MotionDiv
                     key={activity.id}
                     initial={{ opacity: 0, x: -20, scale: 0.9 }}
                     animate={{ opacity: 1, x: 0, scale: 1 }}
@@ -816,9 +827,9 @@ const LiveMetricsDashboard: React.FC = () => {
                         )}
                       </div>
                     </div>
-                  </motion.div>
+                  </MotionDiv>
                 ))}
-              </AnimatePresence>
+              </SafeAnimatePresence>
             </div>
 
             <div className="mt-6 pt-4 border-t border-border/30">
@@ -827,10 +838,10 @@ const LiveMetricsDashboard: React.FC = () => {
                 View Full Activity Log
               </Button>
             </div>
-          </motion.div>
+          </MotionDiv>
 
           {/* System Status Dashboard */}
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -846,7 +857,7 @@ const LiveMetricsDashboard: React.FC = () => {
 
             <div className="space-y-4 mb-6">
               {systemStatus.map((system, index) => (
-                <motion.div
+                <MotionDiv
                   key={system.id}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -871,7 +882,7 @@ const LiveMetricsDashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-xs text-muted-foreground">{system.lastCheck}</div>
-                </motion.div>
+                </MotionDiv>
               ))}
             </div>
 
@@ -907,11 +918,11 @@ const LiveMetricsDashboard: React.FC = () => {
                 </Badge>
               </div>
             </div>
-          </motion.div>
+          </MotionDiv>
         </div>
 
         {/* Enhanced Bottom CTA */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -925,13 +936,13 @@ const LiveMetricsDashboard: React.FC = () => {
             <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-emerald-500/20 rounded-full blur-2xl" />
 
             <div className="relative z-10">
-              <motion.div
+              <MotionDiv
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                 className="w-16 h-16 mx-auto mb-6"
               >
                 <Sparkles className="w-16 h-16 text-gold" />
-              </motion.div>
+              </MotionDiv>
 
               <h3 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary via-emerald-500 to-blue-500 bg-clip-text text-transparent">
                 Ready to Transform Your Business?
@@ -1014,7 +1025,7 @@ const LiveMetricsDashboard: React.FC = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
     </section>
   );

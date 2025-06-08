@@ -1,6 +1,16 @@
 import { useState, ReactElement } from 'react'; // Added ReactElement
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import {
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -256,7 +266,7 @@ const MyAgents = () => {
         exit="out"
         transition={{ duration: 0.5 }}
       >
-        <motion.div variants={itemVariants}>
+        <MotionDiv variants={itemVariants}>
           {' '}
           {/* Wrap header content for initial animation */}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
@@ -283,9 +293,9 @@ const MyAgents = () => {
               </div>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
 
-        <motion.div variants={itemVariants} className="mb-10">
+        <MotionDiv variants={itemVariants} className="mb-10">
           {' '}
           {/* Wrap Tabs for initial animation */}
           <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
@@ -304,7 +314,7 @@ const MyAgents = () => {
             <TabsContent value={activeTab} className="mt-8">
               {' '}
               {/* Increased margin-top */}
-              <motion.div
+              <MotionDiv
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 variants={containerVariants} // Use containerVariants for staggering children
                 initial="hidden"
@@ -312,7 +322,7 @@ const MyAgents = () => {
               >
                 {filteredAgents.length > 0 ? (
                   filteredAgents.map(agent => (
-                    <motion.div key={agent.id} variants={itemVariants} className="hover-lift">
+                    <MotionDiv key={agent.id} variants={itemVariants} className="hover-lift">
                       <Card
                         className={`bg-card-alt border-border-alt shadow-lg h-full flex flex-col
                                        ${!agent.isActive ? 'opacity-60 hover:opacity-100 transition-opacity' : ''}
@@ -398,24 +408,24 @@ const MyAgents = () => {
                           </Button>
                         </CardFooter>
                       </Card>
-                    </motion.div>
+                    </MotionDiv>
                   ))
                 ) : (
-                  <motion.div
+                  <MotionDiv
                     variants={itemVariants}
                     className="col-span-full text-center py-16 text-muted-foreground"
                   >
                     <AlertCircle className="w-16 h-16 mx-auto mb-6 opacity-30" />
                     <p className="text-body-lg">No AI agents found matching your criteria.</p>
                     <p className="text-body-std mt-2">Try adjusting your search or filter.</p>
-                  </motion.div>
+                  </MotionDiv>
                 )}
-              </motion.div>
+              </MotionDiv>
             </TabsContent>
           </Tabs>
-        </motion.div>
+        </MotionDiv>
 
-        <motion.div variants={itemVariants}>
+        <MotionDiv variants={itemVariants}>
           {' '}
           {/* Wrap FlowTokens card for initial animation */}
           <Card className="bg-card-alt border-border-alt shadow-xl overflow-hidden">
@@ -466,7 +476,7 @@ const MyAgents = () => {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </MotionDiv>
       </motion.main>
       <AgentModal
         open={isAgentModalOpen}

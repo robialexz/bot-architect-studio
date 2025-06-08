@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  SafeAnimatePresence,
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import {
   Play,
   ArrowRight,
@@ -218,7 +229,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
+    <SafeAnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center">
         {/* Overlay with highlight */}
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm">
@@ -237,7 +248,7 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
         </div>
 
         {/* Tutorial Card */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -324,9 +335,9 @@ const InteractiveTutorial: React.FC<InteractiveTutorialProps> = ({
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </MotionDiv>
       </div>
-    </AnimatePresence>
+    </SafeAnimatePresence>
   );
 };
 

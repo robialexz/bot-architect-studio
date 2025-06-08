@@ -1,5 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import {
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+import { useScroll, useTransform } from 'framer-motion';
+
 import { Button } from '@/components/ui/button';
 import {
   ArrowRight,
@@ -72,7 +83,7 @@ const HeroSection: React.FC = () => {
       <div className="absolute inset-0 bg-background/5 z-[5]"></div>
 
       {/* Hero Content */}
-      <motion.div
+      <MotionDiv
         style={{ opacity }}
         className="hero-content max-w-5xl px-6 py-12 md:py-16 z-[30] relative"
         initial={{ opacity: 0 }}
@@ -80,7 +91,7 @@ const HeroSection: React.FC = () => {
         transition={{ duration: 1, ease: 'easeOut' }}
       >
         {/* Animated Logo Video Display - Wide and Seamless */}
-        <motion.div
+        <MotionDiv
           className="mb-16 relative z-40"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -106,30 +117,30 @@ const HeroSection: React.FC = () => {
               <div className="absolute inset-0 rounded-3xl border border-primary/10 bg-gradient-to-r from-primary/5 via-transparent to-primary/5"></div>
             </div>
           </div>
-        </motion.div>
+        </MotionDiv>
 
         {/* Revolutionary Badge */}
-        <motion.div
+        <MotionDiv
           className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 via-gold/20 to-sapphire/20 rounded-full px-8 py-3 mb-8 border border-primary/30 relative z-40"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <motion.div
+          <MotionDiv
             animate={{ rotate: [0, 360] }}
             transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
           >
             <Sparkles className="w-5 h-5 text-gold" />
-          </motion.div>
+          </MotionDiv>
           <span className="text-base font-bold text-foreground">REVOLUTIONARY AI PLATFORM</span>
-          <motion.div
+          <MotionDiv
             className="w-2 h-2 bg-primary rounded-full"
             animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           />
-        </motion.div>
+        </MotionDiv>
 
-        <motion.h1
+        <MotionH1
           className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold mb-8 tracking-tight text-center relative z-40"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -139,9 +150,9 @@ const HeroSection: React.FC = () => {
           <span className="block bg-gradient-to-r from-primary via-gold to-sapphire bg-clip-text text-transparent">
             AI Automation Platform
           </span>
-        </motion.h1>
+        </MotionH1>
 
-        <motion.div
+        <MotionDiv
           className="mb-8 relative z-40"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -157,10 +168,10 @@ const HeroSection: React.FC = () => {
             intuitive gesture controls and transform how you
             <span className="text-sapphire font-semibold"> build automation workflows</span>.
           </p>
-        </motion.div>
+        </MotionDiv>
 
         {/* Enhanced Feature Highlights */}
-        <motion.div
+        <MotionDiv
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto relative z-40"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -200,7 +211,7 @@ const HeroSection: React.FC = () => {
               description: 'Spatial UI',
             },
           ].map((feature, index) => (
-            <motion.div
+            <MotionDiv
               key={index}
               className={`p-4 rounded-2xl border ${feature.bgColor} ${feature.borderColor} text-center group hover:scale-105 transition-all duration-300 cursor-pointer`}
               initial={{ opacity: 0, scale: 0.8 }}
@@ -208,20 +219,20 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
               whileHover={{ y: -5 }}
             >
-              <motion.div
+              <MotionDiv
                 className={`w-12 h-12 mx-auto mb-3 rounded-xl ${feature.bgColor} flex items-center justify-center`}
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
               >
                 <feature.icon className={`w-6 h-6 ${feature.color}`} />
-              </motion.div>
+              </MotionDiv>
               <div className={`font-bold text-sm ${feature.color} mb-1`}>{feature.text}</div>
               <div className="text-xs text-muted-foreground">{feature.description}</div>
-            </motion.div>
+            </MotionDiv>
           ))}
-        </motion.div>
+        </MotionDiv>
 
-        <motion.div
+        <MotionDiv
           className="flex flex-col sm:flex-row gap-6 justify-center items-center relative z-40"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -254,10 +265,10 @@ const HeroSection: React.FC = () => {
               </span>
             </Link>
           </Button>
-        </motion.div>
+        </MotionDiv>
 
         {/* Scroll Indicator */}
-        <motion.div
+        <MotionDiv
           className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
           initial={{ opacity: 0 }}
           animate={{ opacity: hasScrolled ? 0 : 0.8 }}
@@ -266,15 +277,15 @@ const HeroSection: React.FC = () => {
             document.getElementById('value-proposition')?.scrollIntoView({ behavior: 'smooth' })
           }
         >
-          <motion.div
+          <MotionDiv
             className="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center"
             animate={{ y: [0, 5, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           >
             <ChevronDown className="h-5 w-5 text-gold" />
-          </motion.div>
-        </motion.div>
-      </motion.div>
+          </MotionDiv>
+        </MotionDiv>
+      </MotionDiv>
     </section>
   );
 };

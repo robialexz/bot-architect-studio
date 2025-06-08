@@ -51,7 +51,16 @@ import {
   SlidersHorizontal, // Added
   GitFork, // Added
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import {
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
 
 const pageVariants = {
   initial: { opacity: 0, y: 20 },
@@ -158,7 +167,7 @@ const SectionWrapper: React.FC<{
   icon?: React.ElementType;
   children: React.ReactNode;
 }> = ({ title, icon: Icon, children }) => (
-  <motion.div
+  <MotionDiv
     key={title} // Ensure re-render on content change
     className="prose prose-slate dark:prose-invert max-w-none lg:prose-lg xl:prose-xl"
     initial={{ opacity: 0, y: 10 }}
@@ -173,7 +182,7 @@ const SectionWrapper: React.FC<{
       </h2>
     </header>
     {children}
-  </motion.div>
+  </MotionDiv>
 );
 
 const SubSection: React.FC<{
@@ -205,7 +214,7 @@ const OverviewContent = () => (
     {/* Hero Section (already part of the main layout, shown when activeSection is 'overview') */}
     {/* Key Sections Overview (already part of the main layout, shown when activeSection is 'overview') */}
     {/* Optional Interactive Element / Featured Content */}
-    <motion.section
+    <MotionSection
       className="my-12 md:my-16 p-6 bg-card border rounded-lg"
       variants={itemVariants}
       initial="hidden"
@@ -249,10 +258,10 @@ const OverviewContent = () => (
           </CardContent>
         </Card>
       </div>
-    </motion.section>
+    </MotionSection>
 
     {/* Optional Community & Support Links */}
-    <motion.section
+    <MotionSection
       className="my-12 md:my-16 p-6 bg-card border rounded-lg"
       variants={itemVariants}
       initial="hidden"
@@ -276,7 +285,7 @@ const OverviewContent = () => (
           GitHub Repository <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
-    </motion.section>
+    </MotionSection>
   </>
 );
 
@@ -1100,7 +1109,7 @@ const Documentation = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <motion.div
+      <MotionDiv
         className="container mx-auto px-4 py-8 md:py-12 flex-1 max-w-screen-xl"
         initial="initial"
         animate="in"
@@ -1158,7 +1167,7 @@ const Documentation = () => {
             {activeSection === 'overview' && (
               <>
                 {/* Hero Section */}
-                <motion.section
+                <MotionSection
                   className="mb-12 md:mb-16 text-center"
                   variants={itemVariants}
                   initial="hidden"
@@ -1201,10 +1210,10 @@ const Documentation = () => {
                       <Code className="ml-2 h-4 w-4" />
                     </Button>
                   </div>
-                </motion.section>
+                </MotionSection>
 
                 {/* Key Sections Overview */}
-                <motion.section
+                <MotionSection
                   variants={itemVariants}
                   initial="hidden"
                   animate="visible"
@@ -1212,7 +1221,7 @@ const Documentation = () => {
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
                     {keySectionItems.map(cardItem => (
-                      <motion.div
+                      <MotionDiv
                         key={cardItem.id}
                         variants={itemVariants}
                         onClick={() => handleContentNavigation(cardItem.id)}
@@ -1244,10 +1253,10 @@ const Documentation = () => {
                             </span>
                           </CardContent>
                         </Card>
-                      </motion.div>
+                      </MotionDiv>
                     ))}
                   </div>
-                </motion.section>
+                </MotionSection>
               </>
             )}
 
@@ -1255,7 +1264,7 @@ const Documentation = () => {
             {renderActiveSectionContent()}
           </main>
         </div>
-      </motion.div>
+      </MotionDiv>
     </div>
   );
 };

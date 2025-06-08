@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import {
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import {
@@ -188,7 +198,7 @@ const Wallet = () => {
         animate="in"
         exit="out"
       >
-        <motion.div
+        <MotionDiv
           variants={itemVariants} // Use itemVariants for initial animation of the header section
           initial="hidden"
           animate="visible"
@@ -228,13 +238,13 @@ const Wallet = () => {
             </TabsList>
 
             <TabsContent value="overview" className="space-y-8 mt-8">
-              <motion.div
+              <MotionDiv
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
               >
-                <motion.div variants={itemVariants}>
+                <MotionDiv variants={itemVariants}>
                   <Card className="h-full bg-card-alt border border-border-alt shadow-xl hover-lift hover:border-primary/70 transition-all duration-300">
                     <CardHeader className="pb-3 pt-5 px-5">
                       <CardTitle className="text-h3 flex items-center gap-2">
@@ -243,7 +253,7 @@ const Wallet = () => {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="px-5 pb-5">
-                      <motion.div
+                      <MotionDiv
                         key={tokenBalance} // Animate on balance change
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -254,12 +264,12 @@ const Wallet = () => {
                         <p className="text-body-std text-muted-foreground mt-1">
                           {DEFAULT_TOKEN.symbol}
                         </p>
-                      </motion.div>
+                      </MotionDiv>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </MotionDiv>
 
-                <motion.div variants={itemVariants}>
+                <MotionDiv variants={itemVariants}>
                   <Card className="h-full bg-card-alt border border-border-alt shadow-xl hover-lift hover:border-primary/70 transition-all duration-300">
                     <CardHeader className="pb-3 pt-5 px-5">
                       <CardTitle className="text-h3 flex items-center gap-2">
@@ -285,9 +295,9 @@ const Wallet = () => {
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </MotionDiv>
 
-                <motion.div variants={itemVariants}>
+                <MotionDiv variants={itemVariants}>
                   <Card className="h-full bg-card-alt border border-border-alt shadow-xl hover-lift hover:border-primary/70 transition-all duration-300">
                     <CardHeader className="pb-3 pt-5 px-5">
                       <CardTitle className="text-h3 flex items-center gap-2">
@@ -328,10 +338,10 @@ const Wallet = () => {
                       </Button>
                     </CardContent>
                   </Card>
-                </motion.div>
-              </motion.div>
+                </MotionDiv>
+              </MotionDiv>
 
-              <motion.div
+              <MotionDiv
                 variants={itemVariants} // Use itemVariants for initial animation
                 initial="hidden"
                 animate="visible" // This will apply after containerVariants finishes its delayChildren
@@ -349,7 +359,7 @@ const Wallet = () => {
                   <CardContent className="px-6 pb-4">
                     <div className="space-y-4 max-h-[300px] overflow-y-auto pr-3 custom-scrollbar">
                       {mockTransactions.slice(0, 4).map((transaction, idx) => (
-                        <motion.div
+                        <MotionDiv
                           key={transaction.id}
                           className="flex items-center justify-between border-b border-border-alt pb-3 last:border-b-0 last:pb-0"
                           initial={{ opacity: 0, x: -10 }}
@@ -399,7 +409,7 @@ const Wallet = () => {
                               {transaction.status}
                             </p>
                           </div>
-                        </motion.div>
+                        </MotionDiv>
                       ))}
                     </div>
                   </CardContent>
@@ -416,11 +426,11 @@ const Wallet = () => {
                     </CardFooter>
                   )}
                 </Card>
-              </motion.div>
+              </MotionDiv>
             </TabsContent>
 
             <TabsContent value="transactions" className="space-y-6 mt-8">
-              <motion.div variants={itemVariants} initial="hidden" animate="visible">
+              <MotionDiv variants={itemVariants} initial="hidden" animate="visible">
                 <Card className="bg-card-alt border border-border-alt shadow-xl">
                   <CardHeader className="px-6 py-5">
                     <CardTitle className="text-h2">Transaction History</CardTitle>
@@ -443,7 +453,7 @@ const Wallet = () => {
                       </TableHeader>
                       <TableBody>
                         {mockTransactions.map((transaction, idx) => (
-                          <motion.tr
+                          <MotionTr
                             key={transaction.id}
                             className="border-border-alt hover:bg-card transition-colors"
                             initial={{ opacity: 0 }}
@@ -489,17 +499,17 @@ const Wallet = () => {
                                 <span className="text-foreground/90">{transaction.status}</span>
                               </div>
                             </TableCell>
-                          </motion.tr>
+                          </MotionTr>
                         ))}
                       </TableBody>
                     </Table>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </MotionDiv>
             </TabsContent>
 
             <TabsContent value="purchase" className="space-y-6 mt-8">
-              <motion.div variants={itemVariants} initial="hidden" animate="visible">
+              <MotionDiv variants={itemVariants} initial="hidden" animate="visible">
                 <Card className="bg-card-alt border border-border-alt shadow-xl">
                   <CardHeader className="px-6 py-5">
                     <CardTitle className="text-h2 flex items-center gap-2">
@@ -627,10 +637,10 @@ const Wallet = () => {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </MotionDiv>
             </TabsContent>
           </Tabs>
-        </motion.div>
+        </MotionDiv>
       </motion.main>
       <Footer />
       <Dialog open={isPurchaseModalOpen} onOpenChange={setIsPurchaseModalOpen}>
