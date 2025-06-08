@@ -157,6 +157,13 @@ După deployment, monitorizează:
 - **Cauză:** Lipsă headers pentru JavaScript/CSS
 - **Soluție:** Verifică că headers pentru `/assets/(.*\.js)` sunt prezente
 
+### "Failed to resolve /src/main.tsx"
+
+- **Cauză:** Configurația custom `rollupOptions.input` interferează cu build-ul
+  Vite
+- **Soluție:** Elimină `input` din `rollupOptions` și lasă Vite să gestioneze
+  automat
+
 ## Configurație Minimă de Backup
 
 Dacă configurația principală eșuează, folosește `vercel-minimal.json`:
