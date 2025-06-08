@@ -41,10 +41,6 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html'),
-      },
-      external: [],
       output: {
         // Manual chunking strategy to optimize bundle size
         manualChunks: id => {
