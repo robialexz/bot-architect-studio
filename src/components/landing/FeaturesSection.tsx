@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { MotionDiv, MotionSection, MotionH2, MotionP } from '@/lib/motion-wrapper';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -146,27 +147,27 @@ const FeaturesSection: React.FC = () => {
       <div className="absolute inset-0 bg-background/10 z-[5]"></div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
+        <MotionDiv
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
           className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20"
         >
           {features.map((feature, index) => (
-            <motion.div
+            <MotionDiv
               key={index}
               variants={itemVariants}
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
               className={`premium-card group p-8 ${feature.bgColor} border ${feature.borderColor} relative overflow-hidden`}
             >
-              <motion.div
+              <MotionDiv
                 className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out`}
                 initial={{ opacity: 0 }}
                 whileHover={{ opacity: 0.1 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br opacity-20"></div>
                 <div className="h-full w-full bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.2),rgba(255,255,255,0))]"></div>
-              </motion.div>
+              </MotionDiv>
 
               <div
                 className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-8 text-white bg-gradient-to-r ${feature.color} group-hover:scale-110 transition-transform duration-500 premium-shadow`}
@@ -196,12 +197,12 @@ const FeaturesSection: React.FC = () => {
                   </Link>
                 </Button>
               </div>
-            </motion.div>
+            </MotionDiv>
           ))}
-        </motion.div>
+        </MotionDiv>
 
         {/* CTA Section */}
-        <motion.div
+        <MotionDiv
           initial={{ opacity: 0, scale: 0.95 }}
           animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.8, delay: 0.8 }}
@@ -225,7 +226,7 @@ const FeaturesSection: React.FC = () => {
               </span>
             </Button>
           </div>
-        </motion.div>
+        </MotionDiv>
       </div>
     </section>
   );

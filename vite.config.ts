@@ -9,6 +9,13 @@ export default defineConfig({
     port: 8080,
   },
   plugins: [react()],
+  define: {
+    global: 'globalThis',
+  },
+  optimizeDeps: {
+    include: ['framer-motion'],
+    exclude: ['@react-three/fiber', '@react-three/drei'],
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -129,9 +136,9 @@ export default defineConfig({
           if (id.includes('Community') || id.includes('Social') || id.includes('Collaboration')) {
             return 'community';
           }
-        }
-      }
+        },
+      },
     },
-    chunkSizeWarningLimit: 500
-  }
+    chunkSizeWarningLimit: 500,
+  },
 });
