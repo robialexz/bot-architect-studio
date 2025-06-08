@@ -179,6 +179,40 @@ Dacă configurația principală eșuează, folosește `vercel-minimal.json`:
 }
 ```
 
+## Configurații Alternative pentru MIME Type Issues
+
+### 1. Configurația principală (`vercel.json`)
+
+- Rewrites cu excluderi pentru assets:
+  `/((?!assets|favicon.ico|manifest.webmanifest|robots.txt).*)`
+- Headers explicite pentru JavaScript/CSS
+- Configurația recomandată pentru majoritatea cazurilor
+
+### 2. Configurația cu routes (`vercel-alternative.json`)
+
+- Folosește `routes` în loc de `rewrites` + `headers`
+- Headers inline pentru fiecare tip de fișier
+- Pentru cazuri când `rewrites` + `headers` nu funcționează
+
+### 3. Configurația cu cleanUrls (`vercel-cleanurls.json`)
+
+- Folosește `cleanUrls: true` și `trailingSlash: false`
+- Headers + rewrites combinate
+- Pentru cazuri extreme de MIME type issues
+
+### 4. Fișierul `_headers` (backup automat)
+
+- Copiat automat în `dist/_headers` la build
+- Funcționează ca fallback pentru Netlify/Vercel
+- Headers pentru toate tipurile de fișiere
+
+### Instrucțiuni de folosire:
+
+1. Încearcă configurația principală (`vercel.json`)
+2. Dacă MIME type errors persistă, înlocuiește cu `vercel-alternative.json`
+3. Pentru cazuri extreme, folosește `vercel-cleanurls.json`
+4. Fișierul `_headers` funcționează automat ca backup
+
 ## Rollback Plan
 
 Dacă deployment-ul eșuează:
