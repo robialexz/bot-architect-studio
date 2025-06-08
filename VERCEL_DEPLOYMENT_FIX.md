@@ -139,6 +139,36 @@ După deployment, monitorizează:
 - Error rates
 - User experience
 
+## Erori Comune și Soluții
+
+### "Invalid source pattern"
+
+- **Cauză:** Pattern-uri regex complexe în headers
+- **Soluție:** Folosește pattern-uri simple sau configurația minimă din
+  `vercel-minimal.json`
+
+### "Routes cannot be present with headers"
+
+- **Cauză:** Folosirea simultană a `routes` cu `headers`
+- **Soluție:** Înlocuiește `routes` cu `rewrites`
+
+### MIME Type Errors
+
+- **Cauză:** Lipsă headers pentru JavaScript/CSS
+- **Soluție:** Verifică că headers pentru `/assets/(.*\.js)` sunt prezente
+
+## Configurație Minimă de Backup
+
+Dacă configurația principală eșuează, folosește `vercel-minimal.json`:
+
+```json
+{
+  "version": 2,
+  "framework": "vite",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
+```
+
 ## Rollback Plan
 
 Dacă deployment-ul eșuează:
