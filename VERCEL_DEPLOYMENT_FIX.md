@@ -159,10 +159,13 @@ După deployment, monitorizează:
 
 ### "Failed to resolve /src/main.tsx"
 
-- **Cauză:** Configurația custom `rollupOptions.input` interferează cu build-ul
-  Vite
-- **Soluție:** Elimină `input` din `rollupOptions` și lasă Vite să gestioneze
-  automat
+- **Cauză:** Configurația inconsistentă între `root`, `input` și path-urile
+  relative în Vite
+- **Soluție:**
+  1. Elimină `root: '.'` din vite.config.ts (lasă Vite să folosească default-ul)
+  2. Elimină `input: path.resolve(__dirname, 'index.html')` din rollupOptions
+  3. Lasă Vite să detecteze automat index.html ca entry point
+  4. Setează `framework: null` în vercel.json pentru control manual
 
 ## Configurație Minimă de Backup
 
