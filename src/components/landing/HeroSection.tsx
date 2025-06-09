@@ -9,7 +9,6 @@ import {
   MotionLi,
   MotionTr,
 } from '@/lib/motion-wrapper';
-import { useScroll, useTransform } from '@/lib/motion-hooks';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -26,12 +25,12 @@ import {
 import { Link } from 'react-router-dom';
 import PremiumLogo from '@/components/ui/PremiumLogo';
 
-// Simplified particles background without tsParticles
-function ParticlesBackground() {
+// Enhanced floating dots background
+function FloatingDotsBackground() {
   return (
-    <div className="absolute inset-0 z-0">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-gold/10" />
-      {/* Simple animated dots */}
+    <div className="absolute inset-0 z-[2] pointer-events-none">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-purple-500/5 to-gold/10" />
+      {/* Enhanced animated floating dots */}
       {[...Array(8)].map((_, i) => (
         <div key={i} className={`hero-floating-dot hero-floating-dot-${i + 1}`} />
       ))}
@@ -40,28 +39,8 @@ function ParticlesBackground() {
 }
 
 const HeroSection: React.FC = () => {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [hasScrolled, setHasScrolled] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-
-  // For parallax scrolling effects
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 100]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -100]);
-  const opacity = useTransform(scrollY, [0, 500], [1, 0.3]);
-
-  // Handle video play/pause
-  const toggleVideo = () => {
-    if (videoRef.current) {
-      if (isVideoPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsVideoPlaying(!isVideoPlaying);
-    }
-  };
 
   // Scroll effect
   useEffect(() => {
@@ -79,12 +58,14 @@ const HeroSection: React.FC = () => {
       ref={sectionRef}
       className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-12 md:pt-16"
     >
-      {/* Subtle overlay for text readability over global background */}
-      <div className="absolute inset-0 bg-background/5 z-[5]"></div>
+      {/* Enhanced floating dots background */}
+      <FloatingDotsBackground />
+
+      {/* Enhanced overlay for better contrast and readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/10 to-background/30 z-[5]"></div>
 
       {/* Hero Content */}
       <MotionDiv
-        style={{ opacity }}
         className="hero-content max-w-5xl px-6 py-12 md:py-16 z-[30] relative"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

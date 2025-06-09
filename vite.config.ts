@@ -24,10 +24,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      // Replace framer-motion with our polyfill in production for smaller bundle
-      ...(process.env.NODE_ENV === 'production' && {
-        'framer-motion': path.resolve(__dirname, './src/lib/framer-motion-polyfill.ts'),
-      }),
+      // Keep framer-motion in production for animations to work
+      // Removed polyfill replacement to fix Vercel deployment styling issues
     },
   },
   build: {

@@ -124,8 +124,8 @@ const PipelineCanvas: React.FC<PipelineCanvasProps> = ({ className = '' }) => {
       if (Math.floor(time * 100) % 1500 === 0) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       } else {
-        // Clear canvas with subtle fade
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+        // Clear canvas with subtle fade - more transparent for better visibility
+        ctx.fillStyle = 'rgba(20, 20, 20, 0.02)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
@@ -178,9 +178,9 @@ const PipelineCanvas: React.FC<PipelineCanvasProps> = ({ className = '' }) => {
           pipeline.end.x,
           pipeline.end.y
         );
-        gradient.addColorStop(0, `hsla(${pipeline.hue}, 70%, 50%, 0.1)`);
-        gradient.addColorStop(0.5, `hsla(${pipeline.hue}, 70%, 60%, 0.3)`);
-        gradient.addColorStop(1, `hsla(${pipeline.hue}, 70%, 50%, 0.1)`);
+        gradient.addColorStop(0, `hsla(${pipeline.hue}, 80%, 60%, 0.2)`);
+        gradient.addColorStop(0.5, `hsla(${pipeline.hue}, 80%, 70%, 0.5)`);
+        gradient.addColorStop(1, `hsla(${pipeline.hue}, 80%, 60%, 0.2)`);
 
         ctx.strokeStyle = gradient;
         ctx.lineWidth = pipeline.width;
@@ -193,11 +193,11 @@ const PipelineCanvas: React.FC<PipelineCanvasProps> = ({ className = '' }) => {
         const flowX = pipeline.start.x + (pipeline.end.x - pipeline.start.x) * pipeline.progress;
         const flowY = pipeline.start.y + (pipeline.end.y - pipeline.start.y) * pipeline.progress;
 
-        ctx.shadowColor = `hsl(${pipeline.hue}, 70%, 70%)`;
-        ctx.shadowBlur = 15;
-        ctx.fillStyle = `hsla(${pipeline.hue}, 80%, 70%, 0.8)`;
+        ctx.shadowColor = `hsl(${pipeline.hue}, 80%, 80%)`;
+        ctx.shadowBlur = 20;
+        ctx.fillStyle = `hsla(${pipeline.hue}, 90%, 80%, 0.9)`;
         ctx.beginPath();
-        ctx.arc(flowX, flowY, pipeline.width * 1.5, 0, Math.PI * 2);
+        ctx.arc(flowX, flowY, pipeline.width * 2, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
       });
@@ -266,7 +266,7 @@ const PipelineCanvas: React.FC<PipelineCanvasProps> = ({ className = '' }) => {
   return (
     <canvas
       ref={canvasRef}
-      className={`fixed top-0 left-0 w-full h-full pointer-events-none pipeline-canvas ${className}`}
+      className={`fixed top-0 left-0 w-full h-full pointer-events-none pipeline-canvas z-[1] ${className}`}
     />
   );
 };
