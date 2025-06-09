@@ -176,12 +176,13 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
     scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-family: 'Poppins', sans-serif;
   }
 
@@ -197,17 +198,26 @@
 
 /* Gradient Text */
 .gradient-text {
-  @apply text-primary; /* Updated to use primary yellow */
+  color: hsl(var(--primary)); /* Updated to use primary yellow */
 }
 
 /* Card Styles */
 .agent-card {
-  @apply rounded-xl bg-card p-6 border border-border hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10;
+  @apply rounded-xl p-6 border transition-all duration-300 hover:shadow-lg;
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
+}
+
+.agent-card:hover {
+  border-color: hsl(var(--primary) / 0.4);
+  box-shadow: 0 10px 15px -3px hsl(var(--primary) / 0.1);
 }
 
 /* Connection Line */
 .connection-line {
-  @apply stroke-primary stroke-2 transition-all duration-300;
+  stroke: hsl(var(--primary));
+  stroke-width: 2;
+  transition: all 0.3s ease;
 }
 
 /* Glow Effect */
@@ -442,15 +452,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-background;
+  background-color: hsl(var(--background));
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-muted rounded-full;
+  background-color: hsl(var(--muted));
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-muted/80;
+  background-color: hsl(var(--muted) / 0.8);
 }
 
 /* Responsive Design Fixes */

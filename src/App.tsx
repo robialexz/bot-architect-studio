@@ -12,6 +12,7 @@ import LandingLayout from './components/LandingLayout';
 
 import { AuthenticatedRoute, PublicRoute } from './components/auth/authHelpers';
 import { Loader2 } from 'lucide-react';
+import StyleVerification from './components/StyleVerification';
 
 // Import critical pages immediately (landing pages and auth)
 import Index from './pages/Index';
@@ -662,6 +663,7 @@ const App: React.FC = () => {
               </BrowserRouter>
               <Toaster />
               <Sonner />
+              <StyleVerification />
             </TooltipProvider>
           </AssistantProvider>
         </ThemeProvider>

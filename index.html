@@ -19,6 +19,54 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+    <!-- Critical fonts for immediate loading -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Critical CSS preload hint -->
+    <link rel="preload" as="style" href="/src/index.css" />
+
+    <!-- Inline critical CSS for immediate styling -->
+    <style>
+      /* Critical base styles to prevent FOUC */
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #141414;
+        color: #F5F5F5;
+        font-family: 'Poppins', sans-serif;
+      }
+
+      #root {
+        min-height: 100vh;
+      }
+
+      /* Ensure animations work immediately */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Critical animation keyframes */
+      @keyframes pulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translate3d(0, 0, 0); }
+        50% { transform: translate3d(0, -10px, 0); }
+      }
+
+      /* Critical gradient animations */
+      @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+    </style>
+
     <!-- PWA manifest -->
     <link rel="manifest" href="/manifest.webmanifest" />
 
