@@ -59,31 +59,19 @@ export const LazyParticleBackground = createLazyComponent(
 
 // LazyVisualWorkflowBuilder removed - now imported statically in Index.tsx
 
-// Lazy load complex workflow components
-export const LazyEnhancedWorkflowBuilder = createLazyComponent(
-  () => import('@/components/EnhancedWorkflowBuilder'),
-  'Enhanced Workflow Builder'
-);
-
+// Lazy load complex workflow components (only those not statically imported)
 export const LazyWorkflowCanvas = createLazyComponent(
   () => import('@/components/workflow/WorkflowCanvas'),
   'Workflow Canvas'
 );
 
+// Note: EnhancedWorkflowBuilder, AIModelConfigWizard, VoiceCommandsPanel, WorkflowOnboarding
+// are now imported statically in WorkflowBuilder.tsx for better performance
+
 // Lazy load AI components
 export const LazyAIAgentTester = createLazyComponent(
   () => import('@/components/AIAgentTester'),
   'AI Agent Tester'
-);
-
-export const LazyAIModelConfigWizard = createLazyComponent(
-  () => import('@/components/AIModelConfigWizard'),
-  'AI Model Config Wizard'
-);
-
-export const LazyVoiceCommandsPanel = createLazyComponent(
-  () => import('@/components/VoiceCommandsPanel'),
-  'Voice Commands Panel'
 );
 
 // Lazy load complex forms and modals
@@ -119,16 +107,9 @@ export const LazyTokenManager = createLazyComponent(
 );
 
 // Lazy load feedback and onboarding
-// LazyFeedbackSystem removed - now imported statically in FloatingFeedbackButton.tsx
-
 export const LazyOnboardingFlow = createLazyComponent(
   () => import('@/components/OnboardingFlow'),
   'Onboarding Flow'
-);
-
-export const LazyWorkflowOnboarding = createLazyComponent(
-  () => import('@/components/WorkflowOnboarding'),
-  'Workflow Onboarding'
 );
 
 // Lazy load crypto and token components
@@ -161,56 +142,21 @@ export const LazyAreaChart = createLazyComponent(
   'Area Chart'
 );
 
-// Lazy load landing page sections
-export const LazyHeroSection = createLazyComponent(
-  () => import('@/components/landing/HeroSection'),
-  'Hero Section'
-);
+// Note: Landing page sections (HeroSection, FeaturesSection, RoadmapSection, TokenTierSection)
+// are now imported statically in their respective pages for better performance
 
-export const LazyFeaturesSection = createLazyComponent(
-  () => import('@/components/landing/FeaturesSection'),
-  'Features Section'
-);
-
-export const LazyRoadmapSection = createLazyComponent(
-  () => import('@/components/landing/RoadmapSection'),
-  'Roadmap Section'
-);
-
-export const LazyTokenTierSection = createLazyComponent(
-  () => import('@/components/landing/TokenTierSection'),
-  'Token Tier Section'
-);
+// Note: Complex page components (AIEcosystemPlayground, WorkflowMarketplace, Documentation, PlatformShowcase)
+// are now imported statically in App.tsx for better routing performance
 
 export const LazyARSection = createLazyComponent(
   () => import('@/components/landing/ARSection'),
   'AR Section'
 );
 
-// Lazy load complex page components
+// Lazy load complex page components that are not in main routes
 export const LazyWorkflowStudio = createLazyComponent(
   () => import('@/pages/WorkflowStudio'),
   'Workflow Studio'
-);
-
-export const LazyAIEcosystemPlayground = createLazyComponent(
-  () => import('@/pages/AIEcosystemPlayground'),
-  'AI Ecosystem Playground'
-);
-
-export const LazyWorkflowMarketplace = createLazyComponent(
-  () => import('@/pages/WorkflowMarketplace'),
-  'Workflow Marketplace'
-);
-
-export const LazyDocumentation = createLazyComponent(
-  () => import('@/pages/Documentation'),
-  'Documentation'
-);
-
-export const LazyPlatformShowcase = createLazyComponent(
-  () => import('@/pages/PlatformShowcase'),
-  'Platform Showcase'
 );
 
 // Utility function to preload components
@@ -238,12 +184,11 @@ export const preloadOnHover = (importFn: () => Promise<{ default: ComponentType<
 export const preloadCriticalComponents = () => {
   // Preload components likely to be used soon
   preloadComponent(() => import('@/components/workflow/WorkflowCanvas'));
-  preloadComponent(() => import('@/components/EnhancedWorkflowBuilder'));
 
   // Preload token components for landing page
   preloadComponent(() => import('@/components/crypto/TokenBanner'));
 
-  // Note: Hero section and other landing components are now loaded statically
+  // Note: Most components are now loaded statically for better performance
 };
 
 // Preload components for specific routes
@@ -251,22 +196,11 @@ export const preloadRouteComponents = (route: string) => {
   switch (route) {
     case '/studio':
       preloadComponent(() => import('@/pages/WorkflowStudio'));
-      preloadComponent(() => import('@/components/EnhancedWorkflowBuilder'));
       preloadComponent(() => import('@/components/workflow/WorkflowCanvas'));
       break;
     case '/playground':
-      preloadComponent(() => import('@/pages/AIEcosystemPlayground'));
       preloadComponent(() => import('@/components/NexusCrystal'));
       preloadComponent(() => import('@/components/EnergyNetworkCanvas'));
-      break;
-    case '/marketplace':
-      preloadComponent(() => import('@/pages/WorkflowMarketplace'));
-      break;
-    case '/docs':
-      preloadComponent(() => import('@/pages/Documentation'));
-      break;
-    case '/showcase':
-      preloadComponent(() => import('@/pages/PlatformShowcase'));
       break;
     default:
       // Preload common components

@@ -28,7 +28,7 @@ import RoadmapPage from './pages/RoadmapPage';
 import Pricing from './pages/Pricing';
 import Features from './pages/Features';
 import Documentation from './pages/Documentation';
-import Waitlist from './pages/Waitlist';
+import WaitlistPage from './pages/WaitlistPage';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
@@ -266,12 +266,13 @@ const App: React.FC = () => {
                       </PublicRoute>
                     }
                   />
+
                   <Route
                     path="/waitlist"
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <Waitlist />
+                          <WaitlistPage />
                         </LandingLayout>
                       </PublicRoute>
                     }

@@ -13,7 +13,7 @@ import {
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { LazyRoadmapSection } from '@/components/lazy/LazyComponents';
+import RoadmapSection from '@/components/landing/RoadmapSection';
 
 const RoadmapPage: React.FC = () => {
   return (
@@ -37,7 +37,7 @@ const RoadmapPage: React.FC = () => {
       </div>
 
       {/* Roadmap Content */}
-      <LazyRoadmapSection compact />
+      <RoadmapSection compact />
 
       {/* Additional Details Section */}
       <section className="py-20 bg-gradient-to-br from-muted/30 to-background">
