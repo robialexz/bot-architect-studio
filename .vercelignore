@@ -5,8 +5,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Development files
-src/
-public/
+# Note: src/ and public/ are needed for Vite build process
 *.md
 *.txt
 !README.md

@@ -37,6 +37,11 @@ export default defineConfig({
     minify: 'terser',
     target: 'es2015',
     cssTarget: 'chrome80',
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+      },
+    },
     terserOptions: {
       compress: {
         drop_console: true,
