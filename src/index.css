@@ -916,7 +916,64 @@
   height: 4px;
   background: rgba(var(--primary), 0.3);
   border-radius: 50%;
-  animation: pulse;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* Specific positioning and animations for floating dots */
+.hero-floating-dot-1 {
+  top: 20%;
+  left: 10%;
+  animation: float-slow 12s ease-in-out infinite;
+  background: rgba(var(--gold), 0.4);
+}
+
+.hero-floating-dot-2 {
+  top: 30%;
+  right: 15%;
+  animation: float-reverse 15s ease-in-out infinite;
+  background: rgba(var(--primary), 0.3);
+}
+
+.hero-floating-dot-3 {
+  bottom: 40%;
+  left: 20%;
+  animation: morph 18s ease-in-out infinite;
+  background: rgba(var(--sapphire), 0.3);
+}
+
+.hero-floating-dot-4 {
+  top: 60%;
+  right: 25%;
+  animation: drift 20s ease-in-out infinite;
+  background: rgba(var(--emerald), 0.3);
+}
+
+.hero-floating-dot-5 {
+  bottom: 20%;
+  left: 30%;
+  animation: gradient-pulse 8s ease-in-out infinite;
+  background: rgba(var(--gold), 0.4);
+}
+
+.hero-floating-dot-6 {
+  top: 80%;
+  right: 10%;
+  animation: float-slow 14s ease-in-out infinite reverse;
+  background: rgba(var(--primary), 0.3);
+}
+
+.hero-floating-dot-7 {
+  top: 15%;
+  left: 60%;
+  animation: morph 16s ease-in-out infinite;
+  background: rgba(var(--sapphire), 0.4);
+}
+
+.hero-floating-dot-8 {
+  bottom: 30%;
+  right: 40%;
+  animation: drift 22s ease-in-out infinite;
+  background: rgba(var(--emerald), 0.3);
 }
 
 .hero-floating-element {
