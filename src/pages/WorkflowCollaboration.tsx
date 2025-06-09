@@ -46,6 +46,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -302,6 +303,9 @@ const WorkflowCollaboration: React.FC = () => {
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Invite Team Member</DialogTitle>
+                    <DialogDescription>
+                      Send an invitation to a new team member to collaborate on workflows.
+                    </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
                     <div>

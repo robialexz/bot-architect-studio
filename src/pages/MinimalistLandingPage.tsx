@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import MinimalistHero from '@/components/landing/MinimalistHero';
-import {
-  LazyVisualWorkflowBuilder,
-  LazyRoadmapSection,
-  LazyTokenTierSection,
-} from '@/components/lazy/LazyComponents';
+import VisualWorkflowBuilder from '@/components/landing/VisualWorkflowBuilder';
+import RoadmapSection from '@/components/landing/RoadmapSection';
+import TokenTierSection from '@/components/landing/TokenTierSection';
 import ComingSoonModal from '@/components/ui/ComingSoonModal';
 import { useComingSoon } from '@/hooks/useComingSoon';
 import { Button } from '@/components/ui/button';
@@ -334,13 +332,13 @@ const MinimalistLandingPage: React.FC = () => {
       </section>
 
       {/* Visual Workflow Builder Section */}
-      <LazyVisualWorkflowBuilder />
+      <VisualWorkflowBuilder />
 
       {/* Development Roadmap Section */}
-      <LazyRoadmapSection />
+      <RoadmapSection />
 
       {/* Token-Based Tier System */}
-      <LazyTokenTierSection />
+      <TokenTierSection />
 
       {/* Unique Advantages - de ce suntem cei mai tari! 🏆 */}
       <section className="py-20 bg-gradient-to-r from-primary/10 via-gold/10 to-primary/10">

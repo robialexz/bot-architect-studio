@@ -42,7 +42,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     hasRedirected.current = false;
   }, [location.pathname]);
 
-  // Show loading spinner while authentication is initializing
+  // For public routes (landing pages), show content immediately without waiting for auth
+  if (!requireAuth) {
+    console.log('✅ PublicRoute: Showing content immediately for landing page');
+    return <>{children}</>;
+  }
+
+  // Show loading spinner while authentication is initializing (only for protected routes)
   if (!isInitialized || isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">

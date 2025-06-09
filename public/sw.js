@@ -81,6 +81,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Skip Vite development resources (HMR, client, etc.)
+  if (isViteDevelopmentResource(request)) {
+    console.log('[SW] Skipping Vite development resource:', request.url);
+    return;
+  }
+
   // Handle different types of requests
   if (isStaticAsset(request)) {
     event.respondWith(cacheFirst(request, STATIC_CACHE_NAME));
@@ -172,9 +178,22 @@ function isDynamicAsset(request) {
 
 function isAPIRequest(request) {
   const url = new URL(request.url);
-  return url.pathname.startsWith('/api/') || 
+  return url.pathname.startsWith('/api/') ||
          url.hostname.includes('supabase') ||
          url.hostname.includes('openai');
+}
+
+function isViteDevelopmentResource(request) {
+  const url = new URL(request.url);
+  return url.pathname.includes('@vite/') ||
+         url.pathname.includes('@react-refresh') ||
+         url.pathname.includes('/@fs/') ||
+         url.pathname.includes('/node_modules/') ||
+         url.search.includes('import') ||
+         url.search.includes('t=') ||
+         url.pathname.endsWith('.ts') ||
+         url.pathname.endsWith('.tsx') ||
+         url.pathname.endsWith('.jsx');
 }
 
 // Handle messages from main thread

@@ -42,10 +42,7 @@ export const LazyEnergyNetworkCanvas = createLazyComponent(
   'Energy Network'
 );
 
-export const LazyPipelineCanvas = createLazyComponent(
-  () => import('@/components/backgrounds/PipelineCanvas'),
-  'Pipeline Background'
-);
+// LazyPipelineCanvas removed - now imported statically in Index.tsx
 
 export const LazyNexusCrystal = createLazyComponent(
   () => import('@/components/NexusCrystal'),
@@ -60,10 +57,7 @@ export const LazyParticleBackground = createLazyComponent(
   'Particle Background'
 );
 
-export const LazyVisualWorkflowBuilder = createLazyComponent(
-  () => import('@/components/landing/VisualWorkflowBuilder'),
-  'Visual Workflow Builder'
-);
+// LazyVisualWorkflowBuilder removed - now imported statically in Index.tsx
 
 // Lazy load complex workflow components
 export const LazyEnhancedWorkflowBuilder = createLazyComponent(
@@ -125,10 +119,7 @@ export const LazyTokenManager = createLazyComponent(
 );
 
 // Lazy load feedback and onboarding
-export const LazyFeedbackSystem = createLazyComponent(
-  () => import('@/components/FeedbackSystem'),
-  'Feedback System'
-);
+// LazyFeedbackSystem removed - now imported statically in FloatingFeedbackButton.tsx
 
 export const LazyOnboardingFlow = createLazyComponent(
   () => import('@/components/OnboardingFlow'),
@@ -252,8 +243,7 @@ export const preloadCriticalComponents = () => {
   // Preload token components for landing page
   preloadComponent(() => import('@/components/crypto/TokenBanner'));
 
-  // Preload hero section components
-  preloadComponent(() => import('@/components/landing/HeroSection'));
+  // Note: Hero section and other landing components are now loaded statically
 };
 
 // Preload components for specific routes
