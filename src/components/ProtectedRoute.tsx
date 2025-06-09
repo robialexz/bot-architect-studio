@@ -78,7 +78,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Handle reverse protection (redirect authenticated users away from auth pages)
   // Only redirect if we have a confirmed authenticated user and this is a public route
-  if (!requireAuth && isAuthenticated && user && !hasRedirected.current) {
+  // BUT allow authenticated users to view landing pages (/, /simple, /interactive, /minimalist)
+  const isLandingPage = ['/', '/simple', '/interactive', '/minimalist'].includes(location.pathname);
+  if (!requireAuth && isAuthenticated && user && !hasRedirected.current && !isLandingPage) {
     hasRedirected.current = true;
     const redirectUrl = redirectTo || '/account';
     console.log(
