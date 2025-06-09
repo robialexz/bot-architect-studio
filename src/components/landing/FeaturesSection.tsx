@@ -54,15 +54,15 @@ const FeaturesSection: React.FC = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <MotionDiv
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          variants={containerVariants}
+          initial={containerVariants.hidden}
+          animate={isInView ? containerVariants.visible : containerVariants.hidden}
           className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20"
         >
           {features.map((feature, index) => (
             <MotionDiv
               key={index}
-              variants={itemVariants}
+              initial={itemVariants.hidden}
+              animate={isInView ? itemVariants.visible : itemVariants.hidden}
               whileHover={{ y: -8, transition: { duration: 0.3 } }}
               className={`premium-card group p-8 ${feature.bgColor} border ${feature.borderColor} relative overflow-hidden`}
             >

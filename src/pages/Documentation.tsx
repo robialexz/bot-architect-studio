@@ -1136,6 +1136,7 @@ const Documentation = () => {
                     {sidebarNavItems.map(item => (
                       <li key={item.id}>
                         <button
+                          type="button"
                           onClick={() => handleContentNavigation(item.id)}
                           aria-current={activeSection === item.id ? 'page' : undefined}
                           className={`w-full flex items-center gap-2.5 text-sm px-3 py-2 rounded-md transition-colors duration-150 ease-in-out group
@@ -1160,10 +1161,7 @@ const Documentation = () => {
           {/* Main Content */}
           <main
             id="main-doc-content"
-            className="flex-1 min-w-0 overflow-y-auto"
-            style={{
-              maxHeight: 'calc(100vh - 10rem)' /* Approximate height to enable scrolling */,
-            }}
+            className="flex-1 min-w-0 overflow-y-auto max-h-[calc(100vh-10rem)]"
           >
             {activeSection === 'overview' && (
               <>

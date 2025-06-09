@@ -1,15 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import {
-  SafeAnimatePresence,
-  MotionDiv,
-  MotionSection,
-  MotionH1,
-  MotionH2,
-  MotionP,
-  MotionButton,
-  MotionLi,
-  MotionTr,
-} from '@/lib/motion-wrapper';
+import { SafeAnimatePresence, MotionDiv } from '@/lib/motion-wrapper';
 
 import {
   Bot,
@@ -99,20 +89,7 @@ interface NodeOutput extends Record<string, unknown> {
   scrapingData?: Record<string, unknown>;
 }
 
-function ParticlesBackground() {
-  // Simplified background without tsParticles to prevent loading issues
-  return (
-    <div className="absolute inset-0 z-0">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-sapphire/5"></div>
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/40 rounded-full animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-sapphire/40 rounded-full animate-pulse delay-1000"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-gold/40 rounded-full animate-pulse delay-2000"></div>
-        <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-primary/40 rounded-full animate-pulse delay-3000"></div>
-      </div>
-    </div>
-  );
-}
+// Removed unused ParticlesBackground component
 
 const VisualWorkflowBuilder: React.FC = () => {
   const [nodes, setNodes] = useState<AgentNode[]>([]);
@@ -172,19 +149,7 @@ const VisualWorkflowBuilder: React.FC = () => {
   >([]);
 
   const [smartMode, setSmartMode] = useState(true);
-  const [workflowTemplates, setWorkflowTemplates] = useState<
-    Array<{
-      id: string;
-      name: string;
-      description: string;
-      nodes: AgentNode[];
-      connections: Connection[];
-      category: string;
-      difficulty: 'beginner' | 'intermediate' | 'advanced';
-      estimatedTime: string;
-      popularity: number;
-    }>
-  >([]);
+  // Removed unused workflowTemplates state
 
   const [,] = useState(true);
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -410,7 +375,7 @@ const VisualWorkflowBuilder: React.FC = () => {
       },
     ];
 
-    setWorkflowTemplates(templates);
+    // Templates initialized (removed setWorkflowTemplates as it's unused)
 
     // Initialize AI suggestions only once
     setTimeout(() => {
@@ -2016,6 +1981,7 @@ The transition to sustainable technology requires continued investment, policy s
                   className="w-full h-full relative overflow-hidden"
                   onDrop={handleCanvasDrop}
                   onDragOver={handleCanvasDragOver}
+                  // Dynamic background pattern required for canvas grid
                   style={{
                     backgroundImage:
                       'radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)',
@@ -2092,7 +2058,7 @@ The transition to sustainable technology requires continued investment, policy s
                           zIndex: selectedNode === node.id ? 10 : 1,
                         }}
                         onClick={() => setSelectedNode(node.id)}
-                        onMouseDown={e => handleNodeMouseDown(e, node.id)}
+                        onMouseDown={(e: React.MouseEvent) => handleNodeMouseDown(e, node.id)}
                       >
                         <div
                           className={`premium-card w-32 bg-background border-2 rounded-lg shadow-lg transition-all duration-300 ${
@@ -2150,7 +2116,7 @@ The transition to sustainable technology requires continued investment, policy s
                                 e.stopPropagation();
                                 handlePortClick(node.id, index, 'input');
                               }}
-                              style={{ top: `${30 + index * 20}px` }}
+                              style={{ top: `${30 + index * 20}px` }} // Dynamic positioning for multiple input ports
                             />
                           ))}
 
@@ -2163,7 +2129,7 @@ The transition to sustainable technology requires continued investment, policy s
                                 e.stopPropagation();
                                 handlePortClick(node.id, index, 'output');
                               }}
-                              style={{ top: `${30 + index * 20}px` }}
+                              style={{ top: `${30 + index * 20}px` }} // Dynamic positioning for multiple output ports
                             />
                           ))}
 
@@ -2264,7 +2230,7 @@ The transition to sustainable technology requires continued investment, policy s
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 className="bg-card border border-border-alt rounded-2xl p-6 max-w-lg w-full shadow-2xl"
-                onClick={e => e.stopPropagation()}
+                onClick={(e?: React.MouseEvent) => e?.stopPropagation()}
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">

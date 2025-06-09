@@ -22,30 +22,30 @@ import AuthPageSimple from './pages/AuthPageSimple';
 import NotFound from './pages/NotFound';
 import UITest from './pages/UITest';
 
-// Public pages
-import PlatformShowcase from './pages/PlatformShowcase';
-import RoadmapPage from './pages/RoadmapPage';
-import Pricing from './pages/Pricing';
-import Features from './pages/Features';
-import Documentation from './pages/Documentation';
-import WaitlistPage from './pages/WaitlistPage';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Privacy from './pages/Privacy';
-import Terms from './pages/Terms';
+// Lazy load public pages for better performance
+const PlatformShowcase = lazy(() => import('./pages/PlatformShowcase'));
+const RoadmapPage = lazy(() => import('./pages/RoadmapPage'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const Features = lazy(() => import('./pages/Features'));
+const Documentation = lazy(() => import('./pages/Documentation'));
+const WaitlistPage = lazy(() => import('./pages/WaitlistPage'));
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Terms = lazy(() => import('./pages/Terms'));
 
-// Authenticated pages
-import WorkflowBuilder from './pages/WorkflowBuilder';
-import AIEcosystemPlayground from './pages/AIEcosystemPlayground';
-import WorkflowTemplatesGallery from './pages/WorkflowTemplatesGallery';
-import WorkflowMarketplace from './pages/WorkflowMarketplace';
-import WorkflowAnalytics from './pages/WorkflowAnalytics';
-import MyProjectsPage from './pages/MyProjectsPage';
-import Settings from './pages/Settings';
-import BillingPage from './pages/BillingPage';
-import SecurityDashboard from './pages/SecurityDashboard';
-import WorkflowCollaboration from './pages/WorkflowCollaboration';
-import AIOptimizationHub from './pages/AIOptimizationHub';
+// Lazy load authenticated pages for better performance
+const WorkflowBuilder = lazy(() => import('./pages/WorkflowBuilder'));
+const AIEcosystemPlayground = lazy(() => import('./pages/AIEcosystemPlayground'));
+const WorkflowTemplatesGallery = lazy(() => import('./pages/WorkflowTemplatesGallery'));
+const WorkflowMarketplace = lazy(() => import('./pages/WorkflowMarketplace'));
+const WorkflowAnalytics = lazy(() => import('./pages/WorkflowAnalytics'));
+const MyProjectsPage = lazy(() => import('./pages/MyProjectsPage'));
+const Settings = lazy(() => import('./pages/Settings'));
+const BillingPage = lazy(() => import('./pages/BillingPage'));
+const SecurityDashboard = lazy(() => import('./pages/SecurityDashboard'));
+const WorkflowCollaboration = lazy(() => import('./pages/WorkflowCollaboration'));
+const AIOptimizationHub = lazy(() => import('./pages/AIOptimizationHub'));
 
 // Lazy load heavy authenticated pages for better performance with error handling
 const AccountDashboard = lazy(() =>
@@ -221,7 +221,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <PlatformShowcase />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <PlatformShowcase />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -231,7 +239,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <RoadmapPage />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <RoadmapPage />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -241,7 +257,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <Pricing />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <Pricing />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -251,7 +275,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <Features />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <Features />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -261,7 +293,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <Documentation />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <Documentation />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -272,7 +312,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <WaitlistPage />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <WaitlistPage />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -282,7 +330,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <About />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <About />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -292,7 +348,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <Contact />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <Contact />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -302,7 +366,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <Privacy />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <Privacy />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -312,7 +384,15 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <Terms />
+                          <Suspense
+                            fallback={
+                              <div className="flex items-center justify-center min-h-screen">
+                                <Loader2 className="h-8 w-8 animate-spin" />
+                              </div>
+                            }
+                          >
+                            <Terms />
+                          </Suspense>
                         </LandingLayout>
                       </PublicRoute>
                     }

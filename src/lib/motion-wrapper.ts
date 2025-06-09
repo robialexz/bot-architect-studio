@@ -9,12 +9,20 @@ interface MotionProps {
   style?: React.CSSProperties;
   initial?: Record<string, unknown>;
   animate?: Record<string, unknown>;
+  exit?: Record<string, unknown>;
   transition?: Record<string, unknown>;
   whileHover?: Record<string, unknown>;
   whileTap?: Record<string, unknown>;
-  onClick?: () => void;
+  whileInView?: Record<string, unknown>;
+  viewport?: Record<string, unknown>;
+  variants?: Record<string, unknown>;
+  draggable?: boolean;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
+  onClick?: (e?: React.MouseEvent) => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  onMouseDown?: (e: React.MouseEvent) => void;
   asChild?: boolean;
 }
 
@@ -27,9 +35,16 @@ const createMotionComponent = (tag: keyof JSX.IntrinsicElements) => {
       style,
       initial,
       animate,
+      exit,
       transition,
       whileHover,
       whileTap,
+      whileInView,
+      viewport,
+      variants,
+      draggable,
+      onDragStart,
+      onDragEnd,
       asChild,
       ...rest
     } = props;
@@ -46,6 +61,9 @@ const createMotionComponent = (tag: keyof JSX.IntrinsicElements) => {
         ref,
         className,
         style: motionStyle,
+        draggable,
+        onDragStart,
+        onDragEnd,
         ...rest,
       },
       children
