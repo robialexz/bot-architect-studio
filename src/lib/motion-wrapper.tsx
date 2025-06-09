@@ -328,5 +328,3 @@ export const SafeAnimatePresence: React.FC<{
     return <>{children}</>;
   }
 };
-
-

@@ -10,7 +10,12 @@ const envSchema = z.object({
 
   // Supabase Configuration (with fallback for demo)
   VITE_SUPABASE_URL: z.string().url().default('https://crtferpmhnrdvnaypgzo.supabase.co'),
-  VITE_SUPABASE_ANON_KEY: z.string().min(1).default('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNydGZlcnBtaG5yZHZuYXlwZ3pvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxODc3MzksImV4cCI6MjA2Mzc2MzczOX0.WGBfLo4UYTzHUCuHEa_MVWi0n7f1-U15Xlmw7XZben4'),
+  VITE_SUPABASE_ANON_KEY: z
+    .string()
+    .min(1)
+    .default(
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNydGZlcnBtaG5yZHZuYXlwZ3pvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgxODc3MzksImV4cCI6MjA2Mzc2MzczOX0.WGBfLo4UYTzHUCuHEa_MVWi0n7f1-U15Xlmw7XZben4'
+    ),
 
   // API Configuration
   VITE_API_BASE_URL: z.string().url().optional(),
@@ -137,7 +142,9 @@ export function validateEnvironment() {
 
     if (missing.length > 0) {
       console.warn(`⚠️ Using fallback values for: ${missing.join(', ')}`);
-      console.warn('For production use, please set proper environment variables in Vercel dashboard');
+      console.warn(
+        'For production use, please set proper environment variables in Vercel dashboard'
+      );
     }
   }
 
