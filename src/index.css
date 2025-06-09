@@ -5,6 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CRITICAL: Force CSS inclusion marker for Vercel deployment */
+.css-force-inclusion-marker {
+  display: none !important;
+  content: 'FLOWSYAI_CSS_LOADED';
+}
+
 .index-page-container-fullscreen {
   /* position: fixed; REMOVED to allow natural page flow */
   /* top: 0; REMOVED */
@@ -208,11 +214,11 @@
   border-color: hsl(var(--border));
 }
 
-/* Premium Card Styles - FORCED PRODUCTION STYLES */
+/* Premium Card Styles */
 .premium-card {
   @apply rounded-xl border transition-all duration-300 hover:shadow-lg;
-  background-color: #1A1A1A !important; /* Force dark card background */
-  border-color: #333333 !important; /* Force visible border */
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
   position: relative;
   overflow: hidden;
 }
@@ -223,44 +229,21 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(0, 153, 255, 0.05) 0%,
+    hsl(var(--primary) / 0.05) 0%,
     transparent 50%,
-    rgba(255, 215, 0, 0.05) 100%
-  ) !important;
+    hsl(var(--accent) / 0.05) 100%
+  );
   pointer-events: none;
 }
 
 .premium-card:hover {
-  border-color: rgba(0, 153, 255, 0.3) !important;
+  border-color: hsl(var(--primary) / 0.3);
   box-shadow:
     0 10px 30px -5px rgba(0, 0, 0, 0.3),
-    0 0 15px -3px rgba(0, 153, 255, 0.2) !important;
+    0 0 15px -3px hsl(var(--primary) / 0.2);
 }
 
-/* FORCE ROADMAP COLORS - PRODUCTION OVERRIDE */
-.bg-gradient-to-r {
-  background: linear-gradient(to right, #0099FF, #FFD700) !important;
-}
-
-.text-primary {
-  color: #0099FF !important;
-}
-
-.text-gold {
-  color: #FFD700 !important;
-}
-
-.border-primary\/20 {
-  border-color: rgba(0, 153, 255, 0.2) !important;
-}
-
-.bg-primary\/5 {
-  background-color: rgba(0, 153, 255, 0.05) !important;
-}
-
-.bg-gold\/5 {
-  background-color: rgba(255, 215, 0, 0.05) !important;
-}
+/* Removed forced production overrides that were causing layout issues */
 
 .agent-card:hover {
   border-color: hsl(var(--primary) / 0.4);

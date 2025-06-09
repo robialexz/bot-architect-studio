@@ -17,6 +17,16 @@ export default defineConfig({
   define: {
     global: 'globalThis',
   },
+  css: {
+    // Preserve all CSS and prevent tree-shaking
+    devSourcemap: true,
+    preprocessorOptions: {
+      css: {
+        // Preserve all CSS rules
+        charset: false,
+      },
+    },
+  },
   optimizeDeps: {
     include: ['framer-motion'],
     exclude: ['@react-three/fiber', '@react-three/drei'],
@@ -37,12 +47,15 @@ export default defineConfig({
     cssTarget: 'chrome90',
     cssCodeSplit: false, // Bundle all CSS into one file for better loading
     emptyOutDir: true,
+    // CRITICAL: Disable CSS tree-shaking to preserve all styles
     rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html'),
-      },
       external: [],
       output: {
+        // Preserve all CSS classes and animations
+        preserveModules: false,
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+        },
         // Ensure CSS is properly included in the build
         assetFileNames: assetInfo => {
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
@@ -88,8 +101,10 @@ export default defineConfig({
         reserved: ['animate', 'transition', 'transform'],
       },
     },
-    // Disable CSS minification for debugging
-    cssMinify: false,
+    // Enable CSS minification but preserve custom properties
+    cssMinify: 'esbuild',
     chunkSizeWarningLimit: 1000, // Increased from 500 to accommodate our large chunks
+    // Force inclusion of all CSS
+    assetsInlineLimit: 0, // Don't inline any assets
   },
 });

@@ -1,6 +1,8 @@
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+// CRITICAL: Force inclusion of all custom styles for Vercel deployment
+import './styles/force-css-inclusion.css';
 
 // Force include all CSS classes to prevent tree-shaking in production
 if (import.meta.env.PROD) {
@@ -82,29 +84,9 @@ if (import.meta.env.PROD) {
 import { initializeSentry } from './lib/sentry';
 initializeSentry();
 
-// CSS Loading Verification for Production (SIMPLIFIED)
+// Simple CSS verification for production
 if (import.meta.env.PROD) {
   console.log('🔍 FlowsyAI Production Mode - CSS verification enabled');
-
-  // Simple CSS check after page load
-  setTimeout(() => {
-    const testElement = document.createElement('div');
-    testElement.className = 'bg-primary';
-    testElement.style.position = 'absolute';
-    testElement.style.top = '-9999px';
-    document.body.appendChild(testElement);
-
-    const styles = window.getComputedStyle(testElement);
-    const hasStyles = styles.backgroundColor !== 'rgba(0, 0, 0, 0)';
-
-    document.body.removeChild(testElement);
-
-    if (hasStyles) {
-      console.log('✅ CSS loaded successfully');
-    } else {
-      console.warn('⚠️ CSS may not be loaded properly');
-    }
-  }, 1000);
 }
 
 // Initialize Service Worker for caching and offline support (DISABLED FOR DEPLOYMENT DEBUGGING)

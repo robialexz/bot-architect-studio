@@ -1,11 +1,15 @@
 export default {
   plugins: {
-    tailwindcss: {
-      // Ensure all custom styles are included
-      content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
-    },
+    tailwindcss: {},
     autoprefixer: {},
-    // Prevent CSS purging in production
-    ...(process.env.NODE_ENV === 'production' ? {} : {}),
+    // Ensure CSS custom properties are preserved in production
+    ...(process.env.NODE_ENV === 'production'
+      ? {
+          'postcss-custom-properties': {
+            preserve: true,
+            importFrom: ['src/index.css'],
+          },
+        }
+      : {}),
   },
 };
