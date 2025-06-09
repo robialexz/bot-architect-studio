@@ -26,7 +26,10 @@ type CommandDialogProps = DialogProps;
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
     <Dialog {...props}>
-      <DialogContent className="overflow-hidden p-0 shadow-lg" aria-describedby="command-dialog-description">
+      <DialogContent
+        className="overflow-hidden p-0 shadow-lg"
+        aria-describedby="command-dialog-description"
+      >
         <div className="sr-only" id="command-dialog-description">
           Search and select commands from the available options
         </div>

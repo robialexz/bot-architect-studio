@@ -20,15 +20,13 @@ const LandingLayout: React.FC<LandingLayoutProps> = ({
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar */}
       {showNavbar && <Navbar />}
-      
+
       {/* Main Content */}
-      <main className="flex-1">
-        {children}
-      </main>
-      
+      <main className="flex-1">{children}</main>
+
       {/* Footer */}
       {showFooter && <Footer />}
-      
+
       {/* Floating Feedback Button */}
       {showFeedback && <FloatingFeedbackButton />}
     </div>

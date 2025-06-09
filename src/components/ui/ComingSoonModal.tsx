@@ -18,7 +18,7 @@ interface ComingSoonModalProps {
 const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
   isOpen,
   onClose,
-  feature = 'This feature'
+  feature = 'This feature',
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -32,12 +32,9 @@ const ComingSoonModal: React.FC<ComingSoonModalProps> = ({
             <div className="flex justify-center mb-4">
               <Clock className="h-12 w-12 text-muted-foreground" />
             </div>
-            <p className="text-lg mb-2">
-              {feature} is currently under development.
-            </p>
+            <p className="text-lg mb-2">{feature} is currently under development.</p>
             <p className="text-sm text-muted-foreground">
-              We're working hard to bring you this exciting feature. 
-              Stay tuned for updates!
+              We're working hard to bring you this exciting feature. Stay tuned for updates!
             </p>
           </DialogDescription>
         </DialogHeader>
