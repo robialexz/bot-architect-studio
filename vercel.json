@@ -49,7 +49,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!manifest\\.webmanifest|manifest\\.json|favicon\\.ico|.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|mp4)).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
