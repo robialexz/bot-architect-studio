@@ -42,6 +42,13 @@ const HeroSection: React.FC = () => {
   const [hasScrolled, setHasScrolled] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
+  // Debug logging for HeroSection
+  useEffect(() => {
+    console.log('🦸 HeroSection component mounted', {
+      timestamp: new Date().toISOString(),
+    });
+  }, []);
+
   // Scroll effect
   useEffect(() => {
     const handleScroll = () => {

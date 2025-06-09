@@ -15,6 +15,14 @@ import LiveMetricsDashboard from '@/components/landing/LiveMetricsDashboard';
 import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection';
 
 const IndexPage: React.FC = () => {
+  // Debug logging for Index page
+  React.useEffect(() => {
+    console.log('🏠 Index page component mounted', {
+      timestamp: new Date().toISOString(),
+      location: window.location.href,
+    });
+  }, []);
+
   return (
     <div className="index-page-container relative">
       {/* Pipeline Background - Fixed across entire page */}

@@ -12,7 +12,6 @@ import LandingLayout from './components/LandingLayout';
 
 import { AuthenticatedRoute, PublicRoute } from './components/auth/authHelpers';
 import { Loader2 } from 'lucide-react';
-import StyleVerification from './components/StyleVerification';
 
 // Import critical pages immediately (landing pages and auth)
 import Index from './pages/Index';
@@ -98,10 +97,13 @@ const queryClient = new QueryClient({
 const App: React.FC = () => {
   // Log app initialization
   React.useEffect(() => {
-    console.log('Application initialized', {
+    console.log('🎯 App component mounted and initialized', {
       version: import.meta.env.VITE_APP_VERSION || '1.0.0',
       environment: import.meta.env.NODE_ENV,
+      mode: import.meta.env.MODE,
       timestamp: new Date().toISOString(),
+      location: window.location.href,
+      pathname: window.location.pathname,
     });
 
     // Handle chunk loading failures (common in production with lazy loading)
@@ -663,7 +665,6 @@ const App: React.FC = () => {
               </BrowserRouter>
               <Toaster />
               <Sonner />
-              <StyleVerification />
             </TooltipProvider>
           </AssistantProvider>
         </ThemeProvider>

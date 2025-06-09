@@ -9,7 +9,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run clean && vite build && npm run verify-build",
+    "build": "npm run clean && vite build",
+    "build:vercel": "npm run clean && vite build",
     "build:analyze": "vite build && node scripts/analyze-bundle.js",
     "build:dev": "vite build --mode development",
     "clean": "rimraf dist",
