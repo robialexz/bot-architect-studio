@@ -20,23 +20,7 @@
         }
       ]
     },
-    {
-      "source": "/manifest.json",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/json"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    },
+
     {
       "source": "/sw.js",
       "headers": [
@@ -75,7 +59,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!api|_next|_static|favicon.ico|manifest.webmanifest|manifest.json|sw.js|robots.txt|assets).*)",
+      "source": "/((?!api|_next|_static|favicon.ico|manifest.webmanifest|sw.js|robots.txt|assets).*)",
       "destination": "/index.html"
     }
   ]
