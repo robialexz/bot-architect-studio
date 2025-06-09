@@ -88,8 +88,8 @@ export default defineConfig({
         reserved: ['animate', 'transition', 'transform'],
       },
     },
-    // Ensure CSS is properly processed
-    cssMinify: 'esbuild',
+    // Disable CSS minification for debugging
+    cssMinify: false,
     chunkSizeWarningLimit: 1000, // Increased from 500 to accommodate our large chunks
   },
 });
