@@ -277,7 +277,7 @@ const InteractiveDemo: React.FC = () => {
             {/* Demo Visualization */}
             <div className="bg-background/50 rounded-lg p-6 mb-8 min-h-[300px]">
               {/* Step 1: User Input */}
-              <SafeAnimatePresence mode="wait">
+              <SafeAnimatePresence>
                 {currentStep >= 0 && (
                   <MotionDiv
                     key="user-input"
@@ -312,6 +312,7 @@ const InteractiveDemo: React.FC = () => {
                           {sampleQueries.map((query, idx) => (
                             <button
                               key={idx}
+                              type="button"
                               className={`text-xs px-2 py-1 rounded-full border ${
                                 query === selectedQuery
                                   ? 'border-primary bg-primary/10 text-primary'
@@ -327,8 +328,10 @@ const InteractiveDemo: React.FC = () => {
                     </div>
                   </MotionDiv>
                 )}
+              </SafeAnimatePresence>
 
-                {/* Step 2-3: Bot Processing */}
+              {/* Step 2-3: Bot Processing */}
+              <SafeAnimatePresence>
                 {currentStep >= 2 && showBotResponses && (
                   <MotionDiv
                     key="bot-responses"
@@ -370,8 +373,10 @@ const InteractiveDemo: React.FC = () => {
                     </div>
                   </MotionDiv>
                 )}
+              </SafeAnimatePresence>
 
-                {/* Step 5: Final Response */}
+              {/* Step 5: Final Response */}
+              <SafeAnimatePresence>
                 {currentStep >= 4 && showFinalResponse && (
                   <MotionDiv
                     key="final-response"

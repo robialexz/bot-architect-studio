@@ -1,89 +1,11 @@
 import React, { useRef } from 'react';
 import { useInView } from 'framer-motion';
-import { MotionDiv, MotionSection, MotionH2, MotionP } from '@/lib/motion-wrapper';
+import { MotionDiv } from '@/lib/motion-wrapper';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
 
-// Feature icons as SVG components for better animations
-const FeatureIcon1 = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="w-10 h-10"
-  >
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 8v8" />
-    <path d="M8 12h8" />
-  </svg>
-);
-
-const FeatureIcon2 = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="w-10 h-10"
-  >
-    <rect width="18" height="18" x="3" y="3" rx="2" />
-    <path d="M7 7h.01" />
-    <path d="M17 7h.01" />
-    <path d="M7 17h.01" />
-    <path d="M17 17h.01" />
-    <path d="M7 12h10" />
-  </svg>
-);
-
-const FeatureIcon3 = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="w-10 h-10"
-  >
-    <path d="M12 2a10 10 0 1 0 10 10H12V2Z" />
-    <path d="M21 12a9 9 0 0 0-9-9" />
-  </svg>
-);
-
-const FeatureIcon4 = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="w-10 h-10"
-  >
-    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-    <polyline points="14 2 14 8 20 8" />
-    <path d="M12 18v-6" />
-    <path d="M8 18v-1" />
-    <path d="M16 18v-3" />
-  </svg>
-);
+// Feature icons removed - not currently used
 
 // Animation variants
 const containerVariants = {
@@ -112,34 +34,18 @@ const FeaturesSection: React.FC = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.2 });
 
-  const features = [
-    // Feature cards removed as requested - keeping the component structure for future use
-  ];
+  // Feature cards array - currently empty but keeping structure for future use
+  const features: Array<{
+    title: string;
+    description: string;
+    icon: React.ReactNode;
+    color: string;
+    bgColor: string;
+    borderColor: string;
+    path: string;
+  }> = [];
 
-  // Detailed use cases for the carousel
-  const useCases = [
-    {
-      title: 'Customer Support Automation',
-      description:
-        'Build an AI-powered support system that handles routine inquiries, routes complex issues to the right team, and learns from each interaction.',
-      image:
-        'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    },
-    {
-      title: 'Data Processing Pipeline',
-      description:
-        'Create workflows that automatically collect, clean, and analyze data from multiple sources, generating insights and reports without manual intervention.',
-      image:
-        'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    },
-    {
-      title: 'Content Creation Assistant',
-      description:
-        'Deploy AI agents that help generate content drafts, suggest improvements, and maintain consistent brand voice across all your channels.',
-      image:
-        'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-    },
-  ];
+  // Use cases removed - not currently used
 
   return (
     <section id="features" ref={ref} className="py-24 md:py-32 relative overflow-hidden">

@@ -10,6 +10,7 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionMain,
 } from '@/lib/motion-wrapper';
 import { useScroll, useTransform } from 'framer-motion';
 
@@ -382,7 +383,7 @@ const Pricing = () => {
         ))}
       </div>
 
-      <motion.main
+      <MotionMain
         ref={sectionRef}
         style={{ opacity }}
         className="flex-1 relative z-20"
@@ -768,7 +769,7 @@ const Pricing = () => {
             </MotionDiv>
           </div>
         </section>
-      </motion.main>
+      </MotionMain>
 
       <Footer />
     </div>

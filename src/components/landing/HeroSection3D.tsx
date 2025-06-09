@@ -8,8 +8,9 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  useScroll,
+  useTransform,
 } from '@/lib/motion-wrapper';
-import { useScroll, useTransform } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Play, Pause, ChevronDown, Sparkles } from 'lucide-react';

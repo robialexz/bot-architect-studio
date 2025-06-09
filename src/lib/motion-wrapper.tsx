@@ -1,5 +1,13 @@
 import React from 'react';
-import { motion, AnimatePresence, MotionProps } from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  MotionProps,
+  useAnimation,
+  useInView,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
 
 // Extend MotionProps to include className
 interface ExtendedMotionProps extends MotionProps {
@@ -77,6 +85,22 @@ export const MotionH2 = React.forwardRef<HTMLHeadingElement, ExtendedMotionProps
 });
 
 MotionH2.displayName = 'MotionH2';
+
+// Wrapper pentru motion.h3 cu error boundary
+export const MotionH3 = React.forwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.h3 ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <h3 ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionH3.displayName = 'MotionH3';
 
 // Wrapper pentru motion.p cu error boundary
 export const MotionP = React.forwardRef<HTMLParagraphElement, ExtendedMotionProps>((props, ref) => {
@@ -212,6 +236,86 @@ export const MotionSvg = React.forwardRef<SVGSVGElement, ExtendedMotionProps>((p
 
 MotionSvg.displayName = 'MotionSvg';
 
+// Wrapper pentru motion.footer cu error boundary
+export const MotionFooter = React.forwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.footer ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <footer ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionFooter.displayName = 'MotionFooter';
+
+// Wrapper pentru motion.a cu error boundary
+export const MotionA = React.forwardRef<HTMLAnchorElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.a ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <a ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionA.displayName = 'MotionA';
+
+// Wrapper pentru motion.span cu error boundary
+export const MotionSpan = React.forwardRef<HTMLSpanElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.span ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <span ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionSpan.displayName = 'MotionSpan';
+
+// Wrapper pentru motion.aside cu error boundary
+export const MotionAside = React.forwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.aside ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <aside ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionAside.displayName = 'MotionAside';
+
+// Wrapper pentru motion.main cu error boundary
+export const MotionMain = React.forwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.main ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <main ref={ref} {...fallbackProps} />;
+  }
+});
+
+MotionMain.displayName = 'MotionMain';
+
 // Wrapper pentru AnimatePresence cu error boundary
 export const SafeAnimatePresence: React.FC<{
   children: React.ReactNode;
@@ -224,3 +328,47 @@ export const SafeAnimatePresence: React.FC<{
     return <>{children}</>;
   }
 };
+
+// Export hooks with error boundaries
+export const useAnimationSafe = () => {
+  try {
+    return useAnimation();
+  } catch (error) {
+    console.warn('useAnimation error:', error);
+    return {
+      start: () => Promise.resolve(),
+      stop: () => {},
+      set: () => {},
+    };
+  }
+};
+
+export const useInViewSafe = (ref: React.RefObject<Element>, options?: Record<string, unknown>) => {
+  try {
+    return useInView(ref, options);
+  } catch (error) {
+    console.warn('useInView error:', error);
+    return false;
+  }
+};
+
+export const useScrollSafe = () => {
+  try {
+    return useScroll();
+  } catch (error) {
+    console.warn('useScroll error:', error);
+    return { scrollY: { get: () => 0 }, scrollX: { get: () => 0 } };
+  }
+};
+
+export const useTransformSafe = (value: unknown, inputRange: number[], outputRange: unknown[]) => {
+  try {
+    return useTransform(value, inputRange, outputRange);
+  } catch (error) {
+    console.warn('useTransform error:', error);
+    return { get: () => outputRange[0] };
+  }
+};
+
+// Export original hooks for direct use
+export { useAnimation, useInView, useScroll, useTransform };

@@ -342,8 +342,8 @@ const EnhancedInteractiveDemo: React.FC = () => {
 
             {/* Vizualizare demo */}
             <div className="bg-background/50 rounded-lg p-6 mb-8 min-h-[400px]">
-              <SafeAnimatePresence mode="wait">
-                {/* Pasul 1: Input utilizator */}
+              {/* Pasul 1: Input utilizator */}
+              <SafeAnimatePresence>
                 {currentStep >= 0 && (
                   <MotionDiv
                     key="user-input"
@@ -396,8 +396,10 @@ const EnhancedInteractiveDemo: React.FC = () => {
                     </div>
                   </MotionDiv>
                 )}
+              </SafeAnimatePresence>
 
-                {/* Pasul 2-3: Procesare boți */}
+              {/* Pasul 2-3: Procesare boți */}
+              <SafeAnimatePresence>
                 {currentStep >= 2 && showBotResponses && (
                   <MotionDiv
                     key="bot-responses"
@@ -439,8 +441,10 @@ const EnhancedInteractiveDemo: React.FC = () => {
                     </div>
                   </MotionDiv>
                 )}
+              </SafeAnimatePresence>
 
-                {/* Pasul 4-5: Răspuns final integrat */}
+              {/* Pasul 4-5: Răspuns final integrat */}
+              <SafeAnimatePresence>
                 {currentStep >= 4 && showFinalResponse && (
                   <MotionDiv
                     key="final-response"

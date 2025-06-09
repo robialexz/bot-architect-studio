@@ -9,6 +9,7 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionMain,
 } from '@/lib/motion-wrapper';
 
 import { Button } from '@/components/ui/button';
@@ -258,7 +259,7 @@ const MyAgents = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <motion.main
+      <MotionMain
         className="flex-1 container mx-auto px-4 py-12 max-w-screen-xl" // Added max-width
         variants={pageVariants}
         initial="initial"
@@ -477,7 +478,7 @@ const MyAgents = () => {
             </CardContent>
           </Card>
         </MotionDiv>
-      </motion.main>
+      </MotionMain>
       <AgentModal
         open={isAgentModalOpen}
         onOpenChange={closeAgentModal}

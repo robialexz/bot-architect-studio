@@ -8,6 +8,7 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionMain,
 } from '@/lib/motion-wrapper';
 
 import Footer from '@/components/Footer';
@@ -191,7 +192,7 @@ const Wallet = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       {' '}
       {/* Removed hero-bg */}
-      <motion.main
+      <MotionMain
         className="flex-1 container mx-auto px-4 py-12 md:py-16 max-w-screen-xl" // Added max-width
         variants={pageVariants}
         initial="initial"
@@ -641,7 +642,7 @@ const Wallet = () => {
             </TabsContent>
           </Tabs>
         </MotionDiv>
-      </motion.main>
+      </MotionMain>
       <Footer />
       <Dialog open={isPurchaseModalOpen} onOpenChange={setIsPurchaseModalOpen}>
         <DialogContent>

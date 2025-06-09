@@ -9,6 +9,7 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionSpan,
 } from '@/lib/motion-wrapper';
 
 import {
@@ -251,7 +252,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                   <span className="text-sm font-bold text-foreground">
                     {tokenData?.symbol || tokenConfig.symbol}
                   </span>
-                  <motion.span
+                  <MotionSpan
                     ref={priceRef}
                     className={`text-xs text-muted-foreground transition-colors duration-300 ${
                       priceChangeAnimation === 'up'
@@ -274,7 +275,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                     transition={{ duration: 0.5 }}
                   >
                     {formatCurrency(tokenData?.price || 0)}
-                  </motion.span>
+                  </MotionSpan>
                 </div>
                 <div className="flex items-center gap-1">
                   {(tokenData?.priceChange24h || 0) >= 0 ? (
@@ -529,7 +530,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
               {/* Price Section with Animation */}
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <motion.span
+                  <MotionSpan
                     ref={priceRef}
                     className={`text-2xl font-bold text-foreground transition-colors duration-300 ${
                       priceChangeAnimation === 'up'
@@ -552,7 +553,7 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
                     transition={{ duration: 0.5 }}
                   >
                     {formatCurrency(tokenData?.price || 0)}
-                  </motion.span>
+                  </MotionSpan>
 
                   <div className="flex items-center gap-1">
                     <MotionDiv

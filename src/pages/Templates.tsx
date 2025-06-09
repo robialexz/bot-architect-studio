@@ -39,6 +39,7 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionMain,
 } from '@/lib/motion-wrapper';
 import { useScroll, useTransform } from 'framer-motion';
 
@@ -394,7 +395,7 @@ const Templates = () => {
       </div>
 
       <div className="relative z-20 min-h-screen flex flex-col">
-        <motion.main
+        <MotionMain
           ref={sectionRef}
           style={{ opacity }}
           className="flex-1"
@@ -676,7 +677,7 @@ const Templates = () => {
               </MotionDiv>
             </MotionDiv>
           </section>
-        </motion.main>
+        </MotionMain>
         <Footer />
       </div>
     </div>

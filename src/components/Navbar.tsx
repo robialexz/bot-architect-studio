@@ -51,6 +51,7 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionSpan,
 } from '@/lib/motion-wrapper';
 
 import React, { useState, useEffect } from 'react';
@@ -192,7 +193,7 @@ const Navbar = () => {
                         </Badge>
                       )}
                     </div>
-                    <motion.span
+                    <MotionSpan
                       className={cn(
                         'absolute bottom-0 left-0 h-0.5 w-full origin-bottom-left',
                         item.featured

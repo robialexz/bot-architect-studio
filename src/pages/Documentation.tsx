@@ -60,6 +60,7 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionAside,
 } from '@/lib/motion-wrapper';
 
 const pageVariants = {
@@ -1119,7 +1120,7 @@ const Documentation = () => {
       >
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
           {/* Sidebar */}
-          <motion.aside
+          <MotionAside
             className="lg:w-64 xl:w-72 flex-shrink-0"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -1154,7 +1155,7 @@ const Documentation = () => {
                 </nav>
               </div>
             </div>
-          </motion.aside>
+          </MotionAside>
 
           {/* Main Content */}
           <main

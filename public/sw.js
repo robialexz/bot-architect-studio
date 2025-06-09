@@ -122,22 +122,23 @@ async function networkFirst(request, cacheName) {
   try {
     console.log('[SW] Network first for:', request.url);
     const networkResponse = await fetch(request);
-    
-    if (networkResponse.ok) {
+
+    // Only cache complete responses (not partial content)
+    if (networkResponse.ok && networkResponse.status !== 206) {
       const cache = await caches.open(cacheName);
       cache.put(request, networkResponse.clone());
     }
-    
+
     return networkResponse;
   } catch (error) {
     console.log('[SW] Network failed, trying cache:', request.url);
     const cache = await caches.open(cacheName);
     const cachedResponse = await cache.match(request);
-    
+
     if (cachedResponse) {
       return cachedResponse;
     }
-    
+
     return new Response('Offline', { status: 503 });
   }
 }
@@ -145,14 +146,15 @@ async function networkFirst(request, cacheName) {
 async function staleWhileRevalidate(request, cacheName) {
   const cache = await caches.open(cacheName);
   const cachedResponse = await cache.match(request);
-  
+
   const fetchPromise = fetch(request).then((networkResponse) => {
-    if (networkResponse.ok) {
+    // Only cache complete responses (not partial content)
+    if (networkResponse.ok && networkResponse.status !== 206) {
       cache.put(request, networkResponse.clone());
     }
     return networkResponse;
   }).catch(() => cachedResponse);
-  
+
   return cachedResponse || fetchPromise;
 }
 

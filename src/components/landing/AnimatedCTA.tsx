@@ -8,8 +8,9 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  useInView,
+  useAnimation,
 } from '@/lib/motion-wrapper';
-import { useInView } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles } from 'lucide-react';
@@ -133,7 +134,6 @@ const AnimatedCTA: React.FC = () => {
           <h2
             ref={headingRef}
             className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-6 perspective-500"
-            style={{ perspective: '1000px' }}
           >
             Transform Your AI Capabilities Today
           </h2>

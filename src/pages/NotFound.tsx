@@ -11,6 +11,7 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionMain,
 } from '@/lib/motion-wrapper';
 
 import { ServerCrash, Home } from 'lucide-react'; // Or Frown, AlertTriangle etc.
@@ -39,7 +40,7 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <motion.main
+      <MotionMain
         className="flex-1 flex flex-col items-center justify-center text-center p-8"
         variants={pageVariants}
         initial="initial"
@@ -89,7 +90,7 @@ const NotFound = () => {
             </Link>
           </Button>
         </MotionDiv>
-      </motion.main>
+      </MotionMain>
       <Footer />
     </div>
   );

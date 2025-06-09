@@ -4,10 +4,13 @@ import {
   MotionSection,
   MotionH1,
   MotionH2,
+  MotionH3,
   MotionP,
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionA,
+  MotionSpan,
 } from '@/lib/motion-wrapper';
 import { useTransform } from 'framer-motion';
 
@@ -168,7 +171,7 @@ const AnimatedFeatureCard: React.FC<AnimatedFeatureCardProps> = ({
         </div>
 
         {/* Content */}
-        <motion.h3
+        <MotionH3
           className="text-xl md:text-2xl font-semibold mb-3"
           animate={{
             y: isHovered ? -5 : 0,
@@ -176,7 +179,7 @@ const AnimatedFeatureCard: React.FC<AnimatedFeatureCardProps> = ({
           }}
         >
           {title}
-        </motion.h3>
+        </MotionH3>
 
         <MotionP
           className="text-muted-foreground mb-6"
@@ -190,7 +193,7 @@ const AnimatedFeatureCard: React.FC<AnimatedFeatureCardProps> = ({
 
         {/* Link */}
         {link && (
-          <motion.a
+          <MotionA
             href={link}
             className={`inline-flex items-center ${colorClasses.linkColor} transition-colors duration-300`}
             animate={{
@@ -199,15 +202,15 @@ const AnimatedFeatureCard: React.FC<AnimatedFeatureCardProps> = ({
             }}
           >
             <span>{linkText}</span>
-            <motion.span
+            <MotionSpan
               animate={{
                 x: isHovered ? 5 : 0,
                 transition: { duration: 0.3, delay: 0.1 },
               }}
             >
               <ArrowRight className="ml-2 h-4 w-4" />
-            </motion.span>
-          </motion.a>
+            </MotionSpan>
+          </MotionA>
         )}
       </div>
 

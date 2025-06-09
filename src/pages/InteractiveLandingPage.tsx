@@ -3,8 +3,7 @@ import HeroSection3D from '@/components/landing/HeroSection3D';
 import EnhancedFeaturesSection from '@/components/landing/EnhancedFeaturesSection';
 import InteractiveDemo from '@/components/landing/InteractiveDemo';
 import AnimatedCTA from '@/components/landing/AnimatedCTA';
-import RoadmapSection from '@/components/landing/RoadmapSection';
-import TokenTierSection from '@/components/landing/TokenTierSection';
+import { LazyRoadmapSection, LazyTokenTierSection } from '@/components/lazy/LazyComponents';
 import ComingSoonModal from '@/components/ui/ComingSoonModal';
 import { useComingSoon } from '@/hooks/useComingSoon';
 
@@ -23,10 +22,10 @@ const InteractiveLandingPage: React.FC = () => {
       <InteractiveDemo />
 
       {/* Development Roadmap Section */}
-      <RoadmapSection />
+      <LazyRoadmapSection />
 
       {/* Token-Based Tier System */}
-      <TokenTierSection />
+      <LazyTokenTierSection />
 
       {/* Testimonials Section - Placeholder for now */}
       <section className="py-20 md:py-32 relative overflow-hidden">

@@ -8,14 +8,14 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  useInView,
 } from '@/lib/motion-wrapper';
-import { useInView } from 'framer-motion';
 
 import { Link as RouterLink } from 'react-router-dom'; // Renamed to avoid conflict with motion.div if it was named Link
 import { Button as ShadButton } from '@/components/ui/button'; // Renamed to avoid conflict
 import { ArrowRightIcon } from '@radix-ui/react-icons';
 
-const MotionButton = motion(ShadButton); // Wrap ShadCN Button for motion props
+// Use MotionButton from motion-wrapper instead of creating one
 
 // Define the type for the feature prop
 interface Feature {

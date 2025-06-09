@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import MinimalistHero from '@/components/landing/MinimalistHero';
-import VisualWorkflowBuilder from '@/components/landing/VisualWorkflowBuilder';
-import RoadmapSection from '@/components/landing/RoadmapSection';
-import TokenTierSection from '@/components/landing/TokenTierSection';
+import {
+  LazyVisualWorkflowBuilder,
+  LazyRoadmapSection,
+  LazyTokenTierSection,
+} from '@/components/lazy/LazyComponents';
 import ComingSoonModal from '@/components/ui/ComingSoonModal';
 import { useComingSoon } from '@/hooks/useComingSoon';
 import { Button } from '@/components/ui/button';
@@ -332,13 +334,13 @@ const MinimalistLandingPage: React.FC = () => {
       </section>
 
       {/* Visual Workflow Builder Section */}
-      <VisualWorkflowBuilder />
+      <LazyVisualWorkflowBuilder />
 
       {/* Development Roadmap Section */}
-      <RoadmapSection />
+      <LazyRoadmapSection />
 
       {/* Token-Based Tier System */}
-      <TokenTierSection />
+      <LazyTokenTierSection />
 
       {/* Unique Advantages - de ce suntem cei mai tari! 🏆 */}
       <section className="py-20 bg-gradient-to-r from-primary/10 via-gold/10 to-primary/10">
@@ -379,9 +381,9 @@ const MinimalistLandingPage: React.FC = () => {
                     <p className="text-muted-foreground">{advantage.description}</p>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-3">
+                    <div className="space-y-3">
                       {advantage.features.map((feature, featureIndex) => (
-                        <MotionLi
+                        <MotionDiv
                           key={featureIndex}
                           initial={{ opacity: 0, x: -10 }}
                           whileInView={{ opacity: 1, x: 0 }}
@@ -391,9 +393,9 @@ const MinimalistLandingPage: React.FC = () => {
                         >
                           <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                           <span className="text-sm">{feature}</span>
-                        </MotionLi>
+                        </MotionDiv>
                       ))}
-                    </ul>
+                    </div>
                   </CardContent>
                 </Card>
               </MotionDiv>

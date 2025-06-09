@@ -8,6 +8,8 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
+  MotionFooter,
+  MotionA,
 } from '@/lib/motion-wrapper';
 
 import { Layers, Github, Twitter, MessageCircle } from 'lucide-react';
@@ -32,7 +34,7 @@ const SocialIconLink = ({
   icon: React.ElementType;
   label: string;
 }) => (
-  <motion.a
+  <MotionA
     href={href}
     target="_blank"
     rel="noopener noreferrer"
@@ -42,7 +44,7 @@ const SocialIconLink = ({
     whileTap={{ scale: 0.95 }}
   >
     <Icon className="w-5 h-5" />
-  </motion.a>
+  </MotionA>
 );
 
 const Footer = () => {
@@ -94,12 +96,7 @@ const Footer = () => {
   ];
 
   return (
-    <motion.footer
-      className="border-t border-border-alt py-4 md:py-6 bg-card/80 backdrop-blur-lg shadow-top"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-    >
+    <footer className="border-t border-border-alt py-4 md:py-6 bg-card/80 backdrop-blur-lg shadow-top">
       <div className="container mx-auto px-4 max-w-screen-xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <MotionDiv
@@ -149,7 +146,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 };
 
