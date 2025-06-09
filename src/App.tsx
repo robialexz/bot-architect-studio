@@ -18,6 +18,7 @@ import Index from './pages/Index';
 import SimpleLandingPage from './pages/SimpleLandingPage';
 import InteractiveLandingPage from './pages/InteractiveLandingPage';
 import MinimalistLandingPage from './pages/MinimalistLandingPage';
+import SimpleTestIndex from './pages/SimpleTestIndex';
 import AuthPageSimple from './pages/AuthPageSimple';
 import NotFound from './pages/NotFound';
 import UITest from './pages/UITest';
@@ -167,6 +168,7 @@ const App: React.FC = () => {
                       </PublicRoute>
                     }
                   />
+
                   <Route
                     path="/simple"
                     element={
