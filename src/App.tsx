@@ -79,7 +79,7 @@ const queryClient = new QueryClient({
       retry: (failureCount, error) => {
         // Don't retry on 4xx errors except 408, 429
         if (error instanceof Error && 'status' in error) {
-          const status = (error as any).status;
+          const status = (error as { status: number }).status;
           if (status >= 400 && status < 500 && status !== 408 && status !== 429) {
             return false;
           }

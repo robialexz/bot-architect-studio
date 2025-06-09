@@ -7,11 +7,11 @@ interface MotionProps {
   children?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  initial?: any;
-  animate?: any;
-  transition?: any;
-  whileHover?: any;
-  whileTap?: any;
+  initial?: Record<string, unknown>;
+  animate?: Record<string, unknown>;
+  transition?: Record<string, unknown>;
+  whileHover?: Record<string, unknown>;
+  whileTap?: Record<string, unknown>;
   onClick?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
@@ -21,17 +21,17 @@ interface MotionProps {
 // Create a simple motion component factory
 const createMotionComponent = (tag: keyof JSX.IntrinsicElements) => {
   return React.forwardRef<HTMLElement, MotionProps>((props, ref) => {
-    const { 
-      children, 
-      className, 
-      style, 
-      initial, 
-      animate, 
-      transition, 
-      whileHover, 
-      whileTap, 
+    const {
+      children,
+      className,
+      style,
+      initial,
+      animate,
+      transition,
+      whileHover,
+      whileTap,
       asChild,
-      ...rest 
+      ...rest
     } = props;
 
     // Simple CSS-based animations
@@ -98,7 +98,11 @@ export const useScroll = () => {
 };
 
 // Simple transform hook
-export const useTransform = (value: any, input: number[], output: number[]) => {
+export const useTransform = (
+  value: { get?: () => number } | number,
+  input: number[],
+  output: number[]
+) => {
   const [transformedValue, setTransformedValue] = React.useState(output[0]);
 
   React.useEffect(() => {
@@ -108,7 +112,7 @@ export const useTransform = (value: any, input: number[], output: number[]) => {
     const inputRange = input[1] - input[0];
     const outputRange = output[1] - output[0];
     const progress = Math.max(0, Math.min(1, (currentValue - input[0]) / inputRange));
-    const result = output[0] + (progress * outputRange);
+    const result = output[0] + progress * outputRange;
 
     setTransformedValue(result);
   }, [value, input, output]);
@@ -120,7 +124,7 @@ export const useTransform = (value: any, input: number[], output: number[]) => {
 export const useAnimation = () => {
   const [isAnimating, setIsAnimating] = React.useState(false);
 
-  const start = React.useCallback((animation: any) => {
+  const start = React.useCallback((animation: Record<string, unknown>) => {
     setIsAnimating(true);
     // Simple timeout-based animation
     setTimeout(() => setIsAnimating(false), 1000);
@@ -130,7 +134,10 @@ export const useAnimation = () => {
 };
 
 // Simple in-view hook
-export const useInView = (ref?: React.RefObject<HTMLElement>, options?: any) => {
+export const useInView = (
+  ref?: React.RefObject<HTMLElement>,
+  options?: IntersectionObserverInit
+) => {
   const [inView, setInView] = React.useState(false);
 
   React.useEffect(() => {
@@ -155,25 +162,25 @@ export const useInView = (ref?: React.RefObject<HTMLElement>, options?: any) => 
 export const fadeIn = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
-  transition: { duration: 0.6 }
+  transition: { duration: 0.6 },
 };
 
 export const slideUp = {
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+  transition: { duration: 0.6 },
 };
 
 export const slideDown = {
   initial: { opacity: 0, y: -30 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+  transition: { duration: 0.6 },
 };
 
 export const scaleIn = {
   initial: { opacity: 0, scale: 0.8 },
   animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.6 }
+  transition: { duration: 0.6 },
 };
 
 // Simple stagger animation
@@ -181,9 +188,9 @@ export const staggerContainer = {
   initial: {},
   animate: {
     transition: {
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 // Export commonly used animation presets
@@ -192,7 +199,7 @@ export const animations = {
   slideUp,
   slideDown,
   scaleIn,
-  staggerContainer
+  staggerContainer,
 };
 
 // Simple AnimatePresence alternative
