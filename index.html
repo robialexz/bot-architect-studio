@@ -111,6 +111,27 @@
       .from-primary { --tw-gradient-from: hsl(210 100% 60%); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
       .to-gold { --tw-gradient-to: hsl(45 100% 65%); }
 
+      /* Premium card styles - CRITICAL FOR PRODUCTION */
+      .premium-card {
+        background-color: #1A1A1A !important;
+        border: 1px solid #333333 !important;
+        border-radius: 0.75rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .premium-card:hover {
+        border-color: rgba(0, 153, 255, 0.3) !important;
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3), 0 0 15px -3px rgba(0, 153, 255, 0.2) !important;
+      }
+
+      /* Text colors */
+      .text-primary { color: #0099FF !important; }
+      .text-gold { color: #FFD700 !important; }
+      .bg-clip-text { -webkit-background-clip: text; background-clip: text; }
+      .text-transparent { color: transparent; }
+
       /* Loading fallback */
       .loading-fallback {
         display: flex;

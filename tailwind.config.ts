@@ -45,6 +45,11 @@ export default {
     'animate-slide-down',
     'glass-effect',
     'card-hover',
+    'premium-card',
+    'roadmap-card',
+    'milestone-card',
+    'progress-bar',
+    'progress-fill',
     // Pattern-based safelist for dynamic classes
     {
       pattern: /hero-floating-dot-.*/,
@@ -54,6 +59,39 @@ export default {
     },
     {
       pattern: /luxury-.*/,
+    },
+    {
+      pattern: /bg-gradient-.*/,
+    },
+    {
+      pattern: /text-primary.*/,
+    },
+    {
+      pattern: /text-gold.*/,
+    },
+    {
+      pattern: /border-primary.*/,
+    },
+    {
+      pattern: /bg-primary.*/,
+    },
+    {
+      pattern: /bg-gold.*/,
+    },
+    {
+      pattern: /from-primary.*/,
+    },
+    {
+      pattern: /to-gold.*/,
+    },
+    {
+      pattern: /shadow-primary.*/,
+    },
+    {
+      pattern: /hover:bg-primary.*/,
+    },
+    {
+      pattern: /hover:shadow-.*/,
     },
   ],
   prefix: '',
