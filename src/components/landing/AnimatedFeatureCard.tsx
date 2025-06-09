@@ -12,7 +12,7 @@ import {
   MotionA,
   MotionSpan,
 } from '@/lib/motion-wrapper';
-import { useTransform } from 'framer-motion';
+import { useTransform } from '@/lib/motion-hooks';
 
 import { useAnimatedScroll } from '@/hooks/useAnimatedScroll';
 import { ArrowRight } from 'lucide-react';

@@ -8,9 +8,8 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
-  useScroll,
-  useTransform,
 } from '@/lib/motion-wrapper';
+import { useScroll, useTransform } from '@/lib/motion-hooks';
 
 import { Button } from '@/components/ui/button';
 import {

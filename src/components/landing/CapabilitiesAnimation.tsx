@@ -8,8 +8,8 @@ import {
   MotionButton,
   MotionLi,
   MotionTr,
-  useAnimation,
 } from '@/lib/motion-wrapper';
+import { useAnimation } from '@/lib/motion-hooks';
 
 import { useInView } from 'react-intersection-observer';
 import { Bot, BrainCircuit, Zap, Sparkles } from 'lucide-react';
