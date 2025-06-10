@@ -1,5 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import {
+  SafeAnimatePresence,
+  MotionDiv,
+  MotionSection,
+  MotionH1,
+  MotionH2,
+  MotionP,
+  MotionButton,
+  MotionLi,
+  MotionTr,
+} from '@/lib/motion-wrapper';
+
 import {
   TrendingUp,
   TrendingDown,
@@ -167,7 +178,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
 
   if (error) {
     return (
-      <motion.div
+      <MotionDiv
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className={`premium-card p-6 rounded-2xl border border-red-500/30 bg-red-500/5 ${className}`}
@@ -184,12 +195,12 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
             <RefreshCw className="w-4 h-4" />
           </Button>
         </div>
-      </motion.div>
+      </MotionDiv>
     );
   }
 
   return (
-    <motion.div
+    <MotionDiv
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       onHoverStart={() => setIsHovered(true)}
@@ -201,7 +212,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             {/* Enhanced Token Logo */}
-            <motion.div
+            <MotionDiv
               animate={logoControls}
               className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-gold flex items-center justify-center relative overflow-hidden cursor-pointer"
               whileHover={{
@@ -211,14 +222,14 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
               transition={{ type: 'spring', stiffness: 300 }}
             >
               {/* Rotating Ring */}
-              <motion.div
+              <MotionDiv
                 className="absolute inset-0 rounded-full border border-gold/40"
                 animate={{ rotate: 360 }}
                 transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
               />
 
               {/* Pulsing Glow */}
-              <motion.div
+              <MotionDiv
                 className="absolute inset-0 bg-gradient-to-r from-primary/20 to-gold/20 blur-lg rounded-full"
                 animate={{
                   scale: [1, 1.3, 1],
@@ -235,15 +246,15 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
 
               {/* Sparkles */}
               {isHovered && (
-                <motion.div
+                <MotionDiv
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   className="absolute -top-1 -right-1"
                 >
                   <Sparkles className="w-3 h-3 text-gold animate-pulse" />
-                </motion.div>
+                </MotionDiv>
               )}
-            </motion.div>
+            </MotionDiv>
 
             {/* Token Info */}
             <div className="flex-1">
@@ -270,7 +281,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
-            <motion.button
+            <MotionButton
               onClick={handleFavoriteToggle}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -281,16 +292,16 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
                   isFavorited ? 'text-red-500 fill-red-500' : 'text-muted-foreground'
                 }`}
               />
-            </motion.button>
+            </MotionButton>
 
-            <motion.button
+            <MotionButton
               onClick={handleShare}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className="p-2 rounded-full hover:bg-primary/10 transition-colors"
             >
               <Share2 className="w-4 h-4 text-muted-foreground hover:text-primary" />
-            </motion.button>
+            </MotionButton>
 
             <Button
               variant="ghost"
@@ -390,9 +401,9 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
                 </div>
 
                 <div className="space-y-2">
-                  <AnimatePresence>
+                  <SafeAnimatePresence>
                     {transactions.slice(0, 3).map((tx, index) => (
-                      <motion.div
+                      <MotionDiv
                         key={tx.signature}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -426,9 +437,9 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
                             {formatCurrency(tx.value)}
                           </p>
                         </div>
-                      </motion.div>
+                      </MotionDiv>
                     ))}
-                  </AnimatePresence>
+                  </SafeAnimatePresence>
                 </div>
               </div>
             )}
@@ -442,7 +453,7 @@ const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
           </div>
         )}
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };
 
