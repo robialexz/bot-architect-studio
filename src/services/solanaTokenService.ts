@@ -28,6 +28,26 @@ export interface PriceHistory {
   volume: number;
 }
 
+interface DexScreenerPair {
+  baseToken: {
+    name: string;
+    symbol: string;
+    totalSupply: string;
+    decimals: string;
+  };
+  priceUsd: string;
+  priceChange: {
+    h24: string;
+  };
+  marketCap: string;
+  volume: {
+    h24: number;
+  };
+  info?: {
+    imageUrl: string;
+  };
+}
+
 class SolanaTokenService {
   private readonly SOLANA_RPC_URL = 'https://api.mainnet-beta.solana.com';
   private readonly COINGECKO_API = 'https://api.coingecko.com/api/v3';
@@ -215,7 +235,7 @@ class SolanaTokenService {
       }
 
       // Get the most liquid pair (highest volume)
-      const bestPair = data.pairs.reduce((best: any, current: any) =>
+      const bestPair = data.pairs.reduce((best: DexScreenerPair, current: DexScreenerPair) =>
         (current.volume?.h24 || 0) > (best.volume?.h24 || 0) ? current : best
       );
 
