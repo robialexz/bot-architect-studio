@@ -33,6 +33,8 @@ class SolanaTokenService {
   private readonly COINGECKO_API = 'https://api.coingecko.com/api/v3';
   private readonly BIRDEYE_API = 'https://public-api.birdeye.so/public';
   private readonly JUPITER_API = 'https://price.jup.ag/v4';
+  private readonly PUMP_FUN_API = 'https://frontend-api.pump.fun';
+  private readonly DEXSCREENER_API = 'https://api.dexscreener.com/latest/dex';
 
   // Demo data for development - will be replaced with real API calls
   private readonly DEMO_TOKEN_DATA: TokenData = {
@@ -85,24 +87,30 @@ class SolanaTokenService {
    */
   async getTokenData(tokenAddress: string): Promise<TokenData> {
     try {
-      // For demo purposes, return demo data
-      if (tokenAddress === 'DEMO_TOKEN') {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+      logger.info(`Fetching REAL token data for: ${tokenAddress}`);
 
-        // Add some randomness to make it feel live
-        const priceVariation = (Math.random() - 0.5) * 0.002; // ±0.1% variation
-        const volumeVariation = (Math.random() - 0.5) * 0.1; // ±5% variation
-
-        return {
-          ...this.DEMO_TOKEN_DATA,
-          price: this.DEMO_TOKEN_DATA.price + priceVariation,
-          volume24h: this.DEMO_TOKEN_DATA.volume24h * (1 + volumeVariation),
-          priceChange24h: this.DEMO_TOKEN_DATA.priceChange24h + (Math.random() - 0.5) * 2,
-        };
+      // Always fetch real data - no more demo mode
+      // Try DexScreener API first (most reliable for Solana tokens)
+      try {
+        const dexScreenerData = await this.getDexScreenerTokenData(tokenAddress);
+        if (dexScreenerData) {
+          return dexScreenerData;
+        }
+      } catch (error) {
+        logger.warn('DexScreener API failed, trying Pump.fun:', error);
       }
 
-      // Try Jupiter API first (fastest for Solana tokens)
+      // Try Pump.fun API (for pump.fun tokens)
+      try {
+        const pumpFunData = await this.getPumpFunTokenData(tokenAddress);
+        if (pumpFunData) {
+          return pumpFunData;
+        }
+      } catch (error) {
+        logger.warn('Pump.fun API failed, trying Jupiter:', error);
+      }
+
+      // Try Jupiter API
       try {
         const jupiterData = await this.getJupiterPrice(tokenAddress);
         if (jupiterData) {
@@ -116,11 +124,11 @@ class SolanaTokenService {
       try {
         return await this.getBirdeyeTokenData(tokenAddress);
       } catch (error) {
-        logger.warn('Birdeye API failed, trying CoinGecko:', error);
+        logger.warn('Birdeye API failed:', error);
       }
 
-      // Final fallback to CoinGecko
-      return await this.getCoinGeckoTokenData(tokenAddress);
+      // If all APIs fail, throw error
+      throw new Error('Unable to fetch real token data from any API');
     } catch (error) {
       logger.error('All token data APIs failed:', error);
       throw new Error('Unable to fetch token data. Please try again later.');
@@ -135,13 +143,9 @@ class SolanaTokenService {
     limit: number = 10
   ): Promise<TransactionData[]> {
     try {
-      // For demo purposes, return demo transactions
-      if (tokenAddress === 'DEMO_TOKEN') {
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return this.DEMO_TRANSACTIONS.slice(0, limit);
-      }
+      logger.info(`Fetching REAL transactions for: ${tokenAddress}`);
 
-      // In production, this would call Solana RPC or indexer APIs
+      // Always fetch real transaction data
       const response = await fetch(`${this.BIRDEYE_API}/txs/token/${tokenAddress}?limit=${limit}`, {
         headers: {
           'X-API-KEY': process.env.VITE_BIRDEYE_API_KEY || 'demo',
@@ -187,6 +191,92 @@ class SolanaTokenService {
     } catch (error) {
       logger.error('Failed to fetch price history:', error);
       return this.generateDemoPriceHistory(timeframe);
+    }
+  }
+
+  /**
+   * DexScreener API integration
+   */
+  private async getDexScreenerTokenData(tokenAddress: string): Promise<TokenData | null> {
+    try {
+      console.log('🔍 Fetching from DexScreener API for token:', tokenAddress);
+      const response = await fetch(`${this.DEXSCREENER_API}/tokens/${tokenAddress}`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('📊 DexScreener API response:', data);
+
+      if (!data.pairs || data.pairs.length === 0) {
+        console.log('❌ No pairs found in DexScreener response');
+        return null;
+      }
+
+      // Get the most liquid pair (highest volume)
+      const bestPair = data.pairs.reduce((best: any, current: any) =>
+        (current.volume?.h24 || 0) > (best.volume?.h24 || 0) ? current : best
+      );
+
+      console.log('🏆 Best pair selected:', bestPair);
+
+      const tokenData = {
+        name: bestPair.baseToken?.name || 'FlowsyAI Token',
+        symbol: bestPair.baseToken?.symbol || 'FLOWSY',
+        price: parseFloat(bestPair.priceUsd || '0'),
+        priceChange24h: parseFloat(bestPair.priceChange?.h24 || '0'),
+        marketCap: parseFloat(bestPair.marketCap || '0'),
+        volume24h: parseFloat(bestPair.volume?.h24 || '0'),
+        supply: parseFloat(bestPair.baseToken?.totalSupply || '0'),
+        decimals: parseInt(bestPair.baseToken?.decimals || '9'),
+        logoUrl: bestPair.info?.imageUrl,
+      };
+
+      console.log('✅ Parsed token data:', tokenData);
+      return tokenData;
+    } catch (error) {
+      console.error('❌ DexScreener API error:', error);
+      logger.error('DexScreener API error:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Pump.fun API integration
+   */
+  private async getPumpFunTokenData(tokenAddress: string): Promise<TokenData | null> {
+    try {
+      const response = await fetch(`${this.PUMP_FUN_API}/coins/${tokenAddress}`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data || !data.mint) {
+        return null;
+      }
+
+      // Calculate market cap from price and supply
+      const price = data.usd_market_cap / data.total_supply || 0;
+      const marketCap = data.usd_market_cap || 0;
+
+      return {
+        name: data.name || 'FlowsyAI Token',
+        symbol: data.symbol || 'FLOWSY',
+        price: price,
+        priceChange24h: 0, // Pump.fun doesn't provide 24h change
+        marketCap: marketCap,
+        volume24h: data.volume_24h || 0,
+        supply: data.total_supply || 0,
+        decimals: 6, // Standard for pump.fun tokens
+        logoUrl: data.image_uri,
+      };
+    } catch (error) {
+      logger.error('Pump.fun API error:', error);
+      return null;
     }
   }
 

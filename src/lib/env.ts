@@ -166,7 +166,11 @@ if (typeof window !== 'undefined') {
     }
   } catch (error) {
     console.error('❌ Environment validation failed:', error);
+    // Don't throw in production to prevent app from breaking
+    // Log the error but allow the app to continue
     if (isProduction) {
+      console.warn('⚠️ Production environment validation failed, but continuing...');
+    } else {
       throw error;
     }
   }

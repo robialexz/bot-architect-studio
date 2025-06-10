@@ -14,7 +14,6 @@ import {
 
 // Import new landing page components
 import EnhancedWaitlistCTA from '@/components/landing/EnhancedWaitlistCTA';
-import LiveMetricsDashboard from '@/components/landing/LiveMetricsDashboard';
 import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection';
 
 
@@ -61,10 +60,7 @@ const IndexPage: React.FC = () => {
           <LazyRoadmapSection />
         </Suspense>
 
-        {/* Live Metrics Dashboard - Repositioned lower and made smaller */}
-        <Suspense fallback={<div className="h-64 bg-muted/20 animate-pulse" />}>
-          <LiveMetricsDashboard />
-        </Suspense>
+
 
         {/* Enhanced Waitlist CTA - Improved conversion optimization */}
         <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>

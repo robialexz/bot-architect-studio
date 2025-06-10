@@ -35,14 +35,21 @@ export default defineConfig({
         manualChunks: id => {
           // Vendor libraries
           if (id.includes('node_modules')) {
-            // React ecosystem
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
+            // React ecosystem (including all React-dependent libraries to prevent dependency issues)
+            if (
+              id.includes('react') ||
+              id.includes('react-dom') ||
+              id.includes('react-router') ||
+              id.includes('framer-motion') ||
+              id.includes('@radix-ui') ||
+              id.includes('react-hook-form') ||
+              id.includes('react-intersection-observer') ||
+              id.includes('react-resizable-panels') ||
+              id.includes('react-day-picker') ||
+              id.includes('react-use-measure') ||
+              id.includes('react-transition-group')
+            ) {
               return 'react-vendor';
-            }
-
-            // UI libraries
-            if (id.includes('framer-motion')) {
-              return 'framer-motion';
             }
 
             // 3D and visualization libraries (largest chunks)

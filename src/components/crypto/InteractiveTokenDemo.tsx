@@ -168,7 +168,6 @@ const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({ className =
             </div>
             <SolanaTokenWidget
               className="w-full"
-              tokenAddress="DEMO_TOKEN"
               showTransactions={true}
               autoRefresh={isPlaying}
             />

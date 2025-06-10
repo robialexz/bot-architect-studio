@@ -23,6 +23,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { solanaTokenService, TokenData, TransactionData } from '@/services/solanaTokenService';
 import { formatCurrency, formatPercentage, formatLargeNumber } from '@/utils/formatters';
+import { FLOWSY_TOKEN_CONFIG } from '@/config/tokenConfig';
 
 interface SolanaTokenWidgetProps {
   tokenAddress?: string;
@@ -33,11 +34,11 @@ interface SolanaTokenWidgetProps {
 }
 
 const SolanaTokenWidget: React.FC<SolanaTokenWidgetProps> = ({
-  tokenAddress = 'DEMO_TOKEN', // Will be replaced with actual token address
+  tokenAddress = FLOWSY_TOKEN_CONFIG.contractAddress, // Use real token address
   className = '',
   showTransactions = true,
   autoRefresh = true,
-  refreshInterval = 60000, // 60 seconds
+  refreshInterval = FLOWSY_TOKEN_CONFIG.refreshInterval, // Use config refresh interval
 }) => {
   const [tokenData, setTokenData] = useState<TokenData | null>(null);
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
