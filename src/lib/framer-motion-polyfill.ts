@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
+import * as React from 'react';
 
 // Safe polyfill for Framer Motion that prevents SSR issues
 // This replaces framer-motion entirely in production builds
@@ -22,9 +22,12 @@ interface MotionProps {
   [key: string]: any;
 }
 
+// Safety check for React availability
+const safeForwardRef = React?.forwardRef || ((render: any) => render);
+
 // Create a safe motion component factory
 const createMotionComponent = (element: string) => {
-  return React.forwardRef<any, MotionProps>((props, ref) => {
+  return safeForwardRef<any, MotionProps>((props, ref) => {
     const {
       initial,
       animate,

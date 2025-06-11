@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {
   motion,
   AnimatePresence,
@@ -22,8 +22,11 @@ interface FallbackProps {
   [key: string]: unknown;
 }
 
+// Safety check for React availability
+const safeForwardRef = React?.forwardRef || ((render: any) => render);
+
 // Wrapper pentru motion.div cu error boundary
-export const MotionDiv = React.forwardRef<HTMLDivElement, ExtendedMotionProps>((props, ref) => {
+export const MotionDiv = safeForwardRef<HTMLDivElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.div ref={ref} {...props} />;
   } catch (error) {
@@ -39,7 +42,7 @@ export const MotionDiv = React.forwardRef<HTMLDivElement, ExtendedMotionProps>((
 MotionDiv.displayName = 'MotionDiv';
 
 // Wrapper pentru motion.section cu error boundary
-export const MotionSection = React.forwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
+export const MotionSection = safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.section ref={ref} {...props} />;
   } catch (error) {
@@ -55,7 +58,7 @@ export const MotionSection = React.forwardRef<HTMLElement, ExtendedMotionProps>(
 MotionSection.displayName = 'MotionSection';
 
 // Wrapper pentru motion.h1 cu error boundary
-export const MotionH1 = React.forwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
+export const MotionH1 = safeForwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.h1 ref={ref} {...props} />;
   } catch (error) {
@@ -71,7 +74,7 @@ export const MotionH1 = React.forwardRef<HTMLHeadingElement, ExtendedMotionProps
 MotionH1.displayName = 'MotionH1';
 
 // Wrapper pentru motion.h2 cu error boundary
-export const MotionH2 = React.forwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
+export const MotionH2 = safeForwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.h2 ref={ref} {...props} />;
   } catch (error) {
@@ -87,7 +90,7 @@ export const MotionH2 = React.forwardRef<HTMLHeadingElement, ExtendedMotionProps
 MotionH2.displayName = 'MotionH2';
 
 // Wrapper pentru motion.h3 cu error boundary
-export const MotionH3 = React.forwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
+export const MotionH3 = safeForwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.h3 ref={ref} {...props} />;
   } catch (error) {
@@ -103,7 +106,7 @@ export const MotionH3 = React.forwardRef<HTMLHeadingElement, ExtendedMotionProps
 MotionH3.displayName = 'MotionH3';
 
 // Wrapper pentru motion.p cu error boundary
-export const MotionP = React.forwardRef<HTMLParagraphElement, ExtendedMotionProps>((props, ref) => {
+export const MotionP = safeForwardRef<HTMLParagraphElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.p ref={ref} {...props} />;
   } catch (error) {
@@ -119,7 +122,7 @@ export const MotionP = React.forwardRef<HTMLParagraphElement, ExtendedMotionProp
 MotionP.displayName = 'MotionP';
 
 // Wrapper pentru motion.button cu error boundary
-export const MotionButton = React.forwardRef<HTMLButtonElement, ExtendedMotionProps>(
+export const MotionButton = safeForwardRef<HTMLButtonElement, ExtendedMotionProps>(
   (props, ref) => {
     try {
       return <motion.button ref={ref} {...props} />;
@@ -137,7 +140,7 @@ export const MotionButton = React.forwardRef<HTMLButtonElement, ExtendedMotionPr
 MotionButton.displayName = 'MotionButton';
 
 // Wrapper pentru motion.li cu error boundary
-export const MotionLi = React.forwardRef<HTMLLIElement, ExtendedMotionProps>((props, ref) => {
+export const MotionLi = safeForwardRef<HTMLLIElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.li ref={ref} {...props} />;
   } catch (error) {
@@ -153,7 +156,7 @@ export const MotionLi = React.forwardRef<HTMLLIElement, ExtendedMotionProps>((pr
 MotionLi.displayName = 'MotionLi';
 
 // Wrapper pentru motion.tr cu error boundary
-export const MotionTr = React.forwardRef<HTMLTableRowElement, ExtendedMotionProps>((props, ref) => {
+export const MotionTr = safeForwardRef<HTMLTableRowElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.tr ref={ref} {...props} />;
   } catch (error) {
@@ -169,7 +172,7 @@ export const MotionTr = React.forwardRef<HTMLTableRowElement, ExtendedMotionProp
 MotionTr.displayName = 'MotionTr';
 
 // Wrapper pentru motion.path cu error boundary
-export const MotionPath = React.forwardRef<SVGPathElement, ExtendedMotionProps>((props, ref) => {
+export const MotionPath = safeForwardRef<SVGPathElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.path ref={ref} {...props} />;
   } catch (error) {
@@ -185,7 +188,7 @@ export const MotionPath = React.forwardRef<SVGPathElement, ExtendedMotionProps>(
 MotionPath.displayName = 'MotionPath';
 
 // Wrapper pentru motion.linearGradient cu error boundary
-export const MotionLinearGradient = React.forwardRef<SVGLinearGradientElement, ExtendedMotionProps>(
+export const MotionLinearGradient = safeForwardRef<SVGLinearGradientElement, ExtendedMotionProps>(
   (props, ref) => {
     try {
       return <motion.linearGradient ref={ref} {...props} />;
@@ -203,7 +206,7 @@ export const MotionLinearGradient = React.forwardRef<SVGLinearGradientElement, E
 MotionLinearGradient.displayName = 'MotionLinearGradient';
 
 // Wrapper pentru motion.circle cu error boundary
-export const MotionCircle = React.forwardRef<SVGCircleElement, ExtendedMotionProps>(
+export const MotionCircle = safeForwardRef<SVGCircleElement, ExtendedMotionProps>(
   (props, ref) => {
     try {
       return <motion.circle ref={ref} {...props} />;
@@ -221,7 +224,7 @@ export const MotionCircle = React.forwardRef<SVGCircleElement, ExtendedMotionPro
 MotionCircle.displayName = 'MotionCircle';
 
 // Wrapper pentru motion.svg cu error boundary
-export const MotionSvg = React.forwardRef<SVGSVGElement, ExtendedMotionProps>((props, ref) => {
+export const MotionSvg = safeForwardRef<SVGSVGElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.svg ref={ref} {...props} />;
   } catch (error) {
@@ -237,7 +240,7 @@ export const MotionSvg = React.forwardRef<SVGSVGElement, ExtendedMotionProps>((p
 MotionSvg.displayName = 'MotionSvg';
 
 // Wrapper pentru motion.footer cu error boundary
-export const MotionFooter = React.forwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
+export const MotionFooter = safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.footer ref={ref} {...props} />;
   } catch (error) {
@@ -253,7 +256,7 @@ export const MotionFooter = React.forwardRef<HTMLElement, ExtendedMotionProps>((
 MotionFooter.displayName = 'MotionFooter';
 
 // Wrapper pentru motion.a cu error boundary
-export const MotionA = React.forwardRef<HTMLAnchorElement, ExtendedMotionProps>((props, ref) => {
+export const MotionA = safeForwardRef<HTMLAnchorElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.a ref={ref} {...props} />;
   } catch (error) {
@@ -269,7 +272,7 @@ export const MotionA = React.forwardRef<HTMLAnchorElement, ExtendedMotionProps>(
 MotionA.displayName = 'MotionA';
 
 // Wrapper pentru motion.span cu error boundary
-export const MotionSpan = React.forwardRef<HTMLSpanElement, ExtendedMotionProps>((props, ref) => {
+export const MotionSpan = safeForwardRef<HTMLSpanElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.span ref={ref} {...props} />;
   } catch (error) {
@@ -285,7 +288,7 @@ export const MotionSpan = React.forwardRef<HTMLSpanElement, ExtendedMotionProps>
 MotionSpan.displayName = 'MotionSpan';
 
 // Wrapper pentru motion.aside cu error boundary
-export const MotionAside = React.forwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
+export const MotionAside = safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.aside ref={ref} {...props} />;
   } catch (error) {
@@ -301,7 +304,7 @@ export const MotionAside = React.forwardRef<HTMLElement, ExtendedMotionProps>((p
 MotionAside.displayName = 'MotionAside';
 
 // Wrapper pentru motion.main cu error boundary
-export const MotionMain = React.forwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
+export const MotionMain = safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
   try {
     return <motion.main ref={ref} {...props} />;
   } catch (error) {
