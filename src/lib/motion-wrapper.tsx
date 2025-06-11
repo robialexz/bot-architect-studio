@@ -23,12 +23,79 @@ interface FallbackProps {
 }
 
 // Safety check for React availability
-const safeForwardRef = React?.forwardRef || ((render: any) => render);
+const safeForwardRef =
+  React?.forwardRef || ((render: (props: unknown, ref: unknown) => React.ReactElement) => render);
 
 // Wrapper pentru motion.div cu error boundary
 export const MotionDiv = safeForwardRef<HTMLDivElement, ExtendedMotionProps>((props, ref) => {
   try {
-    return <motion.div ref={ref} {...props} />;
+    // Properly separate Framer Motion props from DOM props
+    const {
+      // Framer Motion specific props
+      initial,
+      animate,
+      exit,
+      transition,
+      variants,
+      whileHover,
+      whileTap,
+      whileFocus,
+      whileInView,
+      layoutId,
+      layout,
+      onHoverStart,
+      onHoverEnd,
+      onTap,
+      onTapStart,
+      onTapCancel,
+      onAnimationStart,
+      onAnimationComplete,
+      onUpdate,
+      onDragStart,
+      onDrag,
+      onDragEnd,
+      drag,
+      dragConstraints,
+      dragElastic,
+      dragMomentum,
+      dragTransition,
+      // DOM props
+      ...domProps
+    } = props as ExtendedMotionProps;
+
+    // Create motion props object with only Framer Motion specific props
+    const motionProps = {
+      initial,
+      animate,
+      exit,
+      transition,
+      variants,
+      whileHover,
+      whileTap,
+      whileFocus,
+      whileInView,
+      layoutId,
+      layout,
+      onHoverStart,
+      onHoverEnd,
+      onTap,
+      onTapStart,
+      onTapCancel,
+      onAnimationStart,
+      onAnimationComplete,
+      onUpdate,
+      onDragStart,
+      onDrag,
+      onDragEnd,
+      drag,
+      dragConstraints,
+      dragElastic,
+      dragMomentum,
+      dragTransition,
+      ...domProps,
+    };
+
+    return <motion.div ref={ref} {...motionProps} />;
   } catch (error) {
     console.warn('Framer Motion error:', error);
     const fallbackProps: FallbackProps = {
@@ -122,20 +189,18 @@ export const MotionP = safeForwardRef<HTMLParagraphElement, ExtendedMotionProps>
 MotionP.displayName = 'MotionP';
 
 // Wrapper pentru motion.button cu error boundary
-export const MotionButton = safeForwardRef<HTMLButtonElement, ExtendedMotionProps>(
-  (props, ref) => {
-    try {
-      return <motion.button ref={ref} {...props} />;
-    } catch (error) {
-      console.warn('Framer Motion error:', error);
-      const fallbackProps: FallbackProps = {
-        className: props.className,
-        children: props.children,
-      };
-      return <button ref={ref} {...fallbackProps} />;
-    }
+export const MotionButton = safeForwardRef<HTMLButtonElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.button ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <button ref={ref} {...fallbackProps} />;
   }
-);
+});
 
 MotionButton.displayName = 'MotionButton';
 
@@ -206,20 +271,18 @@ export const MotionLinearGradient = safeForwardRef<SVGLinearGradientElement, Ext
 MotionLinearGradient.displayName = 'MotionLinearGradient';
 
 // Wrapper pentru motion.circle cu error boundary
-export const MotionCircle = safeForwardRef<SVGCircleElement, ExtendedMotionProps>(
-  (props, ref) => {
-    try {
-      return <motion.circle ref={ref} {...props} />;
-    } catch (error) {
-      console.warn('Framer Motion error:', error);
-      const fallbackProps: FallbackProps = {
-        className: props.className,
-        children: props.children,
-      };
-      return <circle ref={ref} {...fallbackProps} />;
-    }
+export const MotionCircle = safeForwardRef<SVGCircleElement, ExtendedMotionProps>((props, ref) => {
+  try {
+    return <motion.circle ref={ref} {...props} />;
+  } catch (error) {
+    console.warn('Framer Motion error:', error);
+    const fallbackProps: FallbackProps = {
+      className: props.className,
+      children: props.children,
+    };
+    return <circle ref={ref} {...fallbackProps} />;
   }
-);
+});
 
 MotionCircle.displayName = 'MotionCircle';
 
@@ -323,8 +386,9 @@ MotionMain.displayName = 'MotionMain';
 export const SafeAnimatePresence: React.FC<{
   children: React.ReactNode;
   mode?: 'wait' | 'sync' | 'popLayout';
-}> = ({ children, mode }) => {
+}> = ({ children, mode = 'sync' }) => {
   try {
+    // Use sync mode by default to avoid "wait" mode issues with multiple children
     return <AnimatePresence mode={mode}>{children}</AnimatePresence>;
   } catch (error) {
     console.warn('AnimatePresence error:', error);

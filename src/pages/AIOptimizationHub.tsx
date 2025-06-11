@@ -384,7 +384,7 @@ const AIOptimizationHub: React.FC = () => {
           </MotionDiv>
 
           {/* Content based on active tab */}
-          <SafeAnimatePresence mode="wait">
+          <SafeAnimatePresence>
             {activeTab === 'suggestions' && (
               <MotionDiv
                 key="suggestions"

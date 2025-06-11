@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PremiumLogo from '@/components/ui/PremiumLogo';
+import SocialIcons from '@/components/ui/SocialIcons';
 
 // Simplified particles background without tsParticles
 function ParticlesBackground() {
@@ -114,8 +115,6 @@ const HeroSection: React.FC = () => {
       {/* Subtle overlay for text readability over global background */}
       <div className="absolute inset-0 bg-background/5 z-[5]"></div>
 
-
-
       {/* Hero Content */}
       <motion.div
         style={{ opacity }}
@@ -213,10 +212,10 @@ const HeroSection: React.FC = () => {
             Build Workflows in Augmented Reality
           </div>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-center">
-            Create powerful AI automations in <span className="text-primary font-semibold">3D space</span> using
-            your mobile device. Connect{' '}
-            <span className="text-gold font-semibold">enterprise AI models</span> with intuitive gesture controls
-            and transform how you
+            Create powerful AI automations in{' '}
+            <span className="text-primary font-semibold">3D space</span> using your mobile device.
+            Connect <span className="text-gold font-semibold">enterprise AI models</span> with
+            intuitive gesture controls and transform how you
             <span className="text-sapphire font-semibold"> build automation workflows</span>.
           </p>
         </motion.div>
@@ -284,38 +283,53 @@ const HeroSection: React.FC = () => {
         </motion.div>
 
         <motion.div
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center relative z-40"
+          className="flex flex-col gap-6 justify-center items-center relative z-40"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9 }}
         >
-          <Button
-            size="lg"
-            className="group relative overflow-hidden bg-gradient-to-r from-primary via-sapphire to-primary text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 ease-in-out text-base sm:text-lg px-10 py-6 w-full sm:w-auto"
-            asChild
-          >
-            <Link to="/waitlist">
-              <span className="relative z-10 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                <Camera className="mr-2 h-5 w-5" />
-                Join Waitlist
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-              </span>
-            </Link>
-          </Button>
+          {/* Main Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Button
+              size="lg"
+              className="group relative overflow-hidden bg-gradient-to-r from-primary via-sapphire to-primary text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 ease-in-out text-base sm:text-lg px-10 py-6 w-full sm:w-auto"
+              asChild
+            >
+              <Link to="/waitlist">
+                <span className="relative z-10 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                  <Camera className="mr-2 h-5 w-5" />
+                  Join Waitlist
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                </span>
+              </Link>
+            </Button>
 
-          <Button
-            size="lg"
-            className="group relative overflow-hidden bg-gradient-to-r from-gold via-gold-light to-gold text-black font-semibold rounded-xl hover:shadow-xl hover:shadow-gold/30 transition-all duration-300 ease-in-out text-base sm:text-lg px-10 py-6 w-full sm:w-auto"
-            asChild
+            <Button
+              size="lg"
+              className="group relative overflow-hidden bg-gradient-to-r from-gold via-gold-light to-gold text-black font-semibold rounded-xl hover:shadow-xl hover:shadow-gold/30 transition-all duration-300 ease-in-out text-base sm:text-lg px-10 py-6 w-full sm:w-auto"
+              asChild
+            >
+              <Link to="/roadmap">
+                <span className="relative z-10 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                  <Sparkles className="mr-2 h-5 w-5" />
+                  View Roadmap
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                </span>
+              </Link>
+            </Button>
+          </div>
+
+          {/* Social Media Icons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.1 }}
+            className="flex items-center gap-4"
           >
-            <Link to="/roadmap">
-              <span className="relative z-10 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                <Sparkles className="mr-2 h-5 w-5" />
-                View Roadmap
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-              </span>
-            </Link>
-          </Button>
+            <div className="hidden sm:block w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+            <SocialIcons size="md" variant="outline" />
+            <div className="hidden sm:block w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          </motion.div>
         </motion.div>
 
         {/* Scroll Indicator */}

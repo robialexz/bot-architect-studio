@@ -144,6 +144,14 @@ const Navbar = () => {
 
   const navItems = isAuthenticated ? authenticatedNavItems : unauthenticatedNavItems;
 
+  // Debug logging
+  console.log('🔍 Navbar Debug:', {
+    isAuthenticated,
+    navItemsCount: navItems.length,
+    navItems: navItems.map(item => item.label),
+    isDesktop,
+  });
+
   return (
     <nav className="border-b border-[hsl(var(--nav-border))] bg-[hsl(var(--nav-background))]/95 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
       <div className="container mx-auto px-4 py-2 flex items-center justify-between max-w-screen-xl min-h-[70px]">
@@ -162,9 +170,9 @@ const Navbar = () => {
           />
         </MotionButton>
 
-        {/* Desktop Navigation */}
-        {isDesktop && (
-          <NavigationMenu className="hidden md:flex">
+        {/* Desktop Navigation - Force visible for debugging */}
+        <div className="flex">
+          <NavigationMenu>
             <NavigationMenuList>
               {navItems.map(item => (
                 <NavigationMenuItem key={item.to}>
@@ -193,167 +201,161 @@ const Navbar = () => {
                         </Badge>
                       )}
                     </div>
-                    <MotionSpan
+                    <span
                       className={cn(
-                        'absolute bottom-0 left-0 h-0.5 w-full origin-bottom-left',
+                        'absolute bottom-0 left-0 h-0.5 w-full origin-bottom-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100',
                         item.featured
                           ? 'bg-gradient-to-r from-[hsl(var(--button-primary))] to-[hsl(var(--nav-secondary))]'
                           : 'bg-[hsl(var(--nav-primary))]'
                       )}
-                      initial={{ scaleX: 0 }}
-                      whileHover={{ scaleX: 1 }}
-                      transition={{ duration: 0.3, ease: 'easeOut' }}
                     />
                   </NavLink>
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
           </NavigationMenu>
-        )}
+        </div>
 
         <div className="flex items-center gap-3">
           {/* Authentication Section - Desktop */}
-          {isDesktop && (
-            <>
-              {isAuthenticated ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="relative h-12 w-12 rounded-full p-0 hover:bg-[hsl(var(--nav-hover))] transition-all duration-300"
-                    >
-                      <div className="relative">
-                        <Avatar className="h-10 w-10 ring-2 ring-[hsl(var(--nav-primary))]/20 hover:ring-[hsl(var(--nav-primary))]/40 transition-all duration-300">
-                          <AvatarImage src={user?.avatarUrl} alt={user?.fullName || user?.email} />
-                          <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--nav-primary))] via-[hsl(var(--nav-secondary))] to-[hsl(var(--accent))] text-white font-bold text-lg shadow-lg">
-                            {user?.fullName
-                              ? user.fullName.charAt(0).toUpperCase()
-                              : user?.email?.charAt(0).toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        {/* Online Status Indicator */}
-                        <div className="absolute bottom-0 right-0 h-3 w-3 bg-green-500 border-2 border-[hsl(var(--nav-background))] rounded-full"></div>
-                        {user?.isPremium && (
-                          <Crown className="absolute -top-1 -right-1 h-4 w-4 text-[hsl(var(--nav-secondary))] drop-shadow-lg" />
-                        )}
-                      </div>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">
-                          {user?.fullName || user?.username || 'User'}
-                        </p>
-                        <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
-                        {user?.isPremium && (
-                          <div className="flex items-center gap-1 text-xs text-gold">
-                            <Crown className="h-3 w-3" />
-                            Premium Member
-                          </div>
-                        )}
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => navigate('/account')}>
-                      <User className="mr-2 h-4 w-4" />
-                      Account Dashboard
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/projects')}>
-                      <Layers className="mr-2 h-4 w-4" />
-                      My Projects
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/workflow-builder')}>
-                      <PlusCircle className="mr-2 h-4 w-4" />
-                      Workflow Builder
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/ai-ecosystem-playground')}>
-                      <Sparkles className="mr-2 h-4 w-4" />
-                      AI Ecosystem Playground
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/analytics')}>
-                      <BarChart3 className="mr-2 h-4 w-4" />
-                      Analytics
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/security-dashboard')}>
-                      <Shield className="mr-2 h-4 w-4" />
-                      Security
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/workflow-collaboration')}>
-                      <Users className="mr-2 h-4 w-4" />
-                      Team Collaboration
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/ai-optimization')}>
-                      <Sparkles className="mr-2 h-4 w-4" />
-                      AI Optimization
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/settings')}>
-                      <Settings className="mr-2 h-4 w-4" />
-                      Settings
-                    </DropdownMenuItem>
-                    {!user?.isPremium && (
-                      <DropdownMenuItem onClick={() => navigate('/billing')}>
-                        <Crown className="mr-2 h-4 w-4" />
-                        Upgrade to Premium
-                      </DropdownMenuItem>
-                    )}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem
-                      onClick={async () => {
-                        logger.auth.debug('Desktop logout button clicked!');
-                        try {
-                          await logout();
-                          logger.auth.debug('Desktop logout completed');
-                        } catch (error) {
-                          logger.auth.error('Desktop logout failed:', error);
-                        }
-                      }}
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Log out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <MotionButton
-                    onClick={() => navigate('/waitlist')}
-                    className="group relative overflow-hidden text-foreground hover:text-primary font-medium rounded-lg transition-all duration-300 ease-in-out inline-flex h-9 items-center justify-center whitespace-nowrap px-3 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+          <div className="flex items-center gap-3">
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-12 w-12 rounded-full p-0 hover:bg-[hsl(var(--nav-hover))] transition-all duration-300"
                   >
-                    <span className="relative z-10 flex items-center group-hover:scale-105 transition-transform duration-300">
-                      <Star className="w-4 h-4 mr-2 group-hover:translate-x-0.5 transition-transform duration-300" />
-                      Join Token Waitlist
-                    </span>
-                  </MotionButton>
-                  <MotionButton
-                    onClick={() => navigate('/waitlist')}
-                    className="group relative overflow-hidden bg-gradient-to-r from-primary to-sapphire text-background font-semibold rounded-lg hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 ease-in-out border border-primary/20 inline-flex h-9 items-center justify-center whitespace-nowrap px-3 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    <div className="relative">
+                      <Avatar className="h-10 w-10 ring-2 ring-[hsl(var(--nav-primary))]/20 hover:ring-[hsl(var(--nav-primary))]/40 transition-all duration-300">
+                        <AvatarImage src={user?.avatarUrl} alt={user?.fullName || user?.email} />
+                        <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--nav-primary))] via-[hsl(var(--nav-secondary))] to-[hsl(var(--accent))] text-white font-bold text-lg shadow-lg">
+                          {user?.fullName
+                            ? user.fullName.charAt(0).toUpperCase()
+                            : user?.email?.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      {/* Online Status Indicator */}
+                      <div className="absolute bottom-0 right-0 h-3 w-3 bg-green-500 border-2 border-[hsl(var(--nav-background))] rounded-full"></div>
+                      {user?.isPremium && (
+                        <Crown className="absolute -top-1 -right-1 h-4 w-4 text-[hsl(var(--nav-secondary))] drop-shadow-lg" />
+                      )}
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {user?.fullName || user?.username || 'User'}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                      {user?.isPremium && (
+                        <div className="flex items-center gap-1 text-xs text-gold">
+                          <Crown className="h-3 w-3" />
+                          Premium Member
+                        </div>
+                      )}
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/account')}>
+                    <User className="mr-2 h-4 w-4" />
+                    Account Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/projects')}>
+                    <Layers className="mr-2 h-4 w-4" />
+                    My Projects
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/workflow-builder')}>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Workflow Builder
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/ai-ecosystem-playground')}>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    AI Ecosystem Playground
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/analytics')}>
+                    <BarChart3 className="mr-2 h-4 w-4" />
+                    Analytics
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/security-dashboard')}>
+                    <Shield className="mr-2 h-4 w-4" />
+                    Security
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/workflow-collaboration')}>
+                    <Users className="mr-2 h-4 w-4" />
+                    Team Collaboration
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/ai-optimization')}>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    AI Optimization
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/settings')}>
+                    <Settings className="mr-2 h-4 w-4" />
+                    Settings
+                  </DropdownMenuItem>
+                  {!user?.isPremium && (
+                    <DropdownMenuItem onClick={() => navigate('/billing')}>
+                      <Crown className="mr-2 h-4 w-4" />
+                      Upgrade to Premium
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={async () => {
+                      logger.auth.debug('Desktop logout button clicked!');
+                      try {
+                        await logout();
+                        logger.auth.debug('Desktop logout completed');
+                      } catch (error) {
+                        logger.auth.error('Desktop logout failed:', error);
+                      }
+                    }}
                   >
-                    <span className="relative z-10 flex items-center group-hover:scale-105 transition-transform duration-300">
-                      <Sparkles className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                      Start Free Trial
-                    </span>
-                  </MotionButton>
-                </div>
-              )}
-            </>
-          )}
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center gap-3">
+                <MotionButton
+                  onClick={() => navigate('/waitlist')}
+                  className="group relative overflow-hidden text-foreground hover:text-primary font-medium rounded-lg transition-all duration-300 ease-in-out inline-flex h-9 items-center justify-center whitespace-nowrap px-3 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="relative z-10 flex items-center group-hover:scale-105 transition-transform duration-300">
+                    <Star className="w-4 h-4 mr-2 group-hover:translate-x-0.5 transition-transform duration-300" />
+                    Join Token Waitlist
+                  </span>
+                </MotionButton>
+                <MotionButton
+                  onClick={() => navigate('/waitlist')}
+                  className="group relative overflow-hidden bg-gradient-to-r from-primary to-sapphire text-background font-semibold rounded-lg hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 ease-in-out border border-primary/20 inline-flex h-9 items-center justify-center whitespace-nowrap px-3 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="relative z-10 flex items-center group-hover:scale-105 transition-transform duration-300">
+                    <Sparkles className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                    Start Free Trial
+                  </span>
+                </MotionButton>
+              </div>
+            )}
+          </div>
 
-          {/* New Project Button - Only show for authenticated users */}
-          {isAuthenticated && isDesktop && (
-            <MotionButton
+          {/* New Project Button - Only show for authenticated users on desktop */}
+          {isAuthenticated && (
+            <button
+              type="button"
               onClick={handleNewProject}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 group inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md px-3 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className="hidden md:inline-flex bg-primary text-primary-foreground hover:bg-primary/90 group h-9 items-center justify-center whitespace-nowrap rounded-md px-3 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
             >
               <PlusCircle className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300" />
               New Project
-            </MotionButton>
+            </button>
           )}
 
           {/* Settings - Only show for authenticated users */}
@@ -377,25 +379,23 @@ const Navbar = () => {
           )}
 
           {/* Mobile Menu Toggle */}
-          {!isDesktop && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-foreground/70 hover:text-primary hover:bg-accent"
-              aria-label="Toggle mobile menu"
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-navigation-menu"
-            >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden text-foreground/70 hover:text-primary hover:bg-accent"
+            aria-label="Toggle mobile menu"
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation-menu"
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </Button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       <SafeAnimatePresence>
-        {!isDesktop && isMobileMenuOpen && (
+        {isMobileMenuOpen && (
           <MotionDiv
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}

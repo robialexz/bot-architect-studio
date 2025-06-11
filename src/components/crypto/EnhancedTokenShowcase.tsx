@@ -112,7 +112,8 @@ const EnhancedTokenShowcase: React.FC = () => {
       percentage: 10,
       amount: '10M FLOWSY',
       color: 'from-blue-500 to-indigo-500',
-      description: 'Locked until $10M market cap. 5% will be burned at $1M market cap (0.5% of total supply)',
+      description:
+        'Locked until $10M market cap. 5% will be burned at $1M market cap (0.5% of total supply)',
       locked: true,
       unlockDate: 'Locked until $10M market cap',
       highlight: true,
@@ -180,7 +181,7 @@ const EnhancedTokenShowcase: React.FC = () => {
         quality: tokenData.dataQuality,
         hasHolders: tokenData.holders !== undefined,
         priceChange: tokenData.priceChange24h,
-        lastUpdated: new Date(tokenData.lastUpdated).toLocaleString()
+        lastUpdated: new Date(tokenData.lastUpdated).toLocaleString(),
       });
 
       setMarketData({
@@ -404,18 +405,22 @@ const EnhancedTokenShowcase: React.FC = () => {
                   animate={{ opacity: [1, 0.3, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 />
-                <span className={`text-sm font-semibold ${
-                  FLOWSY_TOKEN_CONFIG.enableLiveData && lastRealDataUpdate
-                    ? 'text-emerald-500'
-                    : 'text-orange-500'
-                }`}>
-                  {FLOWSY_TOKEN_CONFIG.enableLiveData && lastRealDataUpdate ? 'LIVE DATA' : 'DEMO DATA'}
+                <span
+                  className={`text-sm font-semibold ${
+                    FLOWSY_TOKEN_CONFIG.enableLiveData && lastRealDataUpdate
+                      ? 'text-emerald-500'
+                      : 'text-orange-500'
+                  }`}
+                >
+                  {FLOWSY_TOKEN_CONFIG.enableLiveData && lastRealDataUpdate
+                    ? 'LIVE DATA'
+                    : 'DEMO DATA'}
                 </span>
                 <span className="text-xs text-muted-foreground">
-                  • {lastRealDataUpdate
+                  •{' '}
+                  {lastRealDataUpdate
                     ? `Last update: ${lastRealDataUpdate.toLocaleTimeString()}`
-                    : 'Simulated data'
-                  }
+                    : 'Simulated data'}
                 </span>
                 {isLoadingRealData && (
                   <motion.div
@@ -488,14 +493,18 @@ const EnhancedTokenShowcase: React.FC = () => {
                     verified: marketData.isVerified,
                   },
                   // Only show holders if real data is available
-                  ...(marketData.holders !== undefined ? [{
-                    label: 'Token Holders',
-                    value: formatNumber(marketData.holders),
-                    icon: Users,
-                    color: 'text-purple-500',
-                    bgColor: 'bg-purple-500/10',
-                    verified: true, // Holder data is always verified when available
-                  }] : []),
+                  ...(marketData.holders !== undefined
+                    ? [
+                        {
+                          label: 'Token Holders',
+                          value: formatNumber(marketData.holders),
+                          icon: Users,
+                          color: 'text-purple-500',
+                          bgColor: 'bg-purple-500/10',
+                          verified: true, // Holder data is always verified when available
+                        },
+                      ]
+                    : []),
                   {
                     label: '24h Change',
                     value: `${marketData.change24h >= 0 ? '+' : ''}${marketData.change24h.toFixed(2)}%`,
@@ -530,10 +539,16 @@ const EnhancedTokenShowcase: React.FC = () => {
                     <div className="flex items-center justify-center gap-1 mt-1">
                       <div className="text-xs text-muted-foreground">{metric.label}</div>
                       {metric.verified && (
-                        <div className="w-2 h-2 bg-emerald-500 rounded-full" title="Verified data"></div>
+                        <div
+                          className="w-2 h-2 bg-emerald-500 rounded-full"
+                          title="Verified data"
+                        ></div>
                       )}
                       {metric.suspicious && (
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full" title="Large change - verify independently"></div>
+                        <div
+                          className="w-2 h-2 bg-yellow-500 rounded-full"
+                          title="Large change - verify independently"
+                        ></div>
                       )}
                     </div>
                   </motion.div>
@@ -596,7 +611,7 @@ const EnhancedTokenShowcase: React.FC = () => {
         </div>
 
         {/* Tab Content */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {selectedTab === 'overview' && (
             <motion.div
               key="overview"
@@ -641,8 +656,8 @@ const EnhancedTokenShowcase: React.FC = () => {
                         </span>
                       </div>
                       <p className="text-sm text-muted-foreground">
-                        5% of developer fund (0.5% of total supply) will be permanently burned at $1M market cap,
-                        reducing supply and increasing value for all holders.
+                        5% of developer fund (0.5% of total supply) will be permanently burned at
+                        $1M market cap, reducing supply and increasing value for all holders.
                       </p>
                     </div>
 
@@ -705,14 +720,15 @@ const EnhancedTokenShowcase: React.FC = () => {
                         </div>
                         <div className="flex items-center gap-1">
                           <div className="text-xs text-muted-foreground">Holders</div>
-                          <div className="w-2 h-2 bg-emerald-500 rounded-full" title="Real blockchain data"></div>
+                          <div
+                            className="w-2 h-2 bg-emerald-500 rounded-full"
+                            title="Real blockchain data"
+                          ></div>
                         </div>
                       </div>
                     ) : (
                       <div className="p-3 bg-muted/20 rounded-lg opacity-50">
-                        <div className="text-lg font-bold text-muted-foreground">
-                          N/A
-                        </div>
+                        <div className="text-lg font-bold text-muted-foreground">N/A</div>
                         <div className="text-xs text-muted-foreground">Holders (Loading...)</div>
                       </div>
                     )}
@@ -722,42 +738,51 @@ const EnhancedTokenShowcase: React.FC = () => {
                   <div className="mt-4 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
                     <div className="flex items-center gap-2 mb-2">
                       <Activity className="w-4 h-4 text-blue-500" />
-                      <span className="text-sm font-semibold text-blue-500">
-                        Data Transparency
-                      </span>
+                      <span className="text-sm font-semibold text-blue-500">Data Transparency</span>
                     </div>
                     <div className="space-y-1 text-xs text-muted-foreground">
                       <div className="flex items-center justify-between">
                         <span>Price Data Source:</span>
-                        <span className="capitalize font-medium">{marketData.dataSource || 'Loading...'}</span>
+                        <span className="capitalize font-medium">
+                          {marketData.dataSource || 'Loading...'}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span>Last Updated:</span>
                         <span className="font-medium">
                           {marketData.lastUpdated
                             ? new Date(marketData.lastUpdated).toLocaleTimeString()
-                            : 'Loading...'
-                          }
+                            : 'Loading...'}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span>Data Quality:</span>
                         <div className="flex items-center gap-1">
-                          <span className={`font-medium ${
-                            marketData.dataQuality === 'high' ? 'text-emerald-500' :
-                            marketData.dataQuality === 'medium' ? 'text-yellow-500' : 'text-red-500'
-                          }`}>
+                          <span
+                            className={`font-medium ${
+                              marketData.dataQuality === 'high'
+                                ? 'text-emerald-500'
+                                : marketData.dataQuality === 'medium'
+                                  ? 'text-yellow-500'
+                                  : 'text-red-500'
+                            }`}
+                          >
                             {marketData.dataQuality?.toUpperCase() || 'UNKNOWN'}
                           </span>
                           {marketData.isVerified && (
-                            <div className="w-2 h-2 bg-emerald-500 rounded-full" title="Verified"></div>
+                            <div
+                              className="w-2 h-2 bg-emerald-500 rounded-full"
+                              title="Verified"
+                            ></div>
                           )}
                         </div>
                       </div>
                       <div className="flex items-center justify-between">
                         <span>Holder Count:</span>
                         <span className="font-medium">
-                          {marketData.holders !== undefined ? 'Real blockchain data' : 'Not available'}
+                          {marketData.holders !== undefined
+                            ? 'Real blockchain data'
+                            : 'Not available'}
                         </span>
                       </div>
                     </div>

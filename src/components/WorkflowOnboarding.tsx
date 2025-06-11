@@ -202,7 +202,7 @@ const WorkflowOnboarding: React.FC<WorkflowOnboardingProps> = ({ onComplete, onS
           </CardHeader>
 
           <CardContent className="min-h-[400px]">
-            <SafeAnimatePresence mode="wait">
+            <SafeAnimatePresence>
               <MotionDiv
                 key={currentStep}
                 initial={{ opacity: 0, x: 20 }}

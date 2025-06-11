@@ -14,6 +14,8 @@ export interface WaitlistEmail {
   status: 'active' | 'unsubscribed' | 'bounced';
   created_at: string;
   updated_at: string;
+  registration_source?: string;
+  timestamp?: number;
 }
 
 export interface WaitlistSubmission {
@@ -24,6 +26,8 @@ export interface WaitlistSubmission {
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
+  registration_source?: string;
+  timestamp?: number;
 }
 
 export interface WaitlistStats {
@@ -39,7 +43,9 @@ export interface WaitlistStats {
 class WaitlistService {
   private readonly TABLE_NAME = 'waitlist_emails';
   private readonly DEMO_MODE = import.meta.env.DEV || import.meta.env.VITE_DEMO_MODE === 'true';
+  private readonly JSON_STORAGE_KEY = 'flowsyai_waitlist_emails';
   private demoEmails: Set<string> = new Set();
+  private jsonEmails: Map<string, WaitlistEmail> = new Map();
   private initialized = false;
 
   /**
@@ -53,6 +59,10 @@ class WaitlistService {
       if (!success) {
         logger.warn('Database setup incomplete:', message);
       }
+
+      // Load JSON storage data
+      this.loadJsonStorage();
+
       this.initialized = true;
     } catch (error) {
       logger.error('Failed to initialize waitlist service:', error);
@@ -61,12 +71,66 @@ class WaitlistService {
   }
 
   /**
-   * Validates email format using a comprehensive regex
+   * Loads email data from localStorage JSON storage
+   */
+  private loadJsonStorage(): void {
+    try {
+      const stored = localStorage.getItem(this.JSON_STORAGE_KEY);
+      if (stored) {
+        const emailArray = JSON.parse(stored) as WaitlistEmail[];
+        this.jsonEmails.clear();
+        emailArray.forEach(email => {
+          this.jsonEmails.set(email.email, email);
+        });
+        logger.info(`Loaded ${this.jsonEmails.size} emails from JSON storage`);
+      }
+    } catch (error) {
+      logger.warn('Failed to load JSON storage:', error);
+      this.jsonEmails.clear();
+    }
+  }
+
+  /**
+   * Saves email data to localStorage JSON storage
+   */
+  private saveJsonStorage(): void {
+    try {
+      const emailArray = Array.from(this.jsonEmails.values());
+      localStorage.setItem(this.JSON_STORAGE_KEY, JSON.stringify(emailArray));
+      logger.info(`Saved ${emailArray.length} emails to JSON storage`);
+    } catch (error) {
+      logger.error('Failed to save JSON storage:', error);
+    }
+  }
+
+  /**
+   * Validates email format using a comprehensive regex with additional checks
    */
   private validateEmail(email: string): boolean {
+    if (!email || typeof email !== 'string') return false;
+
+    const trimmedEmail = email.trim();
+    if (trimmedEmail.length === 0 || trimmedEmail.length > 254) return false;
+
+    // Comprehensive email regex
     const emailRegex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return emailRegex.test(email.trim().toLowerCase());
+
+    if (!emailRegex.test(trimmedEmail.toLowerCase())) return false;
+
+    // Additional validation checks
+    const parts = trimmedEmail.split('@');
+    if (parts.length !== 2) return false;
+
+    const [localPart, domainPart] = parts;
+    if (localPart.length === 0 || localPart.length > 64) return false;
+    if (domainPart.length === 0 || domainPart.length > 253) return false;
+
+    // Check for common invalid patterns
+    if (localPart.startsWith('.') || localPart.endsWith('.')) return false;
+    if (localPart.includes('..')) return false;
+
+    return true;
   }
 
   /**
@@ -90,12 +154,12 @@ class WaitlistService {
   }
 
   /**
-   * Demo mode storage for development
+   * Demo mode storage for development with JSON persistence
    */
   private handleDemoMode(
     email: string,
     action: 'add' | 'check' | 'remove'
-  ): { success: boolean; message: string; exists?: boolean } {
+  ): { success: boolean; message: string; exists?: boolean; data?: WaitlistEmail } {
     const normalizedEmail = this.normalizeEmail(email);
 
     switch (action) {
@@ -103,31 +167,58 @@ class WaitlistService {
         return {
           success: true,
           message: '',
-          exists: this.demoEmails.has(normalizedEmail),
+          exists: this.jsonEmails.has(normalizedEmail) || this.demoEmails.has(normalizedEmail),
         };
-      case 'add':
-        if (this.demoEmails.has(normalizedEmail)) {
+      case 'add': {
+        if (this.jsonEmails.has(normalizedEmail) || this.demoEmails.has(normalizedEmail)) {
           return {
             success: false,
             message: 'This email is already on our waitlist!',
           };
         }
+
+        // Create email record with metadata
+        const newEmail: WaitlistEmail = {
+          id: `demo_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          email: normalizedEmail,
+          status: 'active',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          registration_source: 'demo_mode',
+          timestamp: Date.now(),
+          ...this.getClientInfo(),
+        };
+
+        this.jsonEmails.set(normalizedEmail, newEmail);
         this.demoEmails.add(normalizedEmail);
+        this.saveJsonStorage();
+
         logger.info('Demo: Email added to waitlist:', {
           email: normalizedEmail,
-          total: this.demoEmails.size,
+          total: this.jsonEmails.size,
         });
+
         return {
           success: true,
-          message:
-            "Success! You're now on our waitlist. We'll notify you when we launch! (Demo Mode)",
+          message: "Success! You're now on our waitlist. We'll notify you when we launch!",
+          data: newEmail,
         };
-      case 'remove':
+      }
+      case 'remove': {
+        if (this.jsonEmails.has(normalizedEmail)) {
+          const email = this.jsonEmails.get(normalizedEmail)!;
+          email.status = 'unsubscribed';
+          email.updated_at = new Date().toISOString();
+          this.jsonEmails.set(normalizedEmail, email);
+          this.saveJsonStorage();
+        }
         this.demoEmails.delete(normalizedEmail);
+
         return {
           success: true,
-          message: 'You have been successfully unsubscribed from our waitlist. (Demo Mode)',
+          message: 'You have been successfully unsubscribed from our waitlist.',
         };
+      }
       default:
         return {
           success: false,
@@ -141,7 +232,10 @@ class WaitlistService {
    */
   private getClientInfo(): Partial<WaitlistSubmission> {
     if (typeof window === 'undefined') {
-      return {};
+      return {
+        registration_source: 'server_side',
+        timestamp: Date.now(),
+      };
     }
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -152,6 +246,9 @@ class WaitlistService {
       utm_source: urlParams.get('utm_source') || undefined,
       utm_medium: urlParams.get('utm_medium') || undefined,
       utm_campaign: urlParams.get('utm_campaign') || undefined,
+      registration_source: window.location.pathname || 'unknown',
+      timestamp: Date.now(),
+      // Note: IP address would need to be set server-side for security
     };
   }
 
@@ -284,19 +381,32 @@ class WaitlistService {
    */
   async getStats(): Promise<{ success: boolean; data?: WaitlistStats; message?: string }> {
     try {
-      // Check if table exists, if not use demo mode
+      // Check if table exists, if not use demo mode with JSON storage
       const tableExists = await this.checkTableExists();
       if (!tableExists || this.DEMO_MODE) {
-        logger.warn('Waitlist table not accessible, using demo stats');
+        logger.warn('Waitlist table not accessible, using demo stats with JSON storage');
+
+        const emails = Array.from(this.jsonEmails.values());
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+        const activeEmails = emails.filter(e => e.status === 'active');
+        const todaySignups = emails.filter(e => new Date(e.created_at) >= today);
+        const weekSignups = emails.filter(e => new Date(e.created_at) >= weekAgo);
+        const monthSignups = emails.filter(e => new Date(e.created_at) >= monthAgo);
+
         const demoStats: WaitlistStats = {
-          total_emails: this.demoEmails.size,
-          active_emails: this.demoEmails.size,
-          unsubscribed_emails: 0,
-          bounced_emails: 0,
-          signups_today: Math.min(this.demoEmails.size, 3),
-          signups_this_week: Math.min(this.demoEmails.size, 12),
-          signups_this_month: this.demoEmails.size,
+          total_emails: emails.length,
+          active_emails: activeEmails.length,
+          unsubscribed_emails: emails.filter(e => e.status === 'unsubscribed').length,
+          bounced_emails: emails.filter(e => e.status === 'bounced').length,
+          signups_today: todaySignups.length,
+          signups_this_week: weekSignups.length,
+          signups_this_month: monthSignups.length,
         };
+
         return {
           success: true,
           data: demoStats,

@@ -182,8 +182,16 @@ class SolanaTokenService {
     try {
       console.log('🔍 Fetching holder count from Solscan for:', tokenAddress);
 
-      // Try Solscan API first
-      const response = await fetch(`${this.SOLSCAN_API}/token/holders?tokenAddress=${tokenAddress}&limit=1&offset=0`);
+      // Try Solscan API first with updated endpoint
+      const response = await fetch(
+        `${this.SOLSCAN_API}/token/holders?tokenAddress=${tokenAddress}&limit=1&offset=0`,
+        {
+          headers: {
+            Accept: 'application/json',
+            'User-Agent': 'FlowsyAI/1.0',
+          },
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -191,21 +199,31 @@ class SolanaTokenService {
           console.log('✅ Holder count from Solscan:', data.data.total);
           return data.data.total;
         }
+      } else {
+        console.warn(`⚠️ Solscan API returned ${response.status}: ${response.statusText}`);
+        // If 404, the token might not exist or be indexed yet
+        if (response.status === 404) {
+          console.log('📝 Token not found in Solscan, might be too new or not indexed');
+          return undefined;
+        }
       }
 
       // Fallback: Try to get from Helius API if available
       if (import.meta.env.VITE_HELIUS_API_KEY) {
-        const heliusResponse = await fetch(`${this.HELIUS_API}/token-metadata?api-key=${import.meta.env.VITE_HELIUS_API_KEY}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            mintAccounts: [tokenAddress],
-            includeOffChain: true,
-            disableCache: false,
-          }),
-        });
+        const heliusResponse = await fetch(
+          `${this.HELIUS_API}/token-metadata?api-key=${import.meta.env.VITE_HELIUS_API_KEY}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              mintAccounts: [tokenAddress],
+              includeOffChain: true,
+              disableCache: false,
+            }),
+          }
+        );
 
         if (heliusResponse.ok) {
           const heliusData = await heliusResponse.json();
@@ -227,7 +245,10 @@ class SolanaTokenService {
   /**
    * Verify price change data by cross-referencing multiple sources
    */
-  private async verifyPriceChange(tokenAddress: string, primaryChange: number): Promise<{
+  private async verifyPriceChange(
+    tokenAddress: string,
+    primaryChange: number
+  ): Promise<{
     verified: boolean;
     confidence: 'high' | 'medium' | 'low';
     sources: string[];
@@ -275,10 +296,12 @@ class SolanaTokenService {
       let verified = false;
 
       if (changes.length >= 2) {
-        if (maxDeviation <= 5) { // Within 5% of each other
+        if (maxDeviation <= 5) {
+          // Within 5% of each other
           confidence = 'high';
           verified = true;
-        } else if (maxDeviation <= 15) { // Within 15% of each other
+        } else if (maxDeviation <= 15) {
+          // Within 15% of each other
           confidence = 'medium';
           verified = true;
         } else {
@@ -290,12 +313,15 @@ class SolanaTokenService {
         verified = false;
       }
 
-      console.log(`📊 Price change verification: ${verified ? 'VERIFIED' : 'UNVERIFIED'} (${confidence} confidence)`, {
-        primaryChange,
-        sources,
-        changes,
-        maxDeviation
-      });
+      console.log(
+        `📊 Price change verification: ${verified ? 'VERIFIED' : 'UNVERIFIED'} (${confidence} confidence)`,
+        {
+          primaryChange,
+          sources,
+          changes,
+          maxDeviation,
+        }
+      );
 
       return { verified, confidence, sources };
     } catch (error) {
@@ -395,7 +421,11 @@ class SolanaTokenService {
       const marketCap = parseFloat(bestPair.marketCap || '0');
 
       // Verify price change data if it seems suspicious (>50% change)
-      let priceChangeVerification = { verified: true, confidence: 'high' as const, sources: ['dexscreener'] };
+      let priceChangeVerification = {
+        verified: true,
+        confidence: 'high' as const,
+        sources: ['dexscreener'],
+      };
       if (Math.abs(priceChange24h) > 50) {
         console.log('🔍 Large price change detected, verifying...', priceChange24h);
         priceChangeVerification = await this.verifyPriceChange(tokenAddress, priceChange24h);
@@ -407,8 +437,13 @@ class SolanaTokenService {
       const hasValidMarketCap = marketCap > 0;
 
       const dataQuality: 'high' | 'medium' | 'low' =
-        hasValidPrice && hasValidVolume && hasValidMarketCap && priceChangeVerification.verified ? 'high' :
-        hasValidPrice && (hasValidVolume || hasValidMarketCap) && priceChangeVerification.confidence !== 'low' ? 'medium' : 'low';
+        hasValidPrice && hasValidVolume && hasValidMarketCap && priceChangeVerification.verified
+          ? 'high'
+          : hasValidPrice &&
+              (hasValidVolume || hasValidMarketCap) &&
+              priceChangeVerification.confidence !== 'low'
+            ? 'medium'
+            : 'low';
 
       const tokenData: TokenData = {
         name: bestPair.baseToken?.name || 'FlowsyAI Token',

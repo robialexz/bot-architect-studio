@@ -10,13 +10,29 @@ import {
   MotionTr,
 } from '@/lib/motion-wrapper';
 
-import { ArrowLeft, Mail, CheckCircle, Star, Rocket, Zap, Gift, AlertCircle } from 'lucide-react';
+import {
+  ArrowLeft,
+  Mail,
+  CheckCircle,
+  Star,
+  Rocket,
+  Zap,
+  Gift,
+  AlertCircle,
+  Users,
+  TrendingUp,
+  Clock,
+  Shield,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
 import { waitlistService } from '@/services/waitlistService';
 import { toast } from '@/hooks/use-toast';
 import { waitlistRateLimiter, getClientId, formatTimeRemaining } from '@/utils/rateLimiter';
+import AnimatedCounter from '@/components/ui/AnimatedCounter';
+import { counterStorage } from '@/utils/counterStorage';
+import type { CounterData } from '@/utils/counterStorage';
 
 const WaitlistPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -24,33 +40,40 @@ const WaitlistPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [counters, setCounters] = useState({ waiting: 0, today: 0, satisfaction: 0 });
+  // Enhanced counters with persistent storage
+  const [counters, setCounters] = useState<CounterData>(() => counterStorage.getCounters());
+  const [stats, setStats] = useState<{
+    total_emails: number;
+    active_emails: number;
+    signups_today: number;
+    signups_this_week: number;
+    signups_this_month: number;
+    unsubscribed_emails: number;
+    bounced_emails: number;
+  } | null>(null);
+  const [rateLimitInfo, setRateLimitInfo] = useState<{
+    isLimited: boolean;
+    timeRemaining: number;
+  }>({ isLimited: false, timeRemaining: 0 });
 
-  // Animated counter effect
+  // Load stats and update counters on mount
   useEffect(() => {
-    const targets = { waiting: 847, today: 23, satisfaction: 96 };
-    const duration = 2500; // 2.5 seconds for smoother animation
-    const steps = 80;
-    const stepDuration = duration / steps;
-
-    let currentStep = 0;
-    const interval = setInterval(() => {
-      currentStep++;
-      const progress = currentStep / steps;
-
-      setCounters({
-        waiting: Math.floor(targets.waiting * progress),
-        today: Math.floor(targets.today * progress),
-        satisfaction: Math.floor(targets.satisfaction * progress),
-      });
-
-      if (currentStep >= steps) {
-        clearInterval(interval);
-        setCounters(targets);
+    const loadStats = async () => {
+      try {
+        const result = await waitlistService.getStats();
+        if (result.success && result.data) {
+          setStats(result.data);
+        }
+      } catch (error) {
+        console.warn('Failed to load waitlist stats:', error);
       }
-    }, stepDuration);
+    };
 
-    return () => clearInterval(interval);
+    // Update time-based counters
+    const updatedCounters = counterStorage.updateTimeBasedCounters();
+    setCounters(updatedCounters);
+
+    loadStats();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -95,11 +118,8 @@ const WaitlistPage: React.FC = () => {
         });
 
         // Update counters to reflect new signup
-        setCounters(prev => ({
-          ...prev,
-          waiting: prev.waiting + 1,
-          today: prev.today + 1,
-        }));
+        const updatedCounters = counterStorage.incrementWaitingCounter();
+        setCounters(updatedCounters);
       } else {
         setError(result.message);
 
@@ -177,10 +197,19 @@ const WaitlistPage: React.FC = () => {
                   </span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                  Join thousands of professionals waiting for the most advanced AI workflow
-                  automation platform. We'll contact you when the platform launches officially.
+                <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
+                  Join hundreds of professionals building the future of AI automation.
+                  <span className="block mt-2 text-base font-medium text-primary">
+                    🚀 Early access spots limited • Beta launching soon
+                  </span>
                 </p>
+
+                <div className="flex items-center justify-center gap-2 mb-8">
+                  <Shield className="w-4 h-4 text-emerald-500" />
+                  <span className="text-sm text-muted-foreground">
+                    We respect your privacy. No spam, unsubscribe anytime.
+                  </span>
+                </div>
               </div>
 
               {/* Benefits Grid */}
@@ -280,141 +309,128 @@ const WaitlistPage: React.FC = () => {
                     )}
                   </Button>
                 </form>
-
-                <p className="text-xs text-muted-foreground mt-4">
-                  We respect your privacy. No spam, unsubscribe at any time.
-                </p>
               </MotionDiv>
 
-              {/* Social Proof */}
+              {/* Enhanced Social Proof with Real-time Stats */}
               <MotionDiv
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
-                className="mt-12 premium-card p-6 rounded-2xl text-center"
+                className="mt-12 premium-card p-8 rounded-2xl text-center relative overflow-hidden"
               >
-                <div className="flex items-center justify-center gap-8 mb-4">
-                  <div className="text-center">
-                    <MotionDiv
-                      className="text-3xl font-bold text-primary"
-                      key={counters.waiting}
-                      initial={{ scale: 1.5, opacity: 0, y: -20 }}
-                      animate={{
-                        scale: [1.5, 1.1, 1],
-                        opacity: [0, 0.8, 1],
-                        y: [-20, 5, 0],
-                      }}
-                      transition={{
-                        duration: 0.6,
-                        ease: 'easeOut',
-                        times: [0, 0.6, 1],
-                      }}
-                      whileHover={{
-                        scale: 1.1,
-                        transition: { duration: 0.2 },
-                      }}
-                    >
-                      {counters.waiting.toLocaleString()}
-                    </MotionDiv>
-                    <MotionDiv
-                      className="text-sm text-muted-foreground"
-                      animate={{ opacity: [0.7, 1, 0.7] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      People Waiting
-                    </MotionDiv>
+                {/* Background gradient effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-gold/5 to-primary/5 opacity-50" />
+
+                <div className="relative z-10">
+                  <div className="flex items-center justify-center gap-2 mb-6">
+                    <Users className="w-5 h-5 text-primary" />
+                    <h3 className="text-lg font-semibold">
+                      Join {counters.waiting} others building the future
+                    </h3>
                   </div>
-                  <div className="text-center">
-                    <MotionDiv
-                      className="text-3xl font-bold text-gold"
-                      key={counters.today}
-                      initial={{ scale: 1.5, opacity: 0, y: -20 }}
-                      animate={{
-                        scale: [1.5, 1.1, 1],
-                        opacity: [0, 0.8, 1],
-                        y: [-20, 5, 0],
-                      }}
-                      transition={{
-                        duration: 0.6,
-                        ease: 'easeOut',
-                        delay: 0.2,
-                        times: [0, 0.6, 1],
-                      }}
-                      whileHover={{
-                        scale: 1.1,
-                        transition: { duration: 0.2 },
-                      }}
-                    >
-                      +{counters.today}
-                    </MotionDiv>
-                    <MotionDiv
-                      className="text-sm text-muted-foreground"
-                      animate={{ opacity: [0.7, 1, 0.7] }}
-                      transition={{ duration: 2.5, repeat: Infinity }}
-                    >
-                      Joined Today
-                    </MotionDiv>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <Users className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium text-muted-foreground">
+                          Total Waiting
+                        </span>
+                      </div>
+                      <AnimatedCounter
+                        value={counters.waiting}
+                        className="text-3xl font-bold text-primary"
+                        duration={1.5}
+                      />
+                    </div>
+
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <TrendingUp className="w-4 h-4 text-gold" />
+                        <span className="text-sm font-medium text-muted-foreground">
+                          Joined Today
+                        </span>
+                      </div>
+                      <AnimatedCounter
+                        value={counters.today}
+                        prefix="+"
+                        className="text-3xl font-bold text-gold"
+                        duration={1.2}
+                      />
+                    </div>
+
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <Clock className="w-4 h-4 text-emerald-500" />
+                        <span className="text-sm font-medium text-muted-foreground">This Week</span>
+                      </div>
+                      <AnimatedCounter
+                        value={counters.thisWeek}
+                        prefix="+"
+                        className="text-3xl font-bold text-emerald-500"
+                        duration={1.8}
+                      />
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <MotionDiv
-                      className="text-3xl font-bold text-emerald-500"
-                      key={counters.satisfaction}
-                      initial={{ scale: 1.5, opacity: 0, y: -20 }}
-                      animate={{
-                        scale: [1.5, 1.1, 1],
-                        opacity: [0, 0.8, 1],
-                        y: [-20, 5, 0],
-                      }}
-                      transition={{
-                        duration: 0.6,
-                        ease: 'easeOut',
-                        delay: 0.4,
-                        times: [0, 0.6, 1],
-                      }}
-                      whileHover={{
-                        scale: 1.1,
-                        transition: { duration: 0.2 },
-                      }}
-                    >
-                      {counters.satisfaction}%
-                    </MotionDiv>
-                    <MotionDiv
-                      className="text-sm text-muted-foreground"
-                      animate={{ opacity: [0.7, 1, 0.7] }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                    >
-                      Satisfaction Rate
-                    </MotionDiv>
+
+                  <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                      <span>Live updates</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Shield className="w-3 h-3" />
+                      <span>Verified signups</span>
+                    </div>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Join hundreds of professionals already waiting for the future of AI automation
-                </p>
               </MotionDiv>
 
-              {/* Timeline */}
+              {/* Enhanced Timeline with Progress */}
               <MotionDiv
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.9 }}
-                className="mt-8 premium-card p-6 rounded-2xl"
+                className="mt-8 premium-card p-8 rounded-2xl relative overflow-hidden"
               >
-                <h3 className="text-xl font-semibold mb-6">Expected Launch Timeline</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div className="text-center">
-                    <div className="w-3 h-3 rounded-full bg-blue-500 mx-auto mb-2 animate-pulse" />
-                    <div className="font-medium">June 2025</div>
-                    <div className="text-muted-foreground">Token Launch</div>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-gold/5 to-emerald-500/5 opacity-50" />
+
+                <div className="relative z-10">
+                  <div className="text-center mb-8">
+                    <h3 className="text-xl font-semibold mb-2">Launch Roadmap</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Building the future of AI automation with €10,000 marketing budget
+                    </p>
                   </div>
-                  <div className="text-center">
-                    <div className="w-3 h-3 rounded-full bg-gold mx-auto mb-2" />
-                    <div className="font-medium">July 2025</div>
-                    <div className="text-muted-foreground">Beta Testing</div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div className="text-center p-4 rounded-xl bg-background/50 border border-primary/20">
+                      <div className="w-4 h-4 rounded-full bg-primary mx-auto mb-3 animate-pulse shadow-lg shadow-primary/50" />
+                      <div className="font-semibold text-primary mb-1">Q2 2025</div>
+                      <div className="text-muted-foreground mb-2">Marketing Campaign</div>
+                      <div className="text-xs text-primary font-medium">🔥 Active Now</div>
+                    </div>
+
+                    <div className="text-center p-4 rounded-xl bg-background/50 border border-gold/20">
+                      <div className="w-4 h-4 rounded-full bg-gold mx-auto mb-3 shadow-lg shadow-gold/50" />
+                      <div className="font-semibold text-gold mb-1">Q3 2025</div>
+                      <div className="text-muted-foreground mb-2">Beta Testing</div>
+                      <div className="text-xs text-gold font-medium">⏳ Preparing</div>
+                    </div>
+
+                    <div className="text-center p-4 rounded-xl bg-background/50 border border-emerald-500/20">
+                      <div className="w-4 h-4 rounded-full bg-emerald-500 mx-auto mb-3 shadow-lg shadow-emerald-500/50" />
+                      <div className="font-semibold text-emerald-500 mb-1">Q4 2025</div>
+                      <div className="text-muted-foreground mb-2">Public Launch</div>
+                      <div className="text-xs text-emerald-500 font-medium">🎯 Target</div>
+                    </div>
                   </div>
-                  <div className="text-center">
-                    <div className="w-3 h-3 rounded-full bg-emerald-500 mx-auto mb-2" />
-                    <div className="font-medium">Q3 2025</div>
-                    <div className="text-muted-foreground">Public Launch</div>
+
+                  <div className="mt-6 text-center">
+                    <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                      <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                      <span>Real-time progress updates for waitlist members</span>
+                    </div>
                   </div>
                 </div>
               </MotionDiv>

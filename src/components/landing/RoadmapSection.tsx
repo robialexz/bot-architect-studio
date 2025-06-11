@@ -260,7 +260,12 @@ const roadmapPhases: RoadmapPhase[] = [
     bgGradient: 'from-red-500/10 to-orange-600/10',
     investment: '€10,000',
     expectedROI: '1000%+ (Target: $100K market cap)',
-    keyPartners: ['Crypto Twitter KOLs', 'Telegram Groups', 'Discord Communities', 'TikTok Creators'],
+    keyPartners: [
+      'Crypto Twitter KOLs',
+      'Telegram Groups',
+      'Discord Communities',
+      'TikTok Creators',
+    ],
     risks: ['Market volatility', 'Competition', 'Budget efficiency'],
     successMetrics: ['$100K market cap', '2.5K community members', '50K social reach'],
   },
@@ -492,7 +497,12 @@ const roadmapPhases: RoadmapPhase[] = [
         target: '500+',
         icon: <Award className="w-4 h-4" />,
       },
-      { label: 'User Retention', value: '0%', target: '70%+', icon: <TrendingUp className="w-4 h-4" /> },
+      {
+        label: 'User Retention',
+        value: '0%',
+        target: '70%+',
+        icon: <TrendingUp className="w-4 h-4" />,
+      },
     ],
     marketingActions: [
       {
@@ -764,8 +774,8 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                 boxShadow: [
                   '0 0 10px rgba(16, 185, 129, 0.3)',
                   '0 0 20px rgba(16, 185, 129, 0.6)',
-                  '0 0 10px rgba(16, 185, 129, 0.3)'
-                ]
+                  '0 0 10px rgba(16, 185, 129, 0.3)',
+                ],
               }}
               transition={{ duration: 3, repeat: Infinity }}
             />
@@ -775,7 +785,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
               className="absolute left-8 md:left-1/2 top-0 bottom-0 w-4 bg-gradient-to-b from-emerald-500/20 to-green-500/20 transform md:-translate-x-2 blur-sm"
               animate={{
                 opacity: [0.3, 0.6, 0.3],
-                scale: [1, 1.1, 1]
+                scale: [1, 1.1, 1],
               }}
               transition={{ duration: 4, repeat: Infinity }}
             />
@@ -786,12 +796,12 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
               animate={{
                 y: [0, -20, 0],
                 opacity: [0.7, 1, 0.7],
-                scale: [1, 1.2, 1]
+                scale: [1, 1.2, 1],
               }}
               transition={{
                 duration: 6,
                 repeat: Infinity,
-                ease: "easeInOut"
+                ease: 'easeInOut',
               }}
               style={{ top: '25%' }}
             />
@@ -815,13 +825,17 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                     <MotionDiv
                       className={`w-6 h-6 rounded-full bg-gradient-to-r ${phase.color} border-4 border-background shadow-xl relative`}
                       whileHover={{ scale: 1.3, rotate: 180 }}
-                      animate={expandedPhase === phase.id ? {
-                        scale: 1.2,
-                        boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)'
-                      } : {
-                        scale: 1,
-                        boxShadow: '0 0 0px rgba(59, 130, 246, 0)'
-                      }}
+                      animate={
+                        expandedPhase === phase.id
+                          ? {
+                              scale: 1.2,
+                              boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)',
+                            }
+                          : {
+                              scale: 1,
+                              boxShadow: '0 0 0px rgba(59, 130, 246, 0)',
+                            }
+                      }
                       transition={{ duration: 0.3 }}
                     >
                       {/* Pulsing ring for active phases */}
@@ -830,7 +844,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                           className="absolute inset-0 rounded-full border-2 border-blue-500"
                           animate={{
                             scale: [1, 1.5, 1],
-                            opacity: [0.8, 0, 0.8]
+                            opacity: [0.8, 0, 0.8],
                           }}
                           transition={{ duration: 2, repeat: Infinity }}
                         />
@@ -859,7 +873,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                         <MotionDiv
                           animate={{
                             rotate: [0, 10, -10, 0],
-                            scale: [1, 1.1, 1]
+                            scale: [1, 1.1, 1],
                           }}
                           transition={{ duration: 4, repeat: Infinity }}
                         >
@@ -980,7 +994,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                             whileHover={{
                               scale: 1.05,
                               borderColor: 'rgba(59, 130, 246, 0.5)',
-                              boxShadow: '0 4px 15px rgba(59, 130, 246, 0.1)'
+                              boxShadow: '0 4px 15px rgba(59, 130, 246, 0.1)',
                             }}
                             transition={{ duration: 0.2 }}
                           >
@@ -998,7 +1012,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                             whileHover={{
                               scale: 1.05,
                               borderColor: 'rgba(255, 215, 0, 0.5)',
-                              boxShadow: '0 4px 15px rgba(255, 215, 0, 0.1)'
+                              boxShadow: '0 4px 15px rgba(255, 215, 0, 0.1)',
                             }}
                             transition={{ duration: 0.2 }}
                           >
@@ -1032,7 +1046,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                   className="absolute inset-0 bg-white/20 rounded-full"
                                   animate={{
                                     scale: [1, 1.05, 1],
-                                    opacity: [0.2, 0.4, 0.2]
+                                    opacity: [0.2, 0.4, 0.2],
                                   }}
                                   transition={{ duration: 3, repeat: Infinity }}
                                 />
@@ -1079,7 +1093,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                             </div>
 
                             {/* Tab Content */}
-                            <SafeAnimatePresence mode="wait">
+                            <SafeAnimatePresence>
                               {activeTab === 'features' && (
                                 <MotionDiv
                                   key="features"
@@ -1125,7 +1139,11 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                             ) : feature.status === 'progress' ? (
                                               <MotionDiv
                                                 animate={{ rotate: 360 }}
-                                                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                                                transition={{
+                                                  duration: 2,
+                                                  repeat: Infinity,
+                                                  ease: 'linear',
+                                                }}
                                               >
                                                 <Clock className="w-4 h-4" />
                                               </MotionDiv>
@@ -1133,7 +1151,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                               <MotionDiv
                                                 animate={{
                                                   rotate: [0, 10, -10, 0],
-                                                  scale: [1, 1.1, 1]
+                                                  scale: [1, 1.1, 1],
                                                 }}
                                                 transition={{ duration: 3, repeat: Infinity }}
                                               >
@@ -1192,7 +1210,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                         whileHover={{
                                           scale: 1.02,
                                           x: 5,
-                                          boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
+                                          boxShadow: '0 8px 25px rgba(0,0,0,0.1)',
                                         }}
                                         className="premium-card p-4 rounded-xl border border-border/30 hover:border-gold/30 transition-all duration-300 group cursor-pointer"
                                       >
@@ -1202,7 +1220,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                             whileHover={{
                                               scale: 1.2,
                                               rotate: 360,
-                                              backgroundColor: 'rgba(255, 215, 0, 0.3)'
+                                              backgroundColor: 'rgba(255, 215, 0, 0.3)',
                                             }}
                                             transition={{ duration: 0.3 }}
                                           >
@@ -1257,7 +1275,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                                         whileHover={{
                                           scale: 1.05,
                                           y: -5,
-                                          boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+                                          boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
                                         }}
                                         className="premium-card p-4 rounded-xl border border-border/30 hover:border-sapphire/30 transition-all duration-300 text-center group cursor-pointer"
                                       >

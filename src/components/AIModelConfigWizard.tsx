@@ -302,7 +302,7 @@ const AIModelConfigWizard: React.FC<AIModelConfigWizardProps> = ({
           </CardHeader>
 
           <CardContent className="max-h-[60vh] overflow-y-auto">
-            <SafeAnimatePresence mode="wait">
+            <SafeAnimatePresence>
               <MotionDiv
                 key={currentStep}
                 initial={{ opacity: 0, x: 20 }}
