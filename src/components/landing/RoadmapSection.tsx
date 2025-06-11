@@ -164,210 +164,210 @@ const roadmapPhases: RoadmapPhase[] = [
   },
   {
     id: 'aggressive-marketing',
-    title: 'Aggressive Marketing Blitz',
-    subtitle: '🚀 CRITICAL PHASE - Maximum Impact',
+    title: 'Marketing Campaign Launch',
+    subtitle: '🚀 ACTIVE TODAY - €10K Marketing Blitz',
     description:
-      'Intensive 60-day marketing campaign across all channels with $50K budget to achieve viral growth and massive community building',
-    timeline: 'June 2025',
-    duration: '60 days',
-    status: 'critical',
+      'Strategic €10,000 marketing campaign launched today across multiple channels to build community and drive token growth from current $9.8K market cap',
+    timeline: 'December 2024 - January 2025',
+    duration: '45 days',
+    status: 'in-progress',
     priority: 'high',
-    progress: 25,
+    progress: 15,
     features: [
       {
-        name: 'Multi-Channel Advertising Campaign',
-        description: 'Google Ads, Facebook, Instagram, TikTok, LinkedIn, Twitter campaigns',
+        name: 'Social Media Campaign Launch',
+        description: 'Twitter, Instagram, TikTok campaigns targeting crypto and AI communities',
         status: 'progress',
         impact: 'high',
       },
       {
-        name: 'Influencer Partnership Program',
-        description: 'Collaborate with 50+ tech influencers and AI thought leaders',
+        name: 'Crypto Influencer Outreach',
+        description: 'Partner with 10-15 crypto influencers for token promotion',
         status: 'progress',
         impact: 'high',
       },
       {
-        name: 'Content Marketing Blitz',
-        description: 'Daily content: videos, blogs, tutorials, case studies',
-        status: 'planned',
+        name: 'Community Building Initiative',
+        description: 'Discord server growth, Telegram group engagement, Reddit presence',
+        status: 'progress',
         impact: 'high',
       },
       {
-        name: 'Community Building & Engagement',
-        description: 'Discord, Telegram, Reddit communities with daily engagement',
+        name: 'Content Creation & SEO',
+        description: 'Blog posts, tutorials, and SEO optimization for organic growth',
         status: 'planned',
         impact: 'medium',
       },
     ],
     metrics: [
       {
-        label: 'Waitlist Signups',
-        value: '2,847',
-        target: '50,000',
+        label: 'Token Market Cap',
+        value: '$9.8K',
+        target: '$100K',
+        icon: <DollarSign className="w-4 h-4" />,
+      },
+      {
+        label: 'Community Members',
+        value: '150',
+        target: '2,500',
         icon: <Users className="w-4 h-4" />,
       },
       {
         label: 'Social Media Reach',
-        value: '125K',
-        target: '1M+',
+        value: '5K',
+        target: '50K',
         icon: <Globe className="w-4 h-4" />,
       },
       {
-        label: 'Conversion Rate',
-        value: '3.2%',
-        target: '5%+',
-        icon: <Target className="w-4 h-4" />,
-      },
-      {
-        label: 'Brand Awareness',
-        value: '15%',
-        target: '60%',
+        label: 'Marketing ROI',
+        value: '0%',
+        target: '300%+',
         icon: <TrendingUp className="w-4 h-4" />,
       },
     ],
     marketingActions: [
       {
-        channel: 'Google Ads',
-        action: 'Search & Display campaigns targeting AI keywords',
-        budget: '$15,000',
-        roi: '300%+',
-        icon: <Target className="w-4 h-4" />,
-      },
-      {
-        channel: 'Social Media',
-        action: 'Facebook, Instagram, TikTok, LinkedIn ads',
-        budget: '$20,000',
+        channel: 'Crypto Twitter',
+        action: 'Daily engagement, token updates, community building',
+        budget: '€3,000',
         roi: '250%+',
-        icon: <Instagram className="w-4 h-4" />,
+        icon: <Twitter className="w-4 h-4" />,
       },
       {
-        channel: 'Influencers',
-        action: 'Tech YouTubers, AI experts, business leaders',
-        budget: '$10,000',
-        roi: '400%+',
+        channel: 'Crypto Influencers',
+        action: 'Micro-influencers, token reviews, community AMAs',
+        budget: '€4,000',
+        roi: '300%+',
         icon: <Youtube className="w-4 h-4" />,
       },
       {
-        channel: 'Content Marketing',
-        action: 'SEO blogs, tutorials, case studies',
-        budget: '$5,000',
-        roi: '500%+',
-        icon: <Mail className="w-4 h-4" />,
+        channel: 'Social Media Ads',
+        action: 'Targeted Instagram, TikTok, and Facebook campaigns',
+        budget: '€2,000',
+        roi: '200%+',
+        icon: <Instagram className="w-4 h-4" />,
+      },
+      {
+        channel: 'Community Growth',
+        action: 'Discord events, Telegram campaigns, Reddit engagement',
+        budget: '€1,000',
+        roi: '400%+',
+        icon: <MessageCircle className="w-4 h-4" />,
       },
     ],
     icon: <Rocket className="w-6 h-6" />,
     color: 'from-red-500 to-orange-600',
     bgGradient: 'from-red-500/10 to-orange-600/10',
-    investment: '$50,000',
-    expectedROI: '500%+ (50K waitlist = $2.5M valuation)',
-    keyPartners: ['Google Ads', 'Meta Business', 'TikTok Ads', 'LinkedIn Marketing'],
-    risks: ['Ad spend efficiency', 'Market saturation', 'Competition response'],
-    successMetrics: ['50K waitlist signups', '1M social reach', '60% brand awareness'],
+    investment: '€10,000',
+    expectedROI: '1000%+ (Target: $100K market cap)',
+    keyPartners: ['Crypto Twitter KOLs', 'Telegram Groups', 'Discord Communities', 'TikTok Creators'],
+    risks: ['Market volatility', 'Competition', 'Budget efficiency'],
+    successMetrics: ['$100K market cap', '2.5K community members', '50K social reach'],
   },
   {
     id: 'token-launch',
-    title: 'FlowsyAI Token Launch & Distribution',
-    subtitle: '💎 TOKENOMICS - Building Trust & Value',
+    title: 'Token Growth & Community Expansion',
+    subtitle: '💎 NEXT PHASE - Scaling Success',
     description:
-      'Strategic token launch with transparent distribution, community rewards, and liquidity burning mechanism to ensure long-term value growth',
-    timeline: 'July 2025',
-    duration: '30 days',
+      'Build on marketing success to achieve sustainable growth, expand community, and establish strong tokenomics foundation',
+    timeline: 'January - February 2025',
+    duration: '45 days',
     status: 'upcoming',
     priority: 'high',
     progress: 0,
     features: [
       {
-        name: 'Token Smart Contract Deployment',
-        description: 'Solana-based token with advanced tokenomics and security features',
+        name: 'Enhanced Marketing Campaign',
+        description: 'Scale successful marketing efforts with additional €15K budget',
         status: 'planned',
         impact: 'high',
       },
       {
-        name: 'Community Airdrop Program',
-        description: '60% of tokens distributed to waitlist members and early supporters',
+        name: 'Strategic Partnerships',
+        description: 'Partner with other Solana projects and crypto communities',
         status: 'planned',
         impact: 'high',
       },
       {
-        name: 'Liquidity Pool & DEX Listing',
-        description: 'Initial liquidity on Raydium, Jupiter, and major Solana DEXs',
+        name: 'Community Rewards Program',
+        description: 'Implement holder rewards and community engagement incentives',
         status: 'planned',
         impact: 'medium',
       },
       {
-        name: 'Burn Mechanism Implementation',
-        description: 'Automatic liquidity burning at 10M market cap milestone',
+        name: 'Exchange Listing Preparation',
+        description: 'Prepare for potential CEX listings and expanded trading pairs',
         status: 'planned',
         impact: 'high',
       },
     ],
     metrics: [
       {
-        label: 'Token Distribution',
-        value: '0%',
-        target: '100%',
-        icon: <Coins className="w-4 h-4" />,
-      },
-      {
-        label: 'Market Cap Target',
-        value: '$0',
-        target: '$10M+',
+        label: 'Market Cap Growth',
+        value: '$9.8K',
+        target: '$500K',
         icon: <DollarSign className="w-4 h-4" />,
       },
-      { label: 'Holder Count', value: '0', target: '10,000+', icon: <Users className="w-4 h-4" /> },
       {
-        label: 'Liquidity Locked',
-        value: '0%',
-        target: '30%',
-        icon: <Shield className="w-4 h-4" />,
+        label: 'Community Size',
+        value: '150',
+        target: '5,000',
+        icon: <Users className="w-4 h-4" />,
+      },
+      { label: 'Holder Count', value: '~50', target: '1,000+', icon: <Coins className="w-4 h-4" /> },
+      {
+        label: 'Trading Volume',
+        value: '$3.5K',
+        target: '$50K',
+        icon: <BarChart3 className="w-4 h-4" />,
       },
     ],
     marketingActions: [
       {
-        channel: 'Crypto Twitter',
-        action: 'Token announcement, tokenomics reveal, community building',
-        budget: '$5,000',
-        roi: '1000%+',
+        channel: 'Expanded Social Media',
+        action: 'Scale successful campaigns across all platforms',
+        budget: '€8,000',
+        roi: '400%+',
         icon: <Twitter className="w-4 h-4" />,
       },
       {
-        channel: 'Crypto Influencers',
-        action: 'Token reviews, analysis videos, community AMAs',
-        budget: '$15,000',
-        roi: '800%+',
+        channel: 'Influencer Network',
+        action: 'Build relationships with larger crypto influencers',
+        budget: '€5,000',
+        roi: '500%+',
         icon: <Crown className="w-4 h-4" />,
       },
       {
-        channel: 'DEX Listings',
-        action: 'Raydium, Jupiter, Orca listings with marketing support',
-        budget: '$10,000',
+        channel: 'Community Events',
+        action: 'AMAs, contests, community challenges, and rewards',
+        budget: '€1,500',
+        roi: '300%+',
+        icon: <Gift className="w-4 h-4" />,
+      },
+      {
+        channel: 'Partnership Marketing',
+        action: 'Cross-promotion with partner projects and communities',
+        budget: '€500',
         roi: '600%+',
         icon: <Sparkles className="w-4 h-4" />,
       },
-      {
-        channel: 'Community Rewards',
-        action: 'Airdrop campaigns, staking rewards, loyalty programs',
-        budget: '$20,000',
-        roi: '500%+',
-        icon: <Gift className="w-4 h-4" />,
-      },
     ],
-    icon: <Coins className="w-6 h-6" />,
+    icon: <TrendingUp className="w-6 h-6" />,
     color: 'from-yellow-500 to-orange-500',
     bgGradient: 'from-yellow-500/10 to-orange-500/10',
-    investment: '$50,000',
-    expectedROI: '2000%+ (Token appreciation + ecosystem value)',
-    keyPartners: ['Solana Foundation', 'Raydium', 'Jupiter', 'Crypto KOLs'],
-    risks: ['Market volatility', 'Regulatory changes', 'Competition'],
-    successMetrics: ['$10M market cap', '10K holders', 'Top 100 Solana tokens'],
+    investment: '€15,000',
+    expectedROI: '3000%+ (Target: $500K market cap)',
+    keyPartners: ['Crypto Communities', 'Solana Ecosystem', 'DeFi Platforms', 'Content Creators'],
+    risks: ['Market conditions', 'Competition', 'Community growth rate'],
+    successMetrics: ['$500K market cap', '5K community members', '1K holders'],
   },
   {
     id: 'platform-development',
-    title: 'AI Platform Development & Beta Launch',
-    subtitle: '🤖 CORE PRODUCT - Revolutionary AI Workflows',
+    title: 'AI Platform MVP Development',
+    subtitle: '🤖 PRODUCT LAUNCH - Core Features',
     description:
-      'Develop and launch the core AI workflow automation platform with AR capabilities, real AI integrations, and production-ready features',
-    timeline: 'August - October 2025',
+      'Develop and launch the minimum viable product with essential AI workflow features, focusing on user experience and core functionality',
+    timeline: 'March - May 2025',
     duration: '90 days',
     status: 'upcoming',
     priority: 'high',
@@ -440,64 +440,64 @@ const roadmapPhases: RoadmapPhase[] = [
     icon: <Brain className="w-6 h-6" />,
     color: 'from-purple-500 to-pink-600',
     bgGradient: 'from-purple-500/10 to-pink-600/10',
-    investment: '$200,000',
-    expectedROI: '1000%+ (Platform value + subscription revenue)',
-    keyPartners: ['OpenAI', 'Google Cloud', 'AWS', 'Microsoft Azure'],
-    risks: ['Technical complexity', 'AI API costs', 'User adoption'],
-    successMetrics: ['Platform launch', '1K beta users', '99.9% uptime'],
+    investment: '€50,000',
+    expectedROI: '2000%+ (Platform value + user growth)',
+    keyPartners: ['OpenAI', 'Anthropic', 'Vercel', 'Supabase'],
+    risks: ['Development timeline', 'User adoption', 'Technical challenges'],
+    successMetrics: ['MVP launch', '500 beta users', 'Core features working'],
   },
   {
     id: 'scale-monetize',
-    title: 'Scale & Monetization',
-    subtitle: '💰 REVENUE GENERATION - Sustainable Growth',
+    title: 'Growth & Monetization',
+    subtitle: '💰 REVENUE START - Sustainable Business',
     description:
-      'Scale platform to 100K+ users, implement subscription tiers, enterprise solutions, and achieve $10M+ ARR with global expansion',
-    timeline: 'Q4 2025 - Q2 2026',
+      'Scale platform to 5K+ users, implement basic subscription model, and achieve initial revenue streams with community-driven growth',
+    timeline: 'June - December 2025',
     duration: '6 months',
     status: 'upcoming',
     priority: 'medium',
     progress: 0,
     features: [
       {
-        name: 'Subscription Tier System',
-        description: 'Free, Pro ($29/mo), Enterprise ($299/mo) with advanced features',
+        name: 'Basic Subscription Model',
+        description: 'Free tier and Pro tier ($19/mo) with essential features',
         status: 'planned',
         impact: 'high',
       },
       {
-        name: 'Enterprise Solutions',
-        description: 'Custom workflows, dedicated support, on-premise deployment',
+        name: 'User Onboarding System',
+        description: 'Smooth user experience, tutorials, and support system',
         status: 'planned',
         impact: 'high',
       },
       {
-        name: 'Global Expansion',
-        description: 'Multi-language support, regional partnerships, local marketing',
+        name: 'Community Features',
+        description: 'User forums, template sharing, community challenges',
         status: 'planned',
         impact: 'medium',
       },
       {
-        name: 'Advanced AI Features',
-        description: 'Custom AI models, advanced analytics, enterprise integrations',
+        name: 'Analytics Dashboard',
+        description: 'User analytics, usage tracking, performance metrics',
         status: 'planned',
-        impact: 'high',
+        impact: 'medium',
       },
     ],
     metrics: [
-      { label: 'Monthly Users', value: '0', target: '100K+', icon: <Users className="w-4 h-4" /> },
+      { label: 'Monthly Users', value: '0', target: '5K+', icon: <Users className="w-4 h-4" /> },
       {
-        label: 'Annual Revenue',
+        label: 'Monthly Revenue',
         value: '$0',
-        target: '$10M+',
+        target: '$10K+',
         icon: <DollarSign className="w-4 h-4" />,
       },
       {
-        label: 'Enterprise Clients',
+        label: 'Paying Users',
         value: '0',
         target: '500+',
         icon: <Award className="w-4 h-4" />,
       },
-      { label: 'Global Markets', value: '0', target: '25+', icon: <Globe className="w-4 h-4" /> },
+      { label: 'User Retention', value: '0%', target: '70%+', icon: <TrendingUp className="w-4 h-4" /> },
     ],
     marketingActions: [
       {
@@ -525,11 +525,11 @@ const roadmapPhases: RoadmapPhase[] = [
     icon: <TrendingUp className="w-6 h-6" />,
     color: 'from-green-500 to-emerald-600',
     bgGradient: 'from-green-500/10 to-emerald-600/10',
-    investment: '$500,000',
-    expectedROI: '2000%+ ($10M ARR target)',
-    keyPartners: ['Salesforce', 'Microsoft', 'Google Workspace', 'Slack'],
-    risks: ['Market competition', 'Scaling challenges', 'Customer acquisition costs'],
-    successMetrics: ['100K users', '$10M ARR', '500 enterprise clients'],
+    investment: '€75,000',
+    expectedROI: '1000%+ (Sustainable revenue growth)',
+    keyPartners: ['Payment Processors', 'Cloud Providers', 'AI Services', 'Community Partners'],
+    risks: ['User acquisition', 'Competition', 'Market adoption'],
+    successMetrics: ['5K users', '$10K MRR', '500 paying customers'],
   },
 ];
 
@@ -786,32 +786,65 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                   <div className="absolute left-8 md:left-1/2 w-6 h-6 transform -translate-x-3 md:-translate-x-3 z-20">
                     <MotionDiv
                       className={`w-6 h-6 rounded-full bg-gradient-to-r ${phase.color} border-4 border-background shadow-xl relative`}
-                      whileHover={{ scale: 1.2 }}
-                      animate={expandedPhase === phase.id ? { scale: 1.1 } : { scale: 1 }}
+                      whileHover={{ scale: 1.3, rotate: 180 }}
+                      animate={expandedPhase === phase.id ? {
+                        scale: 1.2,
+                        boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)'
+                      } : {
+                        scale: 1,
+                        boxShadow: '0 0 0px rgba(59, 130, 246, 0)'
+                      }}
+                      transition={{ duration: 0.3 }}
                     >
+                      {/* Pulsing ring for active phases */}
+                      {(phase.status === 'in-progress' || phase.status === 'critical') && (
+                        <MotionDiv
+                          className="absolute inset-0 rounded-full border-2 border-blue-500"
+                          animate={{
+                            scale: [1, 1.5, 1],
+                            opacity: [0.8, 0, 0.8]
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        />
+                      )}
+
                       {/* Status Icon Overlay */}
                       {phase.status === 'completed' && (
-                        <CheckCircle className="absolute -top-1 -left-1 w-8 h-8 text-emerald-500 bg-background rounded-full p-1" />
+                        <MotionDiv
+                          initial={{ scale: 0, rotate: -180 }}
+                          animate={{ scale: 1, rotate: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                        >
+                          <CheckCircle className="absolute -top-1 -left-1 w-8 h-8 text-emerald-500 bg-background rounded-full p-1" />
+                        </MotionDiv>
                       )}
                       {(phase.status === 'in-progress' || phase.status === 'critical') && (
                         <MotionDiv
                           className="absolute -top-1 -left-1 w-8 h-8 bg-background rounded-full p-1"
                           animate={{ rotate: 360 }}
-                          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
                         >
                           <Clock className="w-6 h-6 text-blue-500" />
                         </MotionDiv>
                       )}
                       {phase.status === 'upcoming' && (
-                        <Star className="absolute -top-1 -left-1 w-8 h-8 text-gold bg-background rounded-full p-1" />
+                        <MotionDiv
+                          animate={{
+                            rotate: [0, 10, -10, 0],
+                            scale: [1, 1.1, 1]
+                          }}
+                          transition={{ duration: 4, repeat: Infinity }}
+                        >
+                          <Star className="absolute -top-1 -left-1 w-8 h-8 text-gold bg-background rounded-full p-1" />
+                        </MotionDiv>
                       )}
 
                       {/* Priority Indicator */}
                       {phase.priority === 'high' && (
                         <MotionDiv
                           className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 rounded-full border-2 border-background"
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 1, repeat: Infinity }}
+                          animate={{ scale: [1, 1.3, 1] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
                         />
                       )}
                     </MotionDiv>
@@ -927,17 +960,27 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                         <div className="w-full bg-muted/50 rounded-full h-3 mb-2 overflow-hidden">
                           <MotionDiv
                             className={`h-3 rounded-full bg-gradient-to-r ${phase.color} relative`}
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${phase.progress}%` }}
+                            initial={{ width: 0, opacity: 0 }}
+                            whileInView={{ width: `${phase.progress}%`, opacity: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 2, delay: index * 0.1, ease: 'easeOut' }}
+                            transition={{ duration: 2.5, delay: index * 0.2, ease: 'easeOut' }}
                           >
                             {phase.progress > 0 && (
-                              <MotionDiv
-                                className="absolute right-0 top-0 h-full w-1 bg-white/50"
-                                animate={{ opacity: [0.5, 1, 0.5] }}
-                                transition={{ duration: 1.5, repeat: Infinity }}
-                              />
+                              <>
+                                <MotionDiv
+                                  className="absolute right-0 top-0 h-full w-1 bg-white/70"
+                                  animate={{ opacity: [0.3, 1, 0.3] }}
+                                  transition={{ duration: 1.5, repeat: Infinity }}
+                                />
+                                <MotionDiv
+                                  className="absolute inset-0 bg-white/20 rounded-full"
+                                  animate={{
+                                    scale: [1, 1.05, 1],
+                                    opacity: [0.2, 0.4, 0.2]
+                                  }}
+                                  transition={{ duration: 3, repeat: Infinity }}
+                                />
+                              </>
                             )}
                           </MotionDiv>
                         </div>
@@ -963,6 +1006,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                               {['features', 'marketing', 'metrics'].map(tab => (
                                 <button
                                   key={tab}
+                                  type="button"
                                   onClick={e => {
                                     e.stopPropagation();
                                     setActiveTab(tab as 'features' | 'marketing' | 'metrics');
@@ -1234,7 +1278,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                 >
                   <div className="w-4 h-4 bg-emerald-500 rounded-full animate-pulse" />
                   <span className="text-sm font-bold text-emerald-400 uppercase tracking-wide">
-                    AGGRESSIVE MARKETING PHASE ACTIVE
+                    €10K MARKETING CAMPAIGN LAUNCHED TODAY
                   </span>
                   <div className="w-4 h-4 bg-emerald-500 rounded-full animate-pulse" />
                 </MotionDiv>
@@ -1246,12 +1290,12 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                 <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-8 leading-relaxed">
                   We're investing{' '}
                   <span className="text-gold font-bold">
-                    ${getTotalInvestment().toLocaleString()}
+                    €{(getTotalInvestment() / 1000).toFixed(0)}K
                   </span>{' '}
-                  to become the world's leading AI workflow platform.
+                  to build the future of AI workflow automation.
                   <span className="text-primary font-semibold">
                     {' '}
-                    Early supporters get exclusive tokens, priority access, and lifetime benefits.
+                    Join our growing community and be part of the revolution from day one.
                   </span>
                 </p>
 
@@ -1260,30 +1304,38 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                   <MotionDiv
                     className="premium-card p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10"
                     whileHover={{ scale: 1.05 }}
+                    animate={{ scale: [1, 1.02, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
                   >
-                    <div className="text-2xl font-bold text-emerald-400 mb-1">$15K</div>
-                    <div className="text-xs text-muted-foreground">Foundation Complete</div>
+                    <div className="text-2xl font-bold text-emerald-400 mb-1">$9.8K</div>
+                    <div className="text-xs text-muted-foreground">Current Market Cap</div>
                   </MotionDiv>
                   <MotionDiv
                     className="premium-card p-4 rounded-xl border border-red-500/30 bg-red-500/10"
                     whileHover={{ scale: 1.05 }}
+                    animate={{ scale: [1, 1.02, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
                   >
-                    <div className="text-2xl font-bold text-red-400 mb-1">$50K</div>
-                    <div className="text-xs text-muted-foreground">Marketing Blitz</div>
+                    <div className="text-2xl font-bold text-red-400 mb-1">€10K</div>
+                    <div className="text-xs text-muted-foreground">Marketing Budget Active</div>
                   </MotionDiv>
                   <MotionDiv
                     className="premium-card p-4 rounded-xl border border-gold/30 bg-gold/10"
                     whileHover={{ scale: 1.05 }}
+                    animate={{ scale: [1, 1.02, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 1 }}
                   >
-                    <div className="text-2xl font-bold text-gold mb-1">50K</div>
-                    <div className="text-xs text-muted-foreground">Waitlist Target</div>
+                    <div className="text-2xl font-bold text-gold mb-1">$100K</div>
+                    <div className="text-xs text-muted-foreground">Next Milestone</div>
                   </MotionDiv>
                   <MotionDiv
                     className="premium-card p-4 rounded-xl border border-green-500/30 bg-green-500/10"
                     whileHover={{ scale: 1.05 }}
+                    animate={{ scale: [1, 1.02, 1] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 1.5 }}
                   >
-                    <div className="text-2xl font-bold text-green-400 mb-1">$10M</div>
-                    <div className="text-xs text-muted-foreground">Valuation Goal</div>
+                    <div className="text-2xl font-bold text-green-400 mb-1">2.5K</div>
+                    <div className="text-xs text-muted-foreground">Community Target</div>
                   </MotionDiv>
                 </div>
 
