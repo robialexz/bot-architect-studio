@@ -30,6 +30,8 @@ function ParticlesBackground() {
 
 const HeroSection: React.FC = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [hasScrolled, setHasScrolled] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -51,6 +53,47 @@ const HeroSection: React.FC = () => {
       setIsVideoPlaying(!isVideoPlaying);
     }
   };
+
+  // Video loading handlers
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleLoadedData = () => {
+      console.log('HeroSection: Video loaded successfully');
+      setVideoLoaded(true);
+      setVideoError(false);
+    };
+
+    const handleError = (e: Event) => {
+      console.warn('HeroSection: Video failed to load:', e);
+      setVideoError(true);
+      setVideoLoaded(false);
+    };
+
+    const handleCanPlay = () => {
+      setVideoLoaded(true);
+    };
+
+    video.addEventListener('loadeddata', handleLoadedData);
+    video.addEventListener('error', handleError);
+    video.addEventListener('canplay', handleCanPlay);
+
+    // Fallback timeout
+    const timeout = setTimeout(() => {
+      if (!videoLoaded) {
+        console.warn('HeroSection: Video loading timeout, showing fallback');
+        setVideoError(true);
+      }
+    }, 5000);
+
+    return () => {
+      video.removeEventListener('loadeddata', handleLoadedData);
+      video.removeEventListener('error', handleError);
+      video.removeEventListener('canplay', handleCanPlay);
+      clearTimeout(timeout);
+    };
+  }, [videoLoaded]);
 
   // Scroll effect
   useEffect(() => {
@@ -90,17 +133,35 @@ const HeroSection: React.FC = () => {
         >
           <div className="flex justify-center">
             <div className="relative w-[600px] h-36 rounded-3xl overflow-hidden border border-primary/20 shadow-xl z-40">
+              {/* Loading state */}
+              {!videoLoaded && !videoError && (
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-gold/10 to-primary/10 animate-pulse" />
+              )}
+
+              {/* Video element */}
               <video
-                className="w-full h-full object-cover relative z-40"
+                ref={videoRef}
+                className={`w-full h-full object-cover relative z-40 transition-opacity duration-500 ${
+                  videoLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
                 autoPlay
                 loop
                 muted
                 playsInline
                 poster="/flowsy-logo.svg"
+                style={{ display: videoError ? 'none' : 'block' }}
               >
                 <source src="/background-animation.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
+
+              {/* Fallback for video error */}
+              {videoError && (
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-gold/20 to-primary/20 flex items-center justify-center">
+                  <PremiumLogo className="w-32 h-16" />
+                </div>
+              )}
+
               {/* Subtle overlay for better integration */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent z-41"></div>
             </div>

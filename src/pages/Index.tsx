@@ -24,7 +24,7 @@ const IndexPage: React.FC = () => {
 
   return (
     <div className="index-page-container relative">
-      {/* Pipeline Background - Fixed across entire page */}
+      {/* Pipeline Background - Simple and Clean */}
       <Suspense
         fallback={
           <div className="fixed inset-0 w-full h-full bg-gradient-to-br from-background via-background/95 to-background/90" />
