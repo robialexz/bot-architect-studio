@@ -148,8 +148,8 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
 
   const generateMockData = () => ({
     totalSupply: 100000000,
-    holders: 15420,
-    liquidity: 2850000,
+    holders: tokenData?.holders, // Only use real holder data if available
+    liquidity: 2850000, // This could be fetched from DEX APIs in the future
     volume24h: tokenData?.volume24h || 125000,
     marketCap: tokenData?.marketCap || 2450000,
   });
@@ -714,19 +714,22 @@ const TokenBanner: React.FC<TokenBannerProps> = ({
             >
               {/* Additional Token Information */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <MotionDiv
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className="bg-card/50 rounded-lg p-3 border border-border/30"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <Users className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium">Holders</span>
-                  </div>
-                  <div className="text-lg font-bold">{mockData.holders.toLocaleString()}</div>
-                  <div className="text-xs text-muted-foreground">Active wallets</div>
-                </MotionDiv>
+                {mockData.holders !== undefined && (
+                  <MotionDiv
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="bg-card/50 rounded-lg p-3 border border-border/30"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Users className="w-4 h-4 text-primary" />
+                      <span className="text-sm font-medium">Holders</span>
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full" title="Real data"></div>
+                    </div>
+                    <div className="text-lg font-bold">{mockData.holders.toLocaleString()}</div>
+                    <div className="text-xs text-muted-foreground">Active wallets</div>
+                  </MotionDiv>
+                )}
 
                 <MotionDiv
                   initial={{ opacity: 0, x: -20 }}

@@ -10,6 +10,12 @@ export interface TokenData {
   supply: number;
   decimals: number;
   logoUrl?: string;
+  // New fields for data transparency
+  holders?: number;
+  dataSource: 'dexscreener' | 'birdeye' | 'jupiter' | 'pump.fun' | 'solscan' | 'helius' | 'unknown';
+  lastUpdated: number;
+  isVerified: boolean;
+  dataQuality: 'high' | 'medium' | 'low';
 }
 
 export interface TransactionData {
@@ -55,6 +61,8 @@ class SolanaTokenService {
   private readonly JUPITER_API = 'https://price.jup.ag/v4';
   private readonly PUMP_FUN_API = 'https://frontend-api.pump.fun';
   private readonly DEXSCREENER_API = 'https://api.dexscreener.com/latest/dex';
+  private readonly SOLSCAN_API = 'https://public-api.solscan.io';
+  private readonly HELIUS_API = 'https://api.helius.xyz/v0';
 
   // Demo data for development - will be replaced with real API calls
   private readonly DEMO_TOKEN_DATA: TokenData = {
@@ -67,6 +75,11 @@ class SolanaTokenService {
     supply: 100000000,
     decimals: 9,
     logoUrl: '/flowsy-token-logo.png',
+    holders: undefined, // No fake holder data
+    dataSource: 'unknown',
+    lastUpdated: Date.now(),
+    isVerified: false,
+    dataQuality: 'low',
   };
 
   private readonly DEMO_TRANSACTIONS: TransactionData[] = [
@@ -114,6 +127,13 @@ class SolanaTokenService {
       try {
         const dexScreenerData = await this.getDexScreenerTokenData(tokenAddress);
         if (dexScreenerData) {
+          // Try to enrich with holder count from Solscan
+          try {
+            const holderCount = await this.getHolderCount(tokenAddress);
+            dexScreenerData.holders = holderCount;
+          } catch (error) {
+            logger.warn('Failed to fetch holder count:', error);
+          }
           return dexScreenerData;
         }
       } catch (error) {
@@ -152,6 +172,135 @@ class SolanaTokenService {
     } catch (error) {
       logger.error('All token data APIs failed:', error);
       throw new Error('Unable to fetch token data. Please try again later.');
+    }
+  }
+
+  /**
+   * Get real holder count from Solscan API
+   */
+  private async getHolderCount(tokenAddress: string): Promise<number | undefined> {
+    try {
+      console.log('🔍 Fetching holder count from Solscan for:', tokenAddress);
+
+      // Try Solscan API first
+      const response = await fetch(`${this.SOLSCAN_API}/token/holders?tokenAddress=${tokenAddress}&limit=1&offset=0`);
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.data && typeof data.data.total === 'number') {
+          console.log('✅ Holder count from Solscan:', data.data.total);
+          return data.data.total;
+        }
+      }
+
+      // Fallback: Try to get from Helius API if available
+      if (import.meta.env.VITE_HELIUS_API_KEY) {
+        const heliusResponse = await fetch(`${this.HELIUS_API}/token-metadata?api-key=${import.meta.env.VITE_HELIUS_API_KEY}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            mintAccounts: [tokenAddress],
+            includeOffChain: true,
+            disableCache: false,
+          }),
+        });
+
+        if (heliusResponse.ok) {
+          const heliusData = await heliusResponse.json();
+          if (heliusData[0]?.tokenStandard) {
+            // Helius doesn't directly provide holder count, but we can try other endpoints
+            console.log('📊 Helius data available but no holder count');
+          }
+        }
+      }
+
+      console.log('⚠️ Could not fetch real holder count');
+      return undefined;
+    } catch (error) {
+      console.error('❌ Error fetching holder count:', error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Verify price change data by cross-referencing multiple sources
+   */
+  private async verifyPriceChange(tokenAddress: string, primaryChange: number): Promise<{
+    verified: boolean;
+    confidence: 'high' | 'medium' | 'low';
+    sources: string[];
+  }> {
+    const sources: string[] = [];
+    const changes: number[] = [primaryChange];
+
+    try {
+      // Try to get price change from Jupiter for comparison
+      try {
+        const jupiterData = await this.getJupiterPrice(tokenAddress);
+        if (jupiterData?.price) {
+          sources.push('jupiter');
+          // Jupiter doesn't provide 24h change directly, but we could calculate it
+          // For now, we'll just note that we have Jupiter price data
+        }
+      } catch (error) {
+        console.log('Jupiter verification failed:', error);
+      }
+
+      // Try Birdeye for additional verification
+      try {
+        const birdeyeResponse = await fetch(`${this.BIRDEYE_API}/token/${tokenAddress}`, {
+          headers: {
+            'X-API-KEY': process.env.VITE_BIRDEYE_API_KEY || 'demo',
+          },
+        });
+
+        if (birdeyeResponse.ok) {
+          const birdeyeData = await birdeyeResponse.json();
+          if (birdeyeData.data?.priceChange24h !== undefined) {
+            changes.push(birdeyeData.data.priceChange24h);
+            sources.push('birdeye');
+          }
+        }
+      } catch (error) {
+        console.log('Birdeye verification failed:', error);
+      }
+
+      // Calculate confidence based on source agreement
+      const avgChange = changes.reduce((sum, change) => sum + change, 0) / changes.length;
+      const maxDeviation = Math.max(...changes.map(change => Math.abs(change - avgChange)));
+
+      let confidence: 'high' | 'medium' | 'low';
+      let verified = false;
+
+      if (changes.length >= 2) {
+        if (maxDeviation <= 5) { // Within 5% of each other
+          confidence = 'high';
+          verified = true;
+        } else if (maxDeviation <= 15) { // Within 15% of each other
+          confidence = 'medium';
+          verified = true;
+        } else {
+          confidence = 'low';
+          verified = false;
+        }
+      } else {
+        confidence = 'low';
+        verified = false;
+      }
+
+      console.log(`📊 Price change verification: ${verified ? 'VERIFIED' : 'UNVERIFIED'} (${confidence} confidence)`, {
+        primaryChange,
+        sources,
+        changes,
+        maxDeviation
+      });
+
+      return { verified, confidence, sources };
+    } catch (error) {
+      console.error('❌ Price change verification failed:', error);
+      return { verified: false, confidence: 'low', sources: [] };
     }
   }
 
@@ -241,19 +390,45 @@ class SolanaTokenService {
 
       console.log('🏆 Best pair selected:', bestPair);
 
-      const tokenData = {
+      const priceChange24h = parseFloat(bestPair.priceChange?.h24 || '0');
+      const volume24h = parseFloat(bestPair.volume?.h24 || '0');
+      const marketCap = parseFloat(bestPair.marketCap || '0');
+
+      // Verify price change data if it seems suspicious (>50% change)
+      let priceChangeVerification = { verified: true, confidence: 'high' as const, sources: ['dexscreener'] };
+      if (Math.abs(priceChange24h) > 50) {
+        console.log('🔍 Large price change detected, verifying...', priceChange24h);
+        priceChangeVerification = await this.verifyPriceChange(tokenAddress, priceChange24h);
+      }
+
+      // Validate data quality
+      const hasValidPrice = parseFloat(bestPair.priceUsd || '0') > 0;
+      const hasValidVolume = volume24h > 0;
+      const hasValidMarketCap = marketCap > 0;
+
+      const dataQuality: 'high' | 'medium' | 'low' =
+        hasValidPrice && hasValidVolume && hasValidMarketCap && priceChangeVerification.verified ? 'high' :
+        hasValidPrice && (hasValidVolume || hasValidMarketCap) && priceChangeVerification.confidence !== 'low' ? 'medium' : 'low';
+
+      const tokenData: TokenData = {
         name: bestPair.baseToken?.name || 'FlowsyAI Token',
         symbol: bestPair.baseToken?.symbol || 'FLOWSY',
         price: parseFloat(bestPair.priceUsd || '0'),
-        priceChange24h: parseFloat(bestPair.priceChange?.h24 || '0'),
-        marketCap: parseFloat(bestPair.marketCap || '0'),
-        volume24h: parseFloat(bestPair.volume?.h24 || '0'),
+        priceChange24h: priceChange24h,
+        marketCap: marketCap,
+        volume24h: volume24h,
         supply: parseFloat(bestPair.baseToken?.totalSupply || '0'),
         decimals: parseInt(bestPair.baseToken?.decimals || '9'),
         logoUrl: bestPair.info?.imageUrl,
+        holders: undefined, // Will be set by caller if available
+        dataSource: 'dexscreener',
+        lastUpdated: Date.now(),
+        isVerified: dataQuality === 'high' && priceChangeVerification.verified,
+        dataQuality: dataQuality,
       };
 
-      console.log('✅ Parsed token data:', tokenData);
+      console.log('✅ Parsed token data with quality assessment:', tokenData);
+      console.log('📊 Price change verification:', priceChangeVerification);
       return tokenData;
     } catch (error) {
       console.error('❌ DexScreener API error:', error);
