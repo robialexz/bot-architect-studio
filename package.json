@@ -10,11 +10,12 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run clean && vite build",
-    "build:vercel": "npm run clean && vite build",
+    "build:vercel": "npm run clean && vite build --mode production && npm run health-check",
     "build:analyze": "vite build && node scripts/analyze-bundle.js",
     "build:dev": "vite build --mode development",
     "clean": "rimraf dist",
     "verify-build": "node scripts/verify-build.js",
+    "health-check": "node scripts/deployment-health-check.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",

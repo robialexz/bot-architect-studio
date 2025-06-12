@@ -1,9 +1,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-
-// Safety check for React availability
-const safeForwardRef = React?.forwardRef || ((render: any) => render);
+import { safeForwardRef } from '@/lib/safe-forward-ref';
 
 const Input = safeForwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
   ({ className, type, ...props }, ref) => {
