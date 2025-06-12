@@ -11,17 +11,12 @@ interface ComingSoonPageProps {
 }
 
 const ComingSoonPage: React.FC<ComingSoonPageProps> = ({
-  title = "Feature Coming Soon",
+  title = 'Feature Coming Soon',
   description = "This feature is currently under development. Join our waitlist to be notified when it's ready!",
-  icon
+  icon,
 }) => {
   const defaultIcon = (
-    <svg
-      className="w-8 h-8 text-white"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
+    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -38,34 +33,28 @@ const ComingSoonPage: React.FC<ComingSoonPageProps> = ({
           <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
             {icon || defaultIcon}
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">
-            {title}
-          </h2>
-          <p className="text-gray-300 mb-6">
-            {description}
-          </p>
+          <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
+          <p className="text-gray-300 mb-6">{description}</p>
         </div>
-        
+
         <div className="space-y-3">
           <button
-            onClick={() => window.location.href = '/waitlist'}
+            onClick={() => (window.location.href = '/waitlist')}
             className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105"
           >
             Join Waitlist
           </button>
-          
+
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => (window.location.href = '/')}
             className="w-full bg-white/10 text-white font-semibold py-3 px-6 rounded-lg hover:bg-white/20 transition-all duration-200 border border-white/20"
           >
             Back to Home
           </button>
         </div>
-        
+
         <div className="mt-6 pt-6 border-t border-white/20">
-          <p className="text-sm text-gray-400">
-            Want to learn more about FlowsyAI?
-          </p>
+          <p className="text-sm text-gray-400">Want to learn more about FlowsyAI?</p>
           <div className="flex justify-center space-x-4 mt-2">
             <a
               href="/features"

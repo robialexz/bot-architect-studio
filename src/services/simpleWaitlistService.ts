@@ -78,8 +78,9 @@ class SimpleWaitlistService {
     const trimmedEmail = email.trim();
     if (trimmedEmail.length === 0 || trimmedEmail.length > 254) return false;
 
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
     if (!emailRegex.test(trimmedEmail.toLowerCase())) return false;
 
     const parts = trimmedEmail.split('@');
@@ -105,7 +106,9 @@ class SimpleWaitlistService {
   /**
    * Submit email to waitlist
    */
-  async submitEmail(email: string): Promise<{ success: boolean; message: string; data?: WaitlistEmail }> {
+  async submitEmail(
+    email: string
+  ): Promise<{ success: boolean; message: string; data?: WaitlistEmail }> {
     try {
       // Validate email format
       if (!this.validateEmail(email)) {
@@ -131,7 +134,7 @@ class SimpleWaitlistService {
           existingEmail.updated_at = new Date().toISOString();
           this.emails.set(normalizedEmail, existingEmail);
           this.saveToStorage();
-          
+
           return {
             success: true,
             message: "Welcome back! You're now on our waitlist.",
@@ -155,7 +158,7 @@ class SimpleWaitlistService {
       this.saveToStorage();
 
       console.log('✅ Email added to waitlist:', normalizedEmail);
-      
+
       return {
         success: true,
         message: "Success! You're now on our waitlist. We'll notify you when we launch!",
@@ -214,7 +217,7 @@ class SimpleWaitlistService {
   async unsubscribeEmail(email: string): Promise<{ success: boolean; message: string }> {
     try {
       const normalizedEmail = this.normalizeEmail(email);
-      
+
       if (this.emails.has(normalizedEmail)) {
         const emailRecord = this.emails.get(normalizedEmail)!;
         emailRecord.status = 'unsubscribed';
@@ -241,8 +244,9 @@ class SimpleWaitlistService {
    */
   async getAllEmails(): Promise<{ success: boolean; data?: WaitlistEmail[]; message?: string }> {
     try {
-      const emails = Array.from(this.emails.values())
-        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      const emails = Array.from(this.emails.values()).sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
 
       return {
         success: true,

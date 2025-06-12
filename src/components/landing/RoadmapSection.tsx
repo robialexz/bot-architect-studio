@@ -2,16 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  CheckCircle, 
-  Clock, 
-  Star, 
-  Rocket, 
-  TrendingUp,
-  Brain,
-  Building,
-  Globe
-} from 'lucide-react';
+import { CheckCircle, Clock, Star, Rocket, TrendingUp, Brain, Building, Globe } from 'lucide-react';
 
 const MotionDiv = motion.div;
 
@@ -25,7 +16,8 @@ const roadmapPhases = [
     id: 'aggressive-marketing',
     title: 'Aggressive Marketing',
     subtitle: 'High-Impact Launch Campaign',
-    description: 'Launch comprehensive marketing campaign across all channels to build massive awareness and drive early adoption.',
+    description:
+      'Launch comprehensive marketing campaign across all channels to build massive awareness and drive early adoption.',
     icon: '🚀',
     status: 'critical' as const,
     priority: 'high' as const,
@@ -35,13 +27,14 @@ const roadmapPhases = [
     duration: '90 days',
     timeline: 'September - November 2025',
     color: 'from-red-500 to-orange-500',
-    bgGradient: 'from-red-500/20 to-orange-500/20'
+    bgGradient: 'from-red-500/20 to-orange-500/20',
   },
   {
     id: 'platform-beta',
     title: 'Platform Beta Launch',
     subtitle: 'Beta Release & Testing',
-    description: 'Launch beta version of the AI platform to our community, gather feedback and iterate rapidly based on user input.',
+    description:
+      'Launch beta version of the AI platform to our community, gather feedback and iterate rapidly based on user input.',
     icon: '🧠',
     status: 'in-progress' as const,
     priority: 'high' as const,
@@ -51,13 +44,14 @@ const roadmapPhases = [
     duration: '90 days',
     timeline: 'December 2025 - February 2026',
     color: 'from-blue-500 to-cyan-500',
-    bgGradient: 'from-blue-500/20 to-cyan-500/20'
+    bgGradient: 'from-blue-500/20 to-cyan-500/20',
   },
   {
     id: 'growth-monetization',
     title: 'Growth & Monetization',
     subtitle: 'Sustainable Business',
-    description: 'Scale platform to 5K+ users, implement basic subscription model, and achieve initial revenue streams.',
+    description:
+      'Scale platform to 5K+ users, implement basic subscription model, and achieve initial revenue streams.',
     icon: '📈',
     status: 'upcoming' as const,
     priority: 'medium' as const,
@@ -67,13 +61,14 @@ const roadmapPhases = [
     duration: '6 months',
     timeline: 'March - August 2026',
     color: 'from-emerald-500 to-teal-500',
-    bgGradient: 'from-emerald-500/20 to-teal-500/20'
+    bgGradient: 'from-emerald-500/20 to-teal-500/20',
   },
   {
     id: 'enterprise-expansion',
     title: 'Enterprise Expansion',
     subtitle: 'B2B Market Entry',
-    description: 'Expand into enterprise market with advanced features, custom integrations, and dedicated support.',
+    description:
+      'Expand into enterprise market with advanced features, custom integrations, and dedicated support.',
     icon: '🏢',
     status: 'upcoming' as const,
     priority: 'medium' as const,
@@ -83,13 +78,14 @@ const roadmapPhases = [
     duration: '6 months',
     timeline: 'September 2026 - February 2027',
     color: 'from-purple-500 to-pink-500',
-    bgGradient: 'from-purple-500/20 to-pink-500/20'
+    bgGradient: 'from-purple-500/20 to-pink-500/20',
   },
   {
     id: 'global-domination',
     title: 'Global Domination',
     subtitle: 'Market Leadership',
-    description: 'Achieve market leadership position with global expansion, strategic acquisitions, and IPO preparation.',
+    description:
+      'Achieve market leadership position with global expansion, strategic acquisitions, and IPO preparation.',
     icon: '🌍',
     status: 'upcoming' as const,
     priority: 'low' as const,
@@ -99,8 +95,8 @@ const roadmapPhases = [
     duration: '12 months',
     timeline: 'March 2027 - February 2028',
     color: 'from-gold to-yellow-500',
-    bgGradient: 'from-gold/20 to-yellow-500/20'
-  }
+    bgGradient: 'from-gold/20 to-yellow-500/20',
+  },
 ];
 
 const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
@@ -148,8 +144,8 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                 ${getTotalInvestment().toLocaleString()}
               </span>{' '}
               total investment to achieve{' '}
-              <span className="text-gold font-semibold">$10M+ valuation</span> and become the leading
-              AI workflow automation platform.
+              <span className="text-gold font-semibold">$10M+ valuation</span> and become the
+              leading AI workflow automation platform.
             </p>
           </MotionDiv>
 
@@ -162,19 +158,19 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                   initial={{
                     opacity: 0,
                     y: 50,
-                    scale: 0.9
+                    scale: 0.9,
                   }}
                   whileInView={{
                     opacity: 1,
                     y: 0,
-                    scale: 1
+                    scale: 1,
                   }}
                   viewport={{ once: true }}
                   transition={{
                     duration: 0.8,
                     delay: index * 0.2,
-                    type: "spring",
-                    stiffness: 100
+                    type: 'spring',
+                    stiffness: 100,
                   }}
                   className="group"
                 >
@@ -212,7 +208,7 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
                         transition={{
                           duration: 2,
                           repeat: Infinity,
-                          ease: 'easeInOut'
+                          ease: 'easeInOut',
                         }}
                       >
                         {phase.status === 'critical' && '🔥 CRITICAL'}
@@ -279,7 +275,9 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
 
                         <div className="text-center">
                           <div className="text-xs text-muted-foreground mb-1">Expected ROI</div>
-                          <div className="text-sm font-bold text-emerald-400">{phase.expectedROI}</div>
+                          <div className="text-sm font-bold text-emerald-400">
+                            {phase.expectedROI}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -293,17 +291,17 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
               <MotionDiv
                 className="absolute w-96 h-96 rounded-full border-2 border-primary/30"
                 animate={{ rotate: 360 }}
-                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
               />
               <MotionDiv
                 className="absolute w-80 h-80 rounded-full border border-gold/40"
                 animate={{ rotate: -360 }}
-                transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
               />
               <MotionDiv
                 className="absolute w-64 h-64 rounded-full border border-emerald-500/30"
                 animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
               />
 
               {/* Central Core */}
@@ -325,8 +323,6 @@ const RoadmapSection: React.FC<RoadmapSectionProps> = ({ compact = false }) => {
               </MotionDiv>
             </div>
           </div>
-
-
         </div>
       </MotionDiv>
     </section>

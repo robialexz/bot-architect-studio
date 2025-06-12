@@ -1,7 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
-import { toast } from '@/hooks/use-toast';
 
 // Add error handling for debugging
 console.log('🚀 FlowsyAI main.tsx starting...');
@@ -38,18 +37,24 @@ try {
             console.log('App is ready for offline use');
           },
           onUpdate: () => {
-            toast({
-              title: 'App Update Available',
-              description: 'A new version is available. Refresh to update.',
-              duration: 10000,
-            });
+            console.log('App update available - refresh to update');
+            // Show browser notification instead of toast
+            if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification('FlowsyAI Update Available', {
+                body: 'A new version is available. Refresh to update.',
+                icon: '/favicon.ico'
+              });
+            }
           },
           onOfflineReady: () => {
-            toast({
-              title: 'Ready for Offline',
-              description: 'App is cached and ready to work offline.',
-              duration: 5000,
-            });
+            console.log('App is cached and ready to work offline');
+            // Show browser notification instead of toast
+            if ('Notification' in window && Notification.permission === 'granted') {
+              new Notification('FlowsyAI Ready for Offline', {
+                body: 'App is cached and ready to work offline.',
+                icon: '/favicon.ico'
+              });
+            }
           },
         });
         console.log('✅ Service Worker registered');
