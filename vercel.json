@@ -53,12 +53,6 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/((?!api|assets|favicon.ico|manifest.webmanifest|sw.js|robots.txt|debug-production-layout.html|icon-192.svg|flowsy-logo.svg).*)",
-      "destination": "/index.html"
-    }
-  ],
   "routes": [
     {
       "src": "/manifest.webmanifest",
@@ -66,6 +60,42 @@
         "Content-Type": "application/manifest+json",
         "Cache-Control": "public, max-age=86400"
       }
+    },
+    {
+      "src": "/favicon.ico",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/robots.txt",
+      "headers": {
+        "Content-Type": "text/plain",
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/sw.js",
+      "headers": {
+        "Content-Type": "application/javascript",
+        "Cache-Control": "public, max-age=0"
+      }
+    },
+    {
+      "src": "/assets/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
+      "src": "/((?!api|assets|favicon.ico|manifest.webmanifest|sw.js|robots.txt|debug-production-layout.html|icon-192.svg|flowsy-logo.svg).*)",
+      "dest": "/index.html"
     }
   ]
 }
