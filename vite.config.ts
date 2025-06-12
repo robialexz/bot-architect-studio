@@ -31,7 +31,7 @@ export default defineConfig({
       },
       external: [],
       output: {
-        // ULTRA-SIMPLIFIED chunking to fix vendor conflicts
+        // ULTRA-SIMPLIFIED chunking to fix vendor conflicts and 'us is not a function' error
         manualChunks: id => {
           // Only separate React core to prevent conflicts
           if (id.includes('node_modules')) {
