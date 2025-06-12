@@ -90,55 +90,56 @@ export default defineConfig({
             return 'vendor';
           }
 
-          // Application code chunking
-          if (id.includes('/landing/') || id.includes('Index.tsx')) {
-            return 'landing';
-          }
-          if (id.includes('Workflow') || id.includes('workflow')) {
-            return 'workflow';
-          }
-          // FIXED: Disable ai-features chunking to resolve React forwardRef error
-          // This prevents "Cannot read properties of undefined (reading 'forwardRef')" error
-          // by ensuring React is available when AI components load
+          // TEMPORARILY DISABLE ALL APPLICATION CHUNKING
+          // This fixes React forwardRef errors across all bundles
+          // All app code will be in main bundle with React dependencies
+
+          // Application code chunking - DISABLED to fix React dependency issues
+          // if (id.includes('/landing/') || id.includes('Index.tsx')) {
+          //   return 'landing';
+          // }
+          // if (id.includes('Workflow') || id.includes('workflow')) {
+          //   return 'workflow';
+          // }
           // if (id.includes('Agent') || id.includes('agent') || id.includes('AI')) {
           //   return 'ai-features';
           // }
-          if (id.includes('Dashboard') || id.includes('Analytics') || id.includes('dashboard')) {
-            return 'dashboard';
-          }
-          if (
-            id.includes('Crystal') ||
-            id.includes('3D') ||
-            id.includes('Canvas') ||
-            id.includes('AR')
-          ) {
-            return 'visualization';
-          }
-          if (
-            id.includes('Auth') ||
-            id.includes('auth') ||
-            id.includes('Login') ||
-            id.includes('Profile')
-          ) {
-            return 'auth';
-          }
-          if (
-            id.includes('crypto') ||
-            id.includes('Token') ||
-            id.includes('Solana') ||
-            id.includes('Wallet')
-          ) {
-            return 'crypto';
-          }
-          if (id.includes('Settings') || id.includes('Config') || id.includes('Billing')) {
-            return 'settings';
-          }
-          if (id.includes('Documentation') || id.includes('Help') || id.includes('Tutorial')) {
-            return 'docs';
-          }
-          if (id.includes('Community') || id.includes('Social') || id.includes('Collaboration')) {
-            return 'community';
-          }
+          // if (id.includes('Dashboard') || id.includes('Analytics') || id.includes('dashboard')) {
+          //   return 'dashboard';
+          // }
+          // if (
+          //   id.includes('Crystal') ||
+          //   id.includes('3D') ||
+          //   id.includes('Canvas') ||
+          //   id.includes('AR')
+          // ) {
+          //   return 'visualization';
+          // }
+          // if (
+          //   id.includes('Auth') ||
+          //   id.includes('auth') ||
+          //   id.includes('Login') ||
+          //   id.includes('Profile')
+          // ) {
+          //   return 'auth';
+          // }
+          // if (
+          //   id.includes('crypto') ||
+          //   id.includes('Token') ||
+          //   id.includes('Solana') ||
+          //   id.includes('Wallet')
+          // ) {
+          //   return 'crypto';
+          // }
+          // if (id.includes('Settings') || id.includes('Config') || id.includes('Billing')) {
+          //   return 'settings';
+          // }
+          // if (id.includes('Documentation') || id.includes('Help') || id.includes('Tutorial')) {
+          //   return 'docs';
+          // }
+          // if (id.includes('Community') || id.includes('Social') || id.includes('Collaboration')) {
+          //   return 'community';
+          // }
         },
       },
     },
