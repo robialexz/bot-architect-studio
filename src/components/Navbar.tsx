@@ -403,6 +403,7 @@ const Navbar = () => {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="md:hidden border-t border-[hsl(var(--nav-border))] bg-[hsl(var(--nav-background))] overflow-hidden"
             id="mobile-navigation-menu"
+            data-testid="mobile-menu"
             role="navigation"
             aria-label="Mobile navigation menu"
           >

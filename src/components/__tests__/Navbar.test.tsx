@@ -203,6 +203,28 @@ describe('Navbar', () => {
   });
 
   it('toggles mobile menu', () => {
+    // Mock mobile viewport
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 500, // Mobile width
+    });
+
+    // Mock matchMedia to return mobile breakpoint
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: vi.fn().mockImplementation(query => ({
+        matches: query.includes('767'), // Mobile breakpoint
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+
     mockUseAuth.mockReturnValue({
       user: null,
       isAuthenticated: false,
@@ -223,12 +245,12 @@ describe('Navbar', () => {
     const mobileMenu = screen.queryByTestId('mobile-menu');
     expect(mobileMenu).not.toBeInTheDocument();
 
-    // Click mobile menu button (if it exists)
-    const mobileMenuButton = screen.queryByLabelText('Toggle mobile menu');
-    if (mobileMenuButton) {
-      fireEvent.click(mobileMenuButton);
-      expect(screen.getByTestId('mobile-menu')).toBeInTheDocument();
-    }
+    // Click mobile menu button (should exist on mobile)
+    const mobileMenuButton = screen.getByLabelText('Toggle mobile menu');
+    expect(mobileMenuButton).toBeInTheDocument();
+
+    fireEvent.click(mobileMenuButton);
+    expect(screen.getByTestId('mobile-menu')).toBeInTheDocument();
   });
 
   it('has proper accessibility attributes', () => {
