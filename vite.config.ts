@@ -31,62 +31,19 @@ export default defineConfig({
       },
       external: [],
       output: {
-        // Manual chunking strategy to optimize bundle size
+        // ULTRA-SIMPLIFIED chunking to fix vendor conflicts
         manualChunks: id => {
-          // Vendor libraries
+          // Only separate React core to prevent conflicts
           if (id.includes('node_modules')) {
-            // React ecosystem (including all React-dependent libraries to prevent dependency issues)
-            if (
-              id.includes('react') ||
-              id.includes('react-dom') ||
-              id.includes('react-router') ||
-              id.includes('framer-motion') ||
-              id.includes('@radix-ui') ||
-              id.includes('react-hook-form') ||
-              id.includes('react-intersection-observer') ||
-              id.includes('react-resizable-panels') ||
-              id.includes('react-day-picker') ||
-              id.includes('react-use-measure') ||
-              id.includes('react-transition-group')
-            ) {
-              return 'react-vendor';
+            // Keep React separate but minimal
+            if (id.includes('react') && !id.includes('react-')) {
+              return 'react';
+            }
+            if (id.includes('react-dom')) {
+              return 'react';
             }
 
-            // 3D and visualization libraries (largest chunks)
-            if (
-              id.includes('three') ||
-              id.includes('@react-three') ||
-              id.includes('three-stdlib')
-            ) {
-              return 'three-vendor';
-            }
-
-            // Chart libraries
-            if (id.includes('recharts') || id.includes('d3-')) {
-              return 'charts-vendor';
-            }
-
-            // Utility libraries
-            if (id.includes('lodash') || id.includes('date-fns') || id.includes('classcat')) {
-              return 'utils-vendor';
-            }
-
-            // Supabase and auth
-            if (id.includes('supabase') || id.includes('@supabase')) {
-              return 'supabase-vendor';
-            }
-
-            // Lucide icons
-            if (id.includes('lucide-react')) {
-              return 'icons-vendor';
-            }
-
-            // Other large vendor libraries
-            if (id.includes('tsparticles') || id.includes('@tsparticles')) {
-              return 'particles-vendor';
-            }
-
-            // Remaining vendor code
+            // Everything else in one vendor bundle to prevent conflicts
             return 'vendor';
           }
 
