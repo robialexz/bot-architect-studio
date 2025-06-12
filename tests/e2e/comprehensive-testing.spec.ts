@@ -414,9 +414,9 @@ test.describe('Comprehensive End-to-End Testing', () => {
     console.log(`Failed: ${report.failed}`);
     console.log(`Success Rate: ${((report.passed / report.totalTests) * 100).toFixed(1)}%`);
 
-    // Be more tolerant for E2E tests
-    expect(report.failed).toBeLessThanOrEqual(Math.floor(PUBLIC_ROUTES.length * 0.2)); // Allow 20% failure
-    expect(report.passed).toBeGreaterThanOrEqual(Math.floor(PUBLIC_ROUTES.length * 0.8)); // Require 80% success
+    // Assert that we have 100% pass rate for public routes
+    expect(report.failed).toBe(0);
+    expect(report.passed).toBe(PUBLIC_ROUTES.length);
   });
 
   test('should test protected routes with mock authentication', async ({ page }) => {
@@ -473,8 +473,8 @@ test.describe('Comprehensive End-to-End Testing', () => {
       report.summary.recommendations.forEach(rec => console.warn(`- ${rec}`));
     }
 
-    // For protected routes, we expect many to redirect to auth, so we're very lenient
-    expect(report.failed).toBeLessThanOrEqual(Math.floor(PROTECTED_ROUTES.length * 0.5)); // Allow 50% failure rate for auth redirects
+    // For protected routes, we expect some to redirect to auth, so we're more lenient
+    expect(report.failed).toBeLessThanOrEqual(Math.floor(PROTECTED_ROUTES.length * 0.2)); // Allow 20% failure rate for auth redirects
   });
 
   test('should perform comprehensive responsive design testing', async ({ page }) => {
@@ -701,8 +701,8 @@ test.describe('Comprehensive End-to-End Testing', () => {
       console.log(`   - Address visual issues on ${routesWithVisualIssues.length} routes`);
     }
 
-    // More lenient quality standards for E2E tests
-    expect(qualityScore).toBeGreaterThanOrEqual(70); // Require at least 70% quality score
-    expect(report.failed).toBeLessThanOrEqual(Math.floor(report.totalTests * 0.3)); // Max 30% failure rate
+    // Assert quality standards
+    expect(qualityScore).toBeGreaterThanOrEqual(85); // Require at least 85% quality score
+    expect(report.failed).toBeLessThanOrEqual(Math.floor(report.totalTests * 0.1)); // Max 10% failure rate
   });
 });

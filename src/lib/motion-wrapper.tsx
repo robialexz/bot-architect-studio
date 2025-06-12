@@ -22,8 +22,9 @@ interface FallbackProps {
   [key: string]: unknown;
 }
 
-// Import safe forwardRef
-import { safeForwardRef } from '@/lib/safe-forward-ref';
+// Safety check for React availability
+const safeForwardRef =
+  React?.forwardRef || ((render: (props: unknown, ref: unknown) => React.ReactElement) => render);
 
 // Wrapper pentru motion.div cu error boundary
 export const MotionDiv = safeForwardRef<HTMLDivElement, ExtendedMotionProps>((props, ref) => {

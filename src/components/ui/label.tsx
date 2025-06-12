@@ -3,7 +3,9 @@ import * as LabelPrimitive from '@radix-ui/react-label';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
-import { safeForwardRef } from '@/lib/safe-forward-ref';
+
+// Safety check for React availability
+const safeForwardRef = React?.forwardRef || ((render: any) => render);
 
 const labelVariants = cva(
   'text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70' // Changed font-medium to font-normal

@@ -39,15 +39,18 @@ test.describe('Quick Fixes Verification', () => {
             .catch(() => false);
 
           if (has404 || hasNotFound) {
-            console.log(`⚠️  ${route} - Shows 404 content (may be expected for protected routes)`);
+            console.log(`❌ ${route} - Shows 404 content`);
+            expect(false).toBe(true); // Force test failure
           } else {
             console.log(`✅ ${route} - Content loaded successfully`);
           }
         } else {
-          console.log(`⚠️  ${route} - Status: ${response?.status() || 'No response'} (may be expected for protected routes)`);
+          console.log(`❌ ${route} - Status: ${response?.status() || 'No response'}`);
+          expect(false).toBe(true); // Force test failure
         }
       } catch (error) {
-        console.log(`⚠️  ${route} - Error: ${error.message} (may be expected for protected routes)`);
+        console.log(`❌ ${route} - Error: ${error.message}`);
+        expect(false).toBe(true); // Force test failure
       }
     }
   });
@@ -80,7 +83,8 @@ test.describe('Quick Fixes Verification', () => {
           console.log(`⚠️  ${name} missing aria-label`);
         }
       } else {
-        console.log(`⚠️  ${name} link not found in footer (may not be implemented yet)`);
+        console.log(`❌ ${name} link not found in footer`);
+        expect(false).toBe(true); // Force test failure
       }
     }
   });
@@ -99,7 +103,8 @@ test.describe('Quick Fixes Verification', () => {
     if (brokenDemoLink === 0) {
       console.log('✅ Broken demo video link removed');
     } else {
-      console.log('⚠️  Broken demo video link still exists');
+      console.log('❌ Broken demo video link still exists');
+      expect(false).toBe(true); // Force test failure
     }
 
     // Check that the new documentation link exists
@@ -109,7 +114,8 @@ test.describe('Quick Fixes Verification', () => {
     if (isVisible) {
       console.log('✅ Documentation link found as replacement');
     } else {
-      console.log('⚠️  Documentation link not found');
+      console.log('❌ Documentation link not found');
+      expect(false).toBe(true); // Force test failure
     }
   });
 
@@ -125,7 +131,8 @@ test.describe('Quick Fixes Verification', () => {
     if (brokenWorkflowLink === 0) {
       console.log('✅ Broken /workflow-studio link removed');
     } else {
-      console.log('⚠️  Broken /workflow-studio link still exists');
+      console.log('❌ Broken /workflow-studio link still exists');
+      expect(false).toBe(true); // Force test failure
     }
 
     // Check that the new /ai-workflow-studio link exists
@@ -135,7 +142,8 @@ test.describe('Quick Fixes Verification', () => {
     if (isVisible) {
       console.log('✅ Fixed /ai-workflow-studio link found');
     } else {
-      console.log('⚠️  Fixed /ai-workflow-studio link not found');
+      console.log('❌ Fixed /ai-workflow-studio link not found');
+      expect(false).toBe(true); // Force test failure
     }
   });
 
@@ -220,7 +228,7 @@ test.describe('Quick Fixes Verification', () => {
       console.log('⚠️  NEEDS ATTENTION! Several fixes require review.');
     }
 
-    // More lenient success rate for E2E tests
-    expect(overallScore).toBeGreaterThanOrEqual(50);
+    // Assert minimum success rate
+    expect(overallScore).toBeGreaterThanOrEqual(75);
   });
 });

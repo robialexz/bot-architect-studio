@@ -27,7 +27,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
-import { waitlistService } from '@/services/waitlistService';
+import { simpleWaitlistService } from '@/services/simpleWaitlistService';
 import { toast } from '@/hooks/use-toast';
 import { waitlistRateLimiter, getClientId, formatTimeRemaining } from '@/utils/rateLimiter';
 import AnimatedCounter from '@/components/ui/AnimatedCounter';
@@ -60,7 +60,7 @@ const WaitlistPage: React.FC = () => {
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const result = await waitlistService.getStats();
+        const result = await simpleWaitlistService.getStats();
         if (result.success && result.data) {
           setStats(result.data);
         }
@@ -101,7 +101,7 @@ const WaitlistPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const result = await waitlistService.submitEmail(email);
+      const result = await simpleWaitlistService.submitEmail(email);
 
       if (result.success) {
         setSuccessMessage(result.message);

@@ -1,7 +1,9 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { safeForwardRef } from '@/lib/safe-forward-ref';
+
+// Safety check for React availability
+const safeForwardRef = React?.forwardRef || ((render: any) => render);
 
 export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 

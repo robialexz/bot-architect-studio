@@ -11,7 +11,7 @@ describe('Email Validation Tests', () => {
     if (trimmedEmail.length === 0 || trimmedEmail.length > 254) return false;
 
     const emailRegex =
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
     if (!emailRegex.test(trimmedEmail.toLowerCase())) return false;
 
@@ -24,9 +24,6 @@ describe('Email Validation Tests', () => {
 
     if (localPart.startsWith('.') || localPart.endsWith('.')) return false;
     if (localPart.includes('..')) return false;
-
-    // Ensure domain has at least one dot (TLD required)
-    if (!domainPart.includes('.')) return false;
 
     return true;
   };
@@ -62,11 +59,7 @@ describe('Email Validation Tests', () => {
     ];
 
     invalidEmails.forEach(email => {
-      const result = validateEmail(email);
-      if (result) {
-        console.log(`Email "${email}" unexpectedly passed validation`);
-      }
-      expect(result).toBe(false);
+      expect(validateEmail(email)).toBe(false);
     });
   });
 

@@ -5,26 +5,7 @@ import * as React from 'react';
  * This prevents the "Cannot read properties of undefined (reading 'forwardRef')" error
  * that can occur in certain build environments or when React is not properly loaded.
  */
-export const safeForwardRef = (() => {
-  try {
-    // Check if React is available and has forwardRef
-    if (typeof React !== 'undefined' && React && typeof React.forwardRef === 'function') {
-      return React.forwardRef;
-    }
-
-    // Check global React
-    if (typeof window !== 'undefined' && (window as any).React?.forwardRef) {
-      return (window as any).React.forwardRef;
-    }
-
-    // Fallback: return a function that just returns the render function
-    console.warn('React.forwardRef not available, using fallback');
-    return (render: any) => render;
-  } catch (error) {
-    console.warn('Error accessing React.forwardRef, using fallback:', error);
-    return (render: any) => render;
-  }
-})();
+export const safeForwardRef = React?.forwardRef || ((render: any) => render);
 
 /**
  * Type-safe wrapper for React.forwardRef with error handling

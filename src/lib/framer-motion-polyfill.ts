@@ -22,8 +22,8 @@ interface MotionProps {
   [key: string]: any;
 }
 
-// Import safe forwardRef
-import { safeForwardRef } from '@/lib/safe-forward-ref';
+// Safety check for React availability
+const safeForwardRef = React?.forwardRef || ((render: any) => render);
 
 // Create a safe motion component factory
 const createMotionComponent = (element: string) => {

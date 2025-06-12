@@ -19,10 +19,9 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'terser',
-    target: 'es2020',
     terserOptions: {
       compress: {
-        drop_console: process.env.NODE_ENV === 'production',
+        drop_console: true,
         drop_debugger: true,
       },
     },
