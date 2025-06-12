@@ -97,7 +97,9 @@ export default defineConfig({
           if (id.includes('Workflow') || id.includes('workflow')) {
             return 'workflow';
           }
-          // Temporarily disable ai-features chunking to fix React dependency issues
+          // FIXED: Disable ai-features chunking to resolve React forwardRef error
+          // This prevents "Cannot read properties of undefined (reading 'forwardRef')" error
+          // by ensuring React is available when AI components load
           // if (id.includes('Agent') || id.includes('agent') || id.includes('AI')) {
           //   return 'ai-features';
           // }
