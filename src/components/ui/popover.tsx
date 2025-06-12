@@ -2,12 +2,13 @@ import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 
 import { cn } from '@/lib/utils';
+import { safeForwardRef } from '@/lib/safe-forward-ref';
 
 const Popover = PopoverPrimitive.Root;
 
 const PopoverTrigger = PopoverPrimitive.Trigger;
 
-const PopoverContent = React.forwardRef<
+const PopoverContent = safeForwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
 >(({ className, align = 'center', sideOffset = 4, ...props }, ref) => (

@@ -12,9 +12,7 @@ import {
 
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
-
-// Safety check for React availability
-const safeForwardRef = React?.forwardRef || ((render: any) => render);
+import { safeForwardRef } from '@/lib/safe-forward-ref';
 
 const Form = FormProvider;
 

@@ -2,8 +2,9 @@ import * as React from 'react';
 import * as SeparatorPrimitive from '@radix-ui/react-separator';
 
 import { cn } from '@/lib/utils';
+import { safeForwardRef } from '@/lib/safe-forward-ref';
 
-const Separator = React.forwardRef<
+const Separator = safeForwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>
 >(({ className, orientation = 'horizontal', decorative = true, ...props }, ref) => (
