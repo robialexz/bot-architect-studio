@@ -1,0 +1,35 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Enhanced FlowsyAI Icon with better visibility -->
+  <g id="flowsy-icon">
+    <!-- Background circle for better contrast -->
+    <circle cx="100" cy="100" r="90" fill="#1a1a1a" stroke="#333" stroke-width="2"/>
+
+    <!-- Purple circuit paths - made thicker and more visible -->
+    <path d="M40 80 C55 80 55 80 70 80 L85 80 C100 80 100 95 100 110 L100 125" stroke="#8B5CF6" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M40 100 C55 100 55 100 70 100 L85 100" stroke="#8B5CF6" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M40 120 C55 120 55 120 70 120 L85 120" stroke="#8B5CF6" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+    <!-- Green circuit paths - made thicker and more visible -->
+    <path d="M100 125 C115 125 115 125 130 125 L145 125 C160 125 160 140 160 155 L160 170" stroke="#10B981" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <path d="M100 145 C115 145 115 145 130 145 L145 145" stroke="#10B981" stroke-width="6" fill="none" stroke-linecap="round"/>
+
+    <!-- Connection nodes - made larger and more prominent -->
+    <circle cx="40" cy="80" r="8" fill="#8B5CF6" stroke="#fff" stroke-width="1"/>
+    <circle cx="85" cy="80" r="8" fill="#8B5CF6" stroke="#fff" stroke-width="1"/>
+    <circle cx="100" cy="100" r="8" fill="#8B5CF6" stroke="#fff" stroke-width="1"/>
+    <circle cx="40" cy="100" r="8" fill="#8B5CF6" stroke="#fff" stroke-width="1"/>
+    <circle cx="85" cy="100" r="8" fill="#8B5CF6" stroke="#fff" stroke-width="1"/>
+    <circle cx="40" cy="120" r="8" fill="#8B5CF6" stroke="#fff" stroke-width="1"/>
+    <circle cx="85" cy="120" r="8" fill="#8B5CF6" stroke="#fff" stroke-width="1"/>
+    <circle cx="100" cy="125" r="8" fill="#10B981" stroke="#fff" stroke-width="1"/>
+    <circle cx="145" cy="125" r="8" fill="#10B981" stroke="#fff" stroke-width="1"/>
+    <circle cx="160" cy="145" r="8" fill="#10B981" stroke="#fff" stroke-width="1"/>
+    <circle cx="100" cy="145" r="8" fill="#10B981" stroke="#fff" stroke-width="1"/>
+    <circle cx="145" cy="145" r="8" fill="#10B981" stroke="#fff" stroke-width="1"/>
+    <circle cx="160" cy="170" r="8" fill="#10B981" stroke="#fff" stroke-width="1"/>
+
+    <!-- Central connection point with glow effect -->
+    <circle cx="100" cy="125" r="12" fill="#6366f1" stroke="#fff" stroke-width="2" opacity="0.8"/>
+    <circle cx="100" cy="125" r="6" fill="#fff"/>
+  </g>
+</svg>

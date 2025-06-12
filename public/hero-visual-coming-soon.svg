@@ -1,0 +1,92 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1200 800" width="1200" height="800">
+  <defs>
+    <linearGradient id="gradient-1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D1117" />
+      <stop offset="100%" stop-color="#161B22" />
+    </linearGradient>
+    <linearGradient id="gradient-2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00AEEF" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#00AEEF" stop-opacity="0.2" />
+    </linearGradient>
+    <linearGradient id="gradient-3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDD835" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#FDD835" stop-opacity="0.2" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="url(#gradient-1)" />
+  
+  <!-- Grid Pattern -->
+  <g opacity="0.1">
+    <path d="M0 0 L1200 0 L1200 800 L0 800 Z" fill="none" stroke="#384ADC" stroke-width="1" />
+    <g stroke="#384ADC" stroke-width="0.5">
+      <line x1="100" y1="0" x2="100" y2="800" />
+      <line x1="200" y1="0" x2="200" y2="800" />
+      <line x1="300" y1="0" x2="300" y2="800" />
+      <line x1="400" y1="0" x2="400" y2="800" />
+      <line x1="500" y1="0" x2="500" y2="800" />
+      <line x1="600" y1="0" x2="600" y2="800" />
+      <line x1="700" y1="0" x2="700" y2="800" />
+      <line x1="800" y1="0" x2="800" y2="800" />
+      <line x1="900" y1="0" x2="900" y2="800" />
+      <line x1="1000" y1="0" x2="1000" y2="800" />
+      <line x1="1100" y1="0" x2="1100" y2="800" />
+    </g>
+    <g stroke="#384ADC" stroke-width="0.5">
+      <line x1="0" y1="100" x2="1200" y2="100" />
+      <line x1="0" y1="200" x2="1200" y2="200" />
+      <line x1="0" y1="300" x2="1200" y2="300" />
+      <line x1="0" y1="400" x2="1200" y2="400" />
+      <line x1="0" y1="500" x2="1200" y2="500" />
+      <line x1="0" y1="600" x2="1200" y2="600" />
+      <line x1="0" y1="700" x2="1200" y2="700" />
+    </g>
+  </g>
+  
+  <!-- Network Elements -->
+  <g filter="url(#glow)">
+    <!-- Glowing Center -->
+    <circle cx="600" cy="400" r="100" fill="url(#gradient-2)" opacity="0.8" />
+    
+    <!-- Nodes -->
+    <circle cx="400" cy="300" r="20" fill="url(#gradient-2)" opacity="0.8" />
+    <circle cx="800" cy="350" r="25" fill="url(#gradient-3)" opacity="0.7" />
+    <circle cx="300" cy="600" r="15" fill="url(#gradient-3)" opacity="0.6" />
+    <circle cx="900" cy="500" r="18" fill="url(#gradient-2)" opacity="0.7" />
+    <circle cx="500" cy="700" r="22" fill="url(#gradient-2)" opacity="0.6" />
+    <circle cx="700" cy="250" r="17" fill="url(#gradient-3)" opacity="0.8" />
+    <circle cx="850" cy="650" r="20" fill="url(#gradient-3)" opacity="0.6" />
+    <circle cx="200" cy="400" r="15" fill="url(#gradient-2)" opacity="0.7" />
+    <circle cx="1000" cy="350" r="12" fill="url(#gradient-3)" opacity="0.5" />
+    <circle cx="650" cy="570" r="15" fill="url(#gradient-2)" opacity="0.7" />
+    
+    <!-- Connection Lines -->
+    <line x1="600" y1="400" x2="400" y2="300" stroke="#00AEEF" stroke-width="2" opacity="0.5" />
+    <line x1="600" y1="400" x2="800" y2="350" stroke="#FDD835" stroke-width="2" opacity="0.5" />
+    <line x1="600" y1="400" x2="300" y2="600" stroke="#FDD835" stroke-width="2" opacity="0.4" />
+    <line x1="600" y1="400" x2="900" y2="500" stroke="#00AEEF" stroke-width="2" opacity="0.6" />
+    <line x1="600" y1="400" x2="500" y2="700" stroke="#00AEEF" stroke-width="2" opacity="0.5" />
+    <line x1="600" y1="400" x2="700" y2="250" stroke="#FDD835" stroke-width="2" opacity="0.5" />
+    <line x1="600" y1="400" x2="850" y2="650" stroke="#FDD835" stroke-width="2" opacity="0.4" />
+    <line x1="600" y1="400" x2="200" y2="400" stroke="#00AEEF" stroke-width="2" opacity="0.6" />
+    <line x1="600" y1="400" x2="1000" y2="350" stroke="#FDD835" stroke-width="2" opacity="0.3" />
+    <line x1="600" y1="400" x2="650" y2="570" stroke="#00AEEF" stroke-width="2" opacity="0.5" />
+    
+    <!-- Node-to-Node Connections -->
+    <line x1="400" y1="300" x2="700" y2="250" stroke="#B4E1FA" stroke-width="1" opacity="0.3" />
+    <line x1="800" y1="350" x2="900" y2="500" stroke="#FFECB3" stroke-width="1" opacity="0.3" />
+    <line x1="300" y1="600" x2="500" y2="700" stroke="#FFECB3" stroke-width="1" opacity="0.3" />
+    <line x1="850" y1="650" x2="650" y2="570" stroke="#B4E1FA" stroke-width="1" opacity="0.3" />
+    <line x1="200" y1="400" x2="300" y2="600" stroke="#B4E1FA" stroke-width="1" opacity="0.3" />
+  </g>
+  
+  <!-- Text Elements -->
+  <text x="600" y="400" font-family="Arial, sans-serif" font-size="24" fill="#FFFFFF" text-anchor="middle" opacity="0.9">Network Intelligence</text>
+  <text x="600" y="430" font-family="Arial, sans-serif" font-size="16" fill="#B4E1FA" text-anchor="middle" opacity="0.7">AI Flow Platform</text>
+</svg>
