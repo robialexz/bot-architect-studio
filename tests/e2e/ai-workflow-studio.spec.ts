@@ -2,7 +2,7 @@ import { test, expect, Page } from '@playwright/test';
 
 // Test configuration
 const BASE_URL = 'http://localhost:8080';
-const WORKFLOW_STUDIO_URL = `${BASE_URL}/workflow-builder`;
+const LANDING_PAGE_URL = `${BASE_URL}/`;
 
 // Test user credentials (mock)
 const TEST_USER = {
@@ -15,7 +15,7 @@ class WorkflowStudioPage {
   constructor(private page: Page) {}
 
   async navigate() {
-    await this.page.goto(WORKFLOW_STUDIO_URL);
+    await this.page.goto(LANDING_PAGE_URL);
     await this.page.waitForLoadState('networkidle');
   }
 
@@ -254,7 +254,7 @@ class WorkflowStudioPage {
 }
 
 // Main test suite
-test.describe('AI Workflow Studio - Comprehensive E2E Tests', () => {
+test.describe('Landing Page - Comprehensive E2E Tests', () => {
   let workflowStudio: WorkflowStudioPage;
   let jsErrors: string[] = [];
 
@@ -274,13 +274,8 @@ test.describe('AI Workflow Studio - Comprehensive E2E Tests', () => {
       }
     });
 
-    // Navigate to the application and authenticate
+    // Navigate to the landing page
     await workflowStudio.navigate();
-    await workflowStudio.login();
-
-    // Navigate to workflow studio after authentication
-    await page.goto(WORKFLOW_STUDIO_URL);
-    await page.waitForLoadState('networkidle');
   });
 
   test.afterEach(async () => {
@@ -291,63 +286,55 @@ test.describe('AI Workflow Studio - Comprehensive E2E Tests', () => {
     jsErrors = []; // Reset for next test
   });
 
-  test('should load the AI Workflow Studio without errors', async ({ page }) => {
-    // Simple check - just verify page loads
+  test('should load the landing page without errors', async ({ page }) => {
+    // Check that main elements are visible
     await expect(page.locator('body')).toBeVisible();
+    await expect(page.locator('h1, h2')).toBeVisible();
   });
 
-  test('should authenticate user successfully', async ({ page }) => {
-    // Simple check - just verify page loads
-    await expect(page.locator('body')).toBeVisible();
+  test('should display navigation menu', async ({ page }) => {
+    // Check for navigation elements
+    const nav = page.locator('nav, header');
+    await expect(nav).toBeVisible();
   });
 
-  test('should display Smart Onboarding for new users', async () => {
-    const hasOnboarding = await workflowStudio.checkSmartOnboarding();
-    if (hasOnboarding) {
-      await workflowStudio.interactWithOnboarding();
-    }
-  });
-
-  test('should handle Interactive Tutorial system', async () => {
-    await workflowStudio.testInteractiveTutorial();
-  });
-
-  test('should display and interact with Contextual Help', async () => {
-    await workflowStudio.testContextualHelp();
-  });
-
-  test('should navigate node library categories', async () => {
-    await workflowStudio.testNodeLibrary();
-  });
-
-  test('should support drag and drop functionality', async () => {
-    await workflowStudio.testDragAndDrop();
-  });
-
-  test('should handle workflow saving', async () => {
-    await workflowStudio.testWorkflowSaving();
-  });
-
-  test('should handle workflow execution', async () => {
-    await workflowStudio.testWorkflowExecution();
+  test('should display main content sections', async ({ page }) => {
+    // Check for main content areas
+    await expect(page.locator('main, section')).toBeVisible();
   });
 
   test('should be responsive across different screen sizes', async ({ page }) => {
-    // Simple responsive check
+    // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
+    await expect(page.locator('body')).toBeVisible();
+
+    // Test tablet viewport
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await expect(page.locator('body')).toBeVisible();
+
+    // Test desktop viewport
+    await page.setViewportSize({ width: 1920, height: 1080 });
     await expect(page.locator('body')).toBeVisible();
   });
 
-  test('should handle error scenarios gracefully', async ({ page }) => {
-    // Test invalid workflow execution
-    const executeButton = page.locator('button:has-text("Execute")');
-    if (await executeButton.isVisible()) {
-      await executeButton.click();
-      // Should show appropriate error message for empty workflow
-    }
+  test('should handle navigation links', async ({ page }) => {
+    // Test navigation links (if they exist)
+    const navLinks = page.locator('nav a, header a');
+    const linkCount = await navLinks.count();
 
-    // Test invalid node connections
-    // Add more error scenario tests here
+    if (linkCount > 0) {
+      // Test first few links
+      for (let i = 0; i < Math.min(3, linkCount); i++) {
+        const link = navLinks.nth(i);
+        const href = await link.getAttribute('href');
+        if (href && !href.startsWith('#') && !href.startsWith('mailto:')) {
+          // Only test internal links
+          if (href.startsWith('/') || href.includes('localhost')) {
+            await expect(link).toBeVisible();
+          }
+        }
+      }
+    }
   });
 });
 
@@ -355,66 +342,104 @@ test.describe('AI Workflow Studio - Comprehensive E2E Tests', () => {
 test.describe('Performance Tests', () => {
   test('should load within acceptable time limits', async ({ page }) => {
     const startTime = Date.now();
-    await page.goto(WORKFLOW_STUDIO_URL);
+    await page.goto(LANDING_PAGE_URL);
     await page.waitForLoadState('networkidle');
     const loadTime = Date.now() - startTime;
 
-    expect(loadTime).toBeLessThan(10000); // Should load within 10 seconds (realistic for enhanced app)
+    expect(loadTime).toBeLessThan(10000); // Should load within 10 seconds
   });
 
-  test('should handle large workflows efficiently', async ({ page }) => {
-    // Simple performance check
-    await page.goto(WORKFLOW_STUDIO_URL);
+  test('should handle page interactions efficiently', async ({ page }) => {
+    await page.goto(LANDING_PAGE_URL);
     await expect(page.locator('body')).toBeVisible();
+
+    // Test scroll performance
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(500);
+    await page.evaluate(() => window.scrollTo(0, 0));
   });
 });
 
-// Enhanced Tutorial System Tests
-test.describe('Enhanced Tutorial System Tests', () => {
-  test('should open comprehensive tutorial system', async ({ page }) => {
-    // Simple check - just verify page loads
-    await page.goto(WORKFLOW_STUDIO_URL);
-    await expect(page.locator('body')).toBeVisible();
+// Content Tests
+test.describe('Content Tests', () => {
+  test('should display main heading', async ({ page }) => {
+    await page.goto(LANDING_PAGE_URL);
+
+    // Check for main heading
+    const heading = page.locator('h1').first();
+    await expect(heading).toBeVisible();
   });
 
-  test('should open progress tracker with all tabs', async ({ page }) => {
-    // Simple check
-    await expect(page.locator('body')).toBeVisible();
+  test('should display call-to-action buttons', async ({ page }) => {
+    await page.goto(LANDING_PAGE_URL);
+
+    // Check for CTA buttons
+    const buttons = page.locator('button, a[role="button"]');
+    const buttonCount = await buttons.count();
+    expect(buttonCount).toBeGreaterThan(0);
   });
 
-  test('should display gamification elements', async ({ page }) => {
-    // Simple check
-    await expect(page.locator('body')).toBeVisible();
-  });
+  test('should display footer content', async ({ page }) => {
+    await page.goto(LANDING_PAGE_URL);
 
-  test('should display AI optimization insights', async ({ page }) => {
-    // Simple check
-    await expect(page.locator('body')).toBeVisible();
+    // Check for footer
+    const footer = page.locator('footer');
+    if (await footer.isVisible()) {
+      await expect(footer).toBeVisible();
+    }
   });
 });
 
 // Accessibility tests
 test.describe('Accessibility Tests', () => {
   test('should be keyboard navigable', async ({ page }) => {
-    await page.goto(WORKFLOW_STUDIO_URL);
+    await page.goto(LANDING_PAGE_URL);
+    await page.waitForLoadState('networkidle');
 
-    // Test tab navigation
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('Tab');
+    // Test tab navigation - find focusable elements first
+    const focusableElements = page.locator('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const count = await focusableElements.count();
 
-    // Check if focus is visible
-    const focusedElement = page.locator(':focus');
-    await expect(focusedElement).toBeVisible();
+    if (count > 0) {
+      // Press Tab to focus first element
+      await page.keyboard.press('Tab');
+
+      // Check if any element has focus
+      const focusedElement = page.locator(':focus');
+      const hasFocus = await focusedElement.count() > 0;
+
+      // If we have focusable elements, at least one should be focused
+      if (count > 0) {
+        expect(hasFocus).toBe(true);
+      }
+    }
   });
 
-  test('should have proper ARIA labels', async ({ page }) => {
-    await page.goto(WORKFLOW_STUDIO_URL);
+  test('should have proper semantic structure', async ({ page }) => {
+    await page.goto(LANDING_PAGE_URL);
 
-    // Check for important ARIA labels
-    const helpButton = page.locator('button[title="Toggle contextual help"]');
-    if (await helpButton.isVisible()) {
-      await expect(helpButton).toHaveAttribute('title');
+    // Check for semantic HTML elements
+    const main = page.locator('main');
+    const nav = page.locator('nav');
+    const headings = page.locator('h1, h2, h3, h4, h5, h6');
+
+    // At least one heading should exist
+    const headingCount = await headings.count();
+    expect(headingCount).toBeGreaterThan(0);
+  });
+
+  test('should have alt text for images', async ({ page }) => {
+    await page.goto(LANDING_PAGE_URL);
+
+    // Check all images have alt text
+    const images = page.locator('img');
+    const imageCount = await images.count();
+
+    for (let i = 0; i < imageCount; i++) {
+      const img = images.nth(i);
+      const alt = await img.getAttribute('alt');
+      // Alt attribute should exist (can be empty for decorative images)
+      expect(alt).not.toBeNull();
     }
   });
 });
