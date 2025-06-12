@@ -97,9 +97,10 @@ export default defineConfig({
           if (id.includes('Workflow') || id.includes('workflow')) {
             return 'workflow';
           }
-          if (id.includes('Agent') || id.includes('agent') || id.includes('AI')) {
-            return 'ai-features';
-          }
+          // Temporarily disable ai-features chunking to fix React dependency issues
+          // if (id.includes('Agent') || id.includes('agent') || id.includes('AI')) {
+          //   return 'ai-features';
+          // }
           if (id.includes('Dashboard') || id.includes('Analytics') || id.includes('dashboard')) {
             return 'dashboard';
           }
