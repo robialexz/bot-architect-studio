@@ -100,9 +100,13 @@ const VideoShowcaseSection: React.FC = () => {
                         {video.category}
                       </Badge>
                       <h4 className="text-foreground font-bold text-base mb-1">{video.title}</h4>
-                      <p className="text-muted-foreground text-xs mb-2 leading-relaxed">{video.description}</p>
+                      <p className="text-muted-foreground text-xs mb-2 leading-relaxed">
+                        {video.description}
+                      </p>
                       <div className="flex items-center justify-between">
-                        <span className="text-muted-foreground text-xs font-medium">{video.duration}</span>
+                        <span className="text-muted-foreground text-xs font-medium">
+                          {video.duration}
+                        </span>
                         <Badge variant="outline" className="text-muted-foreground text-xs">
                           HD Quality
                         </Badge>

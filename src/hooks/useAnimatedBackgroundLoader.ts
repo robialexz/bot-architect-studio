@@ -61,7 +61,7 @@ export const useAnimatedBackgroundLoader = (options: LoaderOptions = {}) => {
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current);
       }
-      
+
       const error = new Error('Animation loading timeout');
       setState(prev => ({
         ...prev,
@@ -70,7 +70,7 @@ export const useAnimatedBackgroundLoader = (options: LoaderOptions = {}) => {
         error,
         progress: 0,
       }));
-      
+
       if (onError) {
         onError(error);
       }
@@ -98,26 +98,29 @@ export const useAnimatedBackgroundLoader = (options: LoaderOptions = {}) => {
     }
   }, [onSuccess]);
 
-  const markAsError = useCallback((error: Error) => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-    }
+  const markAsError = useCallback(
+    (error: Error) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
+      }
 
-    setState(prev => ({
-      ...prev,
-      isLoading: false,
-      hasError: true,
-      error,
-      progress: 0,
-    }));
+      setState(prev => ({
+        ...prev,
+        isLoading: false,
+        hasError: true,
+        error,
+        progress: 0,
+      }));
 
-    if (onError) {
-      onError(error);
-    }
-  }, [onError]);
+      if (onError) {
+        onError(error);
+      }
+    },
+    [onError]
+  );
 
   const retry = useCallback(() => {
     if (state.retryCount >= retryAttempts) {
@@ -135,9 +138,12 @@ export const useAnimatedBackgroundLoader = (options: LoaderOptions = {}) => {
       onRetry(state.retryCount + 1);
     }
 
-    retryTimeoutRef.current = setTimeout(() => {
-      startLoading();
-    }, retryDelay * (state.retryCount + 1));
+    retryTimeoutRef.current = setTimeout(
+      () => {
+        startLoading();
+      },
+      retryDelay * (state.retryCount + 1)
+    );
   }, [state.retryCount, retryAttempts, retryDelay, onRetry, startLoading]);
 
   const reset = useCallback(() => {
@@ -163,7 +169,9 @@ export const useAnimatedBackgroundLoader = (options: LoaderOptions = {}) => {
   // Auto-retry on error
   useEffect(() => {
     if (state.hasError && state.retryCount < retryAttempts) {
-      console.log(`useAnimatedBackgroundLoader: Auto-retrying (${state.retryCount + 1}/${retryAttempts})`);
+      console.log(
+        `useAnimatedBackgroundLoader: Auto-retrying (${state.retryCount + 1}/${retryAttempts})`
+      );
       retry();
     }
   }, [state.hasError, state.retryCount, retryAttempts, retry]);

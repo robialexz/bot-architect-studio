@@ -17,7 +17,7 @@ const fadeIn = (t: number, m: number) => t / m;
 const fadeOut = (t: number, m: number) => (m - t) / m;
 const fadeInOut = (t: number, m: number) => {
   const hm = 0.5 * m;
-  return abs((t + hm) % m - hm) / hm;
+  return abs(((t + hm) % m) - hm) / hm;
 };
 
 const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' }) => {
@@ -95,7 +95,14 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
       }
     };
 
-    const drawPipe = (x: number, y: number, life: number, ttl: number, width: number, hue: number) => {
+    const drawPipe = (
+      x: number,
+      y: number,
+      life: number,
+      ttl: number,
+      width: number,
+      hue: number
+    ) => {
       ctxA.save();
       ctxA.strokeStyle = `hsla(${hue},75%,50%,${fadeInOut(life, ttl) * 0.08})`; // Reduced opacity
       ctxA.beginPath();
@@ -114,7 +121,13 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
     };
 
     const updatePipe = (i: number) => {
-      const i2 = 1 + i, i3 = 2 + i, i4 = 3 + i, i5 = 4 + i, i6 = 5 + i, i7 = 6 + i, i8 = 7 + i;
+      const i2 = 1 + i,
+        i3 = 2 + i,
+        i4 = 3 + i,
+        i5 = 4 + i,
+        i6 = 5 + i,
+        i7 = 6 + i,
+        i8 = 7 + i;
 
       let x = pipeProps[i];
       let y = pipeProps[i2];
@@ -131,7 +144,8 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
       x += cos(direction) * speed;
       y += sin(direction) * speed;
 
-      const turnChance = !(tick % round(rand(turnChanceRange))) && (!(round(x) % 6) || !(round(y) % 6));
+      const turnChance =
+        !(tick % round(rand(turnChanceRange))) && (!(round(x) % 6) || !(round(y) % 6));
       const turnBias = round(rand(1)) ? -1 : 1;
       direction += turnChance ? turnAmount * turnBias : 0;
 
@@ -199,15 +213,12 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
 
   return (
     <div ref={containerRef} className={`absolute inset-0 w-full h-full ${className}`}>
-      <canvas
-        ref={canvasARef}
-        style={{ display: 'none' }}
-      />
+      <canvas ref={canvasARef} style={{ display: 'none' }} />
       <canvas
         ref={canvasBRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{
-          zIndex: 1
+          zIndex: 1,
         }}
       />
     </div>

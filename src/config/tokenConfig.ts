@@ -56,7 +56,8 @@ export const FLOWSY_TOKEN_CONFIG: TokenConfig = {
 
   // Trading Links - UPDATED WITH REAL TOKEN ADDRESS
   dexScreenerUrl: 'https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
-  raydiumUrl: 'https://raydium.io/swap/?inputCurrency=sol&outputCurrency=GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
+  raydiumUrl:
+    'https://raydium.io/swap/?inputCurrency=sol&outputCurrency=GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
   jupiterUrl: 'https://jup.ag/swap/SOL-GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
   solscanUrl: 'https://solscan.io/token/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
 

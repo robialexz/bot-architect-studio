@@ -17,7 +17,7 @@ const fadeIn = (t: number, m: number) => t / m;
 const fadeOut = (t: number, m: number) => (m - t) / m;
 const fadeInOut = (t: number, m: number) => {
   const hm = 0.5 * m;
-  return abs((t + hm) % m - hm) / hm;
+  return abs(((t + hm) % m) - hm) / hm;
 };
 
 const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ className = '' }) => {
@@ -30,12 +30,12 @@ const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ cla
     const container = containerRef.current;
     const canvasA = canvasARef.current;
     const canvasB = canvasBRef.current;
-    
+
     if (!container || !canvasA || !canvasB) return;
 
     const ctxA = canvasA.getContext('2d');
     const ctxB = canvasB.getContext('2d');
-    
+
     if (!ctxA || !ctxB) return;
 
     // Global Pipeline configuration - Subtle but visible for full page
@@ -61,15 +61,15 @@ const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ cla
 
     const resize = () => {
       const { innerWidth, innerHeight } = window;
-      
+
       canvasA.width = innerWidth;
       canvasA.height = innerHeight;
       ctxA.drawImage(canvasB, 0, 0);
-      
+
       canvasB.width = innerWidth;
       canvasB.height = innerHeight;
       ctxB.drawImage(canvasA, 0, 0);
-      
+
       center[0] = 0.5 * canvasA.width;
       center[1] = 0.5 * canvasA.height;
     };
@@ -83,19 +83,26 @@ const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ cla
       const ttl = baseTTL + rand(rangeTTL);
       const width = baseWidth + rand(rangeWidth);
       const hue = baseHue + rand(rangeHue);
-      
+
       pipeProps.set([x, y, direction, speed, life, ttl, width, hue], i);
     };
 
     const initPipes = () => {
       pipeProps = new Float32Array(pipePropsLength);
-      
+
       for (let i = 0; i < pipePropsLength; i += pipePropCount) {
         initPipe(i);
       }
     };
 
-    const drawPipe = (x: number, y: number, life: number, ttl: number, width: number, hue: number) => {
+    const drawPipe = (
+      x: number,
+      y: number,
+      life: number,
+      ttl: number,
+      width: number,
+      hue: number
+    ) => {
       ctxA.save();
       ctxA.strokeStyle = `hsla(${hue},85%,65%,${fadeInOut(life, ttl) * 0.3})`; // Visible but subtle
       ctxA.beginPath();
@@ -114,8 +121,14 @@ const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ cla
     };
 
     const updatePipe = (i: number) => {
-      const i2 = 1 + i, i3 = 2 + i, i4 = 3 + i, i5 = 4 + i, i6 = 5 + i, i7 = 6 + i, i8 = 7 + i;
-      
+      const i2 = 1 + i,
+        i3 = 2 + i,
+        i4 = 3 + i,
+        i5 = 4 + i,
+        i6 = 5 + i,
+        i7 = 6 + i,
+        i8 = 7 + i;
+
       let x = pipeProps[i];
       let y = pipeProps[i2];
       let direction = pipeProps[i3];
@@ -131,7 +144,8 @@ const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ cla
       x += cos(direction) * speed;
       y += sin(direction) * speed;
 
-      const turnChance = !(tick % round(rand(turnChanceRange))) && (!(round(x) % 8) || !(round(y) % 8));
+      const turnChance =
+        !(tick % round(rand(turnChanceRange))) && (!(round(x) % 8) || !(round(y) % 8));
       const turnBias = round(rand(1)) ? -1 : 1;
       direction += turnChance ? turnAmount * turnBias : 0;
 
@@ -146,7 +160,7 @@ const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ cla
 
     const updatePipes = () => {
       tick++;
-      
+
       for (let i = 0; i < pipePropsLength; i += pipePropCount) {
         updatePipe(i);
       }
@@ -199,14 +213,8 @@ const GlobalPipelineBackground: React.FC<GlobalPipelineBackgroundProps> = ({ cla
 
   return (
     <div ref={containerRef} className={`absolute inset-0 w-full h-full ${className}`}>
-      <canvas
-        ref={canvasARef}
-        className="hidden"
-      />
-      <canvas
-        ref={canvasBRef}
-        className="absolute inset-0 w-full h-full pointer-events-none"
-      />
+      <canvas ref={canvasARef} className="hidden" />
+      <canvas ref={canvasBRef} className="absolute inset-0 w-full h-full pointer-events-none" />
     </div>
   );
 };

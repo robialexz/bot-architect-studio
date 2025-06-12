@@ -34,20 +34,25 @@ class AnimatedBackgroundErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('AnimatedBackgroundErrorBoundary: Caught error:', error, errorInfo);
-    
+
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
     }
 
     // Auto-retry mechanism
     if (this.state.retryCount < this.maxRetries) {
-      this.retryTimeout = setTimeout(() => {
-        console.log(`AnimatedBackgroundErrorBoundary: Retrying (${this.state.retryCount + 1}/${this.maxRetries})`);
-        this.setState(prevState => ({
-          hasError: false,
-          retryCount: prevState.retryCount + 1,
-        }));
-      }, 2000 * (this.state.retryCount + 1));
+      this.retryTimeout = setTimeout(
+        () => {
+          console.log(
+            `AnimatedBackgroundErrorBoundary: Retrying (${this.state.retryCount + 1}/${this.maxRetries})`
+          );
+          this.setState(prevState => ({
+            hasError: false,
+            retryCount: prevState.retryCount + 1,
+          }));
+        },
+        2000 * (this.state.retryCount + 1)
+      );
     }
   }
 
@@ -74,9 +79,7 @@ class AnimatedBackgroundErrorBoundary extends Component<Props, State> {
                 Retrying animation... ({this.state.retryCount + 1}/{this.maxRetries})
               </div>
             ) : (
-              <div className="text-muted-foreground/40 text-sm">
-                Animation unavailable
-              </div>
+              <div className="text-muted-foreground/40 text-sm">Animation unavailable</div>
             )}
           </div>
         </div>

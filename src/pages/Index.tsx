@@ -62,8 +62,6 @@ const IndexPage: React.FC = () => {
           <RoadmapSection />
         </Suspense>
 
-
-
         {/* Enhanced Waitlist CTA - Improved conversion optimization */}
         <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
           <EnhancedWaitlistCTA />

@@ -136,9 +136,9 @@ export default defineConfig({
           if (id.includes('Community') || id.includes('Social') || id.includes('Collaboration')) {
             return 'community';
           }
-        }
-      }
+        },
+      },
     },
-    chunkSizeWarningLimit: 500
-  }
+    chunkSizeWarningLimit: 500,
+  },
 });

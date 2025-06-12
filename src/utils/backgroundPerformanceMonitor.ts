@@ -24,10 +24,10 @@ class BackgroundPerformanceMonitor {
   startMonitoring(componentName: string) {
     this.startTime = performance.now();
     console.log(`🎬 ${componentName}: Starting performance monitoring`);
-    
+
     // Start frame rate monitoring
     this.startFrameRateMonitoring();
-    
+
     // Monitor memory usage if available
     this.monitorMemoryUsage();
   }
@@ -35,9 +35,9 @@ class BackgroundPerformanceMonitor {
   markLoadComplete(componentName: string) {
     const loadTime = performance.now() - this.startTime;
     this.metrics.loadTime = loadTime;
-    
+
     console.log(`✅ ${componentName}: Loaded in ${loadTime.toFixed(2)}ms`);
-    
+
     if (loadTime > 5000) {
       console.warn(`⚠️ ${componentName}: Slow loading detected (${loadTime.toFixed(2)}ms)`);
     }
@@ -46,7 +46,7 @@ class BackgroundPerformanceMonitor {
   markRenderComplete(componentName: string) {
     const renderTime = performance.now() - this.startTime;
     this.metrics.renderTime = renderTime;
-    
+
     console.log(`🎨 ${componentName}: Rendered in ${renderTime.toFixed(2)}ms`);
   }
 
@@ -63,25 +63,25 @@ class BackgroundPerformanceMonitor {
   private startFrameRateMonitoring() {
     this.frameCount = 0;
     this.lastFrameTime = performance.now();
-    
+
     const measureFrameRate = () => {
       this.frameCount++;
       const currentTime = performance.now();
-      
+
       if (currentTime - this.lastFrameTime >= 1000) {
         this.metrics.frameRate = this.frameCount;
-        
+
         if (this.metrics.frameRate < 30) {
           console.warn(`⚠️ Low frame rate detected: ${this.metrics.frameRate} FPS`);
         }
-        
+
         this.frameCount = 0;
         this.lastFrameTime = currentTime;
       }
-      
+
       requestAnimationFrame(measureFrameRate);
     };
-    
+
     requestAnimationFrame(measureFrameRate);
   }
 
@@ -89,9 +89,12 @@ class BackgroundPerformanceMonitor {
     if ('memory' in performance) {
       const memory = (performance as any).memory;
       this.metrics.memoryUsage = memory.usedJSHeapSize;
-      
-      if (memory.usedJSHeapSize > 50 * 1024 * 1024) { // 50MB
-        console.warn(`⚠️ High memory usage detected: ${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB`);
+
+      if (memory.usedJSHeapSize > 50 * 1024 * 1024) {
+        // 50MB
+        console.warn(
+          `⚠️ High memory usage detected: ${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB`
+        );
       }
     }
   }
@@ -111,7 +114,7 @@ class BackgroundPerformanceMonitor {
 - Retry Count: ${this.metrics.retryCount}
 ${this.metrics.errors.length > 0 ? '\nErrors:\n' + this.metrics.errors.join('\n') : ''}
     `;
-    
+
     return report.trim();
   }
 
@@ -119,7 +122,7 @@ ${this.metrics.errors.length > 0 ? '\nErrors:\n' + this.metrics.errors.join('\n'
     if (this.frameRateInterval) {
       clearInterval(this.frameRateInterval);
     }
-    
+
     console.log(this.generateReport(componentName));
   }
 
@@ -133,7 +136,7 @@ ${this.metrics.errors.length > 0 ? '\nErrors:\n' + this.metrics.errors.join('\n'
   } {
     const canvas = document.createElement('canvas');
     const webglContext = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    
+
     return {
       supportsCanvas: !!canvas.getContext('2d'),
       supportsWebGL: !!webglContext,
@@ -146,22 +149,22 @@ ${this.metrics.errors.length > 0 ? '\nErrors:\n' + this.metrics.errors.join('\n'
   // Static method to determine if device can handle heavy animations
   static shouldUseReducedAnimations(): boolean {
     const capabilities = this.checkBrowserCapabilities();
-    
+
     // Check for reduced motion preference
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return true;
     }
-    
+
     // Check device capabilities
     if (!capabilities.supportsCanvas || capabilities.hardwareConcurrency < 2) {
       return true;
     }
-    
+
     // Check for low-end devices
     if (capabilities.devicePixelRatio > 2 && capabilities.hardwareConcurrency < 4) {
       return true;
     }
-    
+
     return false;
   }
 }

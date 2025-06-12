@@ -177,11 +177,7 @@ const InteractiveTokenDemo: React.FC<InteractiveTokenDemoProps> = ({ className =
                 Complete widget with transaction history and detailed information
               </p>
             </div>
-            <SolanaTokenWidget
-              className="w-full"
-              showTransactions={true}
-              autoRefresh={isPlaying}
-            />
+            <SolanaTokenWidget className="w-full" showTransactions={true} autoRefresh={isPlaying} />
           </MotionDiv>
         )}
       </div>
