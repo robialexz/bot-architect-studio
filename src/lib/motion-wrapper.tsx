@@ -1,4 +1,10 @@
 import * as React from 'react';
+
+// Ensure React is available before importing Framer Motion
+if (typeof React === 'undefined' || !React.createContext) {
+  throw new Error('React must be loaded before Framer Motion components');
+}
+
 import {
   motion,
   AnimatePresence,
@@ -29,6 +35,11 @@ const safeForwardRef =
 // Wrapper pentru motion.div cu error boundary
 export const MotionDiv = safeForwardRef<HTMLDivElement, ExtendedMotionProps>((props, ref) => {
   try {
+    // Check if motion is available
+    if (typeof motion === 'undefined' || !motion.div) {
+      throw new Error('Framer Motion not available');
+    }
+
     // Properly separate Framer Motion props from DOM props
     const {
       // Framer Motion specific props
@@ -97,10 +108,14 @@ export const MotionDiv = safeForwardRef<HTMLDivElement, ExtendedMotionProps>((pr
 
     return <motion.div ref={ref} {...motionProps} />;
   } catch (error) {
-    console.warn('Framer Motion error:', error);
+    console.warn('Framer Motion error, falling back to regular div:', error);
     const fallbackProps: FallbackProps = {
       className: props.className,
       children: props.children,
+      onClick: props.onClick,
+      onMouseEnter: props.onMouseEnter,
+      onMouseLeave: props.onMouseLeave,
+      style: props.style,
     };
     return <div ref={ref} {...fallbackProps} />;
   }
@@ -470,10 +485,14 @@ export const SafeAnimatePresence: React.FC<{
   mode?: 'wait' | 'sync' | 'popLayout';
 }> = ({ children, mode = 'sync' }) => {
   try {
+    // Check if AnimatePresence is available
+    if (typeof AnimatePresence === 'undefined') {
+      throw new Error('AnimatePresence not available');
+    }
     // Use sync mode by default to avoid "wait" mode issues with multiple children
     return <AnimatePresence mode={mode}>{children}</AnimatePresence>;
   } catch (error) {
-    console.warn('AnimatePresence error:', error);
+    console.warn('AnimatePresence error, falling back to fragment:', error);
     return <>{children}</>;
   }
 };

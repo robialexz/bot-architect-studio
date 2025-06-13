@@ -31,9 +31,15 @@ export default defineConfig({
       },
       external: [],
       output: {
-        // DISABLE ALL CHUNKING - Single bundle approach to fix all loading order issues
-        // This ensures React is always available when any code tries to use it
-        manualChunks: undefined,
+        // Fix Framer Motion React dependency issue by ensuring proper chunk order
+        manualChunks: {
+          // Core React dependencies must load first
+          'react-vendor': ['react', 'react-dom'],
+          // Framer Motion in separate chunk that loads after React
+          'framer-motion': ['framer-motion'],
+          // UI components that depend on React
+          'ui-vendor': ['@radix-ui/react-slot', '@radix-ui/react-toast', 'lucide-react'],
+        },
       },
     },
     chunkSizeWarningLimit: 500,

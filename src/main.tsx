@@ -1,9 +1,17 @@
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
 // Add error handling for debugging
 console.log('🚀 FlowsyAI main.tsx starting...');
+
+// Verify React is properly loaded
+console.log('🔍 React availability check:', {
+  createRoot: typeof createRoot,
+  React: typeof React,
+  hasCreateContext: typeof React !== 'undefined' && typeof React.createContext === 'function',
+});
 
 try {
   // Mount React app immediately
