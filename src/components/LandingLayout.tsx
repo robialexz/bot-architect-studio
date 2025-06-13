@@ -1,7 +1,7 @@
 import React from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import FloatingFeedbackButton from '@/components/FloatingFeedbackButton';
+import NavbarNoMotion from '@/components/Navbar-NoMotion';
+import FooterNoMotion from '@/components/Footer-NoMotion';
+import FloatingFeedbackButtonNoMotion from '@/components/FloatingFeedbackButton-NoMotion';
 
 interface LandingLayoutProps {
   children: React.ReactNode;
@@ -19,16 +19,16 @@ const LandingLayout: React.FC<LandingLayoutProps> = ({
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar */}
-      {showNavbar && <Navbar />}
+      {showNavbar && <NavbarNoMotion />}
 
       {/* Main Content */}
       <main className="flex-1">{children}</main>
 
       {/* Footer */}
-      {showFooter && <Footer />}
+      {showFooter && <FooterNoMotion />}
 
       {/* Floating Feedback Button */}
-      {showFeedback && <FloatingFeedbackButton />}
+      {showFeedback && <FloatingFeedbackButtonNoMotion />}
     </div>
   );
 };
