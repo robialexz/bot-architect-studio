@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MotionDiv } from '@/lib/motion-wrapper';
 
@@ -29,17 +30,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
-import { RealAIAgentService, RealAIAgent } from '@/services/realAIAgentService';
+import { RealAIAgentService, RealAIAgent, AIAgentExecution } from '@/services/realAIAgentService';
 import { TokenService } from '@/services/tokenService';
 import { toast } from 'sonner';
-
-interface AIAgentExecution {
-  status: 'completed' | 'failed';
-  execution_time_ms: number;
-  tokens_used: number;
-  output_data?: unknown;
-  error_message?: string;
-}
 
 interface AIAgentTesterProps {
   agent?: RealAIAgent;
@@ -138,7 +131,7 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
       if (result.status === 'completed') {
         toast.success('AI Agent executed successfully!');
       } else {
-        toast.error(`Execution failed: ${result.error_message}`);
+        toast.error(`Execution failed: ${result.error_message || 'Unknown error'}`);
       }
 
       if (onExecutionComplete) {
@@ -400,7 +393,9 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
               <Label>Execution Result</Label>
               <div className="mt-2 p-4 bg-background/50 rounded-lg">
                 <pre className="text-sm text-foreground whitespace-pre-wrap overflow-auto max-h-64">
-                  {JSON.stringify(executionResult.output_data, null, 2)}
+                  {typeof executionResult.output_data === 'string' 
+                    ? executionResult.output_data 
+                    : JSON.stringify(executionResult.output_data, null, 2)}
                 </pre>
               </div>
             </div>
