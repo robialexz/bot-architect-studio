@@ -28,6 +28,9 @@
     <!-- Critical CSS preload hint -->
     <link rel="preload" as="style" href="/src/index.css" />
 
+    <!-- Vite entry point -->
+    <script type="module" src="/src/main.tsx"></script>
+
     <!-- Inline critical CSS for immediate styling -->
     <style>
       /* Critical base styles to prevent FOUC - COMPREHENSIVE CSS VARIABLES */
@@ -673,7 +676,6 @@
 
     <!-- TEMPORARILY DISABLED FOR DEBUGGING -->
     <!-- <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script> -->
-    <!-- Vite entry point -->
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- Vite entry point will be injected automatically during build -->
   </body>
 </html>
