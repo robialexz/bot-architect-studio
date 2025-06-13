@@ -1,15 +1,6 @@
-import React, { FC, cloneElement } from 'react';
-import {
-  MotionDiv,
-  MotionSection,
-  MotionH1,
-  MotionH2,
-  MotionP,
-  MotionButton,
-  MotionLi,
-  MotionTr,
-} from '@/lib/motion-wrapper';
 
+import React, { FC, cloneElement } from 'react';
+import { MotionDiv } from '@/lib/motion-wrapper';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -49,7 +40,6 @@ const AIAgentCard: FC<AIAgentCardProps> = ({ agent, onClick, onAddToWorkflow, in
     });
   };
 
-  // Remove the drag event from motion.div and add it as a separate handler on the Card
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData('text/plain', agent.id);
     e.dataTransfer.effectAllowed = 'move';
@@ -69,7 +59,6 @@ const AIAgentCard: FC<AIAgentCardProps> = ({ agent, onClick, onAddToWorkflow, in
         delay: index * 0.05,
         ease: 'easeOut',
       }}
-      // Remove the draggable and onDragStart from here as they conflict with motion.div
     >
       <Card
         className="bg-card-alt border-2 border-transparent group-hover:border-primary/50 transition-colors duration-300 flex flex-col h-full p-6 cursor-grab relative overflow-hidden"

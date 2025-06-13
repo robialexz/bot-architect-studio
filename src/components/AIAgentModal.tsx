@@ -1,4 +1,5 @@
-import React, { FC } from 'react'; // Added React import
+
+import React, { FC } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -9,37 +10,19 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { type AIAgent } from './AIAgentCard';
-import {
-  MotionDiv,
-  MotionSection,
-  MotionH1,
-  MotionH2,
-  MotionP,
-  MotionButton,
-  MotionLi,
-  MotionTr,
-} from '@/lib/motion-wrapper';
-// Added framer-motion
-import { CheckCircle } from 'lucide-react'; // Added CheckCircle for capabilities
+import { MotionDiv, MotionLi } from '@/lib/motion-wrapper';
+import { CheckCircle } from 'lucide-react';
 
 interface AIAgentModalProps {
   agent: AIAgent | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onAddToWorkflow?: (agent: AIAgent) => void; // Made optional
+  onAddToWorkflow?: (agent: AIAgent) => void;
 }
 
 const listItemVariants = {
   hidden: { opacity: 0, x: -10 },
-  visible: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: i * 0.1,
-      duration: 0.3,
-      ease: 'easeOut',
-    },
-  }),
+  visible: { opacity: 1, x: 0 },
 };
 
 const AIAgentModal: FC<AIAgentModalProps> = ({ agent, open, onOpenChange, onAddToWorkflow }) => {
@@ -52,9 +35,15 @@ const AIAgentModal: FC<AIAgentModalProps> = ({ agent, open, onOpenChange, onAddT
     'Scalable and efficient performance',
   ];
 
+  const handleAddToWorkflow = () => {
+    if (onAddToWorkflow) {
+      onAddToWorkflow(agent);
+      onOpenChange(false);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {/* DialogContent already has animations from ui/dialog.tsx */}
       <DialogContent className="sm:max-w-lg bg-card-alt border-border-alt shadow-2xl rounded-xl">
         <DialogHeader className="pt-2">
           <div className="flex items-center gap-4 mb-3">
@@ -80,10 +69,10 @@ const AIAgentModal: FC<AIAgentModalProps> = ({ agent, open, onOpenChange, onAddT
               <MotionLi
                 key={index}
                 className="flex items-start gap-2.5"
-                custom={index}
                 variants={listItemVariants}
                 initial="hidden"
-                animate="visible" // Animate when modal content is visible
+                animate="visible"
+                transition={{ delay: index * 0.1, duration: 0.3, ease: 'easeOut' }}
               >
                 <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                 <span className="text-body-std text-foreground/80">{cap}</span>
@@ -101,10 +90,7 @@ const AIAgentModal: FC<AIAgentModalProps> = ({ agent, open, onOpenChange, onAddT
             Cancel
           </Button>
           <Button
-            onClick={() => {
-              onAddToWorkflow(agent);
-              onOpenChange(false);
-            }}
+            onClick={handleAddToWorkflow}
             className="bg-primary text-primary-foreground hover:bg-primary/90"
           >
             Add to Workflow
