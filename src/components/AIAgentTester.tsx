@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import {
-  MotionDiv,
-  // Unused Motion components removed
-} from '@/lib/motion-wrapper';
+import { MotionDiv } from '@/lib/motion-wrapper';
 
 import {
   Bot,
-  Play, // Re-added for uncommented button
-  Loader2, // Re-added for uncommented button
+  Play,
+  Loader2,
   CheckCircle,
   AlertCircle,
   Clock,
@@ -17,8 +14,9 @@ import {
   Image,
   Link,
   Workflow,
+  // Square still seems unused, keeping it out for now
 } from 'lucide-react';
-import { Button } from '@/components/ui/button'; // Re-added for uncommented button
+import { Button } from '@/components/ui/button';
 import { GlassCard } from '@/components/ui/glass-card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
@@ -32,47 +30,23 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAuth } from '@/hooks/useAuth';
-import { RealAIAgentService, RealAIAgent } from '@/services/realAIAgentService';
+// Use AIAgentExecution from the service as the source of truth
+import { RealAIAgentService, RealAIAgent, AIAgentExecution } from '@/services/realAIAgentService';
 import { TokenService } from '@/services/tokenService';
 import { toast } from 'sonner';
 
-// Define AIAgentExecution based on its usage and expected properties from RealAIAgentService
-interface AIAgentExecution {
-  status: 'completed' | 'failed' | 'running' | string; // Allow string for flexibility if service returns other statuses
-  execution_time_ms?: number;
-  tokens_used?: number;
-  output_data?: unknown; // Changed from any to unknown for better type safety
-  error_message?: string;
-  // Potentially other fields from the actual service response
-  // Removed [key: string]: any; for stricter typing. Add specific fields if known.
-}
-
-// Helper function to safely stringify unknown data for display
-const safeStringifyOutput = (data: unknown): string => {
-  if (data === null || data === undefined) {
-    return 'No displayable output';
-  }
-  if (typeof data === 'string' || typeof data === 'number' || typeof data === 'boolean') {
-    return String(data);
-  }
-  // For objects and arrays, attempt to JSON.stringify
-  // For other types (functions, symbols), String() will provide a representation
-  try {
-    return JSON.stringify(data, null, 2);
-  } catch (e) {
-    return String(data); // Fallback if JSON.stringify fails (e.g., circular refs)
-  }
-};
+// Local AIAgentExecution interface removed, using imported one.
+// safeStringifyOutput helper function removed as we'll use the incoming logic for display.
 
 interface AIAgentTesterProps {
   agent?: RealAIAgent;
-  onExecutionComplete?: (result: AIAgentExecution) => void; // Updated type
+  onExecutionComplete?: (result: AIAgentExecution) => void;
 }
 
 const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplete }) => {
   const { user } = useAuth();
   const [isExecuting, setIsExecuting] = useState(false);
-  const [executionResult, setExecutionResult] = useState<AIAgentExecution | null>(null); // Corrected type
+  const [executionResult, setExecutionResult] = useState<AIAgentExecution | null>(null);
   const [inputData, setInputData] = useState({
     prompt: '',
     text: '',
@@ -141,7 +115,7 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
               .filter(Boolean),
           };
           break;
-        default: // Fallback for any other agent type
+        default:
           processedInput = { text: inputData.text };
           break;
       }
@@ -167,7 +141,7 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
     } catch (error) {
       console.error('Agent execution error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to execute AI agent';
-      setExecutionResult({ status: 'failed', error_message: errorMessage });
+      setExecutionResult({ status: 'failed', error_message: errorMessage } as AIAgentExecution); // Ensure type cast for error state
       toast.error(errorMessage);
     } finally {
       setIsExecuting(false);
@@ -398,8 +372,10 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
               <Label>Execution Result</Label>
               <div className="mt-2 p-4 bg-background/50 rounded-lg">
                 <pre className="text-sm text-foreground whitespace-pre-wrap overflow-auto max-h-64">
-                  {}
-                  {safeStringifyOutput(executionResult.output_data)}
+                  {/* Using the incoming version for displaying output_data */}
+                  {typeof executionResult.output_data === 'string'
+                    ? executionResult.output_data
+                    : JSON.stringify(executionResult.output_data, null, 2)}
                 </pre>
               </div>
             </div>
