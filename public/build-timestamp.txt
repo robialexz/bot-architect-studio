@@ -1,0 +1,2 @@
+Build timestamp: 2025-01-27 20:40:00 UTC
+This file forces a fresh build on Vercel to ensure asset hashes are correctly synchronized.
