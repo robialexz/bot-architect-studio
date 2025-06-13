@@ -118,14 +118,14 @@ const HeroSection: React.FC = () => {
       {/* Hero Content */}
       <motion.div
         style={{ opacity }}
-        className="hero-content max-w-5xl px-6 py-12 md:py-16 z-[30] relative"
+        className="hero-content max-w-5xl px-6 py-12 md:py-16 z-[100] relative"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, ease: 'easeOut' }}
       >
         {/* Animated Logo Video Display - Large and Beautiful */}
         <motion.div
-          className="mb-16 relative z-40"
+          className="mb-16 relative z-[110]"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
