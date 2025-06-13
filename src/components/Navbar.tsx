@@ -153,8 +153,30 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="border-b border-[hsl(var(--nav-border))] bg-[hsl(var(--nav-background))]/95 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
-      <div className="container mx-auto px-4 py-2 flex items-center justify-between max-w-screen-xl min-h-[70px]">
+    <nav
+      className="border-b border-[hsl(var(--nav-border))] bg-[hsl(var(--nav-background))]/95 backdrop-blur-lg sticky top-0 z-50 shadow-sm"
+      style={{
+        backgroundColor: 'rgba(26, 26, 26, 0.95)',
+        borderBottom: '2px solid lime',
+        minHeight: '80px'
+      }}
+    >
+      {/* DEBUG INDICATOR */}
+      <div style={{
+        position: 'absolute',
+        top: '5px',
+        right: '5px',
+        backgroundColor: 'red',
+        color: 'white',
+        padding: '4px 8px',
+        fontSize: '12px',
+        zIndex: 9999
+      }}>
+        NAVBAR DEBUG
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto px-4 py-2 flex items-center justify-between min-h-[70px]"
+           style={{ border: '1px solid yellow' }}>
         <MotionButton
           onClick={handleLogoClick}
           className="group cursor-pointer bg-transparent border-none p-2 rounded-lg hover:bg-accent/50 transition-all duration-300"
@@ -171,9 +193,9 @@ const Navbar = () => {
         </MotionButton>
 
         {/* Desktop Navigation - Force visible for debugging */}
-        <div className="flex">
+        <div className="hidden md:flex flex-1 justify-center">
           <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className="flex items-center gap-2">
               {navItems.map(item => (
                 <NavigationMenuItem key={item.to}>
                   <NavLink
@@ -188,6 +210,20 @@ const Navbar = () => {
                           'bg-gradient-to-r from-[hsl(var(--button-primary))]/10 to-[hsl(var(--nav-secondary))]/10 border border-[hsl(var(--button-primary))]/20 hover:border-[hsl(var(--button-primary))]/40'
                       )
                     }
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '8px 16px',
+                      backgroundColor: item.featured ? '#0066cc' : '#333',
+                      color: 'white',
+                      textDecoration: 'none',
+                      borderRadius: '8px',
+                      margin: '0 4px',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      border: '1px solid #555',
+                      transition: 'all 0.2s ease'
+                    }}
                   >
                     <div className="flex items-center gap-2">
                       {item.icon}
