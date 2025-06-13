@@ -111,15 +111,21 @@ const HeroSection: React.FC = () => {
       id="hero"
       ref={sectionRef}
       className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-12 md:pt-16"
+      style={{ backgroundColor: 'rgba(255, 0, 0, 0.1)', border: '2px solid red' }}
     >
+      {/* DEBUG: Visible indicator */}
+      <div className="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 text-xs z-[200]">
+        HeroSection Active - Check Buttons Below
+      </div>
+
       {/* Subtle overlay for text readability over global background */}
       <div className="absolute inset-0 bg-background/3 z-[1]"></div>
 
       {/* Hero Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-[100]">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-[100]">
         <motion.div
           style={{ opacity }}
-          className="hero-content max-w-5xl mx-auto px-6 py-12 md:py-16 text-center"
+          className="hero-content w-full mx-auto px-6 py-12 md:py-16 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, ease: 'easeOut' }}
@@ -283,42 +289,32 @@ const HeroSection: React.FC = () => {
           ))}
         </motion.div>
 
-        <motion.div
-          className="flex flex-col gap-6 justify-center items-center relative z-40 w-full"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-        >
-          {/* Main Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center w-full max-w-2xl mx-auto">
-            <Button
-              size="lg"
-              className="group relative overflow-hidden bg-gradient-to-r from-primary via-sapphire to-primary text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 ease-in-out text-base sm:text-lg px-10 py-6 w-full sm:w-auto"
-              asChild
-            >
-              <Link to="/waitlist">
-                <span className="relative z-10 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                  <Camera className="mr-2 h-5 w-5" />
-                  Join Waitlist
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </span>
-              </Link>
-            </Button>
+        {/* SIMPLIFIED BUTTONS FOR DEBUGGING */}
+        <div className="w-full flex flex-col items-center gap-8 relative z-40">
+          <h1 className="text-4xl font-bold text-white text-center">FlowsyAI Platform</h1>
 
-            <Button
-              size="lg"
-              className="group relative overflow-hidden bg-gradient-to-r from-gold via-gold-light to-gold text-black font-semibold rounded-xl hover:shadow-xl hover:shadow-gold/30 transition-all duration-300 ease-in-out text-base sm:text-lg px-10 py-6 w-full sm:w-auto"
-              asChild
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <a
+              href="/waitlist"
+              className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+              style={{ minWidth: '200px', textAlign: 'center' }}
             >
-              <Link to="/roadmap">
-                <span className="relative z-10 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                  <Sparkles className="mr-2 h-5 w-5" />
-                  View Roadmap
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-                </span>
-              </Link>
-            </Button>
+              📧 Join Waitlist
+            </a>
+
+            <a
+              href="/roadmap"
+              className="inline-flex items-center justify-center px-8 py-4 bg-yellow-600 text-black font-semibold rounded-lg hover:bg-yellow-700 transition-colors"
+              style={{ minWidth: '200px', textAlign: 'center' }}
+            >
+              🗺️ View Roadmap
+            </a>
           </div>
+
+          <div className="text-center text-white">
+            <p>DEBUG: Buttons should be centered above this text</p>
+          </div>
+        </div>
 
           {/* Social Media Icons */}
           <motion.div
