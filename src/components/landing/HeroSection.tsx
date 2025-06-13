@@ -30,325 +30,100 @@ function ParticlesBackground() {
 }
 
 const HeroSection: React.FC = () => {
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  // Simplified for debugging - remove all complex state and effects
+  console.log('🎯 HeroSection rendering...');
 
-  // For parallax scrolling effects
-  const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 100]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -100]);
-  const opacity = useTransform(scrollY, [0, 500], [1, 0.3]);
-
-  // Handle video play/pause
-  const toggleVideo = () => {
-    if (videoRef.current) {
-      if (isVideoPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsVideoPlaying(!isVideoPlaying);
-    }
-  };
-
-  // Video loading handlers
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleLoadedData = () => {
-      console.log('HeroSection: Video loaded successfully');
-      setVideoLoaded(true);
-      setVideoError(false);
-    };
-
-    const handleError = (e: Event) => {
-      console.warn('HeroSection: Video failed to load:', e);
-      setVideoError(true);
-      setVideoLoaded(false);
-    };
-
-    const handleCanPlay = () => {
-      setVideoLoaded(true);
-    };
-
-    video.addEventListener('loadeddata', handleLoadedData);
-    video.addEventListener('error', handleError);
-    video.addEventListener('canplay', handleCanPlay);
-
-    // Fallback timeout
-    const timeout = setTimeout(() => {
-      if (!videoLoaded) {
-        console.warn('HeroSection: Video loading timeout, showing fallback');
-        setVideoError(true);
-      }
-    }, 5000);
-
-    return () => {
-      video.removeEventListener('loadeddata', handleLoadedData);
-      video.removeEventListener('error', handleError);
-      video.removeEventListener('canplay', handleCanPlay);
-      clearTimeout(timeout);
-    };
-  }, [videoLoaded]);
-
-  // Scroll effect
-  useEffect(() => {
-    const handleScroll = () => {
-      setHasScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  // Simplified - no complex effects for debugging
 
   return (
     <section
       id="hero"
-      ref={sectionRef}
-      className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-12 md:pt-16"
-      style={{ backgroundColor: 'rgba(255, 0, 0, 0.1)', border: '2px solid red' }}
+      className="min-h-screen w-full flex flex-col justify-center items-center bg-gray-900"
+      style={{
+        backgroundColor: '#1a1a1a',
+        border: '3px solid lime',
+        padding: '2rem'
+      }}
     >
-      {/* DEBUG: Visible indicator */}
-      <div className="absolute top-4 left-4 bg-green-500 text-white px-2 py-1 text-xs z-[200]">
-        HeroSection Active - Check Buttons Below
+      {/* ULTRA SIMPLE DEBUG */}
+      <div style={{
+        position: 'absolute',
+        top: '10px',
+        left: '10px',
+        backgroundColor: 'lime',
+        color: 'black',
+        padding: '10px',
+        fontSize: '16px',
+        fontWeight: 'bold',
+        zIndex: 9999
+      }}>
+        ✅ HEROSECTION LOADED
       </div>
 
-      {/* Subtle overlay for text readability over global background */}
-      <div className="absolute inset-0 bg-background/3 z-[1]"></div>
+      {/* ULTRA SIMPLE CONTENT */}
+      <div style={{
+        width: '100%',
+        maxWidth: '800px',
+        textAlign: 'center',
+        color: 'white'
+      }}>
+        <h1 style={{
+          fontSize: '3rem',
+          marginBottom: '2rem',
+          color: 'white'
+        }}>
+          FlowsyAI Platform
+        </h1>
 
-      {/* Hero Content */}
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-[100]">
-        <motion.div
-          style={{ opacity }}
-          className="hero-content w-full mx-auto px-6 py-12 md:py-16 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-        >
-        {/* Animated Logo Video Display - Large and Beautiful */}
-        <motion.div
-          className="mb-16 relative z-[110]"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3 }}
-        >
-          <div className="flex justify-center">
-            <div className="relative w-[600px] h-36 rounded-3xl overflow-hidden border border-primary/20 shadow-xl z-40">
-              {/* Loading state */}
-              {!videoLoaded && !videoError && (
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-gold/10 to-primary/10 animate-pulse" />
-              )}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          alignItems: 'center',
+          marginBottom: '2rem'
+        }}>
+          <a
+            href="/waitlist"
+            style={{
+              display: 'inline-block',
+              padding: '1rem 2rem',
+              backgroundColor: '#0066cc',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              minWidth: '250px',
+              textAlign: 'center'
+            }}
+          >
+            📧 Join Waitlist
+          </a>
 
-              {/* Video element */}
-              <video
-                ref={videoRef}
-                className={`w-full h-full object-cover relative z-40 transition-opacity duration-500 ${
-                  videoLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-                autoPlay
-                loop
-                muted
-                playsInline
-                poster="/flowsy-logo.svg"
-                style={{ display: videoError ? 'none' : 'block' }}
-              >
-                <source src="/background-animation.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-
-              {/* Fallback for video error */}
-              {videoError && (
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-gold/20 to-primary/20 flex items-center justify-center">
-                  <PremiumLogo className="w-32 h-16" />
-                </div>
-              )}
-
-              {/* Subtle overlay for better integration */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent z-41"></div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Revolutionary Badge - Centered */}
-        <motion.div
-          className="flex justify-center mb-8 relative z-40"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-primary/20 via-gold/20 to-sapphire/20 rounded-full px-8 py-3 border border-primary/30">
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-            >
-              <Sparkles className="w-5 h-5 text-gold" />
-            </motion.div>
-            <span className="text-base font-bold text-foreground">REVOLUTIONARY AI PLATFORM</span>
-            <motion.div
-              className="w-2 h-2 bg-primary rounded-full"
-              animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-          </div>
-        </motion.div>
-
-        <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold mb-8 tracking-tight text-center relative z-40"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <span className="block text-foreground mb-2">Revolutionary</span>
-          <span className="block bg-gradient-to-r from-primary via-gold to-sapphire bg-clip-text text-transparent">
-            AI Automation Platform
-          </span>
-        </motion.h1>
-
-        <motion.div
-          className="mb-8 relative z-40"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-        >
-          <div className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-            Build Workflows in Augmented Reality
-          </div>
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-center">
-            Create powerful AI automations in{' '}
-            <span className="text-primary font-semibold">3D space</span> using your mobile device.
-            Connect <span className="text-gold font-semibold">enterprise AI models</span> with
-            intuitive gesture controls and transform how you
-            <span className="text-sapphire font-semibold"> build automation workflows</span>.
-          </p>
-        </motion.div>
-
-        {/* Enhanced Feature Highlights */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto relative z-40"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-        >
-          {[
-            {
-              icon: Camera,
-              text: 'AR Interface',
-              color: 'text-gold',
-              bgColor: 'bg-gold/10',
-              borderColor: 'border-gold/30',
-              description: 'Mobile AR',
-            },
-            {
-              icon: Brain,
-              text: 'Real AI APIs',
-              color: 'text-primary',
-              bgColor: 'bg-primary/10',
-              borderColor: 'border-primary/30',
-              description: 'Live Services',
-            },
-            {
-              icon: Zap,
-              text: 'Instant Results',
-              color: 'text-emerald-500',
-              bgColor: 'bg-emerald-500/10',
-              borderColor: 'border-emerald-500/30',
-              description: 'Real-time',
-            },
-            {
-              icon: Layers,
-              text: '3D Workflows',
-              color: 'text-sapphire',
-              bgColor: 'bg-sapphire/10',
-              borderColor: 'border-sapphire/30',
-              description: 'Spatial UI',
-            },
-          ].map((feature, index) => (
-            <motion.div
-              key={index}
-              className={`p-4 rounded-2xl border ${feature.bgColor} ${feature.borderColor} text-center group hover:scale-105 transition-all duration-300 cursor-pointer`}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-              whileHover={{ y: -5 }}
-            >
-              <motion.div
-                className={`w-12 h-12 mx-auto mb-3 rounded-xl ${feature.bgColor} flex items-center justify-center`}
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
-              >
-                <feature.icon className={`w-6 h-6 ${feature.color}`} />
-              </motion.div>
-              <div className={`font-bold text-sm ${feature.color} mb-1`}>{feature.text}</div>
-              <div className="text-xs text-muted-foreground">{feature.description}</div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* SIMPLIFIED BUTTONS FOR DEBUGGING */}
-        <div className="w-full flex flex-col items-center gap-8 relative z-40">
-          <h1 className="text-4xl font-bold text-white text-center">FlowsyAI Platform</h1>
-
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a
-              href="/waitlist"
-              className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-              style={{ minWidth: '200px', textAlign: 'center' }}
-            >
-              📧 Join Waitlist
-            </a>
-
-            <a
-              href="/roadmap"
-              className="inline-flex items-center justify-center px-8 py-4 bg-yellow-600 text-black font-semibold rounded-lg hover:bg-yellow-700 transition-colors"
-              style={{ minWidth: '200px', textAlign: 'center' }}
-            >
-              🗺️ View Roadmap
-            </a>
-          </div>
-
-          <div className="text-center text-white">
-            <p>DEBUG: Buttons should be centered above this text</p>
-          </div>
+          <a
+            href="/roadmap"
+            style={{
+              display: 'inline-block',
+              padding: '1rem 2rem',
+              backgroundColor: '#ffcc00',
+              color: 'black',
+              textDecoration: 'none',
+              borderRadius: '8px',
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              minWidth: '250px',
+              textAlign: 'center'
+            }}
+          >
+            🗺️ View Roadmap
+          </a>
         </div>
 
-          {/* Social Media Icons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.1 }}
-            className="flex items-center gap-4"
-          >
-            <div className="hidden sm:block w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-            <SocialIcons size="md" variant="outline" />
-            <div className="hidden sm:block w-16 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: hasScrolled ? 0 : 0.8 }}
-          transition={{ duration: 0.3 }}
-          onClick={() =>
-            document.getElementById('value-proposition')?.scrollIntoView({ behavior: 'smooth' })
-          }
-        >
-          <motion.div
-            className="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center"
-            animate={{ y: [0, 5, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <ChevronDown className="h-5 w-5 text-gold" />
-          </motion.div>
-        </motion.div>
-        </motion.div>
+        <p style={{ color: 'lime', fontSize: '1.2rem' }}>
+          ⬆️ BUTTONS SHOULD BE CENTERED ABOVE ⬆️
+        </p>
       </div>
+
     </section>
   );
 };
