@@ -1,3 +1,4 @@
+
 import React, { Suspense, lazy } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
@@ -18,7 +19,6 @@ import Index from './pages/Index';
 import SimpleLandingPage from './pages/SimpleLandingPage';
 import InteractiveLandingPage from './pages/InteractiveLandingPage';
 import MinimalistLandingPage from './pages/MinimalistLandingPage';
-import SimpleTestIndex from './pages/SimpleTestIndex';
 import AuthPageSimple from './pages/AuthPageSimple';
 import NotFound from './pages/NotFound';
 import UITest from './pages/UITest';
