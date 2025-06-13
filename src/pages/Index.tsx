@@ -12,6 +12,7 @@ import TokenTierSection from '@/components/landing/TokenTierSection';
 // Import new landing page components
 import EnhancedWaitlistCTA from '@/components/landing/EnhancedWaitlistCTA';
 import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection';
+import SectionErrorBoundary from '@/components/SectionErrorBoundary';
 
 const IndexPage: React.FC = () => {
   // Debug logging for Index page
@@ -19,7 +20,52 @@ const IndexPage: React.FC = () => {
     console.log('🏠 Index page component mounted', {
       timestamp: new Date().toISOString(),
       location: window.location.href,
+      userAgent: navigator.userAgent,
+      viewport: {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      },
     });
+
+    // Check if all components are available
+    const components = {
+      PipelineCanvas,
+      HeroSection,
+      VideoShowcaseSection,
+      VisualWorkflowBuilder,
+      TokenTierSection,
+      RoadmapSection,
+      EnhancedWaitlistCTA,
+      FeaturesSection,
+    };
+
+    console.log('📦 Component availability check:', components);
+
+    // Monitor for any unhandled errors
+    const errorHandler = (event: ErrorEvent) => {
+      console.error('🚨 Unhandled error in Index page:', {
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        error: event.error,
+      });
+    };
+
+    const rejectionHandler = (event: PromiseRejectionEvent) => {
+      console.error('🚨 Unhandled promise rejection in Index page:', {
+        reason: event.reason,
+        promise: event.promise,
+      });
+    };
+
+    window.addEventListener('error', errorHandler);
+    window.addEventListener('unhandledrejection', rejectionHandler);
+
+    return () => {
+      window.removeEventListener('error', errorHandler);
+      window.removeEventListener('unhandledrejection', rejectionHandler);
+    };
   }, []);
 
   return (
@@ -46,30 +92,42 @@ const IndexPage: React.FC = () => {
         </Suspense>
 
         {/* Video Showcase Section */}
-        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
-          <VideoShowcaseSection />
-        </Suspense>
+        <SectionErrorBoundary sectionName="Video Showcase">
+          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Video Showcase...</span></div>}>
+            <VideoShowcaseSection />
+          </Suspense>
+        </SectionErrorBoundary>
 
-        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
-          <VisualWorkflowBuilder />
-        </Suspense>
+        <SectionErrorBoundary sectionName="Workflow Builder">
+          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Workflow Builder...</span></div>}>
+            <VisualWorkflowBuilder />
+          </Suspense>
+        </SectionErrorBoundary>
 
-        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
-          <TokenTierSection />
-        </Suspense>
+        <SectionErrorBoundary sectionName="Token Tiers">
+          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Token Tiers...</span></div>}>
+            <TokenTierSection />
+          </Suspense>
+        </SectionErrorBoundary>
 
-        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
-          <RoadmapSection />
-        </Suspense>
+        <SectionErrorBoundary sectionName="Roadmap">
+          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Roadmap...</span></div>}>
+            <RoadmapSection />
+          </Suspense>
+        </SectionErrorBoundary>
 
         {/* Enhanced Waitlist CTA - Improved conversion optimization */}
-        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
-          <EnhancedWaitlistCTA />
-        </Suspense>
+        <SectionErrorBoundary sectionName="Waitlist CTA">
+          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Waitlist CTA...</span></div>}>
+            <EnhancedWaitlistCTA />
+          </Suspense>
+        </SectionErrorBoundary>
 
-        <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse" />}>
-          <FeaturesSection />
-        </Suspense>
+        <SectionErrorBoundary sectionName="Features">
+          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Features...</span></div>}>
+            <FeaturesSection />
+          </Suspense>
+        </SectionErrorBoundary>
       </main>
     </div>
   );

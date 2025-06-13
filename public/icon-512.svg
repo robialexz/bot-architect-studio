@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#logoGradient)" opacity="0.1"/>
+  
+  <!-- Main logo shape -->
+  <path d="M150 200 L200 150 L300 150 L350 200 L350 300 L300 350 L200 350 L150 300 Z" 
+        fill="url(#logoGradient)" 
+        filter="url(#glow)"
+        opacity="0.9"/>
+  
+  <!-- Inner design -->
+  <circle cx="256" cy="256" r="60" fill="none" stroke="url(#logoGradient)" stroke-width="4"/>
+  <circle cx="256" cy="256" r="30" fill="url(#logoGradient)" opacity="0.8"/>
+  
+  <!-- FlowsyAI text -->
+  <text x="256" y="420" text-anchor="middle" fill="url(#logoGradient)" 
+        font-family="Arial, sans-serif" font-size="32" font-weight="bold">FlowsyAI</text>
+</svg>

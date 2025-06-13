@@ -9,7 +9,7 @@ const DYNAMIC_CACHE_NAME = 'ai-flow-dynamic-v1.0.0';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/manifest.json',
+  '/manifest.webmanifest',
   '/favicon.ico',
   // Add critical CSS and JS files here
 ];

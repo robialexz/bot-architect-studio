@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowsyAI Production Debug</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #141414;
+            color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+        }
+        .debug-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+        .debug-title {
+            color: #0099ff;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .debug-info {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        .status-ok { color: #10b981; }
+        .status-error { color: #ef4444; }
+        .status-warning { color: #f59e0b; }
+        .test-button {
+            background: #0099ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0080cc;
+        }
+    </style>
+</head>
+<body>
+    <h1>FlowsyAI Production Build Debug</h1>
+    
+    <div class="debug-section">
+        <div class="debug-title">Environment Information</div>
+        <div class="debug-info">
+            <div>User Agent: <span id="userAgent"></span></div>
+            <div>Current URL: <span id="currentUrl"></span></div>
+            <div>Timestamp: <span id="timestamp"></span></div>
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <div class="debug-title">Asset Loading Test</div>
+        <div class="debug-info">
+            <div>Main CSS: <span id="cssStatus">Testing...</span></div>
+            <div>Main JS: <span id="jsStatus">Testing...</span></div>
+            <div>React Loading: <span id="reactStatus">Testing...</span></div>
+        </div>
+        <button class="test-button" onclick="testAssets()">Test Assets</button>
+    </div>
+
+    <div class="debug-section">
+        <div class="debug-title">Network Requests</div>
+        <div class="debug-info" id="networkLog">
+            Monitoring network requests...
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <div class="debug-title">Console Logs</div>
+        <div class="debug-info" id="consoleLog">
+            Capturing console output...
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <div class="debug-title">React App Test</div>
+        <div id="reactTest">
+            <div id="root-test" style="min-height: 200px; border: 1px dashed #333; padding: 20px; text-align: center;">
+                React app will load here...
+            </div>
+        </div>
+        <button class="test-button" onclick="loadReactApp()">Load React App</button>
+    </div>
+
+    <script>
+        // Initialize debug info
+        document.getElementById('userAgent').textContent = navigator.userAgent;
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('timestamp').textContent = new Date().toISOString();
+
+        // Console logging capture
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        const consoleLog = document.getElementById('consoleLog');
+        
+        function addConsoleMessage(type, message) {
+            const div = document.createElement('div');
+            div.className = type === 'error' ? 'status-error' : type === 'warn' ? 'status-warning' : 'status-ok';
+            div.textContent = `[${type.toUpperCase()}] ${message}`;
+            consoleLog.appendChild(div);
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addConsoleMessage('log', args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addConsoleMessage('error', args.join(' '));
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addConsoleMessage('warn', args.join(' '));
+        };
+
+        // Network monitoring
+        const networkLog = document.getElementById('networkLog');
+        
+        function addNetworkMessage(message, status = 'ok') {
+            const div = document.createElement('div');
+            div.className = `status-${status}`;
+            div.textContent = message;
+            networkLog.appendChild(div);
+            networkLog.scrollTop = networkLog.scrollHeight;
+        }
+
+        // Test asset loading
+        async function testAssets() {
+            const cssStatus = document.getElementById('cssStatus');
+            const jsStatus = document.getElementById('jsStatus');
+            const reactStatus = document.getElementById('reactStatus');
+            
+            // Test CSS
+            try {
+                const cssResponse = await fetch('/assets/main-rlG25vag.css');
+                if (cssResponse.ok) {
+                    cssStatus.innerHTML = '<span class="status-ok">✓ Loaded</span>';
+                    addNetworkMessage('CSS loaded successfully', 'ok');
+                } else {
+                    cssStatus.innerHTML = '<span class="status-error">✗ Failed</span>';
+                    addNetworkMessage(`CSS failed: ${cssResponse.status}`, 'error');
+                }
+            } catch (error) {
+                cssStatus.innerHTML = '<span class="status-error">✗ Error</span>';
+                addNetworkMessage(`CSS error: ${error.message}`, 'error');
+            }
+            
+            // Test JS
+            try {
+                const jsResponse = await fetch('/assets/main-QVNUeZIm.js');
+                if (jsResponse.ok) {
+                    jsStatus.innerHTML = '<span class="status-ok">✓ Loaded</span>';
+                    addNetworkMessage('JS loaded successfully', 'ok');
+                } else {
+                    jsStatus.innerHTML = '<span class="status-error">✗ Failed</span>';
+                    addNetworkMessage(`JS failed: ${jsResponse.status}`, 'error');
+                }
+            } catch (error) {
+                jsStatus.innerHTML = '<span class="status-error">✗ Error</span>';
+                addNetworkMessage(`JS error: ${error.message}`, 'error');
+            }
+            
+            // Test React
+            if (window.React) {
+                reactStatus.innerHTML = '<span class="status-ok">✓ Available</span>';
+                addNetworkMessage('React is available', 'ok');
+            } else {
+                reactStatus.innerHTML = '<span class="status-error">✗ Not Available</span>';
+                addNetworkMessage('React is not available', 'error');
+            }
+        }
+
+        // Load React app
+        function loadReactApp() {
+            const rootTest = document.getElementById('root-test');
+            
+            // Create a script element to load the main JS
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = '/src/main.tsx';
+            script.onload = () => {
+                addNetworkMessage('React app script loaded', 'ok');
+                setTimeout(() => {
+                    if (rootTest.children.length > 0) {
+                        addNetworkMessage('React app rendered successfully', 'ok');
+                    } else {
+                        addNetworkMessage('React app did not render', 'warning');
+                    }
+                }, 2000);
+            };
+            script.onerror = (error) => {
+                addNetworkMessage(`React app script failed: ${error.message}`, 'error');
+            };
+            
+            // Replace the root div ID temporarily
+            rootTest.id = 'root';
+            document.head.appendChild(script);
+        }
+
+        // Auto-test on load
+        setTimeout(testAssets, 1000);
+        
+        console.log('🔍 FlowsyAI Production Debug initialized');
+    </script>
+</body>
+</html>
