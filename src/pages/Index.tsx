@@ -1,19 +1,62 @@
-import React, { Suspense } from 'react';
-import { Loader2 } from 'lucide-react';
+import React from 'react';
 
 // CRITICAL: Import components without Framer Motion to avoid React dependency issues
 // Direct imports for stable build - NO FRAMER MOTION
 import PipelineCanvas from '@/components/backgrounds/PipelineCanvas';
 import SectionErrorBoundary from '@/components/SectionErrorBoundary';
 
-// Lazy load components to avoid blocking the main thread
-const HeroSection = React.lazy(() => import('@/components/landing/HeroSection-NoMotion'));
-const VisualWorkflowBuilder = React.lazy(() => import('@/components/landing/VisualWorkflowBuilder'));
-const FeaturesSection = React.lazy(() => import('@/components/landing/FeaturesSection'));
-const RoadmapSection = React.lazy(() => import('@/components/landing/RoadmapSection'));
-const TokenTierSection = React.lazy(() => import('@/components/landing/TokenTierSection'));
-const EnhancedWaitlistCTA = React.lazy(() => import('@/components/landing/EnhancedWaitlistCTA'));
-const VideoShowcaseSection = React.lazy(() => import('@/components/landing/VideoShowcaseSection-NoMotion'));
+// Direct imports - NO LAZY LOADING to avoid Framer Motion issues
+import HeroSection from '@/components/landing/HeroSection-NoMotion';
+import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection-NoMotion';
+
+// Create simple placeholder components without Framer Motion
+const SimpleSection: React.FC<{ title: string; description: string }> = ({ title, description }) => (
+  <section className="py-16 bg-background/50">
+    <div className="container mx-auto px-6 text-center">
+      <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-gold bg-clip-text text-transparent">
+        {title}
+      </h2>
+      <p className="text-muted-foreground max-w-2xl mx-auto">
+        {description}
+      </p>
+    </div>
+  </section>
+);
+
+const VisualWorkflowBuilder = () => (
+  <SimpleSection
+    title="Visual Workflow Builder"
+    description="Build powerful AI workflows with our intuitive drag-and-drop interface. Coming soon with advanced automation capabilities."
+  />
+);
+
+const FeaturesSection = () => (
+  <SimpleSection
+    title="Advanced Features"
+    description="Discover the cutting-edge capabilities that make FlowsyAI the ultimate automation platform for modern businesses."
+  />
+);
+
+const RoadmapSection = () => (
+  <SimpleSection
+    title="Development Roadmap"
+    description="Follow our journey as we build the future of AI automation. See what's coming next and join our community."
+  />
+);
+
+const TokenTierSection = () => (
+  <SimpleSection
+    title="Token Tiers"
+    description="Choose the perfect tier for your automation needs. From starter to enterprise, we have options for everyone."
+  />
+);
+
+const EnhancedWaitlistCTA = () => (
+  <SimpleSection
+    title="Join the Revolution"
+    description="Be among the first to experience the future of AI automation. Join our waitlist and get early access."
+  />
+);
 
 const IndexPage: React.FC = () => {
   // Debug logging for Index page
@@ -82,52 +125,32 @@ const IndexPage: React.FC = () => {
 
       {/* Page Content Sections - Transparent backgrounds to show pipeline */}
       <main className="relative z-10 w-full">
-        <Suspense
-          fallback={
-            <div className="min-h-screen flex items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          }
-        >
-          <HeroSection />
-        </Suspense>
+        <HeroSection />
 
         {/* Video Showcase Section */}
         <SectionErrorBoundary sectionName="Video Showcase">
-          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Video Showcase...</span></div>}>
-            <VideoShowcaseSection />
-          </Suspense>
+          <VideoShowcaseSection />
         </SectionErrorBoundary>
 
         <SectionErrorBoundary sectionName="Workflow Builder">
-          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Workflow Builder...</span></div>}>
-            <VisualWorkflowBuilder />
-          </Suspense>
+          <VisualWorkflowBuilder />
         </SectionErrorBoundary>
 
         <SectionErrorBoundary sectionName="Token Tiers">
-          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Token Tiers...</span></div>}>
-            <TokenTierSection />
-          </Suspense>
+          <TokenTierSection />
         </SectionErrorBoundary>
 
         <SectionErrorBoundary sectionName="Roadmap">
-          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Roadmap...</span></div>}>
-            <RoadmapSection />
-          </Suspense>
+          <RoadmapSection />
         </SectionErrorBoundary>
 
         {/* Enhanced Waitlist CTA - Improved conversion optimization */}
         <SectionErrorBoundary sectionName="Waitlist CTA">
-          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Waitlist CTA...</span></div>}>
-            <EnhancedWaitlistCTA />
-          </Suspense>
+          <EnhancedWaitlistCTA />
         </SectionErrorBoundary>
 
         <SectionErrorBoundary sectionName="Features">
-          <Suspense fallback={<div className="h-96 bg-muted/20 animate-pulse flex items-center justify-center"><span className="text-muted-foreground">Loading Features...</span></div>}>
-            <FeaturesSection />
-          </Suspense>
+          <FeaturesSection />
         </SectionErrorBoundary>
       </main>
     </div>
