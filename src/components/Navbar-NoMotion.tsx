@@ -2,7 +2,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { logger } from '@/utils/logger';
-import PremiumLogo from '@/components/ui/PremiumLogo';
+import PremiumLogoNoMotion from '@/components/ui/PremiumLogo-NoMotion';
 import { useComingSoon } from '@/hooks/useComingSoon';
 import {
   NavigationMenu,
@@ -132,7 +132,7 @@ const NavbarNoMotion = () => {
           className="group cursor-pointer bg-transparent border-none p-2 rounded-lg hover:bg-accent/50 transition-all duration-300 hover:scale-105"
           aria-label="Navigate to home page"
         >
-          <PremiumLogo
+          <PremiumLogoNoMotion
             size={isDesktop ? 'xl' : 'lg'}
             showText={false}
             animated={true}

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { ArrowRight, Sparkles, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import PremiumLogo from '@/components/ui/PremiumLogo';
+import PremiumLogoNoMotion from '@/components/ui/PremiumLogo-NoMotion';
 import PipelineBackground from '@/components/landing/PipelineBackground';
 
 // Custom icons as SVG components
@@ -42,7 +42,7 @@ const HeroSectionNoMotion: React.FC = () => {
         {/* Logo Section */}
         <div className="mb-16 flex justify-center animate-scale-in" style={{ animationDelay: '0.5s' }}>
           <div className="relative bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-lg border border-gray-700/50 rounded-3xl p-8 shadow-2xl">
-            <PremiumLogo
+            <PremiumLogoNoMotion
               size="xxl"
               showText={true}
               animated={true}
