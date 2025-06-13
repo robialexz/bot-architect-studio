@@ -105,6 +105,67 @@
   content: '';
 }
 
+/* CRITICAL: Force inclusion of Button component styles */
+.inline-flex,
+.items-center,
+.justify-center,
+.gap-2,
+.whitespace-nowrap,
+.rounded-md,
+.text-sm,
+.font-medium,
+.ring-offset-background,
+.transition-colors,
+.focus-visible\:outline-none,
+.focus-visible\:ring-2,
+.focus-visible\:ring-ring,
+.focus-visible\:ring-offset-2,
+.disabled\:pointer-events-none,
+.disabled\:opacity-50,
+.bg-primary,
+.text-primary-foreground,
+.hover\:bg-primary\/90,
+.border,
+.border-primary,
+.text-primary,
+.bg-transparent,
+.hover\:bg-primary\/10,
+.h-10,
+.px-4,
+.py-2,
+.h-11,
+.rounded-md,
+.px-8,
+.rounded-xl,
+.hover\:shadow-xl,
+.hover\:shadow-primary\/30 {
+  /* Ensure Button styles are never purged */
+  content: '';
+}
+
+/* CRITICAL: Force inclusion of Button gradient styles */
+.bg-gradient-to-r,
+.from-primary,
+.via-sapphire,
+.to-primary,
+.from-gold,
+.via-gold-light,
+.to-gold,
+.text-white,
+.text-black,
+.group,
+.relative,
+.overflow-hidden,
+.group-hover\:scale-105,
+.group-hover\:translate-x-1,
+.transition-transform,
+.duration-300,
+.ease-in-out,
+.size-lg {
+  /* Ensure Button gradient styles are never purged */
+  content: '';
+}
+
 /* Critical CSS Variables - Force inclusion */
 :root {
   /* Ensure all CSS variables are preserved */
