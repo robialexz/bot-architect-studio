@@ -14,8 +14,11 @@ export default {
     './src/**/*.css',
     './src/styles/**/*.css',
   ],
-  // Prevent purging of custom CSS classes
+  // Prevent purging of custom CSS classes - PRODUCTION REBUILD
   safelist: [
+    // FORCE PRODUCTION CSS REBUILD MARKER
+    'production-css-rebuild-marker',
+    'css-force-inclusion-marker',
     // Custom CSS classes
     'hero-floating-dot',
     'hero-floating-dot-1',

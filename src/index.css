@@ -5,10 +5,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CRITICAL: Force CSS inclusion marker for Vercel deployment */
+/* CRITICAL: Force CSS inclusion marker for Vercel deployment - UPDATED */
 .css-force-inclusion-marker {
   display: none !important;
-  content: 'FLOWSYAI_CSS_LOADED';
+  content: 'FLOWSYAI_CSS_LOADED_V2';
+}
+
+/* FORCE PRODUCTION CSS REBUILD */
+.production-css-rebuild-marker {
+  display: none !important;
+  content: 'PRODUCTION_REBUILD_TRIGGER';
 }
 
 .index-page-container-fullscreen {
