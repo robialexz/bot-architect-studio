@@ -1,19 +1,9 @@
 import React, { useState } from 'react';
-import {
-  MotionDiv,
-  MotionSection,
-  MotionH1,
-  MotionH2,
-  MotionP,
-  MotionButton,
-  MotionLi,
-  MotionTr,
-} from '@/lib/motion-wrapper';
+import { MotionDiv } from '@/lib/motion-wrapper';
 
 import {
   Bot,
   Play,
-  Square,
   Loader2,
   CheckCircle,
   AlertCircle,
@@ -43,15 +33,23 @@ import { RealAIAgentService, RealAIAgent } from '@/services/realAIAgentService';
 import { TokenService } from '@/services/tokenService';
 import { toast } from 'sonner';
 
+interface AIAgentExecution {
+  status: 'completed' | 'failed';
+  execution_time_ms: number;
+  tokens_used: number;
+  output_data?: unknown;
+  error_message?: string;
+}
+
 interface AIAgentTesterProps {
   agent?: RealAIAgent;
-  onExecutionComplete?: (result: unknown) => void;
+  onExecutionComplete?: (result: AIAgentExecution) => void;
 }
 
 const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplete }) => {
   const { user } = useAuth();
   const [isExecuting, setIsExecuting] = useState(false);
-  const [executionResult, setExecutionResult] = useState(null);
+  const [executionResult, setExecutionResult] = useState<AIAgentExecution | null>(null);
   const [inputData, setInputData] = useState({
     prompt: '',
     text: '',
