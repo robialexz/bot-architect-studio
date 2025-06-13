@@ -26,9 +26,7 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html'),
-      },
+      // Remove custom input to let Vite handle HTML injection automatically
       external: [],
       output: {
         // Fix Framer Motion React dependency issue by ensuring proper chunk order
