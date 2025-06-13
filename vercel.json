@@ -3,6 +3,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
+  "public": true,
   "headers": [
     {
       "source": "/assets/(.*)",
