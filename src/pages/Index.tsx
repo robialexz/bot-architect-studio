@@ -1,18 +1,19 @@
 import React, { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 
-// Direct imports for stable build
+// CRITICAL: Import components without Framer Motion to avoid React dependency issues
+// Direct imports for stable build - NO FRAMER MOTION
 import PipelineCanvas from '@/components/backgrounds/PipelineCanvas';
-import HeroSection from '@/components/landing/HeroSection';
-import VisualWorkflowBuilder from '@/components/landing/VisualWorkflowBuilder';
-import FeaturesSection from '@/components/landing/FeaturesSection';
-import RoadmapSection from '@/components/landing/RoadmapSection';
-import TokenTierSection from '@/components/landing/TokenTierSection';
-
-// Import new landing page components
-import EnhancedWaitlistCTA from '@/components/landing/EnhancedWaitlistCTA';
-import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection';
 import SectionErrorBoundary from '@/components/SectionErrorBoundary';
+
+// Lazy load components to avoid blocking the main thread
+const HeroSection = React.lazy(() => import('@/components/landing/HeroSection-NoMotion'));
+const VisualWorkflowBuilder = React.lazy(() => import('@/components/landing/VisualWorkflowBuilder'));
+const FeaturesSection = React.lazy(() => import('@/components/landing/FeaturesSection'));
+const RoadmapSection = React.lazy(() => import('@/components/landing/RoadmapSection'));
+const TokenTierSection = React.lazy(() => import('@/components/landing/TokenTierSection'));
+const EnhancedWaitlistCTA = React.lazy(() => import('@/components/landing/EnhancedWaitlistCTA'));
+const VideoShowcaseSection = React.lazy(() => import('@/components/landing/VideoShowcaseSection-NoMotion'));
 
 const IndexPage: React.FC = () => {
   // Debug logging for Index page
