@@ -106,12 +106,27 @@ const HeroSection: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Debug logging
+  React.useEffect(() => {
+    console.log('🎯 HeroSection component mounted', {
+      timestamp: new Date().toISOString(),
+      videoLoaded,
+      videoError,
+    });
+  }, []);
+
   return (
     <section
       id="hero"
       ref={sectionRef}
-      className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-12 md:pt-16"
+      className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-12 md:pt-16 bg-red-500/10"
+      style={{ border: '2px solid red' }}
     >
+      {/* DEBUG: Visible border to see if section renders */}
+      <div className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 text-xs z-[200]">
+        HeroSection Loaded
+      </div>
+
       {/* Subtle overlay for text readability over global background */}
       <div className="absolute inset-0 bg-background/3 z-[1]"></div>
 
