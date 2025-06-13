@@ -106,38 +106,24 @@ const HeroSection: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Debug logging
-  React.useEffect(() => {
-    console.log('🎯 HeroSection component mounted', {
-      timestamp: new Date().toISOString(),
-      videoLoaded,
-      videoError,
-    });
-  }, []);
-
   return (
     <section
       id="hero"
       ref={sectionRef}
-      className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-12 md:pt-16 bg-red-500/10"
-      style={{ border: '2px solid red' }}
+      className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-12 md:pt-16"
     >
-      {/* DEBUG: Visible border to see if section renders */}
-      <div className="absolute top-4 left-4 bg-red-500 text-white px-2 py-1 text-xs z-[200]">
-        HeroSection Loaded
-      </div>
-
       {/* Subtle overlay for text readability over global background */}
       <div className="absolute inset-0 bg-background/3 z-[1]"></div>
 
       {/* Hero Content */}
-      <motion.div
-        style={{ opacity }}
-        className="hero-content max-w-5xl px-6 py-12 md:py-16 z-[100] relative"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease: 'easeOut' }}
-      >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-[100]">
+        <motion.div
+          style={{ opacity }}
+          className="hero-content max-w-5xl mx-auto px-6 py-12 md:py-16 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, ease: 'easeOut' }}
+        >
         {/* Animated Logo Video Display - Large and Beautiful */}
         <motion.div
           className="mb-16 relative z-[110]"
@@ -298,13 +284,13 @@ const HeroSection: React.FC = () => {
         </motion.div>
 
         <motion.div
-          className="flex flex-col gap-6 justify-center items-center relative z-40"
+          className="flex flex-col gap-6 justify-center items-center relative z-40 w-full"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.9 }}
         >
           {/* Main Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center w-full max-w-2xl mx-auto">
             <Button
               size="lg"
               className="group relative overflow-hidden bg-gradient-to-r from-primary via-sapphire to-primary text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 ease-in-out text-base sm:text-lg px-10 py-6 w-full sm:w-auto"
@@ -365,7 +351,8 @@ const HeroSection: React.FC = () => {
             <ChevronDown className="h-5 w-5 text-gold" />
           </motion.div>
         </motion.div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 };

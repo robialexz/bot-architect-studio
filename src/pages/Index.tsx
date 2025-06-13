@@ -23,7 +23,7 @@ const IndexPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="index-page-container relative">
+    <div className="index-page-container relative w-full">
       {/* Pipeline Background - Simple and Clean */}
       <Suspense
         fallback={
@@ -34,7 +34,7 @@ const IndexPage: React.FC = () => {
       </Suspense>
 
       {/* Page Content Sections - Transparent backgrounds to show pipeline */}
-      <main className="relative z-10">
+      <main className="relative z-10 w-full">
         <Suspense
           fallback={
             <div className="min-h-screen flex items-center justify-center">
