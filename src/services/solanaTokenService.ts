@@ -9,9 +9,9 @@ export interface TokenData {
   volume24h: number;
   supply: number;
   decimals: number;
-  logoUrl?: string;
+  logoUrl?: string | undefined;
   // New fields for data transparency
-  holders?: number;
+  holders?: number | undefined;
   dataSource: 'dexscreener' | 'birdeye' | 'jupiter' | 'pump.fun' | 'solscan' | 'helius' | 'unknown';
   lastUpdated: number;
   isVerified: boolean;
@@ -55,14 +55,14 @@ interface DexScreenerPair {
 }
 
 class SolanaTokenService {
-  private readonly SOLANA_RPC_URL = 'https://api.mainnet-beta.solana.com';
-  private readonly COINGECKO_API = 'https://api.coingecko.com/api/v3';
-  private readonly BIRDEYE_API = 'https://public-api.birdeye.so/public';
-  private readonly JUPITER_API = 'https://price.jup.ag/v4';
-  private readonly PUMP_FUN_API = 'https://frontend-api.pump.fun';
-  private readonly DEXSCREENER_API = 'https://api.dexscreener.com/latest/dex';
-  private readonly SOLSCAN_API = 'https://public-api.solscan.io';
-  private readonly HELIUS_API = 'https://api.helius.xyz/v0';
+  // private readonly SOLANA_RPC_URL = import.meta.env.VITE_SOLANA_RPC_URL; // Unused
+  // private readonly COINGECKO_API = import.meta.env.VITE_COINGECKO_API_URL; // Unused
+  private readonly BIRDEYE_API = import.meta.env.VITE_BIRDEYE_API_URL;
+  private readonly JUPITER_API = import.meta.env.VITE_JUPITER_API_URL;
+  private readonly PUMP_FUN_API = import.meta.env.VITE_PUMP_FUN_API_URL;
+  private readonly DEXSCREENER_API = import.meta.env.VITE_DEXSCREENER_API_URL;
+  // private readonly SOLSCAN_API = import.meta.env.VITE_SOLSCAN_API_URL; // Unused (Solscan call is commented out)
+  // private readonly HELIUS_API = import.meta.env.VITE_HELIUS_API_URL; // Unused
 
   // Demo data for development - will be replaced with real API calls
   private readonly DEMO_TOKEN_DATA: TokenData = {
@@ -130,14 +130,14 @@ class SolanaTokenService {
           // Try to enrich with holder count from Solscan
           try {
             const holderCount = await this.getHolderCount(tokenAddress);
-            dexScreenerData.holders = holderCount;
+            dexScreenerData.holders = holderCount ?? undefined;
           } catch (error) {
-            logger.warn('Failed to fetch holder count:', error);
+            logger.warn('Failed to fetch holder count', { error });
           }
           return dexScreenerData;
         }
       } catch (error) {
-        logger.warn('DexScreener API failed, trying Pump.fun:', error);
+        logger.warn('DexScreener API failed, trying Pump.fun', { error });
       }
 
       // Try Pump.fun API (for pump.fun tokens)
@@ -147,7 +147,7 @@ class SolanaTokenService {
           return pumpFunData;
         }
       } catch (error) {
-        logger.warn('Pump.fun API failed, trying Jupiter:', error);
+        logger.warn('Pump.fun API failed, trying Jupiter', { error });
       }
 
       // Try Jupiter API
@@ -157,20 +157,20 @@ class SolanaTokenService {
           return await this.enrichTokenData(tokenAddress, jupiterData);
         }
       } catch (error) {
-        logger.warn('Jupiter API failed, trying Birdeye:', error);
+        logger.warn('Jupiter API failed, trying Birdeye', { error });
       }
 
       // Fallback to Birdeye API
       try {
         return await this.getBirdeyeTokenData(tokenAddress);
       } catch (error) {
-        logger.warn('Birdeye API failed:', error);
+        logger.warn('Birdeye API failed', { error });
       }
 
       // If all APIs fail, throw error
       throw new Error('Unable to fetch real token data from any API');
     } catch (error) {
-      logger.error('All token data APIs failed:', error);
+      logger.error('All token data APIs failed', { error });
       throw new Error('Unable to fetch token data. Please try again later.');
     }
   }
@@ -203,9 +203,11 @@ class SolanaTokenService {
       //     },
       //   }
       // );
-
     } catch (error) {
-      console.warn('❌ Error fetching holder count:', error);
+      console.warn(
+        '❌ Error fetching holder count:',
+        error instanceof Error ? error.message : String(error)
+      );
       return undefined;
     }
   }
@@ -234,7 +236,10 @@ class SolanaTokenService {
           // For now, we'll just note that we have Jupiter price data
         }
       } catch (error) {
-        console.log('Jupiter verification failed:', error);
+        console.log(
+          'Jupiter verification failed:',
+          error instanceof Error ? error.message : String(error)
+        );
       }
 
       // Try Birdeye for additional verification
@@ -253,7 +258,10 @@ class SolanaTokenService {
           }
         }
       } catch (error) {
-        console.log('Birdeye verification failed:', error);
+        console.log(
+          'Birdeye verification failed:',
+          error instanceof Error ? error.message : String(error)
+        );
       }
 
       // Calculate confidence based on source agreement
@@ -293,7 +301,10 @@ class SolanaTokenService {
 
       return { verified, confidence, sources };
     } catch (error) {
-      console.error('❌ Price change verification failed:', error);
+      console.error(
+        '❌ Price change verification failed:',
+        error instanceof Error ? error.message : String(error)
+      );
       return { verified: false, confidence: 'low', sources: [] };
     }
   }
@@ -322,7 +333,7 @@ class SolanaTokenService {
       const data = await response.json();
       return this.parseTransactions(data.data || []);
     } catch (error) {
-      logger.error('Failed to fetch transactions:', error);
+      logger.error('Failed to fetch transactions', { error });
       // Return demo data as fallback
       return this.DEMO_TRANSACTIONS.slice(0, limit);
     }
@@ -352,7 +363,7 @@ class SolanaTokenService {
       const data = await response.json();
       return this.parsePriceHistory(data.data || []);
     } catch (error) {
-      logger.error('Failed to fetch price history:', error);
+      logger.error('Failed to fetch price history', { error });
       return this.generateDemoPriceHistory(timeframe);
     }
   }
@@ -369,7 +380,7 @@ class SolanaTokenService {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const data: { pairs?: DexScreenerPair[] } = await response.json();
       console.log('📊 DexScreener API response:', data);
 
       if (!data.pairs || data.pairs.length === 0) {
@@ -378,20 +389,31 @@ class SolanaTokenService {
       }
 
       // Get the most liquid pair (highest volume)
-      const bestPair = data.pairs.reduce((best: DexScreenerPair, current: DexScreenerPair) =>
-        (current.volume?.h24 || 0) > (best.volume?.h24 || 0) ? current : best
+      const bestPair = data.pairs.reduce(
+        (best: DexScreenerPair | undefined, current: DexScreenerPair) =>
+          !best || (current.volume?.h24 || 0) > (best.volume?.h24 || 0) ? current : best,
+        undefined
       );
+
+      if (!bestPair) {
+        console.log('❌ No suitable pair found in DexScreener response');
+        return null;
+      }
 
       console.log('🏆 Best pair selected:', bestPair);
 
       const priceChange24h = parseFloat(bestPair.priceChange?.h24 || '0');
-      const volume24h = parseFloat(bestPair.volume?.h24 || '0');
+      const volume24h = parseFloat(String(bestPair.volume?.h24 || '0'));
       const marketCap = parseFloat(bestPair.marketCap || '0');
 
       // Verify price change data if it seems suspicious (>50% change)
-      let priceChangeVerification = {
+      let priceChangeVerification: {
+        verified: boolean;
+        confidence: 'high' | 'medium' | 'low';
+        sources: string[];
+      } = {
         verified: true,
-        confidence: 'high' as const,
+        confidence: 'high',
         sources: ['dexscreener'],
       };
       if (Math.abs(priceChange24h) > 50) {
@@ -422,7 +444,7 @@ class SolanaTokenService {
         volume24h: volume24h,
         supply: parseFloat(bestPair.baseToken?.totalSupply || '0'),
         decimals: parseInt(bestPair.baseToken?.decimals || '9'),
-        logoUrl: bestPair.info?.imageUrl,
+        logoUrl: bestPair.info?.imageUrl ?? undefined,
         holders: undefined, // Will be set by caller if available
         dataSource: 'dexscreener',
         lastUpdated: Date.now(),
@@ -435,7 +457,7 @@ class SolanaTokenService {
       return tokenData;
     } catch (error) {
       console.error('❌ DexScreener API error:', error);
-      logger.error('DexScreener API error:', error);
+      logger.error('DexScreener API error', { error });
       return null;
     }
   }
@@ -451,29 +473,40 @@ class SolanaTokenService {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
+      const data: Record<string, unknown> = await response.json();
 
       if (!data || !data.mint) {
         return null;
       }
 
       // Calculate market cap from price and supply
-      const price = data.usd_market_cap / data.total_supply || 0;
-      const marketCap = data.usd_market_cap || 0;
+      const price =
+        typeof data.usd_market_cap === 'number' &&
+        typeof data.total_supply === 'number' &&
+        data.total_supply !== 0
+          ? data.usd_market_cap / data.total_supply
+          : 0;
+      const marketCap = typeof data.usd_market_cap === 'number' ? data.usd_market_cap : 0;
 
-      return {
-        name: data.name || 'FlowsyAI Token',
-        symbol: data.symbol || 'FLOWSY',
-        price: price,
+      const tokenData: TokenData = {
+        name: typeof data.name === 'string' ? data.name : 'FlowsyAI Token',
+        symbol: typeof data.symbol === 'string' ? data.symbol : 'FLOWSY',
+        price: typeof price === 'number' ? price : 0,
         priceChange24h: 0, // Pump.fun doesn't provide 24h change
-        marketCap: marketCap,
-        volume24h: data.volume_24h || 0,
-        supply: data.total_supply || 0,
-        decimals: 6, // Standard for pump.fun tokens
-        logoUrl: data.image_uri,
+        marketCap: typeof marketCap === 'number' ? marketCap : 0,
+        volume24h: typeof data.volume_24h === 'number' ? data.volume_24h : 0,
+        supply: typeof data.total_supply === 'number' ? data.total_supply : 0,
+        decimals: typeof data.decimals === 'number' ? data.decimals : 6, // Standard for pump.fun tokens
+        logoUrl: typeof data.image_uri === 'string' ? data.image_uri : undefined,
+        holders: undefined,
+        dataSource: 'pump.fun',
+        lastUpdated: Date.now(),
+        isVerified: false, // Pump.fun data is generally not verified
+        dataQuality: 'medium', // Or 'low' depending on data availability
       };
+      return tokenData;
     } catch (error) {
-      logger.error('Pump.fun API error:', error);
+      logger.error('Pump.fun API error', { error });
       return null;
     }
   }
@@ -489,19 +522,19 @@ class SolanaTokenService {
         throw new Error(`HTTP ${response.status}`);
       }
 
-      const data = await response.json();
-      const tokenPrice = data.data[tokenAddress];
+      const data: { data?: Record<string, { price?: number }> } = await response.json();
+      const tokenPrice = data.data?.[tokenAddress];
 
       if (!tokenPrice) {
         return null;
       }
 
       return {
-        price: tokenPrice.price,
+        price: typeof tokenPrice?.price === 'number' ? tokenPrice.price : 0,
         // Jupiter doesn't provide all data, will need to enrich from other sources
       };
     } catch (error) {
-      logger.error('Jupiter API error:', error);
+      logger.error('Jupiter API error', { error });
       return null;
     }
   }
@@ -520,18 +553,21 @@ class SolanaTokenService {
       throw new Error(`Birdeye API error: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data: { data?: Record<string, unknown> } = await response.json();
+    if (!data.data) {
+      throw new Error('Birdeye API response missing data field');
+    }
     return this.parseBirdeyeData(data.data);
   }
 
   /**
-   * CoinGecko API integration (fallback)
+   * CoinGecko API integration (fallback) - Removed as unused
    */
-  private async getCoinGeckoTokenData(tokenAddress: string): Promise<TokenData> {
-    // CoinGecko requires token ID, not address
-    // This would need mapping logic in production
-    throw new Error('CoinGecko integration requires token ID mapping');
-  }
+  // private async getCoinGeckoTokenData(tokenAddress: string): Promise<TokenData> {
+  //   // CoinGecko requires token ID, not address
+  //   // This would need mapping logic in production
+  //   throw new Error('CoinGecko integration requires token ID mapping');
+  // }
 
   /**
    * Enrich basic price data with additional information
@@ -542,32 +578,54 @@ class SolanaTokenService {
   ): Promise<TokenData> {
     // In production, this would fetch additional data from multiple sources
     return {
-      name: 'FlowsyAI Token',
-      symbol: 'FLOWSY',
-      price: baseData.price || 0,
-      priceChange24h: 0,
-      marketCap: 0,
-      volume24h: 0,
-      supply: 0,
-      decimals: 9,
-      ...baseData,
-    };
+      name: typeof baseData.name === 'string' ? baseData.name : 'FlowsyAI Token',
+      symbol: typeof baseData.symbol === 'string' ? baseData.symbol : 'FLOWSY',
+      price: typeof baseData.price === 'number' ? baseData.price : 0,
+      priceChange24h: typeof baseData.priceChange24h === 'number' ? baseData.priceChange24h : 0,
+      marketCap: typeof baseData.marketCap === 'number' ? baseData.marketCap : 0,
+      volume24h: typeof baseData.volume24h === 'number' ? baseData.volume24h : 0,
+      supply: typeof baseData.supply === 'number' ? baseData.supply : 0,
+      decimals: typeof baseData.decimals === 'number' ? baseData.decimals : 9,
+      logoUrl: typeof baseData.logoUrl === 'string' ? baseData.logoUrl : undefined,
+      holders: typeof baseData.holders === 'number' ? baseData.holders : undefined,
+      dataSource: baseData.dataSource || 'unknown',
+      lastUpdated: typeof baseData.lastUpdated === 'number' ? baseData.lastUpdated : Date.now(),
+      isVerified: typeof baseData.isVerified === 'boolean' ? baseData.isVerified : false,
+      dataQuality: baseData.dataQuality || 'low',
+      // ...baseData, // Spread last to allow overriding defaults if present in baseData. This was causing issues with exactOptionalPropertyTypes
+    } as TokenData; // Add type assertion
   }
 
   /**
    * Parse Birdeye API response
    */
   private parseBirdeyeData(data: Record<string, unknown>): TokenData {
+    // Ensure type safety when accessing properties from 'data'
+    const name = typeof data.name === 'string' ? data.name : 'Unknown Token';
+    const symbol = typeof data.symbol === 'string' ? data.symbol : 'UNKNOWN';
+    const price = typeof data.price === 'number' ? data.price : 0;
+    const priceChange24h = typeof data.priceChange24h === 'number' ? data.priceChange24h : 0;
+    const marketCap = typeof data.mc === 'number' ? data.mc : 0; // mc is marketCap in birdeye
+    const volume24h = typeof data.v24hUSD === 'number' ? data.v24hUSD : 0;
+    const supply = typeof data.supply === 'number' ? data.supply : 0;
+    const decimals = typeof data.decimals === 'number' ? data.decimals : 9;
+    const logoUrl = typeof data.logoURI === 'string' ? data.logoURI : undefined;
+
     return {
-      name: data.name || 'Unknown Token',
-      symbol: data.symbol || 'UNKNOWN',
-      price: data.price || 0,
-      priceChange24h: data.priceChange24h || 0,
-      marketCap: data.mc || 0,
-      volume24h: data.v24hUSD || 0,
-      supply: data.supply || 0,
-      decimals: data.decimals || 9,
-      logoUrl: data.logoURI,
+      name,
+      symbol,
+      price,
+      priceChange24h,
+      marketCap,
+      volume24h,
+      supply,
+      decimals,
+      logoUrl: logoUrl ?? undefined,
+      holders: undefined, // Birdeye doesn't directly provide holder count in this endpoint
+      dataSource: 'birdeye',
+      lastUpdated: Date.now(),
+      isVerified: typeof data.verified === 'boolean' ? data.verified : false, // Assuming birdeye might have a verified flag
+      dataQuality: 'medium', // Adjust based on available fields
     };
   }
 
@@ -576,13 +634,13 @@ class SolanaTokenService {
    */
   private parseTransactions(transactions: Record<string, unknown>[]): TransactionData[] {
     return transactions.map(tx => ({
-      signature: tx.txHash || tx.signature,
-      type: tx.side === 'buy' ? 'buy' : 'sell',
-      amount: tx.amount || 0,
-      value: tx.value || 0,
-      timestamp: tx.blockTime * 1000 || Date.now(),
-      from: tx.from || '',
-      to: tx.to || '',
+      signature: String(tx.txHash || tx.signature || ''),
+      type: String(tx.side).toLowerCase() === 'buy' ? 'buy' : 'sell',
+      amount: Number(tx.amount || 0),
+      value: Number(tx.value || 0),
+      timestamp: Number(typeof tx.blockTime === 'number' ? tx.blockTime * 1000 : Date.now()),
+      from: String(tx.from || ''),
+      to: String(tx.to || ''),
     }));
   }
 
@@ -591,9 +649,9 @@ class SolanaTokenService {
    */
   private parsePriceHistory(history: Record<string, unknown>[]): PriceHistory[] {
     return history.map(point => ({
-      timestamp: point.unixTime * 1000,
-      price: point.value,
-      volume: point.volume || 0,
+      timestamp: Number(typeof point.unixTime === 'number' ? point.unixTime * 1000 : 0),
+      price: Number(point.value || 0),
+      volume: Number(point.volume || 0),
     }));
   }
 

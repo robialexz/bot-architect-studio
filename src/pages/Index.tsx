@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Bug, ExternalLink } from 'lucide-react';
+// import { useNavigate } from 'react-router-dom'; // Removed
+import { PlayCircle } from 'lucide-react'; // Removed Bug, ExternalLink
 
 // CRITICAL: Import components without Framer Motion to avoid React dependency issues
 // Direct imports for stable build - NO FRAMER MOTION
@@ -10,70 +10,127 @@ import SectionErrorBoundary from '@/components/SectionErrorBoundary';
 // Direct imports - NO LAZY LOADING to avoid Framer Motion issues
 import HeroSection from '@/components/landing/HeroSection-NoMotion';
 import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection-NoMotion';
+import DetailedRoadmapSection from '@/components/landing/DetailedRoadmapSection';
+import TokenomicsSection from '@/components/landing/TokenomicsSection';
+import VisualWorkflowBuilder from '@/components/landing/VisualWorkflowBuilder';
 
 // Create simple placeholder components without Framer Motion
-const SimpleSection: React.FC<{ title: string; description: string }> = ({ title, description }) => (
-  <section className="py-16 bg-background/50">
+const SimpleSection: React.FC<{
+  title: string;
+  description: string;
+  onClick?: () => void;
+  isClickable?: boolean;
+}> = ({ title, description, onClick, isClickable }) => (
+  <section
+    className={`py-16 bg-background/50 transition-all duration-500 ease-out group ${isClickable ? 'cursor-pointer hover:bg-background/60' : 'hover:shadow-2xl hover:scale-[1.01]'}`}
+    onClick={onClick}
+  >
     <div className="container mx-auto px-6 text-center">
-      <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-gold bg-clip-text text-transparent">
-        {title}
-      </h2>
-      <p className="text-muted-foreground max-w-2xl mx-auto">
+      <div className="flex justify-center items-center mb-4 group-hover:scale-105 transition-transform duration-300">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-gold bg-clip-text text-transparent">
+          {title}
+        </h2>
+        {isClickable && (
+          <PlayCircle className="ml-3 h-8 w-8 text-primary transition-transform duration-300 group-hover:rotate-12" />
+        )}
+      </div>
+      <p className="text-muted-foreground max-w-2xl mx-auto group-hover:text-foreground/90 transition-colors duration-300">
         {description}
       </p>
+      {isClickable && (
+        <p className="mt-4 text-sm text-primary font-semibold group-hover:underline">
+          (Click to Launch Interactive Demo)
+        </p>
+      )}
     </div>
   </section>
 );
 
-const VisualWorkflowBuilder = () => (
-  <SimpleSection
-    title="Visual Workflow Builder"
-    description="Build powerful AI workflows with our intuitive drag-and-drop interface. Coming soon with advanced automation capabilities."
-  />
-);
+// VisualWorkflowBuilder is now imported directly.
 
-const FeaturesSection = () => (
-  <SimpleSection
-    title="Advanced Features"
-    description="Discover the cutting-edge capabilities that make FlowsyAI the ultimate automation platform for modern businesses."
-  />
-);
+// FeaturesSection component definition removed
 
-const RoadmapSection = () => (
-  <SimpleSection
-    title="Development Roadmap"
-    description="Follow our journey as we build the future of AI automation. See what's coming next and join our community."
-  />
-);
+// const RoadmapSection = () => ( ... ); // Already commented out
 
 const TokenTierSection = () => (
   <SimpleSection
     title="Token Tiers"
-    description="Choose the perfect tier for your automation needs. From starter to enterprise, we have options for everyone."
+    description="Unlock the full potential of FlowsyAI with our flexible token tiers. Whether you're an individual innovator, a growing startup, or a large enterprise, we offer plans tailored to your usage, feature requirements, and support needs. Explore our tiers and find the perfect fit to power your AI automation journey."
   />
 );
 
-const EnhancedWaitlistCTA = () => (
-  <SimpleSection
-    title="Join the Revolution"
-    description="Be among the first to experience the future of AI automation. Join our waitlist and get early access."
-  />
-);
+const EnhancedWaitlistCTA = () => {
+  const [email, setEmail] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email && email.includes('@')) {
+      console.log('Waitlist submission:', email);
+      setIsSubmitted(true);
+      setEmail('');
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } else {
+      alert('Please enter a valid email address.');
+    }
+  };
+
+  return (
+    <section className="py-16 bg-gradient-to-br from-primary/10 via-background to-secondary/10">
+      <div className="container mx-auto px-6 text-center">
+        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary via-gold to-sapphire bg-clip-text text-transparent">
+          Join the Revolution
+        </h2>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+          Don't miss out on the AI automation revolution! Join the FlowsyAI waitlist today for
+          exclusive early access, special pre-launch offers, and updates on our development
+          progress. Be the first to harness the power of intelligent automation.
+        </p>
+
+        {!isSubmitted ? (
+          <form
+            onSubmit={handleSubmit}
+            className="max-w-md mx-auto flex flex-col sm:flex-row gap-4 items-center p-2 bg-card/50 border border-border rounded-xl shadow-lg backdrop-blur-sm"
+          >
+            <input
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="Enter your email address"
+              className="flex-grow px-4 py-3 rounded-lg bg-background/70 border border-border text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent outline-none w-full sm:w-auto"
+              required
+            />
+            <button
+              type="submit"
+              className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-lg hover:opacity-90 transition-opacity duration-300 shadow-md hover:shadow-lg"
+            >
+              Join Waitlist
+            </button>
+          </form>
+        ) : (
+          <div className="max-w-md mx-auto p-6 bg-emerald-500/10 border border-emerald-500/30 rounded-xl shadow-lg">
+            <h3 className="text-xl font-semibold text-emerald-400">Thank You!</h3>
+            <p className="text-muted-foreground">
+              You've been added to the waitlist. We'll keep you updated!
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
 
 const IndexPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [showDiagnosticButton, setShowDiagnosticButton] = useState(false);
+  // const navigate = useNavigate(); // Removed
+  // const [showDiagnosticButton, setShowDiagnosticButton] = useState(false); // Removed
 
-  // Show diagnostic button after 3 seconds to allow page to load
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowDiagnosticButton(true);
-    }, 3000);
+  // useEffect(() => { // Effect for showDiagnosticButton removed
+  //   const timer = setTimeout(() => {
+  //     setShowDiagnosticButton(true);
+  //   }, 3000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Debug logging for Index page
   React.useEffect(() => {
     console.log('🏠 Index page component mounted', {
       timestamp: new Date().toISOString(),
@@ -85,21 +142,20 @@ const IndexPage: React.FC = () => {
       },
     });
 
-    // Check if all components are available
     const components = {
       PipelineCanvas,
       HeroSection,
       VideoShowcaseSection,
       VisualWorkflowBuilder,
       TokenTierSection,
-      RoadmapSection,
+      DetailedRoadmapSection,
+      TokenomicsSection,
       EnhancedWaitlistCTA,
-      FeaturesSection,
+      // FeaturesSection, // Already removed in previous step, ensuring it stays removed
     };
 
     console.log('📦 Component availability check:', components);
 
-    // Monitor for any unhandled errors
     const errorHandler = (event: ErrorEvent) => {
       console.error('🚨 Unhandled error in Index page:', {
         message: event.message,
@@ -128,54 +184,29 @@ const IndexPage: React.FC = () => {
 
   return (
     <div className="index-page-container relative w-full">
-      {/* Pipeline Background - Simple and Clean */}
       <PipelineCanvas />
-
-      {/* Page Content Sections - Transparent backgrounds to show pipeline */}
       <main className="relative z-10 w-full">
         <HeroSection />
-
-        {/* Video Showcase Section */}
         <SectionErrorBoundary sectionName="Video Showcase">
           <VideoShowcaseSection />
         </SectionErrorBoundary>
-
         <SectionErrorBoundary sectionName="Workflow Builder">
           <VisualWorkflowBuilder />
         </SectionErrorBoundary>
-
         <SectionErrorBoundary sectionName="Token Tiers">
           <TokenTierSection />
         </SectionErrorBoundary>
-
-        <SectionErrorBoundary sectionName="Roadmap">
-          <RoadmapSection />
+        <SectionErrorBoundary sectionName="Tokenomics">
+          <TokenomicsSection />
         </SectionErrorBoundary>
-
-        {/* Enhanced Waitlist CTA - Improved conversion optimization */}
+        <SectionErrorBoundary sectionName="Roadmap">
+          <DetailedRoadmapSection />
+        </SectionErrorBoundary>
         <SectionErrorBoundary sectionName="Waitlist CTA">
           <EnhancedWaitlistCTA />
         </SectionErrorBoundary>
-
-        <SectionErrorBoundary sectionName="Features">
-          <FeaturesSection />
-        </SectionErrorBoundary>
+        {/* FeaturesSection rendering removed */}
       </main>
-
-      {/* Diagnostic Button - Appears after page loads */}
-      {showDiagnosticButton && (
-        <div className="fixed bottom-6 left-6 z-50">
-          <button
-            onClick={() => navigate('/debug')}
-            className="group flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-red-500 hover:border-red-400"
-            title="Open diagnostic tools to debug deployment issues"
-          >
-            <Bug className="w-4 h-4 group-hover:animate-pulse" />
-            <span className="font-medium">Run Diagnostics</span>
-            <ExternalLink className="w-3 h-3 opacity-70" />
-          </button>
-        </div>
-      )}
     </div>
   );
 };

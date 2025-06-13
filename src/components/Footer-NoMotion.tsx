@@ -1,7 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Layers, Github, Twitter, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom'; // Removed useNavigate
+import { Github, Twitter, MessageCircle } from 'lucide-react'; // Removed Layers
 import { useAuth } from '@/hooks/useAuth';
-import { cn } from '@/lib/utils';
+// import { cn } from '@/lib/utils'; // Removed cn
 
 const FooterLink = ({ to, children }: { to: string; children: React.ReactNode }) => (
   <li className="hover:-translate-y-0.5 hover:text-primary transition-all duration-200">
@@ -32,7 +32,7 @@ const SocialIconLink = ({
 );
 
 const FooterNoMotion = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate(); // Removed unused navigate
   const { isAuthenticated } = useAuth();
 
   const footerSections = [
@@ -129,7 +129,7 @@ const FooterNoMotion = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in {
           from { opacity: 0; transform: translateX(-20px); }
           to { opacity: 1; transform: translateX(0); }

@@ -1,44 +1,17 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom'; // Removed Link
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { logger } from '@/utils/logger';
-import PremiumLogoNoMotion from '@/components/ui/PremiumLogo-NoMotion';
-import { useComingSoon } from '@/hooks/useComingSoon';
+// import { logger } from '@/utils/logger'; // Removed logger
+// import { useComingSoon } from '@/hooks/useComingSoon'; // Removed useComingSoon
+// Removed unused UI component imports for NavigationMenu, DropdownMenu, Avatar
+
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  Layers,
-  Settings,
   Menu,
   X,
-  PlusCircle,
-  LogIn,
-  UserPlus,
-  Sparkles,
-  User,
-  LogOut,
-  Crown,
-  BarChart3,
-  Users,
-  Bot,
-  Shield,
-  Star,
+  PlusCircle, // Used in authenticatedNavItems (though that array itself is unused currently)
+  Sparkles, // Used in Start Free Trial button & authenticatedNavItems
+  Star, // Used in Join Token Waitlist button
+  // Removed unused Lucide icons: Layers, Settings, LogIn, UserPlus, User, LogOut, Crown, BarChart3, Users, Bot, Shield
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -46,27 +19,34 @@ import React, { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/hooks/useAuth';
 
-const navLinkBaseClasses =
-  'group inline-flex h-10 w-max items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background';
-const navLinkInactiveClasses =
-  'text-white/90 hover:bg-white/10 hover:text-white';
-const navLinkActiveClasses =
-  'bg-white/20 text-white shadow-md hover:bg-white/25';
+// Define a type for navigation items
+interface NavItem {
+  to: string;
+  label: string;
+  icon?: React.ReactNode; // Make icon optional and use ReactNode for flexibility
+  featured?: boolean;
+  description?: string; // Add optional description
+}
+
+// const navLinkBaseClasses = // Unused
+//   'group inline-flex h-10 w-max items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background';
+// const navLinkInactiveClasses = // Unused
+//   'text-white/90 hover:bg-white/10 hover:text-white';
+// const navLinkActiveClasses = // Unused
+//   'bg-white/20 text-white shadow-md hover:bg-white/25';
 
 const mobileNavLinkBaseClasses =
   'block rounded-md px-3 py-2 text-base font-medium transition-colors';
-const mobileNavLinkInactiveClasses =
-  'text-white/90 hover:bg-white/10 hover:text-white';
-const mobileNavLinkActiveClasses =
-  'bg-white/20 text-white';
+const mobileNavLinkInactiveClasses = 'text-white/90 hover:bg-white/10 hover:text-white';
+const mobileNavLinkActiveClasses = 'bg-white/20 text-white';
 
 const NavbarNoMotion = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { isAuthenticated } = useAuth(); // Removed unused user, logout
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isMobile = useIsMobile();
-  const isDesktop = !isMobile;
-  const { comingSoonHandlers } = useComingSoon();
+  // const isMobile = useIsMobile(); // isMobile is not directly used, isDesktop is derived and used
+  const isDesktop = !useIsMobile();
+  // const { comingSoonHandlers } = useComingSoon(); // Unused
 
   useEffect(() => {
     if (isDesktop && isMobileMenuOpen) {
@@ -74,10 +54,10 @@ const NavbarNoMotion = () => {
     }
   }, [isDesktop, isMobileMenuOpen]);
 
-  const handleNewProject = () => {
-    setIsMobileMenuOpen(false);
-    navigate('/');
-  };
+  // const handleNewProject = () => { // Unused
+  //   setIsMobileMenuOpen(false);
+  //   navigate('/');
+  // };
 
   // Smart logo navigation based on authentication status
   const handleLogoClick = () => {
@@ -90,7 +70,7 @@ const NavbarNoMotion = () => {
   };
 
   // Different navigation for authenticated vs unauthenticated users
-  const unauthenticatedNavItems = [
+  const unauthenticatedNavItems: NavItem[] = [
     { to: '/platform-showcase', label: 'Platform' },
     { to: '/roadmap', label: 'Roadmap', featured: true },
     { to: '/pricing', label: 'Pricing' },
@@ -98,29 +78,29 @@ const NavbarNoMotion = () => {
     { to: '/documentation', label: 'Documentation' },
   ];
 
-  const authenticatedNavItems = [
-    { to: '/account', label: 'Dashboard' },
-    {
-      to: '/workflow-builder',
-      label: 'Workflow Builder',
-      icon: <PlusCircle className="w-4 h-4" />,
-      featured: true,
-      description: 'Build powerful AI workflows',
-    },
-    {
-      to: '/ai-ecosystem-playground',
-      label: 'AI Playground',
-      icon: <Sparkles className="w-4 h-4" />,
-      featured: true,
-      description: 'Experiment with AI models',
-    },
-    { to: '/workflow-templates', label: 'Templates' },
-    { to: '/workflow-marketplace', label: 'Marketplace' },
-    { to: '/workflow-analytics', label: 'Analytics' },
-  ];
+  // const authenticatedNavItems: NavItem[] = [ // Unused as navItems is hardcoded to unauthenticatedNavItems
+  //   { to: '/account', label: 'Dashboard' },
+  //   {
+  //     to: '/workflow-builder',
+  //     label: 'Workflow Builder',
+  //     icon: <PlusCircle className="w-4 h-4" />,
+  //     featured: true,
+  //     description: 'Build powerful AI workflows',
+  //   },
+  //   {
+  //     to: '/ai-ecosystem-playground',
+  //     label: 'AI Playground',
+  //     icon: <Sparkles className="w-4 h-4" />,
+  //     featured: true,
+  //     description: 'Experiment with AI models',
+  //   },
+  //   { to: '/workflow-templates', label: 'Templates' },
+  //   { to: '/workflow-marketplace', label: 'Marketplace' },
+  //   { to: '/workflow-analytics', label: 'Analytics' },
+  // ];
 
   // Force unauthenticated nav items for FlowsyAI landing page
-  const navItems = unauthenticatedNavItems;
+  const navItems: NavItem[] = unauthenticatedNavItems; // Explicitly type navItems
   // Force isAuthenticated to false for FlowsyAI landing page
   const forceUnauthenticated = true;
 
@@ -132,12 +112,18 @@ const NavbarNoMotion = () => {
           className="group cursor-pointer bg-transparent border-none p-2 rounded-lg hover:bg-accent/50 transition-all duration-300 hover:scale-105"
           aria-label="Navigate to home page"
         >
-          <PremiumLogoNoMotion
-            size={isDesktop ? 'xl' : 'lg'}
-            showText={false}
-            animated={true}
-            className="drop-shadow-sm"
-          />
+          <div className="w-12 h-12 rounded-lg overflow-hidden">
+            {' '}
+            {/* Adjust size as needed */}
+            <video
+              src="/background-animation.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          </div>
         </button>
 
         {/* Desktop Navigation - HIGHLY VISIBLE */}
@@ -265,7 +251,7 @@ const NavbarNoMotion = () => {
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         @keyframes slide-down {
           from { opacity: 0; height: 0; }
           to { opacity: 1; height: auto; }

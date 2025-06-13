@@ -1,20 +1,13 @@
 import React, { useState } from 'react';
 import {
   MotionDiv,
-  MotionSection,
-  MotionH1,
-  MotionH2,
-  MotionP,
-  MotionButton,
-  MotionLi,
-  MotionTr,
+  // Unused Motion components removed
 } from '@/lib/motion-wrapper';
 
 import {
   Bot,
-  Play,
-  Square,
-  Loader2,
+  Play, // Re-added for uncommented button
+  Loader2, // Re-added for uncommented button
   CheckCircle,
   AlertCircle,
   Clock,
@@ -25,7 +18,7 @@ import {
   Link,
   Workflow,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button'; // Re-added for uncommented button
 import { GlassCard } from '@/components/ui/glass-card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
@@ -43,15 +36,43 @@ import { RealAIAgentService, RealAIAgent } from '@/services/realAIAgentService';
 import { TokenService } from '@/services/tokenService';
 import { toast } from 'sonner';
 
+// Define AIAgentExecution based on its usage and expected properties from RealAIAgentService
+interface AIAgentExecution {
+  status: 'completed' | 'failed' | 'running' | string; // Allow string for flexibility if service returns other statuses
+  execution_time_ms?: number;
+  tokens_used?: number;
+  output_data?: unknown; // Changed from any to unknown for better type safety
+  error_message?: string;
+  // Potentially other fields from the actual service response
+  // Removed [key: string]: any; for stricter typing. Add specific fields if known.
+}
+
+// Helper function to safely stringify unknown data for display
+const safeStringifyOutput = (data: unknown): string => {
+  if (data === null || data === undefined) {
+    return 'No displayable output';
+  }
+  if (typeof data === 'string' || typeof data === 'number' || typeof data === 'boolean') {
+    return String(data);
+  }
+  // For objects and arrays, attempt to JSON.stringify
+  // For other types (functions, symbols), String() will provide a representation
+  try {
+    return JSON.stringify(data, null, 2);
+  } catch (e) {
+    return String(data); // Fallback if JSON.stringify fails (e.g., circular refs)
+  }
+};
+
 interface AIAgentTesterProps {
   agent?: RealAIAgent;
-  onExecutionComplete?: (result: unknown) => void;
+  onExecutionComplete?: (result: AIAgentExecution) => void; // Updated type
 }
 
 const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplete }) => {
   const { user } = useAuth();
   const [isExecuting, setIsExecuting] = useState(false);
-  const [executionResult, setExecutionResult] = useState(null);
+  const [executionResult, setExecutionResult] = useState<AIAgentExecution | null>(null); // Corrected type
   const [inputData, setInputData] = useState({
     prompt: '',
     text: '',
@@ -64,7 +85,6 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
   const [complexity, setComplexity] = useState<'low' | 'medium' | 'high'>('medium');
   const [tokenCost, setTokenCost] = useState(0);
 
-  // Calculate token cost when complexity or agent type changes
   React.useEffect(() => {
     if (agent) {
       const cost = TokenService.calculateTokenCost(agent.type, complexity);
@@ -78,7 +98,6 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
       return;
     }
 
-    // Check if user has enough tokens
     const hasTokens = await TokenService.hasEnoughTokens(user.id, tokenCost);
     if (!hasTokens) {
       toast.error(`Insufficient tokens. Need ${tokenCost} tokens for this execution.`);
@@ -89,17 +108,13 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
     setExecutionResult(null);
 
     try {
-      // Prepare input data based on agent type
       let processedInput: Record<string, unknown> = {};
-
       switch (agent.type) {
         case 'text_generator':
           processedInput = { prompt: inputData.prompt || inputData.text };
           break;
         case 'data_analyzer':
-          processedInput = {
-            data: inputData.data ? JSON.parse(inputData.data) : [],
-          };
+          processedInput = { data: inputData.data ? JSON.parse(inputData.data) : [] };
           break;
         case 'workflow_executor':
           processedInput = {
@@ -126,9 +141,12 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
               .filter(Boolean),
           };
           break;
+        default: // Fallback for any other agent type
+          processedInput = { text: inputData.text };
+          break;
       }
 
-      const result = await RealAIAgentService.executeAIAgent(
+      const result: AIAgentExecution = await RealAIAgentService.executeAIAgent(
         agent.id,
         user.id,
         processedInput,
@@ -140,7 +158,7 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
       if (result.status === 'completed') {
         toast.success('AI Agent executed successfully!');
       } else {
-        toast.error(`Execution failed: ${result.error_message}`);
+        toast.error(`Execution failed: ${result.error_message || 'Unknown error'}`);
       }
 
       if (onExecutionComplete) {
@@ -148,7 +166,9 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
       }
     } catch (error) {
       console.error('Agent execution error:', error);
-      toast.error('Failed to execute AI agent');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to execute AI agent';
+      setExecutionResult({ status: 'failed', error_message: errorMessage });
+      toast.error(errorMessage);
     } finally {
       setIsExecuting(false);
     }
@@ -173,75 +193,62 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
 
   const renderInputFields = () => {
     if (!agent) return null;
-
     switch (agent.type) {
       case 'text_generator':
         return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="prompt">Text Prompt</Label>
-              <Textarea
-                id="prompt"
-                placeholder="Enter your text prompt here..."
-                value={inputData.prompt}
-                onChange={e => setInputData(prev => ({ ...prev, prompt: e.target.value }))}
-                className="mt-2"
-                rows={4}
-              />
-            </div>
+          <div>
+            <Label htmlFor="prompt">Text Prompt</Label>
+            <Textarea
+              id="prompt"
+              placeholder="Enter your text prompt here..."
+              value={inputData.prompt}
+              onChange={e => setInputData(prev => ({ ...prev, prompt: e.target.value }))}
+              className="mt-2"
+              rows={4}
+            />
           </div>
         );
-
       case 'data_analyzer':
         return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="data">Data (JSON format)</Label>
-              <Textarea
-                id="data"
-                placeholder='[{"name": "item1", "value": 100}, {"name": "item2", "value": 200}]'
-                value={inputData.data}
-                onChange={e => setInputData(prev => ({ ...prev, data: e.target.value }))}
-                className="mt-2"
-                rows={6}
-              />
-            </div>
+          <div>
+            <Label htmlFor="data">Data (JSON format)</Label>
+            <Textarea
+              id="data"
+              placeholder='[{"name": "item1", "value": 100}, {"name": "item2", "value": 200}]'
+              value={inputData.data}
+              onChange={e => setInputData(prev => ({ ...prev, data: e.target.value }))}
+              className="mt-2"
+              rows={6}
+            />
           </div>
         );
-
       case 'workflow_executor':
         return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="workflow">Workflow Definition (JSON)</Label>
-              <Textarea
-                id="workflow"
-                placeholder='{"steps": [{"name": "step1", "action": "process"}, {"name": "step2", "action": "analyze"}]}'
-                value={inputData.workflow}
-                onChange={e => setInputData(prev => ({ ...prev, workflow: e.target.value }))}
-                className="mt-2"
-                rows={6}
-              />
-            </div>
+          <div>
+            <Label htmlFor="workflow">Workflow Definition (JSON)</Label>
+            <Textarea
+              id="workflow"
+              placeholder='{"steps": [{"name": "step1", "action": "process"}, {"name": "step2", "action": "analyze"}]}'
+              value={inputData.workflow}
+              onChange={e => setInputData(prev => ({ ...prev, workflow: e.target.value }))}
+              className="mt-2"
+              rows={6}
+            />
           </div>
         );
-
       case 'api_connector':
         return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="endpoints">API Endpoints (comma-separated)</Label>
-              <Input
-                id="endpoints"
-                placeholder="https://api.example.com/data, https://api.another.com/info"
-                value={inputData.endpoints}
-                onChange={e => setInputData(prev => ({ ...prev, endpoints: e.target.value }))}
-                className="mt-2"
-              />
-            </div>
+          <div>
+            <Label htmlFor="endpoints">API Endpoints (comma-separated)</Label>
+            <Input
+              id="endpoints"
+              placeholder="https://api.example.com/data, https://api.another.com/info"
+              value={inputData.endpoints}
+              onChange={e => setInputData(prev => ({ ...prev, endpoints: e.target.value }))}
+              className="mt-2"
+            />
           </div>
         );
-
       case 'image_processor':
         return (
           <div className="space-y-4">
@@ -267,13 +274,12 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
             </div>
           </div>
         );
-
       default:
         return (
           <div>
-            <Label htmlFor="text">Input Text</Label>
+            <Label htmlFor="text-default">Input Text</Label>
             <Textarea
-              id="text"
+              id="text-default"
               placeholder="Enter your input here..."
               value={inputData.text}
               onChange={e => setInputData(prev => ({ ...prev, text: e.target.value }))}
@@ -298,7 +304,6 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
 
   return (
     <GlassCard className="premium-card bg-card/80 backdrop-blur-lg border border-border-alt shadow-xl p-6">
-      {/* Agent Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-primary/10 rounded-lg">{getAgentIcon(agent.type)}</div>
@@ -314,11 +319,8 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
         </Badge>
       </div>
 
-      {/* Input Section */}
       <div className="space-y-4 mb-6">
         {renderInputFields()}
-
-        {/* Complexity Selection */}
         <div>
           <Label htmlFor="complexity">Execution Complexity</Label>
           <Select
@@ -335,8 +337,6 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
             </SelectContent>
           </Select>
         </div>
-
-        {/* Token Cost Display */}
         <div className="flex items-center justify-between p-3 bg-background/50 rounded-lg">
           <div className="flex items-center gap-2">
             <Zap className="h-4 w-4 text-gold" />
@@ -346,7 +346,6 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
         </div>
       </div>
 
-      {/* Execute Button */}
       <Button
         onClick={handleExecuteAgent}
         disabled={isExecuting || !agent.is_active}
@@ -355,18 +354,15 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
       >
         {isExecuting ? (
           <>
-            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-            Executing...
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Executing...
           </>
         ) : (
           <>
-            <Play className="w-5 h-5 mr-2" />
-            Execute Agent
+            <Play className="w-5 h-5 mr-2" /> Execute Agent
           </>
         )}
       </Button>
 
-      {/* Execution Result */}
       {executionResult && (
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}
@@ -383,31 +379,31 @@ const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplet
               Execution {executionResult.status === 'completed' ? 'Completed' : 'Failed'}
             </span>
           </div>
-
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div className="text-center p-3 bg-background/50 rounded-lg">
               <Clock className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
               <div className="text-sm text-muted-foreground">Execution Time</div>
-              <div className="font-bold">{executionResult.execution_time_ms}ms</div>
+              <div className="font-bold">{executionResult.execution_time_ms ?? 'N/A'}ms</div>
             </div>
             <div className="text-center p-3 bg-background/50 rounded-lg">
               <Zap className="h-4 w-4 mx-auto mb-1 text-gold" />
               <div className="text-sm text-muted-foreground">Tokens Used</div>
-              <div className="font-bold">{executionResult.tokens_used}</div>
+              <div className="font-bold">{executionResult.tokens_used ?? 'N/A'}</div>
             </div>
           </div>
-
           {executionResult.status === 'completed' && executionResult.output_data && (
             <div>
               <Label>Execution Result</Label>
+              <Label>Execution Result</Label>
+              <Label>Execution Result</Label>
               <div className="mt-2 p-4 bg-background/50 rounded-lg">
                 <pre className="text-sm text-foreground whitespace-pre-wrap overflow-auto max-h-64">
-                  {JSON.stringify(executionResult.output_data, null, 2)}
+                  {}
+                  {safeStringifyOutput(executionResult.output_data)}
                 </pre>
               </div>
             </div>
           )}
-
           {executionResult.status === 'failed' && executionResult.error_message && (
             <div>
               <Label className="text-red-500">Error Message</Label>

@@ -14,7 +14,7 @@ import url from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = 3002;
+const PORT = 3005;
 const distPath = path.join(path.dirname(__dirname), 'dist');
 
 console.log('🚀 Starting Vercel Local Simulator...\n');

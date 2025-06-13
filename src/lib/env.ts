@@ -42,6 +42,16 @@ const envSchema = z.object({
   // Development Configuration
   VITE_MOCK_API: z.string().transform(Boolean).default('false'),
   VITE_DEBUG_MODE: z.string().transform(Boolean).default('false'),
+
+  // Solana Token Service URLs
+  VITE_SOLANA_RPC_URL: z.string().url().default('https://api.mainnet-beta.solana.com'),
+  VITE_COINGECKO_API_URL: z.string().url().default('https://api.coingecko.com/api/v3'),
+  VITE_BIRDEYE_API_URL: z.string().url().default('https://public-api.birdeye.so/public'),
+  VITE_JUPITER_API_URL: z.string().url().default('https://price.jup.ag/v4'),
+  VITE_PUMP_FUN_API_URL: z.string().url().default('https://frontend-api.pump.fun'),
+  VITE_DEXSCREENER_API_URL: z.string().url().default('https://api.dexscreener.com/latest/dex'),
+  VITE_SOLSCAN_API_URL: z.string().url().default('https://public-api.solscan.io'),
+  VITE_HELIUS_API_URL: z.string().url().default('https://api.helius.xyz/v0'),
 });
 
 // Parse and validate environment variables
@@ -67,6 +77,14 @@ function parseEnv() {
     VITE_HOTJAR_ID: import.meta.env.VITE_HOTJAR_ID,
     VITE_MOCK_API: import.meta.env.VITE_MOCK_API,
     VITE_DEBUG_MODE: import.meta.env.VITE_DEBUG_MODE,
+    VITE_SOLANA_RPC_URL: import.meta.env.VITE_SOLANA_RPC_URL,
+    VITE_COINGECKO_API_URL: import.meta.env.VITE_COINGECKO_API_URL,
+    VITE_BIRDEYE_API_URL: import.meta.env.VITE_BIRDEYE_API_URL,
+    VITE_JUPITER_API_URL: import.meta.env.VITE_JUPITER_API_URL,
+    VITE_PUMP_FUN_API_URL: import.meta.env.VITE_PUMP_FUN_API_URL,
+    VITE_DEXSCREENER_API_URL: import.meta.env.VITE_DEXSCREENER_API_URL,
+    VITE_SOLSCAN_API_URL: import.meta.env.VITE_SOLSCAN_API_URL,
+    VITE_HELIUS_API_URL: import.meta.env.VITE_HELIUS_API_URL,
   };
 
   try {

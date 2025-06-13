@@ -1,25 +1,24 @@
 import React, { useRef } from 'react';
 import { ArrowRight, Sparkles, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import PremiumLogoNoMotion from '@/components/ui/PremiumLogo-NoMotion';
 import PipelineBackground from '@/components/landing/PipelineBackground';
 
 // Custom icons as SVG components
 const TelegramIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
   </svg>
 );
 
 const TwitterIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
   </svg>
 );
 
 const DexScreenerIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
   </svg>
 );
 
@@ -39,25 +38,36 @@ const HeroSectionNoMotion: React.FC = () => {
 
       {/* Hero Content */}
       <div className="hero-content max-w-4xl px-6 py-12 z-20 relative text-center animate-slide-up">
-        {/* Logo Section */}
-        <div className="mb-16 flex justify-center animate-scale-in" style={{ animationDelay: '0.5s' }}>
-          <div className="relative bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-lg border border-gray-700/50 rounded-3xl p-8 shadow-2xl">
-            <PremiumLogoNoMotion
-              size="xxl"
-              showText={true}
-              animated={true}
-              className="drop-shadow-2xl"
+        {/* Logo Video Section */}
+        <div
+          className="mb-16 flex justify-center animate-scale-in"
+          style={{ animationDelay: '0.5s' }}
+        >
+          <div className="relative w-full max-w-2xl aspect-video bg-black/50 rounded-3xl shadow-2xl overflow-hidden border border-gray-700/50">
+            <video
+              ref={videoRef}
+              src="/background-animation.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute top-0 left-0 w-full h-full object-cover"
             />
           </div>
         </div>
 
         {/* Compact Floating Action Hub */}
-        <div className="relative max-w-4xl mx-auto animate-scale-in" style={{ animationDelay: '1.1s' }}>
+        <div
+          className="relative max-w-4xl mx-auto animate-scale-in"
+          style={{ animationDelay: '1.1s' }}
+        >
           {/* Dynamic Horizontal Action Buttons */}
           <div className="flex flex-wrap justify-center items-center gap-6 max-w-4xl mx-auto">
-
             {/* Primary CTA - Join Waitlist */}
-            <div className="group cursor-pointer hover:scale-105 hover:-translate-y-2 transition-all duration-300 animate-slide-left" style={{ animationDelay: '1.3s' }}>
+            <div
+              className="group cursor-pointer hover:scale-105 hover:-translate-y-2 transition-all duration-300 animate-slide-left"
+              style={{ animationDelay: '1.3s' }}
+            >
               <Link to="/waitlist" className="block relative">
                 <div className="relative backdrop-blur-xl bg-gradient-to-r from-violet-500/10 via-blue-500/10 to-cyan-500/10 border border-violet-500/30 rounded-xl p-[1px] group-hover:border-cyan-400/60 transition-all duration-500 shadow-xl group-hover:shadow-violet-500/25">
                   <div className="relative bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-sm rounded-xl px-6 py-4 overflow-hidden">
@@ -84,7 +94,10 @@ const HeroSectionNoMotion: React.FC = () => {
             </div>
 
             {/* Buy Token Button */}
-            <div className="group cursor-pointer hover:scale-108 hover:-translate-y-2 transition-all duration-300 animate-slide-up" style={{ animationDelay: '1.5s' }}>
+            <div
+              className="group cursor-pointer hover:scale-108 hover:-translate-y-2 transition-all duration-300 animate-slide-up"
+              style={{ animationDelay: '1.5s' }}
+            >
               <a
                 href="https://dexscreener.com/solana"
                 target="_blank"
@@ -111,7 +124,10 @@ const HeroSectionNoMotion: React.FC = () => {
             </div>
 
             {/* Community Button */}
-            <div className="group cursor-pointer hover:scale-108 hover:-translate-y-2 transition-all duration-300 animate-slide-up" style={{ animationDelay: '1.7s' }}>
+            <div
+              className="group cursor-pointer hover:scale-108 hover:-translate-y-2 transition-all duration-300 animate-slide-up"
+              style={{ animationDelay: '1.7s' }}
+            >
               <a
                 href="https://t.me/flowsyai"
                 target="_blank"
@@ -138,7 +154,10 @@ const HeroSectionNoMotion: React.FC = () => {
             </div>
 
             {/* Follow X Button */}
-            <div className="group cursor-pointer hover:scale-108 hover:-translate-y-2 transition-all duration-300 animate-slide-right" style={{ animationDelay: '1.9s' }}>
+            <div
+              className="group cursor-pointer hover:scale-108 hover:-translate-y-2 transition-all duration-300 animate-slide-right"
+              style={{ animationDelay: '1.9s' }}
+            >
               <a
                 href="https://x.com/flowsyai"
                 target="_blank"
@@ -167,7 +186,7 @@ const HeroSectionNoMotion: React.FC = () => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in {
           from { opacity: 0; }
           to { opacity: 1; }

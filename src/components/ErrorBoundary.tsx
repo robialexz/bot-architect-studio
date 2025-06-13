@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react'; // Removed 'React' default import
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   private logErrorToService = (error: Error, errorInfo: ErrorInfo) => {
     // In production, send to error monitoring service like Sentry
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.PROD) {
       console.error('Error Boundary caught an error:', error, errorInfo);
       // TODO: Send to error monitoring service
       // Sentry.captureException(error, { extra: errorInfo })
@@ -82,7 +82,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {import.meta.env.DEV && this.state.error && (
                 <details className="rounded border p-2 text-sm">
                   <summary className="cursor-pointer font-medium">Error Details</summary>
                   <pre className="mt-2 whitespace-pre-wrap text-xs">
