@@ -5,6 +5,11 @@ import './index.css';
 
 // Add error handling for debugging
 console.log('🚀 FlowsyAI main.tsx starting...');
+console.log('🌍 Environment info:', {
+  location: window.location.href,
+  userAgent: navigator.userAgent,
+  timestamp: new Date().toISOString(),
+});
 
 // Verify React is properly loaded
 console.log('🔍 React availability check:', {
@@ -13,17 +18,38 @@ console.log('🔍 React availability check:', {
   hasCreateContext: typeof React !== 'undefined' && typeof React.createContext === 'function',
 });
 
+// Check if DOM is ready
+console.log('📄 DOM readiness check:', {
+  readyState: document.readyState,
+  rootElement: !!document.getElementById('root'),
+  bodyLoaded: !!document.body,
+});
+
 try {
   // Mount React app immediately
   console.log('🔄 Mounting React app...');
   const rootElement = document.getElementById('root');
   if (!rootElement) {
+    console.error('❌ Root element not found in DOM');
     throw new Error('Root element not found');
   }
 
+  console.log('✅ Root element found:', rootElement);
+  console.log('🔧 Creating React root...');
   const root = createRoot(rootElement);
+
+  console.log('🎨 Rendering App component...');
   root.render(<App />);
   console.log('✅ React app mounted successfully');
+
+  // Remove loading fallback if it exists
+  setTimeout(() => {
+    const fallback = document.getElementById('loading-fallback');
+    if (fallback) {
+      console.log('🧹 Removing loading fallback');
+      fallback.remove();
+    }
+  }, 100);
 
   // Initialize additional services after app is mounted
   setTimeout(() => {
