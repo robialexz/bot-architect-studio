@@ -210,6 +210,26 @@
   content: '';
 }
 
+/* CRITICAL: Force inclusion of responsive utilities */
+.min-h-screen,
+.flex,
+.flex-col,
+.relative,
+.overflow-hidden,
+.pt-12,
+.md\:pt-16,
+.z-10,
+.z-40,
+.z-100,
+.z-\[100\],
+.z-\[110\],
+.inset-0,
+.absolute,
+.bg-background\/3 {
+  /* Ensure responsive and positioning utilities are never purged */
+  content: '';
+}
+
 /* Critical CSS Variables - Force inclusion */
 :root {
   /* Ensure all CSS variables are preserved */
