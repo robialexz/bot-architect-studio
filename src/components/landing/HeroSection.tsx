@@ -113,7 +113,7 @@ const HeroSection: React.FC = () => {
       className="min-h-screen w-full flex flex-col justify-center items-center relative overflow-hidden pt-12 md:pt-16"
     >
       {/* Subtle overlay for text readability over global background */}
-      <div className="absolute inset-0 bg-background/5 z-[5]"></div>
+      <div className="absolute inset-0 bg-background/3 z-[1]"></div>
 
       {/* Hero Content */}
       <motion.div
