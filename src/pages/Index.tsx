@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Bug, ExternalLink } from 'lucide-react';
 
 // CRITICAL: Import components without Framer Motion to avoid React dependency issues
 // Direct imports for stable build - NO FRAMER MOTION
@@ -59,6 +61,18 @@ const EnhancedWaitlistCTA = () => (
 );
 
 const IndexPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [showDiagnosticButton, setShowDiagnosticButton] = useState(false);
+
+  // Show diagnostic button after 3 seconds to allow page to load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowDiagnosticButton(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Debug logging for Index page
   React.useEffect(() => {
     console.log('🏠 Index page component mounted', {
@@ -147,6 +161,21 @@ const IndexPage: React.FC = () => {
           <FeaturesSection />
         </SectionErrorBoundary>
       </main>
+
+      {/* Diagnostic Button - Appears after page loads */}
+      {showDiagnosticButton && (
+        <div className="fixed bottom-6 left-6 z-50">
+          <button
+            onClick={() => navigate('/debug')}
+            className="group flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-red-500 hover:border-red-400"
+            title="Open diagnostic tools to debug deployment issues"
+          >
+            <Bug className="w-4 h-4 group-hover:animate-pulse" />
+            <span className="font-medium">Run Diagnostics</span>
+            <ExternalLink className="w-3 h-3 opacity-70" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

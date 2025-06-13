@@ -22,6 +22,8 @@ import SimpleTestIndex from './pages/SimpleTestIndex';
 import AuthPageSimple from './pages/AuthPageSimple';
 import NotFound from './pages/NotFound';
 import UITest from './pages/UITest';
+import DiagnosticPage from './pages/DiagnosticPage';
+import ErrorDetector from './components/ErrorDetector';
 
 // Lazy load public pages for better performance
 const PlatformShowcase = lazy(() => import('./pages/PlatformShowcase'));
@@ -216,6 +218,22 @@ const App: React.FC = () => {
                         <LandingLayout>
                           <UITest />
                         </LandingLayout>
+                      </PublicRoute>
+                    }
+                  />
+                  <Route
+                    path="/debug"
+                    element={
+                      <PublicRoute>
+                        <DiagnosticPage />
+                      </PublicRoute>
+                    }
+                  />
+                  <Route
+                    path="/diagnostic"
+                    element={
+                      <PublicRoute>
+                        <DiagnosticPage />
                       </PublicRoute>
                     }
                   />
@@ -667,6 +685,7 @@ const App: React.FC = () => {
               </BrowserRouter>
               <Toaster />
               <Sonner />
+              <ErrorDetector />
             </TooltipProvider>
           </AssistantProvider>
         </ThemeProvider>
