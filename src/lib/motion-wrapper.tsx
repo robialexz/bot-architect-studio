@@ -111,7 +111,73 @@ MotionDiv.displayName = 'MotionDiv';
 // Wrapper pentru motion.section cu error boundary
 export const MotionSection = safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
   try {
-    return <motion.section ref={ref} {...props} />;
+    // Properly separate Framer Motion props from DOM props
+    const {
+      // Framer Motion specific props
+      initial,
+      animate,
+      exit,
+      transition,
+      variants,
+      whileHover,
+      whileTap,
+      whileFocus,
+      whileInView,
+      layoutId,
+      layout,
+      onHoverStart,
+      onHoverEnd,
+      onTap,
+      onTapStart,
+      onTapCancel,
+      onAnimationStart,
+      onAnimationComplete,
+      onUpdate,
+      onDragStart,
+      onDrag,
+      onDragEnd,
+      drag,
+      dragConstraints,
+      dragElastic,
+      dragMomentum,
+      dragTransition,
+      // DOM props
+      ...domProps
+    } = props as ExtendedMotionProps;
+
+    // Create motion props object with only Framer Motion specific props
+    const motionProps = {
+      initial,
+      animate,
+      exit,
+      transition,
+      variants,
+      whileHover,
+      whileTap,
+      whileFocus,
+      whileInView,
+      layoutId,
+      layout,
+      onHoverStart,
+      onHoverEnd,
+      onTap,
+      onTapStart,
+      onTapCancel,
+      onAnimationStart,
+      onAnimationComplete,
+      onUpdate,
+      onDragStart,
+      onDrag,
+      onDragEnd,
+      drag,
+      dragConstraints,
+      dragElastic,
+      dragMomentum,
+      dragTransition,
+      ...domProps,
+    };
+
+    return <motion.section ref={ref} {...motionProps} />;
   } catch (error) {
     console.warn('Framer Motion error:', error);
     const fallbackProps: FallbackProps = {

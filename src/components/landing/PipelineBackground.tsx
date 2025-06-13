@@ -38,22 +38,22 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
 
     if (!ctxA || !ctxB) return;
 
-    // Pipeline configuration - Optimized for better text readability
-    const pipeCount = 15; // Reduced from 30
+    // Pipeline configuration - Brighter and longer lasting
+    const pipeCount = 30; // More pipes for better coverage
     const pipePropCount = 8;
     const pipePropsLength = pipeCount * pipePropCount;
     const turnCount = 8;
     const turnAmount = (360 / turnCount) * TO_RAD;
-    const turnChanceRange = 80; // Increased for less frequent turns
-    const baseSpeed = 0.3; // Reduced speed
-    const rangeSpeed = 0.7; // Reduced speed range
-    const baseTTL = 80; // Shorter life
-    const rangeTTL = 120; // Shorter life range
-    const baseWidth = 1.5; // Thinner pipes
-    const rangeWidth = 2.5; // Thinner pipes
+    const turnChanceRange = 120; // Less frequent turns
+    const baseSpeed = 0.3; // Slower for longer trails
+    const rangeSpeed = 0.5; // Moderate speed range
+    const baseTTL = 800; // Much longer life
+    const rangeTTL = 600; // Much longer life range
+    const baseWidth = 2; // Slightly thicker pipes
+    const rangeWidth = 3; // Slightly thicker pipes
     const baseHue = 180;
-    const rangeHue = 60;
-    const backgroundColor = 'hsla(150,80%,1%,0.95)'; // More transparent
+    const rangeHue = 80; // More color variety
+    const backgroundColor = 'hsla(220,30%,8%,0.7)'; // Lighter, more blue background
 
     const center: number[] = [];
     let tick = 0;
@@ -76,8 +76,8 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
 
     const initPipe = (i: number) => {
       const x = rand(canvasA.width);
-      const y = center[1];
-      const direction = round(rand(1)) ? HALF_PI : TAU - HALF_PI;
+      const y = rand(canvasA.height); // Start from random positions across entire screen
+      const direction = rand(TAU); // Random direction for full coverage
       const speed = baseSpeed + rand(rangeSpeed);
       const life = 0;
       const ttl = baseTTL + rand(rangeTTL);
@@ -104,7 +104,7 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
       hue: number
     ) => {
       ctxA.save();
-      ctxA.strokeStyle = `hsla(${hue},75%,50%,${fadeInOut(life, ttl) * 0.08})`; // Reduced opacity
+      ctxA.strokeStyle = `hsla(${hue},85%,65%,${fadeInOut(life, ttl) * 0.25})`; // Much brighter and more visible
       ctxA.beginPath();
       ctxA.arc(x, y, width, 0, TAU);
       ctxA.stroke();
@@ -113,10 +113,7 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
     };
 
     const checkBounds = (x: number, y: number) => {
-      if (x > canvasA.width) x = 0;
-      if (x < 0) x = canvasA.width;
-      if (y > canvasA.height) y = 0;
-      if (y < 0) y = canvasA.height;
+      // Allow pipes to go beyond screen boundaries - they'll be recreated when they die
       return { x, y };
     };
 
@@ -154,8 +151,9 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
       pipeProps[i3] = direction;
       pipeProps[i5] = life;
 
-      const bounds = checkBounds(x, y);
-      if (life > ttl) initPipe(i);
+      // Check if pipe is way outside screen bounds or life exceeded
+      const isOutOfBounds = x < -200 || x > canvasA.width + 200 || y < -200 || y > canvasA.height + 200;
+      if (life > ttl || isOutOfBounds) initPipe(i);
     };
 
     const updatePipes = () => {
@@ -167,19 +165,19 @@ const PipelineBackground: React.FC<PipelineBackgroundProps> = ({ className = '' 
     };
 
     const render = () => {
-      // Clear background more frequently for better text readability
+      // Clear background less frequently for longer trails
       ctxB.save();
       ctxB.fillStyle = backgroundColor;
       ctxB.fillRect(0, 0, canvasB.width, canvasB.height);
       ctxB.restore();
 
-      // Clear canvas A periodically to prevent accumulation
-      if (tick % 300 === 0) {
+      // Clear canvas A extremely rarely to keep very long trails
+      if (tick % 7200 === 0) { // Reset every 2 minutes for extremely long trails
         ctxA.clearRect(0, 0, canvasA.width, canvasA.height);
       }
 
       ctxB.save();
-      ctxB.filter = 'blur(8px)'; // Reduced blur for better text readability
+      ctxB.filter = 'blur(4px)'; // Less blur for sharper pipes
       ctxB.drawImage(canvasA, 0, 0);
       ctxB.restore();
 

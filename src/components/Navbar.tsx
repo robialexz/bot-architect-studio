@@ -61,16 +61,16 @@ import { useAuth } from '@/hooks/useAuth';
 const navLinkBaseClasses =
   'group inline-flex h-10 w-max items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background';
 const navLinkInactiveClasses =
-  'text-[hsl(var(--nav-foreground))] hover:bg-[hsl(var(--nav-hover))] hover:text-[hsl(var(--nav-primary))]';
+  'text-white/90 hover:bg-white/10 hover:text-white';
 const navLinkActiveClasses =
-  'bg-[hsl(var(--nav-active))] text-[hsl(var(--nav-primary-foreground))] shadow-md hover:bg-[hsl(var(--nav-active))]/90';
+  'bg-white/20 text-white shadow-md hover:bg-white/25';
 
 const mobileNavLinkBaseClasses =
   'block rounded-md px-3 py-2 text-base font-medium transition-colors';
 const mobileNavLinkInactiveClasses =
-  'text-[hsl(var(--nav-foreground))] hover:bg-[hsl(var(--nav-hover))] hover:text-[hsl(var(--nav-primary))]';
+  'text-white/90 hover:bg-white/10 hover:text-white';
 const mobileNavLinkActiveClasses =
-  'bg-[hsl(var(--nav-active))] text-[hsl(var(--nav-primary-foreground))]';
+  'bg-white/20 text-white';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -80,14 +80,7 @@ const Navbar = () => {
   const isDesktop = !isMobile;
   const { comingSoonHandlers } = useComingSoon();
 
-  // Debug authentication state in navbar
-  useEffect(() => {
-    logger.auth.debug('Navbar - Auth state update:', {
-      isAuthenticated,
-      user: !!user,
-      userEmail: user?.email,
-    });
-  }, [isAuthenticated, user]);
+
 
   useEffect(() => {
     if (isDesktop && isMobileMenuOpen) {
@@ -103,11 +96,9 @@ const Navbar = () => {
   // Smart logo navigation based on authentication status
   const handleLogoClick = () => {
     setIsMobileMenuOpen(false);
-    if (isAuthenticated) {
-      logger.auth.debug('Authenticated user - navigating to dashboard');
+    if (!forceUnauthenticated && isAuthenticated) {
       navigate('/account');
     } else {
-      logger.auth.debug('Unauthenticated user - navigating to landing page');
       navigate('/');
     }
   };
@@ -142,41 +133,16 @@ const Navbar = () => {
     { to: '/workflow-analytics', label: 'Analytics' },
   ];
 
-  const navItems = isAuthenticated ? authenticatedNavItems : unauthenticatedNavItems;
+  // Force unauthenticated nav items for FlowsyAI landing page
+  const navItems = unauthenticatedNavItems;
+  // Force isAuthenticated to false for FlowsyAI landing page
+  const forceUnauthenticated = true;
 
-  // Debug logging
-  console.log('🔍 Navbar Debug:', {
-    isAuthenticated,
-    navItemsCount: navItems.length,
-    navItems: navItems.map(item => item.label),
-    isDesktop,
-  });
+
 
   return (
-    <nav
-      className="border-b border-[hsl(var(--nav-border))] bg-[hsl(var(--nav-background))]/95 backdrop-blur-lg sticky top-0 z-50 shadow-sm"
-      style={{
-        backgroundColor: 'rgba(26, 26, 26, 0.95)',
-        borderBottom: '2px solid lime',
-        minHeight: '80px'
-      }}
-    >
-      {/* DEBUG INDICATOR */}
-      <div style={{
-        position: 'absolute',
-        top: '5px',
-        right: '5px',
-        backgroundColor: 'red',
-        color: 'white',
-        padding: '4px 8px',
-        fontSize: '12px',
-        zIndex: 9999
-      }}>
-        NAVBAR DEBUG
-      </div>
-
-      <div className="w-full max-w-7xl mx-auto px-4 py-2 flex items-center justify-between min-h-[70px]"
-           style={{ border: '1px solid yellow' }}>
+    <nav className="border-b border-white/20 bg-black/95 backdrop-blur-xl sticky top-0 z-50 shadow-2xl shadow-black/60">
+      <div className="w-full max-w-7xl mx-auto px-4 py-2 flex items-center justify-between min-h-[70px]">
         <MotionButton
           onClick={handleLogoClick}
           className="group cursor-pointer bg-transparent border-none p-2 rounded-lg hover:bg-accent/50 transition-all duration-300"
@@ -192,89 +158,80 @@ const Navbar = () => {
           />
         </MotionButton>
 
-        {/* Desktop Navigation - Force visible for debugging */}
-        <div className="hidden md:flex flex-1 justify-center">
-          <NavigationMenu>
-            <NavigationMenuList className="flex items-center gap-2">
-              {navItems.map(item => (
-                <NavigationMenuItem key={item.to}>
-                  <NavLink
-                    to={item.to}
-                    className={({ isActive }) =>
-                      cn(
-                        navigationMenuTriggerStyle(),
-                        navLinkBaseClasses,
-                        isActive ? navLinkActiveClasses : navLinkInactiveClasses,
-                        'relative group/link',
-                        item.featured &&
-                          'bg-gradient-to-r from-[hsl(var(--button-primary))]/10 to-[hsl(var(--nav-secondary))]/10 border border-[hsl(var(--button-primary))]/20 hover:border-[hsl(var(--button-primary))]/40'
-                      )
-                    }
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      padding: '8px 16px',
-                      backgroundColor: item.featured ? '#0066cc' : '#333',
-                      color: 'white',
-                      textDecoration: 'none',
-                      borderRadius: '8px',
-                      margin: '0 4px',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      border: '1px solid #555',
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      {item.icon}
-                      <span>{item.label}</span>
-                      {item.featured && (
-                        <Badge
-                          variant="secondary"
-                          className="text-xs bg-[hsl(var(--nav-primary))]/20 text-[hsl(var(--nav-primary))]"
-                        >
-                          New
-                        </Badge>
-                      )}
-                    </div>
-                    <span
-                      className={cn(
-                        'absolute bottom-0 left-0 h-0.5 w-full origin-bottom-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100',
-                        item.featured
-                          ? 'bg-gradient-to-r from-[hsl(var(--button-primary))] to-[hsl(var(--nav-secondary))]'
-                          : 'bg-[hsl(var(--nav-primary))]'
-                      )}
-                    />
-                  </NavLink>
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
+        {/* Desktop Navigation - HIGHLY VISIBLE */}
+        <div className="flex flex-1 justify-center">
+          <div className="flex items-center gap-1 bg-white/5 backdrop-blur-sm rounded-xl px-2 py-1 border border-white/10 z-50 relative">
+            {navItems.map(item => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) =>
+                  cn(
+                    'group inline-flex h-10 items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-black',
+                    isActive
+                      ? 'bg-white/20 text-white shadow-lg border border-white/30'
+                      : 'text-white/95 hover:text-white hover:bg-white/15 border border-transparent hover:border-white/20',
+                    'relative group/link font-medium',
+                    item.featured &&
+                      'bg-gradient-to-r from-violet-500/30 to-cyan-500/30 border-violet-400/50 hover:border-cyan-400/70 hover:from-violet-500/40 hover:to-cyan-500/40 text-white shadow-lg'
+                  )
+                }
+              >
+                <div className="flex items-center gap-2 relative z-10">
+                  {item.icon}
+                  <span className="font-semibold">{item.label}</span>
+                  {item.featured && (
+                    <Badge
+                      variant="secondary"
+                      className="text-xs bg-gradient-to-r from-violet-400/30 to-cyan-400/30 text-white border border-cyan-400/50 font-bold"
+                    >
+                      New
+                    </Badge>
+                  )}
+                </div>
+
+                {/* Hover underline effect */}
+                <span
+                  className={cn(
+                    'absolute bottom-1 left-2 right-2 h-0.5 origin-bottom-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100 rounded-full',
+                    item.featured
+                      ? 'bg-gradient-to-r from-violet-400 to-cyan-400'
+                      : 'bg-gradient-to-r from-blue-400 to-cyan-400'
+                  )}
+                />
+
+                {/* Glow effect for featured items */}
+                {item.featured && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-cyan-500/20 rounded-lg blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+                )}
+              </NavLink>
+            ))}
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
           {/* Authentication Section - Desktop */}
           <div className="flex items-center gap-3">
-            {isAuthenticated ? (
+            {!forceUnauthenticated && isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="relative h-12 w-12 rounded-full p-0 hover:bg-[hsl(var(--nav-hover))] transition-all duration-300"
+                    className="relative h-12 w-12 rounded-full p-0 hover:bg-white/10 transition-all duration-300"
                   >
                     <div className="relative">
-                      <Avatar className="h-10 w-10 ring-2 ring-[hsl(var(--nav-primary))]/20 hover:ring-[hsl(var(--nav-primary))]/40 transition-all duration-300">
+                      <Avatar className="h-10 w-10 ring-2 ring-white/20 hover:ring-white/40 transition-all duration-300">
                         <AvatarImage src={user?.avatarUrl} alt={user?.fullName || user?.email} />
-                        <AvatarFallback className="bg-gradient-to-br from-[hsl(var(--nav-primary))] via-[hsl(var(--nav-secondary))] to-[hsl(var(--accent))] text-white font-bold text-lg shadow-lg">
+                        <AvatarFallback className="bg-gradient-to-br from-violet-500 via-blue-500 to-cyan-500 text-white font-bold text-lg shadow-lg">
                           {user?.fullName
                             ? user.fullName.charAt(0).toUpperCase()
                             : user?.email?.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                       {/* Online Status Indicator */}
-                      <div className="absolute bottom-0 right-0 h-3 w-3 bg-green-500 border-2 border-[hsl(var(--nav-background))] rounded-full"></div>
+                      <div className="absolute bottom-0 right-0 h-3 w-3 bg-green-500 border-2 border-black rounded-full"></div>
                       {user?.isPremium && (
-                        <Crown className="absolute -top-1 -right-1 h-4 w-4 text-[hsl(var(--nav-secondary))] drop-shadow-lg" />
+                        <Crown className="absolute -top-1 -right-1 h-4 w-4 text-yellow-400 drop-shadow-lg" />
                       )}
                     </div>
                   </Button>
@@ -340,10 +297,8 @@ const Navbar = () => {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={async () => {
-                      logger.auth.debug('Desktop logout button clicked!');
                       try {
                         await logout();
-                        logger.auth.debug('Desktop logout completed');
                       } catch (error) {
                         logger.auth.error('Desktop logout failed:', error);
                       }
@@ -358,7 +313,7 @@ const Navbar = () => {
               <div className="flex items-center gap-3">
                 <MotionButton
                   onClick={() => navigate('/waitlist')}
-                  className="group relative overflow-hidden text-foreground hover:text-primary font-medium rounded-lg transition-all duration-300 ease-in-out inline-flex h-9 items-center justify-center whitespace-nowrap px-3 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent"
+                  className="group relative overflow-hidden bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all duration-300 ease-in-out inline-flex h-9 items-center justify-center whitespace-nowrap px-4 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50 border border-white/20 hover:border-white/40 shadow-lg"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -369,7 +324,7 @@ const Navbar = () => {
                 </MotionButton>
                 <MotionButton
                   onClick={() => navigate('/waitlist')}
-                  className="group relative overflow-hidden bg-gradient-to-r from-primary to-sapphire text-background font-semibold rounded-lg hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 ease-in-out border border-primary/20 inline-flex h-9 items-center justify-center whitespace-nowrap px-3 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                  className="group relative overflow-hidden bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600 text-white font-bold rounded-lg hover:shadow-xl hover:shadow-violet-500/30 transition-all duration-300 ease-in-out border border-violet-400/50 inline-flex h-9 items-center justify-center whitespace-nowrap px-4 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -377,17 +332,19 @@ const Navbar = () => {
                     <Sparkles className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
                     Start Free Trial
                   </span>
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-violet-500/30 to-cyan-500/30 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
                 </MotionButton>
               </div>
             )}
           </div>
 
           {/* New Project Button - Only show for authenticated users on desktop */}
-          {isAuthenticated && (
+          {!forceUnauthenticated && isAuthenticated && (
             <button
               type="button"
               onClick={handleNewProject}
-              className="hidden md:inline-flex bg-primary text-primary-foreground hover:bg-primary/90 group h-9 items-center justify-center whitespace-nowrap rounded-md px-3 text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+              className="hidden md:inline-flex bg-violet-500 text-white hover:bg-violet-600 group h-9 items-center justify-center whitespace-nowrap rounded-md px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:pointer-events-none disabled:opacity-50"
             >
               <PlusCircle className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300" />
               New Project
@@ -395,16 +352,15 @@ const Navbar = () => {
           )}
 
           {/* Settings - Only show for authenticated users */}
-          {isAuthenticated && (
+          {!forceUnauthenticated && isAuthenticated && (
             <NavLink
               to="/settings"
               className={({ isActive }) =>
                 cn(
-                  isDesktop ? navigationMenuTriggerStyle() : '',
-                  navLinkBaseClasses,
+                  'group inline-flex h-10 w-max items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-all duration-300',
                   isActive ? navLinkActiveClasses : navLinkInactiveClasses,
-                  'p-2 rounded-full md:rounded-md md:px-3 md:py-2',
-                  !isDesktop && 'hover:bg-accent/50'
+                  'p-2 rounded-full md:rounded-md md:px-3 md:py-2 text-white/90 hover:text-white hover:bg-white/10',
+                  !isDesktop && 'hover:bg-white/10'
                 )
               }
               title="Settings"
@@ -419,7 +375,7 @@ const Navbar = () => {
             variant="ghost"
             size="icon"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-foreground/70 hover:text-primary hover:bg-accent"
+            className="md:hidden text-white/70 hover:text-white hover:bg-white/10"
             aria-label="Toggle mobile menu"
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-navigation-menu"
@@ -437,7 +393,7 @@ const Navbar = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="md:hidden border-t border-[hsl(var(--nav-border))] bg-[hsl(var(--nav-background))] overflow-hidden"
+            className="md:hidden border-t border-white/10 bg-black/90 backdrop-blur-xl overflow-hidden"
             id="mobile-navigation-menu"
             role="navigation"
             aria-label="Mobile navigation menu"
@@ -460,7 +416,7 @@ const Navbar = () => {
               ))}
               {/* Action Buttons - Mobile */}
               <div className="pt-4 pb-2 border-t border-border-alt space-y-3">
-                {isAuthenticated ? (
+                {!forceUnauthenticated && isAuthenticated ? (
                   <>
                     <div className="px-3 py-2 bg-card/50 rounded-lg border border-border-alt">
                       <div className="flex items-center gap-3">
@@ -558,11 +514,9 @@ const Navbar = () => {
                       size="lg"
                       variant="outline"
                       onClick={async () => {
-                        logger.auth.debug('Mobile logout button clicked!');
                         setIsMobileMenuOpen(false);
                         try {
                           await logout();
-                          logger.auth.debug('Mobile logout completed');
                         } catch (error) {
                           logger.auth.error('Mobile logout failed:', error);
                         }

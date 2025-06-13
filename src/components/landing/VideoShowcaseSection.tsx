@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import PipelineBackground from './PipelineBackground';
 
 interface VideoItem {
   id: string;
@@ -40,8 +41,13 @@ const VideoShowcaseSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-12 bg-gradient-to-b from-background to-background/95">
-      <div className="container mx-auto px-6">
+    <section className="relative py-12 bg-gradient-to-b from-background to-background/95 overflow-hidden">
+      {/* Pipeline Background */}
+      <PipelineBackground className="opacity-30" />
+
+      {/* Content with glass morphism overlay */}
+      <div className="relative z-10 bg-background/20 backdrop-blur-sm">
+        <div className="container mx-auto px-6">
         {/* Section Header */}
         <motion.div
           className="text-center mb-8"
@@ -118,6 +124,7 @@ const VideoShowcaseSection: React.FC = () => {
             ))}
           </div>
         </motion.div>
+        </div>
       </div>
     </section>
   );
