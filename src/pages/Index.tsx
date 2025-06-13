@@ -115,13 +115,7 @@ const IndexPage: React.FC = () => {
   return (
     <div className="index-page-container relative w-full">
       {/* Pipeline Background - Simple and Clean */}
-      <Suspense
-        fallback={
-          <div className="fixed inset-0 w-full h-full bg-gradient-to-br from-background via-background/95 to-background/90" />
-        }
-      >
-        <PipelineCanvas />
-      </Suspense>
+      <PipelineCanvas />
 
       {/* Page Content Sections - Transparent backgrounds to show pipeline */}
       <main className="relative z-10 w-full">

@@ -1,48 +1,66 @@
 import * as React from 'react';
 
-// Ensure React is available before importing Framer Motion
-if (typeof React === 'undefined' || !React.createContext) {
-  throw new Error('React must be loaded before Framer Motion components');
-}
+// CSS-ONLY MOTION WRAPPER - NO FRAMER MOTION IMPORTS
+// This completely eliminates Framer Motion dependencies
 
-import {
-  motion,
-  AnimatePresence,
-  MotionProps,
-  useAnimation,
-  useInView,
-  useScroll,
-  useTransform,
-} from 'framer-motion';
-
-// Extend MotionProps to include className
-interface ExtendedMotionProps extends MotionProps {
+// CSS-only motion props interface
+interface ExtendedMotionProps {
   className?: string;
   children?: React.ReactNode;
+  style?: React.CSSProperties;
+  onClick?: (event: React.MouseEvent) => void;
+  onMouseEnter?: (event: React.MouseEvent) => void;
+  onMouseLeave?: (event: React.MouseEvent) => void;
+  // Framer Motion props that we'll ignore but accept for compatibility
+  initial?: any;
+  animate?: any;
+  exit?: any;
+  transition?: any;
+  variants?: any;
+  whileHover?: any;
+  whileTap?: any;
+  whileFocus?: any;
+  whileInView?: any;
+  layoutId?: string;
+  layout?: any;
+  onHoverStart?: () => void;
+  onHoverEnd?: () => void;
+  onTap?: () => void;
+  onTapStart?: () => void;
+  onTapCancel?: () => void;
+  onAnimationStart?: () => void;
+  onAnimationComplete?: () => void;
+  onUpdate?: () => void;
+  onDragStart?: () => void;
+  onDrag?: () => void;
+  onDragEnd?: () => void;
+  drag?: any;
+  dragConstraints?: any;
+  dragElastic?: any;
+  dragMomentum?: any;
+  dragTransition?: any;
+  viewport?: any;
+  [key: string]: any;
 }
 
-// Type for fallback props
-interface FallbackProps {
-  className?: string;
-  children?: React.ReactNode;
-  [key: string]: unknown;
-}
+// Safe forwardRef wrapper
+const safeForwardRef = <T, P = {}>(component: React.ForwardRefRenderFunction<T, P>) =>
+  React.forwardRef<T, P>(component);
 
-// Safety check for React availability
-const safeForwardRef =
-  React?.forwardRef || ((render: (props: unknown, ref: unknown) => React.ReactElement) => render);
-
-// Wrapper pentru motion.div cu error boundary
-export const MotionDiv = safeForwardRef<HTMLDivElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    // Check if motion is available
-    if (typeof motion === 'undefined' || !motion.div) {
-      throw new Error('Framer Motion not available');
-    }
-
-    // Properly separate Framer Motion props from DOM props
+// CSS-only motion component factory
+const createMotionComponent = (tag: keyof JSX.IntrinsicElements) => {
+  return safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
     const {
-      // Framer Motion specific props
+      children,
+      className,
+      style,
+      onClick,
+      onMouseEnter,
+      onMouseLeave,
+      onHoverStart,
+      onHoverEnd,
+      onTap,
+      // Ignore all Framer Motion specific props
       initial,
       animate,
       exit,
@@ -54,9 +72,6 @@ export const MotionDiv = safeForwardRef<HTMLDivElement, ExtendedMotionProps>((pr
       whileInView,
       layoutId,
       layout,
-      onHoverStart,
-      onHoverEnd,
-      onTap,
       onTapStart,
       onTapCancel,
       onAnimationStart,
@@ -70,429 +85,203 @@ export const MotionDiv = safeForwardRef<HTMLDivElement, ExtendedMotionProps>((pr
       dragElastic,
       dragMomentum,
       dragTransition,
-      // DOM props
-      ...domProps
-    } = props as ExtendedMotionProps;
+      viewport,
+      ...rest
+    } = props;
 
-    // Create motion props object with only Framer Motion specific props
-    const motionProps = {
-      initial,
-      animate,
-      exit,
-      transition,
-      variants,
-      whileHover,
-      whileTap,
-      whileFocus,
-      whileInView,
-      layoutId,
-      layout,
-      onHoverStart,
-      onHoverEnd,
-      onTap,
-      onTapStart,
-      onTapCancel,
-      onAnimationStart,
-      onAnimationComplete,
-      onUpdate,
-      onDragStart,
-      onDrag,
-      onDragEnd,
-      drag,
-      dragConstraints,
-      dragElastic,
-      dragMomentum,
-      dragTransition,
-      ...domProps,
+    // Enhanced CSS-based animations
+    const motionStyle: React.CSSProperties = {
+      ...style,
+      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
     };
 
-    return <motion.div ref={ref} {...motionProps} />;
-  } catch (error) {
-    console.warn('Framer Motion error, falling back to regular div:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-      onClick: props.onClick,
-      onMouseEnter: props.onMouseEnter,
-      onMouseLeave: props.onMouseLeave,
-      style: props.style,
+    // Handle hover events
+    const handleMouseEnter = (event: React.MouseEvent) => {
+      onMouseEnter?.(event);
+      onHoverStart?.();
     };
-    return <div ref={ref} {...fallbackProps} />;
-  }
-});
 
+    const handleMouseLeave = (event: React.MouseEvent) => {
+      onMouseLeave?.(event);
+      onHoverEnd?.();
+    };
+
+    const handleClick = (event: React.MouseEvent) => {
+      onClick?.(event);
+      onTap?.();
+    };
+
+    return React.createElement(
+      tag,
+      {
+        ref,
+        className,
+        style: motionStyle,
+        onClick: handleClick,
+        onMouseEnter: handleMouseEnter,
+        onMouseLeave: handleMouseLeave,
+        ...rest,
+      },
+      children
+    );
+  });
+};
+
+// Export all motion components using the CSS-only factory
+export const MotionDiv = createMotionComponent('div');
+export const MotionSection = createMotionComponent('section');
+export const MotionMain = createMotionComponent('main');
+export const MotionFooter = createMotionComponent('footer');
+export const MotionHeader = createMotionComponent('header');
+export const MotionNav = createMotionComponent('nav');
+export const MotionAside = createMotionComponent('aside');
+export const MotionArticle = createMotionComponent('article');
+export const MotionH1 = createMotionComponent('h1');
+export const MotionH2 = createMotionComponent('h2');
+export const MotionH3 = createMotionComponent('h3');
+export const MotionH4 = createMotionComponent('h4');
+export const MotionH5 = createMotionComponent('h5');
+export const MotionH6 = createMotionComponent('h6');
+export const MotionP = createMotionComponent('p');
+export const MotionSpan = createMotionComponent('span');
+export const MotionButton = createMotionComponent('button');
+export const MotionA = createMotionComponent('a');
+export const MotionImg = createMotionComponent('img');
+export const MotionLi = createMotionComponent('li');
+export const MotionUl = createMotionComponent('ul');
+export const MotionOl = createMotionComponent('ol');
+export const MotionTr = createMotionComponent('tr');
+export const MotionTd = createMotionComponent('td');
+export const MotionTh = createMotionComponent('th');
+export const MotionTable = createMotionComponent('table');
+export const MotionForm = createMotionComponent('form');
+export const MotionInput = createMotionComponent('input');
+export const MotionTextarea = createMotionComponent('textarea');
+export const MotionLabel = createMotionComponent('label');
+
+// SVG motion components
+export const MotionSvg = createMotionComponent('svg');
+export const MotionPath = createMotionComponent('path');
+export const MotionCircle = createMotionComponent('circle');
+export const MotionRect = createMotionComponent('rect');
+export const MotionLine = createMotionComponent('line');
+export const MotionPolygon = createMotionComponent('polygon');
+export const MotionPolyline = createMotionComponent('polyline');
+export const MotionEllipse = createMotionComponent('ellipse');
+export const MotionG = createMotionComponent('g');
+export const MotionDefs = createMotionComponent('defs');
+export const MotionLinearGradient = createMotionComponent('linearGradient');
+export const MotionRadialGradient = createMotionComponent('radialGradient');
+export const MotionStop = createMotionComponent('stop');
+export const MotionClipPath = createMotionComponent('clipPath');
+export const MotionMask = createMotionComponent('mask');
+
+// Set display names
 MotionDiv.displayName = 'MotionDiv';
-
-// Wrapper pentru motion.section cu error boundary
-export const MotionSection = safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    // Properly separate Framer Motion props from DOM props
-    const {
-      // Framer Motion specific props
-      initial,
-      animate,
-      exit,
-      transition,
-      variants,
-      whileHover,
-      whileTap,
-      whileFocus,
-      whileInView,
-      layoutId,
-      layout,
-      onHoverStart,
-      onHoverEnd,
-      onTap,
-      onTapStart,
-      onTapCancel,
-      onAnimationStart,
-      onAnimationComplete,
-      onUpdate,
-      onDragStart,
-      onDrag,
-      onDragEnd,
-      drag,
-      dragConstraints,
-      dragElastic,
-      dragMomentum,
-      dragTransition,
-      // DOM props
-      ...domProps
-    } = props as ExtendedMotionProps;
-
-    // Create motion props object with only Framer Motion specific props
-    const motionProps = {
-      initial,
-      animate,
-      exit,
-      transition,
-      variants,
-      whileHover,
-      whileTap,
-      whileFocus,
-      whileInView,
-      layoutId,
-      layout,
-      onHoverStart,
-      onHoverEnd,
-      onTap,
-      onTapStart,
-      onTapCancel,
-      onAnimationStart,
-      onAnimationComplete,
-      onUpdate,
-      onDragStart,
-      onDrag,
-      onDragEnd,
-      drag,
-      dragConstraints,
-      dragElastic,
-      dragMomentum,
-      dragTransition,
-      ...domProps,
-    };
-
-    return <motion.section ref={ref} {...motionProps} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <section ref={ref} {...fallbackProps} />;
-  }
-});
-
 MotionSection.displayName = 'MotionSection';
-
-// Wrapper pentru motion.h1 cu error boundary
-export const MotionH1 = safeForwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.h1 ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <h1 ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionH1.displayName = 'MotionH1';
-
-// Wrapper pentru motion.h2 cu error boundary
-export const MotionH2 = safeForwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.h2 ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <h2 ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionH2.displayName = 'MotionH2';
-
-// Wrapper pentru motion.h3 cu error boundary
-export const MotionH3 = safeForwardRef<HTMLHeadingElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.h3 ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <h3 ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionH3.displayName = 'MotionH3';
-
-// Wrapper pentru motion.p cu error boundary
-export const MotionP = safeForwardRef<HTMLParagraphElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.p ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <p ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionP.displayName = 'MotionP';
-
-// Wrapper pentru motion.button cu error boundary
-export const MotionButton = safeForwardRef<HTMLButtonElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.button ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <button ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionButton.displayName = 'MotionButton';
-
-// Wrapper pentru motion.li cu error boundary
-export const MotionLi = safeForwardRef<HTMLLIElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.li ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <li ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionLi.displayName = 'MotionLi';
-
-// Wrapper pentru motion.tr cu error boundary
-export const MotionTr = safeForwardRef<HTMLTableRowElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.tr ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <tr ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionTr.displayName = 'MotionTr';
-
-// Wrapper pentru motion.path cu error boundary
-export const MotionPath = safeForwardRef<SVGPathElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.path ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <path ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionPath.displayName = 'MotionPath';
-
-// Wrapper pentru motion.linearGradient cu error boundary
-export const MotionLinearGradient = safeForwardRef<SVGLinearGradientElement, ExtendedMotionProps>(
-  (props, ref) => {
-    try {
-      return <motion.linearGradient ref={ref} {...props} />;
-    } catch (error) {
-      console.warn('Framer Motion error:', error);
-      const fallbackProps: FallbackProps = {
-        className: props.className,
-        children: props.children,
-      };
-      return <linearGradient ref={ref} {...fallbackProps} />;
-    }
-  }
-);
-
-MotionLinearGradient.displayName = 'MotionLinearGradient';
-
-// Wrapper pentru motion.circle cu error boundary
-export const MotionCircle = safeForwardRef<SVGCircleElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.circle ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <circle ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionCircle.displayName = 'MotionCircle';
-
-// Wrapper pentru motion.svg cu error boundary
-export const MotionSvg = safeForwardRef<SVGSVGElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.svg ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <svg ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionSvg.displayName = 'MotionSvg';
-
-// Wrapper pentru motion.footer cu error boundary
-export const MotionFooter = safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.footer ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <footer ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionFooter.displayName = 'MotionFooter';
-
-// Wrapper pentru motion.a cu error boundary
-export const MotionA = safeForwardRef<HTMLAnchorElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.a ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <a ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionA.displayName = 'MotionA';
-
-// Wrapper pentru motion.span cu error boundary
-export const MotionSpan = safeForwardRef<HTMLSpanElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.span ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <span ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionSpan.displayName = 'MotionSpan';
-
-// Wrapper pentru motion.aside cu error boundary
-export const MotionAside = safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.aside ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <aside ref={ref} {...fallbackProps} />;
-  }
-});
-
-MotionAside.displayName = 'MotionAside';
-
-// Wrapper pentru motion.main cu error boundary
-export const MotionMain = safeForwardRef<HTMLElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.main ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <main ref={ref} {...fallbackProps} />;
-  }
-});
-
 MotionMain.displayName = 'MotionMain';
-
-// Wrapper pentru motion.line cu error boundary
-export const MotionLine = safeForwardRef<SVGLineElement, ExtendedMotionProps>((props, ref) => {
-  try {
-    return <motion.line ref={ref} {...props} />;
-  } catch (error) {
-    console.warn('Framer Motion error:', error);
-    const fallbackProps: FallbackProps = {
-      className: props.className,
-      children: props.children,
-    };
-    return <line ref={ref} {...fallbackProps} />;
-  }
-});
-
+MotionFooter.displayName = 'MotionFooter';
+MotionHeader.displayName = 'MotionHeader';
+MotionNav.displayName = 'MotionNav';
+MotionAside.displayName = 'MotionAside';
+MotionArticle.displayName = 'MotionArticle';
+MotionH1.displayName = 'MotionH1';
+MotionH2.displayName = 'MotionH2';
+MotionH3.displayName = 'MotionH3';
+MotionH4.displayName = 'MotionH4';
+MotionH5.displayName = 'MotionH5';
+MotionH6.displayName = 'MotionH6';
+MotionP.displayName = 'MotionP';
+MotionSpan.displayName = 'MotionSpan';
+MotionButton.displayName = 'MotionButton';
+MotionA.displayName = 'MotionA';
+MotionImg.displayName = 'MotionImg';
+MotionLi.displayName = 'MotionLi';
+MotionUl.displayName = 'MotionUl';
+MotionOl.displayName = 'MotionOl';
+MotionTr.displayName = 'MotionTr';
+MotionTd.displayName = 'MotionTd';
+MotionTh.displayName = 'MotionTh';
+MotionTable.displayName = 'MotionTable';
+MotionForm.displayName = 'MotionForm';
+MotionInput.displayName = 'MotionInput';
+MotionTextarea.displayName = 'MotionTextarea';
+MotionLabel.displayName = 'MotionLabel';
+MotionSvg.displayName = 'MotionSvg';
+MotionPath.displayName = 'MotionPath';
+MotionCircle.displayName = 'MotionCircle';
+MotionRect.displayName = 'MotionRect';
 MotionLine.displayName = 'MotionLine';
+MotionPolygon.displayName = 'MotionPolygon';
+MotionPolyline.displayName = 'MotionPolyline';
+MotionEllipse.displayName = 'MotionEllipse';
+MotionG.displayName = 'MotionG';
+MotionDefs.displayName = 'MotionDefs';
+MotionLinearGradient.displayName = 'MotionLinearGradient';
+MotionRadialGradient.displayName = 'MotionRadialGradient';
+MotionStop.displayName = 'MotionStop';
+MotionClipPath.displayName = 'MotionClipPath';
+MotionMask.displayName = 'MotionMask';
 
-// Wrapper pentru AnimatePresence cu error boundary
+// CSS-only AnimatePresence replacement
 export const SafeAnimatePresence: React.FC<{
   children: React.ReactNode;
   mode?: 'wait' | 'sync' | 'popLayout';
-}> = ({ children, mode = 'sync' }) => {
-  try {
-    // Check if AnimatePresence is available
-    if (typeof AnimatePresence === 'undefined') {
-      throw new Error('AnimatePresence not available');
-    }
-    // Use sync mode by default to avoid "wait" mode issues with multiple children
-    return <AnimatePresence mode={mode}>{children}</AnimatePresence>;
-  } catch (error) {
-    console.warn('AnimatePresence error, falling back to fragment:', error);
-    return <>{children}</>;
-  }
+  initial?: boolean;
+  exitBeforeEnter?: boolean;
+  onExitComplete?: () => void;
+}> = ({ children }) => {
+  // Simply render children without any animation logic
+  return <>{children}</>;
 };
+
+// Export default motion object for compatibility
+export const motion = {
+  div: MotionDiv,
+  section: MotionSection,
+  main: MotionMain,
+  footer: MotionFooter,
+  header: MotionHeader,
+  nav: MotionNav,
+  aside: MotionAside,
+  article: MotionArticle,
+  h1: MotionH1,
+  h2: MotionH2,
+  h3: MotionH3,
+  h4: MotionH4,
+  h5: MotionH5,
+  h6: MotionH6,
+  p: MotionP,
+  span: MotionSpan,
+  button: MotionButton,
+  a: MotionA,
+  img: MotionImg,
+  li: MotionLi,
+  ul: MotionUl,
+  ol: MotionOl,
+  tr: MotionTr,
+  td: MotionTd,
+  th: MotionTh,
+  table: MotionTable,
+  form: MotionForm,
+  input: MotionInput,
+  textarea: MotionTextarea,
+  label: MotionLabel,
+  svg: MotionSvg,
+  path: MotionPath,
+  circle: MotionCircle,
+  rect: MotionRect,
+  line: MotionLine,
+  polygon: MotionPolygon,
+  polyline: MotionPolyline,
+  ellipse: MotionEllipse,
+  g: MotionG,
+  defs: MotionDefs,
+  linearGradient: MotionLinearGradient,
+  radialGradient: MotionRadialGradient,
+  stop: MotionStop,
+  clipPath: MotionClipPath,
+  mask: MotionMask,
+};
+
+export default motion;
