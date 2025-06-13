@@ -19,6 +19,7 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'terser',
+    target: 'es2020', // Ensure compatibility with modern browsers
     terserOptions: {
       compress: {
         drop_console: false, // Keep console logs for debugging production issues
@@ -41,6 +42,11 @@ export default defineConfig({
           // UI components that depend on React
           'ui-vendor': ['@radix-ui/react-slot', '@radix-ui/react-toast', 'lucide-react'],
         },
+        // Ensure proper module format for production
+        format: 'es',
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
     chunkSizeWarningLimit: 500,

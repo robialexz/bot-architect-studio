@@ -823,5 +823,32 @@
 
     <!-- Vite entry point - CRITICAL FOR PRODUCTION -->
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- CRITICAL: Force module loading for production -->
+    <script type="module">
+      // Ensure React modules are loaded correctly in production
+      console.log('🔧 Production module loader starting...');
+
+      // Check if main module loaded successfully
+      setTimeout(() => {
+        const root = document.getElementById('root');
+        const fallback = document.getElementById('loading-fallback');
+
+        if (fallback && root && root.children.length === 1) {
+          console.error('❌ React modules failed to load, attempting manual reload...');
+
+          // Try to reload the main module
+          const scripts = document.querySelectorAll('script[src*="main-"]');
+          if (scripts.length > 0) {
+            console.log('🔄 Reloading main script...');
+            const newScript = document.createElement('script');
+            newScript.type = 'module';
+            newScript.crossOrigin = 'anonymous';
+            newScript.src = scripts[0].src + '?reload=' + Date.now();
+            document.head.appendChild(newScript);
+          }
+        }
+      }, 3000);
+    </script>
   </body>
 </html>
