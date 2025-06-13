@@ -166,6 +166,29 @@
   content: '';
 }
 
+/* CRITICAL: Force inclusion of color utilities */
+.text-gold,
+.bg-gold,
+.border-gold,
+.from-gold,
+.via-gold,
+.to-gold,
+.via-gold-light,
+.text-sapphire,
+.bg-sapphire,
+.border-sapphire,
+.from-sapphire,
+.via-sapphire,
+.to-sapphire,
+.hover\:shadow-gold\/30,
+.hover\:shadow-sapphire\/30,
+.text-emerald-500,
+.bg-emerald-500\/10,
+.border-emerald-500\/30 {
+  /* Ensure color utilities are never purged */
+  content: '';
+}
+
 /* Critical CSS Variables - Force inclusion */
 :root {
   /* Ensure all CSS variables are preserved */
