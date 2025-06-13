@@ -31,21 +31,9 @@ export default defineConfig({
       },
       external: [],
       output: {
-        // ULTRA-SIMPLIFIED chunking to fix vendor conflicts and 'us is not a function' error
-        manualChunks: id => {
-          // Only separate React core to prevent conflicts
-          if (id.includes('node_modules')) {
-            // Keep React separate but minimal
-            if (id.includes('react') && !id.includes('react-')) {
-              return 'react';
-            }
-            if (id.includes('react-dom')) {
-              return 'react';
-            }
-
-            // Everything else in one vendor bundle to prevent conflicts
-            return 'vendor';
-          }
+        // DISABLE ALL CHUNKING - Single bundle approach to fix all loading order issues
+        // This ensures React is always available when any code tries to use it
+        manualChunks: undefined
 
           // TEMPORARILY DISABLE ALL APPLICATION CHUNKING
           // This fixes React forwardRef errors across all bundles
