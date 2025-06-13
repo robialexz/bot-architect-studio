@@ -600,6 +600,42 @@
         font-family: 'Poppins', sans-serif;
         font-size: 1.25rem;
       }
+
+      /* CRITICAL: Debug panel with maximum visibility and z-index */
+      .debug-panel {
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 20px !important;
+        background: rgba(255, 0, 0, 0.95) !important;
+        color: white !important;
+        padding: 12px 18px !important;
+        border-radius: 8px !important;
+        font-family: 'Courier New', monospace !important;
+        font-size: 13px !important;
+        font-weight: bold !important;
+        z-index: 999999 !important;
+        border: 3px solid #ff0000 !important;
+        box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5) !important;
+        cursor: pointer !important;
+        user-select: none !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transform: none !important;
+        min-width: 140px !important;
+        text-align: center !important;
+      }
+
+      .debug-panel:hover {
+        background: rgba(255, 0, 0, 1) !important;
+        transform: scale(1.08) !important;
+        box-shadow: 0 8px 25px rgba(255, 0, 0, 0.7) !important;
+      }
+
+      .debug-panel:active {
+        transform: scale(0.95) !important;
+      }
     </style>
 
     <!-- PWA manifest - TEMPORARILY DISABLED FOR DEBUGGING -->
@@ -640,9 +676,101 @@
       </div>
     </div>
 
-    <!-- Debug script to check if React loads -->
+    <!-- CRITICAL: Debug/Verification Button with enhanced visibility -->
+    <div class="debug-panel" id="debug-panel" onclick="window.showDebugInfo && window.showDebugInfo()">
+      🔍 DEBUG/VERIFY
+    </div>
+
+    <!-- COMPREHENSIVE Debug script to check if React loads and provide debug functionality -->
     <script>
       console.log('🔍 HTML loaded, checking React loading...');
+
+      // CRITICAL: Ensure debug panel is always visible
+      function ensureDebugPanelVisible() {
+        const debugPanel = document.getElementById('debug-panel');
+        if (debugPanel) {
+          debugPanel.style.display = 'block';
+          debugPanel.style.visibility = 'visible';
+          debugPanel.style.opacity = '1';
+          debugPanel.style.zIndex = '999999';
+          debugPanel.style.position = 'fixed';
+          debugPanel.style.bottom = '20px';
+          debugPanel.style.left = '20px';
+          debugPanel.style.pointerEvents = 'auto';
+          console.log('✅ Debug panel visibility ensured');
+        } else {
+          console.error('❌ Debug panel not found!');
+        }
+      }
+
+      // Enhanced debug functionality
+      window.showDebugInfo = function() {
+        const root = document.getElementById('root');
+        const fallback = document.getElementById('loading-fallback');
+        const info = {
+          timestamp: new Date().toISOString(),
+          url: window.location.href,
+          userAgent: navigator.userAgent.substring(0, 100) + '...',
+          reactLoaded: !!window.React,
+          rootElement: !!root,
+          rootHasContent: root ? root.innerHTML.length > 0 : false,
+          rootChildrenCount: root ? root.children.length : 0,
+          fallbackExists: !!fallback,
+          fallbackVisible: fallback ? fallback.style.display !== 'none' : false,
+          rootInnerHTML: root ? root.innerHTML.substring(0, 300) + '...' : 'No root element',
+          scripts: Array.from(document.scripts).map(s => s.src || 'inline'),
+          stylesheets: Array.from(document.styleSheets).length,
+          errors: window.debugErrors || [],
+          windowSize: window.innerWidth + 'x' + window.innerHeight,
+          debugPanelVisible: !!document.getElementById('debug-panel'),
+          viteModules: window.__vite__ ? 'Vite detected' : 'No Vite',
+          performance: performance.now() + 'ms since page load'
+        };
+
+        console.log('🔍 COMPREHENSIVE DEBUG INFO:', info);
+
+        const debugText =
+          '=== FLOWSYAI DEBUG INFO ===\n\n' +
+          'Timestamp: ' + info.timestamp + '\n' +
+          'URL: ' + info.url + '\n' +
+          'React Loaded: ' + info.reactLoaded + '\n' +
+          'Root Element Exists: ' + info.rootElement + '\n' +
+          'Root Has Content: ' + info.rootHasContent + '\n' +
+          'Root Children Count: ' + info.rootChildrenCount + '\n' +
+          'Fallback Exists: ' + info.fallbackExists + '\n' +
+          'Fallback Visible: ' + info.fallbackVisible + '\n' +
+          'Scripts Loaded: ' + info.scripts.length + '\n' +
+          'Stylesheets: ' + info.stylesheets + '\n' +
+          'Window Size: ' + info.windowSize + '\n' +
+          'Debug Panel Visible: ' + info.debugPanelVisible + '\n' +
+          'Vite Status: ' + info.viteModules + '\n' +
+          'Performance: ' + info.performance + '\n' +
+          'Errors: ' + info.errors.length + '\n\n' +
+          'Check browser console for full details.';
+
+        alert(debugText);
+      };
+
+      // Error tracking
+      window.debugErrors = [];
+      window.addEventListener('error', function(e) {
+        window.debugErrors.push({
+          message: e.message,
+          filename: e.filename,
+          lineno: e.lineno,
+          timestamp: new Date().toISOString()
+        });
+        console.error('🚨 Error tracked:', e.message, 'at', e.filename + ':' + e.lineno);
+      });
+
+      // Unhandled promise rejection tracking
+      window.addEventListener('unhandledrejection', function(e) {
+        window.debugErrors.push({
+          message: 'Unhandled Promise Rejection: ' + e.reason,
+          timestamp: new Date().toISOString()
+        });
+        console.error('🚨 Unhandled Promise Rejection:', e.reason);
+      });
 
       // Remove fallback after 5 seconds if React hasn't loaded
       setTimeout(() => {
@@ -660,6 +788,8 @@
             </div>
           `;
         }
+        // Ensure debug panel is visible even on timeout
+        ensureDebugPanelVisible();
       }, 5000);
 
       // Check if React loaded successfully
@@ -668,7 +798,24 @@
         if (!fallback) {
           console.log('✅ React loaded successfully');
         }
+        // Ensure debug panel is visible after React loads
+        ensureDebugPanelVisible();
       }, 1000);
+
+      // Ensure debug panel is visible on DOM ready
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('✅ DOM Content Loaded');
+        setTimeout(ensureDebugPanelVisible, 100);
+      });
+
+      // Ensure debug panel is visible on window load
+      window.addEventListener('load', function() {
+        console.log('✅ Window Loaded');
+        setTimeout(ensureDebugPanelVisible, 100);
+      });
+
+      // Periodic check to ensure debug panel stays visible
+      setInterval(ensureDebugPanelVisible, 2000);
     </script>
 
     <!-- TEMPORARILY DISABLED FOR DEBUGGING -->
