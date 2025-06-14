@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { MessageSquare, X, Sparkles } from 'lucide-react';
+import { MessageSquare, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FeedbackSystem from './FeedbackSystem';
 import { useAuth } from '@/hooks/useAuth';
@@ -60,52 +61,54 @@ const FloatingFeedbackButtonNoMotion: React.FC = () => {
         onClose={() => setShowFeedback(false)}
       />
 
-      <style jsx>{`
-        @keyframes scale-in {
-          from { 
-            scale: 0; 
-            opacity: 0; 
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes scale-in {
+            from { 
+              scale: 0; 
+              opacity: 0; 
+            }
+            to { 
+              scale: 1; 
+              opacity: 1; 
+            }
           }
-          to { 
-            scale: 1; 
-            opacity: 1; 
+          
+          @keyframes fade-in {
+            from { 
+              opacity: 0; 
+              transform: translateX(10px) translateY(-50%) scale(0.9); 
+            }
+            to { 
+              opacity: 1; 
+              transform: translateX(0) translateY(-50%) scale(1); 
+            }
           }
-        }
-        
-        @keyframes fade-in {
-          from { 
-            opacity: 0; 
-            transform: translateX(10px) translateY(-50%) scale(0.9); 
+          
+          @keyframes pulse-ring {
+            0%, 100% { 
+              transform: scale(1); 
+              opacity: 0.5; 
+            }
+            50% { 
+              transform: scale(1.2); 
+              opacity: 0; 
+            }
           }
-          to { 
-            opacity: 1; 
-            transform: translateX(0) translateY(-50%) scale(1); 
+          
+          .animate-scale-in {
+            animation: scale-in 0.5s ease-out both;
           }
-        }
-        
-        @keyframes pulse-ring {
-          0%, 100% { 
-            transform: scale(1); 
-            opacity: 0.5; 
+          
+          .animate-fade-in {
+            animation: fade-in 0.2s ease-out;
           }
-          50% { 
-            transform: scale(1.2); 
-            opacity: 0; 
+          
+          .animate-pulse-ring {
+            animation: pulse-ring 2s ease-in-out infinite;
           }
-        }
-        
-        .animate-scale-in {
-          animation: scale-in 0.5s ease-out both;
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 0.2s ease-out;
-        }
-        
-        .animate-pulse-ring {
-          animation: pulse-ring 2s ease-in-out infinite;
-        }
-      `}</style>
+        `
+      }} />
     </>
   );
 };
