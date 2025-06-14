@@ -30,7 +30,7 @@ import {
 import { NodeTemplateService } from '@/services/nodeTemplateService';
 import { EnhancedWorkflowService } from '@/services/enhancedWorkflowService';
 import { NodeTemplate, NodeCategory } from '@/types/nodeTemplates';
-import { Workflow, WorkflowNode, NodeType } from '@/types/workflow';
+import { Workflow, WorkflowNode, NodeType, WorkflowCategory, WorkflowStatus } from '@/types/workflow';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import WorkflowOnboarding from './WorkflowOnboarding';
@@ -272,12 +272,19 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
         name: workflow?.name || 'Untitled Workflow',
         description: workflow?.description || '',
         nodes: nodes.map(mapReactFlowNodeToWorkflowNode),
-        edges,
+        edges: edges.map(edge => ({
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+          sourceHandle: edge.sourceHandle,
+          targetHandle: edge.targetHandle,
+          label: typeof edge.label === 'string' ? edge.label : undefined,
+        })),
         userId: user.id,
         isPublic: false,
         tags: [],
-        category: 'custom' as const,
-        status: 'draft' as const,
+        category: WorkflowCategory.CUSTOM,
+        status: WorkflowStatus.DRAFT,
         version: 1,
         lastExecuted: undefined,
         executionCount: 0,
@@ -747,7 +754,6 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
           onComplete={template => {
             setShowOnboarding(false);
             if (template) {
-              // Import template and create workflow
               handleImportTemplate(template);
             }
           }}
@@ -759,8 +765,12 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
       {showAIConfigWizard && configNodeId && (
         <AIModelConfigWizard
           initialConfig={getNodeConfig(configNodeId)}
+          onClose={() => {
+            setShowAIConfigWizard(false);
+            setConfigNodeId(null);
+          }}
           onSave={config => {
-            handleNodeConfigChange(configNodeId, config);
+            handleNodeConfigChange(configNodeId, config as Record<string, unknown>);
             setShowAIConfigWizard(false);
             setConfigNodeId(null);
           }}
@@ -797,7 +807,6 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
         workflowBuilder={{
           getWorkflowState,
           testExecution: async () => {
-            // Mock execution for tutorial validation
             return { success: true, result: 'Tutorial execution successful' };
           },
         }}
@@ -854,7 +863,6 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
 
   // Helper functions
   function handleImportTemplate(template: NodeTemplate) {
-    // Implementation for importing template
     console.log('Importing template:', template);
   }
 

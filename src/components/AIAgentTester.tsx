@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,7 +16,7 @@ interface AIAgentExecution {
   execution_time_ms?: number;
   tokens_used?: number;
   output_data?: any;
-  error_message?: string;
+  error_message?: string | undefined;
 }
 
 interface AIAgentTesterProps {
