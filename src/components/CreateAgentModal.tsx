@@ -1,339 +1,330 @@
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Plus, Bot, Zap, Settings, Save } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Switch } from '@/components/ui/switch';
+import {
+  Brain,
+  Bot,
+  Database,
+  MessageSquare,
+  Code,
+  Image,
+  FileText,
+  Music,
+  Video,
+  Calendar,
+  Mail,
+  Shield,
+} from 'lucide-react';
 
-interface AgentFormData {
+interface AgentTemplate {
+  id: string;
   name: string;
   description: string;
-  category: string;
-  type: 'custom' | 'template';
+  icon: React.ReactNode;
+  category: 'content' | 'analysis' | 'automation' | 'communication';
   capabilities: string[];
-  configuration: {
-    model: string;
-    temperature: number;
-    maxTokens: number;
-    systemPrompt: string;
-  };
+  complexity: 'beginner' | 'intermediate' | 'advanced';
 }
 
 interface CreateAgentModalProps {
-  isOpen: boolean;
   onClose: () => void;
-  onCreateAgent: (agentData: AgentFormData) => void;
+  onCreate: (agentData: any) => void;
 }
 
-const AGENT_CATEGORIES = [
-  'Data Processing',
-  'Content Generation',
-  'Analysis',
-  'Communication',
-  'Automation',
-  'Custom',
-];
-
-const AGENT_TEMPLATES = [
+const AGENT_TEMPLATES: AgentTemplate[] = [
   {
     id: 'content-writer',
     name: 'Content Writer',
-    description: 'Generates high-quality written content',
-    category: 'Content Generation',
-    capabilities: ['Writing', 'Editing', 'SEO Optimization'],
+    description: 'Creates blog posts, articles, and marketing copy',
+    icon: <FileText className="h-6 w-6" />,
+    category: 'content',
+    capabilities: ['Writing', 'SEO Optimization', 'Research'],
+    complexity: 'beginner',
   },
   {
     id: 'data-analyst',
     name: 'Data Analyst',
-    description: 'Analyzes data and provides insights',
-    category: 'Analysis',
-    capabilities: ['Data Analysis', 'Visualization', 'Reporting'],
+    description: 'Analyzes data and generates insights',
+    icon: <Database className="h-6 w-6" />,
+    category: 'analysis',
+    capabilities: ['Data Processing', 'Statistical Analysis', 'Visualization'],
+    complexity: 'intermediate',
   },
   {
     id: 'customer-support',
     name: 'Customer Support',
-    description: 'Handles customer inquiries and support',
-    category: 'Communication',
-    capabilities: ['Customer Service', 'Problem Solving', 'Documentation'],
+    description: 'Handles customer inquiries and support tickets',
+    icon: <MessageSquare className="h-6 w-6" />,
+    category: 'communication',
+    capabilities: ['Natural Language Processing', 'Ticket Management', 'FAQ'],
+    complexity: 'beginner',
+  },
+  {
+    id: 'code-reviewer',
+    name: 'Code Reviewer',
+    description: 'Reviews code for quality and security issues',
+    icon: <Code className="h-6 w-6" />,
+    category: 'analysis',
+    capabilities: ['Code Analysis', 'Security Scanning', 'Best Practices'],
+    complexity: 'advanced',
   },
 ];
 
-const CreateAgentModal = ({ isOpen, onClose, onCreateAgent }: CreateAgentModalProps) => {
-  const [agentData, setAgentData] = useState<AgentFormData>({
+const CreateAgentModal = ({ onClose, onCreate }: CreateAgentModalProps) => {
+  const [activeTab, setActiveTab] = useState('template');
+  const [selectedTemplate, setSelectedTemplate] = useState<AgentTemplate | null>(null);
+  const [agentConfig, setAgentConfig] = useState({
     name: '',
     description: '',
-    category: '',
     type: 'custom',
-    capabilities: [],
-    configuration: {
-      model: 'gpt-4',
-      temperature: 0.7,
-      maxTokens: 1000,
-      systemPrompt: '',
-    },
+    model: 'gpt-4',
+    temperature: 0.7,
+    maxTokens: 1000,
+    systemPrompt: '',
+    isPublic: false,
+    tags: [] as string[],
   });
 
-  const [currentCapability, setCurrentCapability] = useState('');
-
-  const handleInputChange = (field: keyof AgentFormData, value: any) => {
-    setAgentData(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleConfigChange = (field: keyof AgentFormData['configuration'], value: any) => {
-    setAgentData(prev => ({
-      ...prev,
-      configuration: { ...prev.configuration, [field]: value },
-    }));
-  };
-
-  const addCapability = () => {
-    if (currentCapability.trim() && !agentData.capabilities.includes(currentCapability.trim())) {
-      setAgentData(prev => ({
-        ...prev,
-        capabilities: [...prev.capabilities, currentCapability.trim()],
-      }));
-      setCurrentCapability('');
-    }
-  };
-
-  const removeCapability = (capability: string) => {
-    setAgentData(prev => ({
-      ...prev,
-      capabilities: prev.capabilities.filter(c => c !== capability),
-    }));
-  };
-
-  const handleTemplateSelect = (template: typeof AGENT_TEMPLATES[0]) => {
-    setAgentData(prev => ({
+  const handleTemplateSelect = (template: AgentTemplate) => {
+    setSelectedTemplate(template);
+    setAgentConfig(prev => ({
       ...prev,
       name: template.name,
       description: template.description,
-      category: template.category,
-      type: 'template',
-      capabilities: [...template.capabilities],
+      type: template.id,
     }));
+    setActiveTab('configure');
   };
 
-  const handleSubmit = () => {
-    const form = document.forms.namedItem('agent-form') as HTMLFormElement;
-    if (form?.checkValidity()) {
-      onCreateAgent(agentData);
-      onClose();
-      // Reset form
-      setAgentData({
-        name: '',
-        description: '',
-        category: '',
-        type: 'custom',
-        capabilities: [],
-        configuration: {
-          model: 'gpt-4',
-          temperature: 0.7,
-          maxTokens: 1000,
-          systemPrompt: '',
-        },
-      });
+  const handleCreate = () => {
+    const agentData = {
+      ...agentConfig,
+      template: selectedTemplate,
+      createdAt: new Date().toISOString(),
+    };
+    onCreate(agentData);
+  };
+
+  const getCategoryIcon = (category: AgentTemplate['category']) => {
+    switch (category) {
+      case 'content': return <FileText className="h-4 w-4" />;
+      case 'analysis': return <Database className="h-4 w-4" />;
+      case 'automation': return <Bot className="h-4 w-4" />;
+      case 'communication': return <MessageSquare className="h-4 w-4" />;
+      default: return <Brain className="h-4 w-4" />;
+    }
+  };
+
+  const getComplexityColor = (complexity: AgentTemplate['complexity']) => {
+    switch (complexity) {
+      case 'beginner': return 'bg-green-100 text-green-800';
+      case 'intermediate': return 'bg-yellow-100 text-yellow-800';
+      case 'advanced': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh]">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Bot className="h-5 w-5" />
-            Create New AI Agent
-          </DialogTitle>
-          <DialogDescription>
-            Build a custom AI agent or start from a template
-          </DialogDescription>
-        </DialogHeader>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-background rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold">Create AI Agent</h2>
+              <p className="text-muted-foreground">Build a custom AI agent for your workflows</p>
+            </div>
+            <Button variant="outline" onClick={onClose}>
+              Close
+            </Button>
+          </div>
+        </div>
 
-        <ScrollArea className="max-h-[70vh]">
-          <form name="agent-form" className="space-y-6">
-            {/* Template Selection */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Quick Start Templates</CardTitle>
-                <CardDescription>Choose a template to get started quickly</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-3">
+        <div className="p-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="template">Choose Template</TabsTrigger>
+              <TabsTrigger value="configure">Configure</TabsTrigger>
+              <TabsTrigger value="review">Review & Create</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="template" className="space-y-4 mt-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Select an Agent Template</h3>
+                <div className="grid gap-4 md:grid-cols-2">
                   {AGENT_TEMPLATES.map((template) => (
-                    <div
+                    <Card
                       key={template.id}
-                      className={`p-3 rounded-lg border cursor-pointer transition-colors ${
-                        agentData.name === template.name
-                          ? 'border-primary bg-primary/5'
-                          : 'border-border hover:bg-muted/50'
+                      className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
+                        selectedTemplate?.id === template.id ? 'ring-2 ring-primary' : ''
                       }`}
                       onClick={() => handleTemplateSelect(template)}
                     >
-                      <div className="flex justify-between items-start">
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="text-primary">{template.icon}</div>
+                            <div>
+                              <CardTitle className="text-base">{template.name}</CardTitle>
+                              <div className="flex items-center gap-2 mt-1">
+                                {getCategoryIcon(template.category)}
+                                <span className="text-sm text-muted-foreground capitalize">
+                                  {template.category}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <Badge className={getComplexityColor(template.complexity)}>
+                            {template.complexity}
+                          </Badge>
+                        </div>
+                        <CardDescription>{template.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex flex-wrap gap-1">
+                          {template.capabilities.map((capability) => (
+                            <Badge key={capability} variant="outline" className="text-xs">
+                              {capability}
+                            </Badge>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="configure" className="space-y-6 mt-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="name">Agent Name</Label>
+                    <Input
+                      id="name"
+                      value={agentConfig.name}
+                      onChange={(e) => setAgentConfig(prev => ({ ...prev, name: e.target.value }))}
+                      placeholder="Enter agent name"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      value={agentConfig.description}
+                      onChange={(e) => setAgentConfig(prev => ({ ...prev, description: e.target.value }))}
+                      placeholder="Describe what this agent does"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="model">AI Model</Label>
+                    <Select value={agentConfig.model} onValueChange={(value) => setAgentConfig(prev => ({ ...prev, model: value }))}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="gpt-4">GPT-4</SelectItem>
+                        <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
+                        <SelectItem value="claude-3">Claude 3</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="systemPrompt">System Prompt</Label>
+                    <Textarea
+                      id="systemPrompt"
+                      value={agentConfig.systemPrompt}
+                      onChange={(e) => setAgentConfig(prev => ({ ...prev, systemPrompt: e.target.value }))}
+                      placeholder="Define the agent's behavior and personality"
+                      rows={6}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="isPublic">Make Public</Label>
+                      <p className="text-sm text-muted-foreground">Allow others to use this agent</p>
+                    </div>
+                    <Switch
+                      id="isPublic"
+                      checked={agentConfig.isPublic}
+                      onCheckedChange={(checked) => setAgentConfig(prev => ({ ...prev, isPublic: checked }))}
+                    />
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="review" className="space-y-6 mt-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Review Your Agent</h3>
+                {selectedTemplate && (
+                  <Card>
+                    <CardHeader>
+                      <div className="flex items-center gap-3">
+                        <div className="text-primary">{selectedTemplate.icon}</div>
                         <div>
-                          <h4 className="font-medium">{template.name}</h4>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {template.description}
+                          <CardTitle>{agentConfig.name}</CardTitle>
+                          <CardDescription>{agentConfig.description}</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div>
+                          <Label>Template</Label>
+                          <p className="text-sm text-muted-foreground">{selectedTemplate.name}</p>
+                        </div>
+                        <div>
+                          <Label>AI Model</Label>
+                          <p className="text-sm text-muted-foreground">{agentConfig.model}</p>
+                        </div>
+                        <div>
+                          <Label>Visibility</Label>
+                          <p className="text-sm text-muted-foreground">
+                            {agentConfig.isPublic ? 'Public' : 'Private'}
                           </p>
                         </div>
-                        <Badge variant="secondary">{template.category}</Badge>
                       </div>
-                      <div className="flex gap-1 mt-2">
-                        {template.capabilities.map((capability) => (
-                          <Badge key={capability} variant="outline" className="text-xs">
-                            {capability}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                      {agentConfig.systemPrompt && (
+                        <div>
+                          <Label>System Prompt</Label>
+                          <p className="text-sm text-muted-foreground bg-muted p-3 rounded-md mt-1">
+                            {agentConfig.systemPrompt}
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
 
-            <Separator />
-
-            {/* Basic Information */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Basic Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="agent-name">Agent Name *</Label>
-                  <Input
-                    id="agent-name"
-                    value={agentData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder="Enter agent name"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="agent-description">Description *</Label>
-                  <Textarea
-                    id="agent-description"
-                    value={agentData.description}
-                    onChange={(e) => handleInputChange('description', e.target.value)}
-                    placeholder="Describe what this agent does"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="agent-category">Category *</Label>
-                  <Select
-                    value={agentData.category}
-                    onValueChange={(value) => handleInputChange('category', value)}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {AGENT_CATEGORIES.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Capabilities */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Capabilities</CardTitle>
-                <CardDescription>Define what this agent can do</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-2">
-                  <Input
-                    value={currentCapability}
-                    onChange={(e) => setCurrentCapability(e.target.value)}
-                    placeholder="Add a capability"
-                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCapability())}
-                  />
-                  <Button type="button" onClick={addCapability} size="sm">
-                    <Plus className="h-4 w-4" />
+                <div className="flex justify-end gap-3 mt-6">
+                  <Button variant="outline" onClick={() => setActiveTab('configure')}>
+                    Back to Configure
+                  </Button>
+                  <Button onClick={handleCreate} disabled={!agentConfig.name || !selectedTemplate}>
+                    Create Agent
                   </Button>
                 </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {agentData.capabilities.map((capability) => (
-                    <Badge
-                      key={capability}
-                      variant="secondary"
-                      className="cursor-pointer"
-                      onClick={() => removeCapability(capability)}
-                    >
-                      {capability} ×
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Configuration */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">AI Configuration</CardTitle>
-                <CardDescription>Configure the AI model settings</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="model">AI Model</Label>
-                  <Select
-                    value={agentData.configuration.model}
-                    onValueChange={(value) => handleConfigChange('model', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="gpt-4">GPT-4</SelectItem>
-                      <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
-                      <SelectItem value="claude-3">Claude 3</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label htmlFor="system-prompt">System Prompt</Label>
-                  <Textarea
-                    id="system-prompt"
-                    value={agentData.configuration.systemPrompt}
-                    onChange={(e) => handleConfigChange('systemPrompt', e.target.value)}
-                    placeholder="Define the agent's behavior and role"
-                    rows={4}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          </form>
-        </ScrollArea>
-
-        <div className="flex justify-between pt-4">
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit}>
-            <Save className="mr-2 h-4 w-4" />
-            Create Agent
-          </Button>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };
 

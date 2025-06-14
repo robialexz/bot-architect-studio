@@ -1,13 +1,12 @@
+
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ReactFlow, {
   Node,
-  Edge,
   addEdge,
   Connection,
   useNodesState,
   useEdgesState,
   Controls,
-  MiniMap,
   Background,
   BackgroundVariant,
   Panel,
@@ -17,31 +16,21 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import {
   Play,
   Save,
-  Download,
-  Upload,
   Settings,
   Search,
-  Plus,
   Zap,
   Database,
   Bot,
   Workflow as WorkflowIcon,
   Layers,
-  HelpCircle,
-  BookOpen,
-  Target,
-  Trash2,
   RefreshCw,
-  Share,
 } from 'lucide-react';
 
 import { NodeTemplateService } from '@/services/nodeTemplateService';
@@ -59,7 +48,6 @@ import TutorialProgressTracker from './tutorial/TutorialProgressTracker';
 import ContextualHelp from './help/ContextualHelp';
 import SmartOnboarding from './onboarding/SmartOnboarding';
 import { TutorialValidationService } from '@/services/tutorialValidationService';
-import { EnhancedAIModelService } from '@/services/enhancedAIModelService';
 
 // Custom node components
 import AINodeComponent from './nodes/AINodeComponent';
@@ -101,7 +89,6 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
   const [workflow, setWorkflow] = useState<Workflow | null>(null);
-  const [selectedNode, setSelectedNode] = useState<Node | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAIConfigWizard, setShowAIConfigWizard] = useState(false);
   const [configNodeId, setConfigNodeId] = useState<string | null>(null);
@@ -125,10 +112,7 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
   const [showContextualHelp, setShowContextualHelp] = useState(true);
   const [currentContext, setCurrentContext] = useState('node-library');
   const [userLevel, setUserLevel] = useState<'beginner' | 'intermediate' | 'advanced'>('beginner');
-  const [completedExercises, setCompletedExercises] = useState<string[]>([]);
-
-  // Tutorial validation service
-  const tutorialValidationService = TutorialValidationService.getInstance();
+  const [completedExercises] = useState<string[]>([]);
 
   const handleNodeConfigChange = useCallback(
     (nodeId: string, config: Record<string, unknown>) => {
@@ -299,8 +283,8 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
         userId: user.id,
         isPublic: false,
         tags: [],
-        category: workflow?.category || 'custom',
-        status: 'draft',
+        category: 'automation' as const,
+        status: 'draft' as const,
         version: 1,
         lastExecuted: undefined,
         executionCount: 0,
@@ -462,23 +446,6 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
     setDragPreview({ template: null, position: { x: 0, y: 0 } });
   }, []);
 
-  const getCategoryIcon = (category: NodeCategory) => {
-    switch (category) {
-      case NodeCategory.AI_MODELS:
-        return <Bot className="w-4 h-4" />;
-      case NodeCategory.DATA_PROCESSING:
-        return <Database className="w-4 h-4" />;
-      case NodeCategory.INTEGRATIONS:
-        return <Layers className="w-4 h-4" />;
-      case NodeCategory.UTILITIES:
-        return <Settings className="w-4 h-4" />;
-      case NodeCategory.TRIGGERS:
-        return <Zap className="w-4 h-4" />;
-      default:
-        return <WorkflowIcon className="w-4 h-4" />;
-    }
-  };
-
   // Load workflow if workflowId is provided - Fixed hoisting issue
   useEffect(() => {
     if (workflowId && workflowId !== 'new' && workflowId !== 'new-workflow') {
@@ -488,7 +455,6 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
 
   // Smart onboarding for new users - Disabled for now to allow direct access to workflow builder
   useEffect(() => {
-    const hasSeenOnboarding = localStorage.getItem('aiflow-onboarding-completed');
     // Temporarily disable automatic onboarding to fix workflow builder access
     // if (!hasSeenOnboarding && !workflowId) {
     //   setShowSmartOnboarding(true);
@@ -519,13 +485,6 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
     localStorage.setItem('aiflow-user-level', type);
   };
 
-  const handleStartComprehensiveTutorial = (type: 'beginner' | 'intermediate' | 'advanced') => {
-    setTutorialType(type);
-    setShowComprehensiveTutorial(true);
-    setUserLevel(type);
-    localStorage.setItem('aiflow-user-level', type);
-  };
-
   const handleCompleteTutorial = () => {
     setShowInteractiveTutorial(false);
     localStorage.setItem('aiflow-onboarding-completed', 'true');
@@ -543,7 +502,7 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
     localStorage.setItem('aiflow-onboarding-completed', 'true');
   };
 
-  const handleStartLearningPath = (pathId: string) => {
+  const handleStartLearningPath = () => {
     setShowProgressTracker(false);
     // Logic to start specific learning path
     setShowComprehensiveTutorial(true);
@@ -658,7 +617,7 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
                           dataTransfer: {
                             getData: () => template.id,
                           },
-                        } as React.DragEvent<HTMLDivElement>);
+                        } as unknown as React.DragEvent<HTMLDivElement>);
                       }
                     }}
                   >

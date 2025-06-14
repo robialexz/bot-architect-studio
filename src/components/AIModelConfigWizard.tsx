@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,19 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Brain, 
-  Settings, 
-  Sparkles, 
-  BookOpen,
   Save, 
   RotateCcw, 
-  Download,
-  Upload,
-  AlertCircle,
+  BookOpen,
   Info
 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -126,7 +118,6 @@ const PROMPT_TEMPLATES = [
 const AIModelConfigWizard = ({ onSave, onCancel, initialConfig }: AIModelConfigWizardProps) => {
   const [config, setConfig] = useState<AIModelConfig>({ ...DEFAULT_CONFIG, ...initialConfig });
   const [activeTab, setActiveTab] = useState('model');
-  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const updateConfig = (updates: Partial<AIModelConfig>) => {
     setConfig(prev => ({ ...prev, ...updates }));
@@ -320,7 +311,6 @@ const AIModelConfigWizard = ({ onSave, onCancel, initialConfig }: AIModelConfigW
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <Label>Prompt Templates</Label>
-                  <Badge variant="secondary">Quick Start</Badge>
                 </div>
                 <div className="grid gap-2">
                   {PROMPT_TEMPLATES.map((template) => (

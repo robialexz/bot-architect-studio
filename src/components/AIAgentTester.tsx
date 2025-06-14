@@ -6,13 +6,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { AlertCircle, CheckCircle, Clock, Play, Loader2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface AIAgentExecution {
   id: string;
@@ -29,7 +26,7 @@ interface AIAgentTesterProps {
   onClose: () => void;
 }
 
-const AIAgentTester = ({ agentId, agentName, onClose }: AIAgentTesterProps) => {
+const AIAgentTester = ({ agentName, onClose }: AIAgentTesterProps) => {
   const [testInputs, setTestInputs] = useState<Record<string, string>>({});
   const [testResults, setTestResults] = useState<AIAgentExecution[]>([]);
   const [isExecuting, setIsExecuting] = useState(false);
@@ -41,9 +38,8 @@ const AIAgentTester = ({ agentId, agentName, onClose }: AIAgentTesterProps) => {
     concurrency: 3,
     timeout: 30000,
   });
-  const [complexity, setComplexity] = useState<'simple' | 'medium' | 'complex'>('simple');
 
-  const executeAgent = async (inputs: Record<string, any>): Promise<AIAgentExecution> => {
+  const executeAgent = async (): Promise<AIAgentExecution> => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
     
@@ -62,7 +58,7 @@ const AIAgentTester = ({ agentId, agentName, onClose }: AIAgentTesterProps) => {
   const handleSingleTest = async () => {
     setIsExecuting(true);
     try {
-      const result = await executeAgent(testInputs);
+      const result = await executeAgent();
       setTestResults(prev => [result, ...prev]);
       setSelectedExecution(result);
     } catch (error) {
