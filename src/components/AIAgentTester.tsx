@@ -1,396 +1,315 @@
-import React, { useState } from 'react';
-import { MotionDiv } from '@/lib/motion-wrapper';
 
-import {
-  Bot,
-  Play,
-  Loader2,
-  CheckCircle,
-  AlertCircle,
-  Clock,
-  Zap,
-  FileText,
-  BarChart3,
-  Image,
-  Link,
-  Workflow,
-  // Square still seems unused, keeping it out for now
-} from 'lucide-react';
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { GlassCard } from '@/components/ui/glass-card';
-import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { useAuth } from '@/hooks/useAuth';
-// Use AIAgentExecution from the service as the source of truth
-import { RealAIAgentService, RealAIAgent, AIAgentExecution } from '@/services/realAIAgentService';
-import { TokenService } from '@/services/tokenService';
-import { toast } from 'sonner';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { AlertCircle, CheckCircle, Clock, Play, Loader2 } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-// Local AIAgentExecution interface removed, using imported one.
-// safeStringifyOutput helper function removed as we'll use the incoming logic for display.
-
-interface AIAgentTesterProps {
-  agent?: RealAIAgent;
-  onExecutionComplete?: (result: AIAgentExecution) => void;
+interface AIAgentExecution {
+  id: string;
+  status: 'completed' | 'failed';
+  execution_time_ms?: number;
+  tokens_used?: number;
+  output_data?: any;
+  error_message?: string;
 }
 
-const AIAgentTester: React.FC<AIAgentTesterProps> = ({ agent, onExecutionComplete }) => {
-  const { user } = useAuth();
+interface AIAgentTesterProps {
+  agentId: string;
+  agentName: string;
+  onClose: () => void;
+}
+
+const AIAgentTester = ({ agentId, agentName, onClose }: AIAgentTesterProps) => {
+  const [testInputs, setTestInputs] = useState<Record<string, string>>({});
+  const [testResults, setTestResults] = useState<AIAgentExecution[]>([]);
   const [isExecuting, setIsExecuting] = useState(false);
-  const [executionResult, setExecutionResult] = useState<AIAgentExecution | null>(null);
-  const [inputData, setInputData] = useState({
-    prompt: '',
-    text: '',
-    data: '',
-    endpoints: '',
-    images: '',
-    operations: '',
-    workflow: '',
+  const [selectedExecution, setSelectedExecution] = useState<AIAgentExecution | null>(null);
+  const [testMode, setTestMode] = useState<'single' | 'batch' | 'performance'>('single');
+  const [batchInputs, setBatchInputs] = useState<string>('');
+  const [performanceSettings, setPerformanceSettings] = useState({
+    iterations: 10,
+    concurrency: 3,
+    timeout: 30000,
   });
-  const [complexity, setComplexity] = useState<'low' | 'medium' | 'high'>('medium');
-  const [tokenCost, setTokenCost] = useState(0);
+  const [complexity, setComplexity] = useState<'simple' | 'medium' | 'complex'>('simple');
 
-  React.useEffect(() => {
-    if (agent) {
-      const cost = TokenService.calculateTokenCost(agent.type, complexity);
-      setTokenCost(cost);
-    }
-  }, [agent, complexity]);
+  const executeAgent = async (inputs: Record<string, any>): Promise<AIAgentExecution> => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    const mockExecution: AIAgentExecution = {
+      id: `exec_${Date.now()}`,
+      status: Math.random() > 0.2 ? 'completed' : 'failed',
+      execution_time_ms: Math.floor(Math.random() * 5000) + 500,
+      tokens_used: Math.floor(Math.random() * 1000) + 100,
+      output_data: Math.random() > 0.2 ? { result: 'Mock successful output', confidence: 0.85 } : undefined,
+      error_message: Math.random() > 0.2 ? undefined : 'Mock error: Processing failed',
+    };
 
-  const handleExecuteAgent = async () => {
-    if (!agent || !user) {
-      toast.error('Agent or user not available');
-      return;
-    }
+    return mockExecution;
+  };
 
-    const hasTokens = await TokenService.hasEnoughTokens(user.id, tokenCost);
-    if (!hasTokens) {
-      toast.error(`Insufficient tokens. Need ${tokenCost} tokens for this execution.`);
-      return;
-    }
-
+  const handleSingleTest = async () => {
     setIsExecuting(true);
-    setExecutionResult(null);
-
     try {
-      let processedInput: Record<string, unknown> = {};
-      switch (agent.type) {
-        case 'text_generator':
-          processedInput = { prompt: inputData.prompt || inputData.text };
-          break;
-        case 'data_analyzer':
-          processedInput = { data: inputData.data ? JSON.parse(inputData.data) : [] };
-          break;
-        case 'workflow_executor':
-          processedInput = {
-            workflow: inputData.workflow ? JSON.parse(inputData.workflow) : { steps: [] },
-          };
-          break;
-        case 'api_connector':
-          processedInput = {
-            endpoints: inputData.endpoints
-              .split(',')
-              .map(e => e.trim())
-              .filter(Boolean),
-          };
-          break;
-        case 'image_processor':
-          processedInput = {
-            images: inputData.images
-              .split(',')
-              .map(i => i.trim())
-              .filter(Boolean),
-            operations: inputData.operations
-              .split(',')
-              .map(o => o.trim())
-              .filter(Boolean),
-          };
-          break;
-        default:
-          processedInput = { text: inputData.text };
-          break;
-      }
-
-      const result: AIAgentExecution = await RealAIAgentService.executeAIAgent(
-        agent.id,
-        user.id,
-        processedInput,
-        complexity
-      );
-
-      setExecutionResult(result);
-
-      if (result.status === 'completed') {
-        toast.success('AI Agent executed successfully!');
-      } else {
-        toast.error(`Execution failed: ${result.error_message || 'Unknown error'}`);
-      }
-
-      if (onExecutionComplete) {
-        onExecutionComplete(result);
-      }
+      const result = await executeAgent(testInputs);
+      setTestResults(prev => [result, ...prev]);
+      setSelectedExecution(result);
     } catch (error) {
-      console.error('Agent execution error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Failed to execute AI agent';
-      setExecutionResult({ status: 'failed', error_message: errorMessage } as AIAgentExecution); // Ensure type cast for error state
-      toast.error(errorMessage);
+      console.error('Test execution failed:', error);
     } finally {
       setIsExecuting(false);
     }
   };
 
-  const getAgentIcon = (type: string) => {
-    switch (type) {
-      case 'text_generator':
-        return <FileText className="h-5 w-5" />;
-      case 'data_analyzer':
-        return <BarChart3 className="h-5 w-5" />;
-      case 'workflow_executor':
-        return <Workflow className="h-5 w-5" />;
-      case 'api_connector':
-        return <Link className="h-5 w-5" />;
-      case 'image_processor':
-        return <Image className="h-5 w-5" />;
-      default:
-        return <Bot className="h-5 w-5" />;
-    }
-  };
-
-  const renderInputFields = () => {
-    if (!agent) return null;
-    switch (agent.type) {
-      case 'text_generator':
-        return (
-          <div>
-            <Label htmlFor="prompt">Text Prompt</Label>
-            <Textarea
-              id="prompt"
-              placeholder="Enter your text prompt here..."
-              value={inputData.prompt}
-              onChange={e => setInputData(prev => ({ ...prev, prompt: e.target.value }))}
-              className="mt-2"
-              rows={4}
-            />
-          </div>
-        );
-      case 'data_analyzer':
-        return (
-          <div>
-            <Label htmlFor="data">Data (JSON format)</Label>
-            <Textarea
-              id="data"
-              placeholder='[{"name": "item1", "value": 100}, {"name": "item2", "value": 200}]'
-              value={inputData.data}
-              onChange={e => setInputData(prev => ({ ...prev, data: e.target.value }))}
-              className="mt-2"
-              rows={6}
-            />
-          </div>
-        );
-      case 'workflow_executor':
-        return (
-          <div>
-            <Label htmlFor="workflow">Workflow Definition (JSON)</Label>
-            <Textarea
-              id="workflow"
-              placeholder='{"steps": [{"name": "step1", "action": "process"}, {"name": "step2", "action": "analyze"}]}'
-              value={inputData.workflow}
-              onChange={e => setInputData(prev => ({ ...prev, workflow: e.target.value }))}
-              className="mt-2"
-              rows={6}
-            />
-          </div>
-        );
-      case 'api_connector':
-        return (
-          <div>
-            <Label htmlFor="endpoints">API Endpoints (comma-separated)</Label>
-            <Input
-              id="endpoints"
-              placeholder="https://api.example.com/data, https://api.another.com/info"
-              value={inputData.endpoints}
-              onChange={e => setInputData(prev => ({ ...prev, endpoints: e.target.value }))}
-              className="mt-2"
-            />
-          </div>
-        );
-      case 'image_processor':
-        return (
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="images">Image URLs (comma-separated)</Label>
-              <Input
-                id="images"
-                placeholder="https://example.com/image1.jpg, https://example.com/image2.png"
-                value={inputData.images}
-                onChange={e => setInputData(prev => ({ ...prev, images: e.target.value }))}
-                className="mt-2"
-              />
-            </div>
-            <div>
-              <Label htmlFor="operations">Operations (comma-separated)</Label>
-              <Input
-                id="operations"
-                placeholder="resize, enhance, analyze, crop"
-                value={inputData.operations}
-                onChange={e => setInputData(prev => ({ ...prev, operations: e.target.value }))}
-                className="mt-2"
-              />
-            </div>
-          </div>
-        );
-      default:
-        return (
-          <div>
-            <Label htmlFor="text-default">Input Text</Label>
-            <Textarea
-              id="text-default"
-              placeholder="Enter your input here..."
-              value={inputData.text}
-              onChange={e => setInputData(prev => ({ ...prev, text: e.target.value }))}
-              className="mt-2"
-              rows={4}
-            />
-          </div>
-        );
-    }
-  };
-
-  if (!agent) {
-    return (
-      <GlassCard className="premium-card bg-card/80 backdrop-blur-lg border border-border-alt shadow-xl p-6">
-        <div className="text-center py-8">
-          <Bot className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-muted-foreground">No AI agent selected</p>
-        </div>
-      </GlassCard>
-    );
-  }
-
   return (
-    <GlassCard className="premium-card bg-card/80 backdrop-blur-lg border border-border-alt shadow-xl p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary/10 rounded-lg">{getAgentIcon(agent.type)}</div>
-          <div>
-            <h3 className="text-lg font-bold text-foreground">{agent.name}</h3>
-            <p className="text-sm text-muted-foreground capitalize">
-              {agent.type.replace('_', ' ')} Agent
-            </p>
-          </div>
-        </div>
-        <Badge variant={agent.is_active ? 'default' : 'secondary'}>
-          {agent.is_active ? 'Active' : 'Inactive'}
-        </Badge>
-      </div>
-
-      <div className="space-y-4 mb-6">
-        {renderInputFields()}
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
         <div>
-          <Label htmlFor="complexity">Execution Complexity</Label>
-          <Select
-            value={complexity}
-            onValueChange={(value: 'low' | 'medium' | 'high') => setComplexity(value)}
-          >
-            <SelectTrigger className="mt-2">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="low">Low (0.5x cost)</SelectItem>
-              <SelectItem value="medium">Medium (1x cost)</SelectItem>
-              <SelectItem value="high">High (2x cost)</SelectItem>
-            </SelectContent>
-          </Select>
+          <h2 className="text-2xl font-bold">AI Agent Tester</h2>
+          <p className="text-muted-foreground">Testing agent: {agentName}</p>
         </div>
-        <div className="flex items-center justify-between p-3 bg-background/50 rounded-lg">
-          <div className="flex items-center gap-2">
-            <Zap className="h-4 w-4 text-gold" />
-            <span className="text-sm text-muted-foreground">Execution Cost</span>
-          </div>
-          <span className="font-bold text-foreground">{tokenCost} tokens</span>
-        </div>
+        <Button variant="outline" onClick={onClose}>
+          Close
+        </Button>
       </div>
 
-      <Button
-        onClick={handleExecuteAgent}
-        disabled={isExecuting || !agent.is_active}
-        className="w-full mb-6"
-        size="lg"
-      >
-        {isExecuting ? (
-          <>
-            <Loader2 className="w-5 h-5 mr-2 animate-spin" /> Executing...
-          </>
-        ) : (
-          <>
-            <Play className="w-5 h-5 mr-2" /> Execute Agent
-          </>
-        )}
-      </Button>
+      <Tabs value={testMode} onValueChange={(value) => setTestMode(value as typeof testMode)}>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="single">Single Test</TabsTrigger>
+          <TabsTrigger value="batch">Batch Test</TabsTrigger>
+          <TabsTrigger value="performance">Performance Test</TabsTrigger>
+        </TabsList>
 
-      {executionResult && (
-        <MotionDiv
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-4"
-        >
-          <div className="flex items-center gap-2 mb-4">
-            {executionResult.status === 'completed' ? (
-              <CheckCircle className="h-5 w-5 text-green-500" />
-            ) : (
-              <AlertCircle className="h-5 w-5 text-red-500" />
-            )}
-            <span className="font-medium">
-              Execution {executionResult.status === 'completed' ? 'Completed' : 'Failed'}
-            </span>
-          </div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="text-center p-3 bg-background/50 rounded-lg">
-              <Clock className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-              <div className="text-sm text-muted-foreground">Execution Time</div>
-              <div className="font-bold">{executionResult.execution_time_ms ?? 'N/A'}ms</div>
+        <TabsContent value="single" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Test Configuration</CardTitle>
+              <CardDescription>Configure inputs for single test execution</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-4">
+                <div>
+                  <Label htmlFor="input-text">Input Text</Label>
+                  <Textarea
+                    id="input-text"
+                    placeholder="Enter test input..."
+                    value={testInputs.text || ''}
+                    onChange={(e) => setTestInputs(prev => ({ ...prev, text: e.target.value }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="context">Context (Optional)</Label>
+                  <Input
+                    id="context"
+                    placeholder="Additional context..."
+                    value={testInputs.context || ''}
+                    onChange={(e) => setTestInputs(prev => ({ ...prev, context: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <Button onClick={handleSingleTest} disabled={isExecuting} className="w-full">
+                {isExecuting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Executing...
+                  </>
+                ) : (
+                  <>
+                    <Play className="mr-2 h-4 w-4" />
+                    Run Test
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="batch" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Batch Test Configuration</CardTitle>
+              <CardDescription>Run multiple tests with different inputs</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="batch-inputs">Batch Inputs (JSON)</Label>
+                <Textarea
+                  id="batch-inputs"
+                  placeholder="[{&quot;text&quot;: &quot;input1&quot;}, {&quot;text&quot;: &quot;input2&quot;}]"
+                  value={batchInputs}
+                  onChange={(e) => setBatchInputs(e.target.value)}
+                  rows={6}
+                />
+              </div>
+              <Button disabled={isExecuting} className="w-full">
+                {isExecuting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Running Batch...
+                  </>
+                ) : (
+                  'Run Batch Test'
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="performance" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Performance Test Configuration</CardTitle>
+              <CardDescription>Test agent performance under load</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="iterations">Iterations</Label>
+                  <Input
+                    id="iterations"
+                    type="number"
+                    value={performanceSettings.iterations}
+                    onChange={(e) => setPerformanceSettings(prev => ({ 
+                      ...prev, 
+                      iterations: parseInt(e.target.value) || 10 
+                    }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="concurrency">Concurrency</Label>
+                  <Input
+                    id="concurrency"
+                    type="number"
+                    value={performanceSettings.concurrency}
+                    onChange={(e) => setPerformanceSettings(prev => ({ 
+                      ...prev, 
+                      concurrency: parseInt(e.target.value) || 3 
+                    }))}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="timeout">Timeout (ms)</Label>
+                  <Input
+                    id="timeout"
+                    type="number"
+                    value={performanceSettings.timeout}
+                    onChange={(e) => setPerformanceSettings(prev => ({ 
+                      ...prev, 
+                      timeout: parseInt(e.target.value) || 30000 
+                    }))}
+                  />
+                </div>
+              </div>
+              <Button disabled={isExecuting} className="w-full">
+                {isExecuting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Running Performance Test...
+                  </>
+                ) : (
+                  'Run Performance Test'
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      {/* Test Results */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Test Results</CardTitle>
+          <CardDescription>
+            {testResults.length} test{testResults.length !== 1 ? 's' : ''} executed
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {testResults.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              No test results yet. Run a test to see results here.
             </div>
-            <div className="text-center p-3 bg-background/50 rounded-lg">
-              <Zap className="h-4 w-4 mx-auto mb-1 text-gold" />
-              <div className="text-sm text-muted-foreground">Tokens Used</div>
-              <div className="font-bold">{executionResult.tokens_used ?? 'N/A'}</div>
-            </div>
-          </div>
-          {executionResult.status === 'completed' && executionResult.output_data && (
-            <div>
-              <Label>Execution Result</Label>
-              <Label>Execution Result</Label>
-              <Label>Execution Result</Label>
-              <div className="mt-2 p-4 bg-background/50 rounded-lg">
-                <pre className="text-sm text-foreground whitespace-pre-wrap overflow-auto max-h-64">
-                  {/* Using the incoming version for displaying output_data */}
-                  {typeof executionResult.output_data === 'string'
-                    ? executionResult.output_data
-                    : JSON.stringify(executionResult.output_data, null, 2)}
+          ) : (
+            <ScrollArea className="h-64">
+              <div className="space-y-2">
+                {testResults.map((result) => (
+                  <div
+                    key={result.id}
+                    className={`p-3 rounded-lg border cursor-pointer transition-colors ${
+                      selectedExecution?.id === result.id
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border hover:bg-muted/50'
+                    }`}
+                    onClick={() => setSelectedExecution(result)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {result.status === 'completed' ? (
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <AlertCircle className="h-4 w-4 text-red-500" />
+                        )}
+                        <Badge variant={result.status === 'completed' ? 'default' : 'destructive'}>
+                          {result.status}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        {result.execution_time_ms && (
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {result.execution_time_ms}ms
+                          </span>
+                        )}
+                        {result.tokens_used && (
+                          <span>{result.tokens_used} tokens</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Selected Execution Details */}
+      {selectedExecution && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Execution Details</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {selectedExecution.status === 'completed' && selectedExecution.output_data && (
+              <div>
+                <Label>Output</Label>
+                <pre className="mt-1 p-3 bg-muted rounded-md text-sm overflow-auto">
+                  {JSON.stringify(selectedExecution.output_data, null, 2)}
                 </pre>
               </div>
-            </div>
-          )}
-          {executionResult.status === 'failed' && executionResult.error_message && (
-            <div>
-              <Label className="text-red-500">Error Message</Label>
-              <div className="mt-2 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                <p className="text-sm text-red-500">{executionResult.error_message}</p>
-              </div>
-            </div>
-          )}
-        </MotionDiv>
+            )}
+            {selectedExecution.status === 'failed' && selectedExecution.error_message && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  {selectedExecution.error_message}
+                </AlertDescription>
+              </Alert>
+            )}
+          </CardContent>
+        </Card>
       )}
-    </GlassCard>
+    </div>
   );
 };
 

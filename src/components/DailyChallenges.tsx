@@ -1,407 +1,389 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { MotionDiv, SafeAnimatePresence } from '@/lib/motion-wrapper';
-import {
-  Calendar,
-  Target,
-  CheckCircle,
-  Clock,
-  Flame,
-  Star,
-  Gift,
-  Zap,
-  Trophy,
-  ArrowRight,
-  RefreshCw,
-  Sparkles,
-} from 'lucide-react';
+
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { GlassCard } from '@/components/ui/glass-card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { useAuth } from '@/hooks/useAuth';
-import { toast } from 'sonner';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { 
+  Calendar, 
+  Target, 
+  Trophy, 
+  Zap, 
+  CheckCircle2,
+  XCircle,
+  Timer,
+  Star,
+  Gift
+} from 'lucide-react';
 
-interface DailyChallenge {
+interface Challenge {
   id: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
-  category: 'workflow' | 'agent' | 'engagement' | 'learning';
   difficulty: 'easy' | 'medium' | 'hard';
-  xpReward: number;
-  requirement: number;
-  current: number;
-  completed: boolean;
-  expiresAt: string;
-  action?: {
-    label: string;
-    onClick: () => void;
+  category: 'workflow' | 'agent' | 'creativity' | 'efficiency';
+  points: number;
+  timeLimit: number; // in hours
+  requirements: string[];
+  reward: {
+    points: number;
+    badge?: string;
+    bonus?: string;
   };
+  status: 'available' | 'in-progress' | 'completed' | 'expired';
+  progress: number;
+  maxProgress: number;
+  startedAt?: string;
+  completedAt?: string;
+  expiresAt: string;
 }
 
 interface DailyChallengesProps {
-  userStats: {
-    workflowsCreated: number;
-    agentsCreated: number;
-    workflowsRun: number;
-    daysActive: number;
-  };
-  onChallengeComplete?: (challenge: DailyChallenge) => void;
+  userId?: string;
 }
 
-const DailyChallenges: React.FC<DailyChallengesProps> = ({ userStats, onChallengeComplete }) => {
-  const { user } = useAuth();
-  const [challenges, setChallenges] = useState<DailyChallenge[]>([]);
-  const [streak, setStreak] = useState(0);
-  const [totalXP, setTotalXP] = useState(0);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+const SAMPLE_CHALLENGES: Challenge[] = [
+  {
+    id: 'daily-workflow-1',
+    title: 'Workflow Speedrun',
+    description: 'Create and run a complete workflow in under 10 minutes',
+    difficulty: 'medium',
+    category: 'efficiency',
+    points: 50,
+    timeLimit: 24,
+    requirements: ['Create workflow', 'Add 3+ agents', 'Execute successfully'],
+    reward: {
+      points: 50,
+      badge: 'Speed Demon',
+      bonus: '2x XP for next workflow',
+    },
+    status: 'available',
+    progress: 0,
+    maxProgress: 3,
+    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'daily-agent-2',
+    title: 'Agent Explorer',
+    description: 'Try 5 different AI agents in your workflows today',
+    difficulty: 'easy',
+    category: 'agent',
+    points: 30,
+    timeLimit: 24,
+    requirements: ['Use 5 different agents', 'Test each agent', 'Rate experience'],
+    reward: {
+      points: 30,
+      bonus: 'Unlock premium agent for 24h',
+    },
+    status: 'in-progress',
+    progress: 2,
+    maxProgress: 5,
+    startedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    expiresAt: new Date(Date.now() + 22 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'daily-creative-3',
+    title: 'Creative Catalyst',
+    description: 'Build a workflow that combines AI writing with image generation',
+    difficulty: 'hard',
+    category: 'creativity',
+    points: 100,
+    timeLimit: 24,
+    requirements: ['Use text generation agent', 'Use image generation agent', 'Create combined output'],
+    reward: {
+      points: 100,
+      badge: 'Creative Master',
+      bonus: 'Featured workflow showcase',
+    },
+    status: 'available',
+    progress: 0,
+    maxProgress: 3,
+    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+  },
+];
 
-  // Generate daily challenges based on user level and activity
-  const generateDailyChallenges = useCallback((): DailyChallenge[] => {
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
+const getDifficultyColor = (difficulty: Challenge['difficulty']) => {
+  switch (difficulty) {
+    case 'easy':
+      return 'bg-green-500';
+    case 'medium':
+      return 'bg-yellow-500';
+    case 'hard':
+      return 'bg-red-500';
+    default:
+      return 'bg-gray-500';
+  }
+};
 
-    const challengePool = [
-      {
-        id: 'create_workflow',
-        title: 'Workflow Creator',
-        description: 'Create a new AI workflow today',
-        icon: <Target className="h-4 w-4 text-white" />,
-        category: 'workflow' as const,
-        difficulty: 'easy' as const,
-        xpReward: 50,
-        requirement: 1,
-        current: Math.min(userStats.workflowsCreated, 1),
-      },
-      {
-        id: 'run_workflows',
-        title: 'Automation Master',
-        description: 'Execute 3 workflows successfully',
-        icon: <Zap className="h-4 w-4 text-white" />,
-        category: 'workflow' as const,
-        difficulty: 'medium' as const,
-        xpReward: 100,
-        requirement: 3,
-        current: Math.min(userStats.workflowsRun, 3),
-      },
-      {
-        id: 'create_agent',
-        title: 'AI Architect',
-        description: 'Deploy a new AI agent',
-        icon: <Sparkles className="h-4 w-4 text-white" />,
-        category: 'agent' as const,
-        difficulty: 'medium' as const,
-        xpReward: 75,
-        requirement: 1,
-        current: Math.min(userStats.agentsCreated, 1),
-      },
-      {
-        id: 'daily_login',
-        title: 'Daily Visitor',
-        description: 'Visit the platform today',
-        icon: <Calendar className="h-4 w-4 text-white" />,
-        category: 'engagement' as const,
-        difficulty: 'easy' as const,
-        xpReward: 25,
-        requirement: 1,
-        current: 1, // Always completed if user is here
-      },
-      {
-        id: 'explore_features',
-        title: 'Explorer',
-        description: 'Visit 3 different sections of the platform',
-        icon: <Star className="h-4 w-4 text-white" />,
-        category: 'learning' as const,
-        difficulty: 'easy' as const,
-        xpReward: 40,
-        requirement: 3,
-        current: Math.floor(Math.random() * 4), // Simulated exploration
-      },
-      {
-        id: 'workflow_marathon',
-        title: 'Marathon Runner',
-        description: 'Run 10 workflows in a single day',
-        icon: <Flame className="h-4 w-4 text-white" />,
-        category: 'workflow' as const,
-        difficulty: 'hard' as const,
-        xpReward: 200,
-        requirement: 10,
-        current: Math.min(userStats.workflowsRun, 10),
-      },
-    ];
+const getCategoryIcon = (category: Challenge['category']) => {
+  switch (category) {
+    case 'workflow':
+      return <Target className="h-4 w-4" />;
+    case 'agent':
+      return <Zap className="h-4 w-4" />;
+    case 'creativity':
+      return <Star className="h-4 w-4" />;
+    case 'efficiency':
+      return <Timer className="h-4 w-4" />;
+    default:
+      return <Target className="h-4 w-4" />;
+  }
+};
 
-    // Select 3-4 challenges for today
-    const selectedChallenges = challengePool
-      .sort(() => Math.random() - 0.5)
-      .slice(0, user?.isPremium ? 4 : 3)
-      .map(challenge => ({
-        ...challenge,
-        completed: challenge.current >= challenge.requirement,
-        expiresAt: tomorrow.toISOString(),
-      }));
+const getTimeRemaining = (expiresAt: string): string => {
+  const now = new Date();
+  const expires = new Date(expiresAt);
+  const diff = expires.getTime() - now.getTime();
+  
+  if (diff <= 0) return 'Expired';
+  
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  
+  if (hours > 0) {
+    return `${hours}h ${minutes}m remaining`;
+  }
+  return `${minutes}m remaining`;
+};
 
-    return selectedChallenges;
-  }, [userStats, user?.isPremium]);
+const DailyChallenges = ({ userId }: DailyChallengesProps) => {
+  const [challenges, setChallenges] = useState<Challenge[]>(SAMPLE_CHALLENGES);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [totalPointsToday, setTotalPointsToday] = useState(0);
 
   useEffect(() => {
-    const newChallenges = generateDailyChallenges();
-    setChallenges(newChallenges);
-
-    // Load streak from localStorage
-    const savedStreak = localStorage.getItem('daily_streak');
-    if (savedStreak) {
-      setStreak(parseInt(savedStreak));
-    }
-
-    // Calculate total XP from completed challenges
-    const completedXP = newChallenges
-      .filter(c => c.completed)
-      .reduce((sum, c) => sum + c.xpReward, 0);
-    setTotalXP(completedXP);
-  }, [userStats, generateDailyChallenges]);
-
-  const refreshChallenges = async () => {
-    setIsRefreshing(true);
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    const newChallenges = generateDailyChallenges();
-    setChallenges(newChallenges);
-    setIsRefreshing(false);
-
-    toast.success('Challenges refreshed!');
-  };
-
-  const completeChallenge = (challengeId: string) => {
-    setChallenges(prev =>
-      prev.map(challenge => {
-        if (challenge.id === challengeId && !challenge.completed) {
-          const updatedChallenge = {
-            ...challenge,
-            completed: true,
-            current: challenge.requirement,
-          };
-
-          // Update total XP
-          setTotalXP(prev => prev + challenge.xpReward);
-
-          // Update streak
-          const newStreak = streak + 1;
-          setStreak(newStreak);
-          localStorage.setItem('daily_streak', newStreak.toString());
-
-          // Notify parent component
-          onChallengeComplete?.(updatedChallenge);
-
-          toast.success(`Challenge completed! +${challenge.xpReward} XP`);
-
-          return updatedChallenge;
-        }
-        return challenge;
-      })
+    // Calculate total points earned today
+    const completedToday = challenges.filter(c => 
+      c.status === 'completed' && 
+      c.completedAt && 
+      new Date(c.completedAt).toDateString() === new Date().toDateString()
     );
+    const points = completedToday.reduce((sum, c) => sum + c.points, 0);
+    setTotalPointsToday(points);
+  }, [challenges]);
+
+  const startChallenge = (challengeId: string) => {
+    setChallenges(prev => prev.map(c => 
+      c.id === challengeId 
+        ? { ...c, status: 'in-progress', startedAt: new Date().toISOString() }
+        : c
+    ));
   };
 
-  const difficultyColors = {
-    easy: 'from-green-400 to-green-600',
-    medium: 'from-yellow-400 to-orange-500',
-    hard: 'from-red-400 to-red-600',
-  };
+  const filteredChallenges = challenges.filter(challenge => 
+    selectedCategory === 'all' || challenge.category === selectedCategory
+  );
 
-  const categoryIcons = {
-    workflow: <Target className="h-3 w-3" />,
-    agent: <Sparkles className="h-3 w-3" />,
-    engagement: <Calendar className="h-3 w-3" />,
-    learning: <Star className="h-3 w-3" />,
-  };
-
-  const completedChallenges = challenges.filter(c => c.completed).length;
-  const totalChallenges = challenges.length;
-  const completionRate = totalChallenges > 0 ? (completedChallenges / totalChallenges) * 100 : 0;
+  const activeChallenges = challenges.filter(c => c.status === 'in-progress').length;
+  const completedChallenges = challenges.filter(c => c.status === 'completed').length;
 
   return (
     <div className="space-y-6">
-      {/* Header with Stats */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-primary" />
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <Calendar className="h-6 w-6 text-blue-500" />
             Daily Challenges
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            Complete challenges to earn XP and maintain your streak
-          </p>
+          </h2>
+          <p className="text-muted-foreground">Complete challenges to earn points and rewards</p>
         </div>
-
-        <div className="flex items-center gap-4">
-          <div className="text-center">
-            <div className="flex items-center gap-1 text-orange-500 mb-1">
-              <Flame className="h-4 w-4" />
-              <span className="font-bold">{streak}</span>
-            </div>
-            <span className="text-xs text-muted-foreground">Day Streak</span>
-          </div>
-
-          <div className="text-center">
-            <div className="flex items-center gap-1 text-gold mb-1">
-              <Trophy className="h-4 w-4" />
-              <span className="font-bold">{totalXP}</span>
-            </div>
-            <span className="text-xs text-muted-foreground">XP Today</span>
-          </div>
-
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={refreshChallenges}
-            disabled={isRefreshing}
-            className="flex items-center gap-2"
-          >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
+        <div className="text-right">
+          <div className="text-2xl font-bold text-blue-500">{totalPointsToday}</div>
+          <div className="text-sm text-muted-foreground">Points Today</div>
         </div>
       </div>
 
-      {/* Progress Overview */}
-      <GlassCard className="premium-card bg-card/80 backdrop-blur-lg border border-border-alt shadow-xl">
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-foreground">Daily Progress</span>
-            <span className="text-sm text-muted-foreground">
-              {completedChallenges}/{totalChallenges} completed
-            </span>
-          </div>
-          <Progress value={completionRate} className="h-2 mb-2" />
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>Keep going!</span>
-            <span>{Math.round(completionRate)}%</span>
-          </div>
-        </div>
-      </GlassCard>
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-blue-500" />
+              <div>
+                <div className="text-lg font-bold">{activeChallenges}</div>
+                <div className="text-sm text-muted-foreground">Active</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-green-500" />
+              <div>
+                <div className="text-lg font-bold">{completedChallenges}</div>
+                <div className="text-sm text-muted-foreground">Completed</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <Gift className="h-5 w-5 text-purple-500" />
+              <div>
+                <div className="text-lg font-bold">{challenges.length}</div>
+                <div className="text-sm text-muted-foreground">Available</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Category Filter */}
+      <div className="flex gap-2 flex-wrap">
+        <Button
+          variant={selectedCategory === 'all' ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => setSelectedCategory('all')}
+        >
+          All Challenges
+        </Button>
+        {['workflow', 'agent', 'creativity', 'efficiency'].map((category) => (
+          <Button
+            key={category}
+            variant={selectedCategory === category ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setSelectedCategory(category)}
+            className="capitalize"
+          >
+            {getCategoryIcon(category as Challenge['category'])}
+            <span className="ml-1">{category}</span>
+          </Button>
+        ))}
+      </div>
 
       {/* Challenges List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SafeAnimatePresence>
-          {challenges.map((challenge, index) => (
-            <MotionDiv
-              key={challenge.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-            >
-              <GlassCard
-                className={`premium-card border shadow-lg relative overflow-hidden ${
-                  challenge.completed
-                    ? 'bg-green-500/10 border-green-500/20'
-                    : 'bg-card/80 border-border-alt'
-                }`}
-              >
-                {challenge.completed && (
-                  <div className="absolute top-2 right-2">
-                    <CheckCircle className="h-5 w-5 text-green-500" />
+      <ScrollArea className="h-96">
+        <div className="space-y-4">
+          {filteredChallenges.map((challenge) => (
+            <Card key={challenge.id} className={`transition-all ${
+              challenge.status === 'completed' ? 'border-green-500/50 bg-green-500/5' :
+              challenge.status === 'in-progress' ? 'border-blue-500/50 bg-blue-500/5' :
+              challenge.status === 'expired' ? 'border-red-500/50 bg-red-500/5' :
+              'border-border'
+            }`}>
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between">
+                  <div className="space-y-1">
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      {getCategoryIcon(challenge.category)}
+                      {challenge.title}
+                      <Badge 
+                        variant="secondary" 
+                        className={getDifficultyColor(challenge.difficulty)}
+                      >
+                        {challenge.difficulty}
+                      </Badge>
+                    </CardTitle>
+                    <CardDescription>{challenge.description}</CardDescription>
                   </div>
-                )}
-
-                <div className="p-4">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div
-                      className={`p-2 bg-gradient-to-r ${difficultyColors[challenge.difficulty]} rounded-lg`}
-                    >
-                      {challenge.icon}
+                  
+                  <div className="text-right">
+                    <div className="flex items-center gap-1 text-sm font-medium">
+                      <Trophy className="h-4 w-4 text-yellow-500" />
+                      {challenge.points} pts
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-semibold text-foreground">{challenge.title}</h4>
-                        <Badge variant="outline" className="text-xs">
-                          {categoryIcons[challenge.category]}
-                          <span className="ml-1 capitalize">{challenge.category}</span>
-                        </Badge>
+                    <div className="text-xs text-muted-foreground">
+                      {getTimeRemaining(challenge.expiresAt)}
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+              
+              <CardContent className="pt-0">
+                <div className="space-y-3">
+                  {/* Progress */}
+                  {challenge.status === 'in-progress' && (
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-sm">
+                        <span>Progress</span>
+                        <span>{challenge.progress}/{challenge.maxProgress}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-2">{challenge.description}</p>
-
-                      {!challenge.completed && (
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-xs">
-                            <span className="text-muted-foreground">Progress</span>
-                            <span className="text-foreground">
-                              {challenge.current}/{challenge.requirement}
-                            </span>
-                          </div>
-                          <Progress
-                            value={(challenge.current / challenge.requirement) * 100}
-                            className="h-1.5"
-                          />
+                      <Progress 
+                        value={(challenge.progress / challenge.maxProgress) * 100} 
+                        className="h-2"
+                      />
+                    </div>
+                  )}
+                  
+                  {/* Requirements */}
+                  <div>
+                    <div className="text-sm font-medium mb-2">Requirements:</div>
+                    <div className="space-y-1">
+                      {challenge.requirements.map((req, index) => (
+                        <div key={index} className="flex items-center gap-2 text-sm">
+                          {challenge.status === 'completed' ? (
+                            <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          ) : challenge.status === 'in-progress' && index < challenge.progress ? (
+                            <CheckCircle2 className="h-4 w-4 text-green-500" />
+                          ) : (
+                            <div className="h-4 w-4 rounded-full border border-muted-foreground" />
+                          )}
+                          <span className={
+                            challenge.status === 'completed' || 
+                            (challenge.status === 'in-progress' && index < challenge.progress)
+                              ? 'line-through text-muted-foreground' 
+                              : ''
+                          }>
+                            {req}
+                          </span>
                         </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Rewards */}
+                  <div>
+                    <div className="text-sm font-medium mb-2">Rewards:</div>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge variant="outline">{challenge.reward.points} points</Badge>
+                      {challenge.reward.badge && (
+                        <Badge variant="outline">{challenge.reward.badge}</Badge>
+                      )}
+                      {challenge.reward.bonus && (
+                        <Badge variant="outline">{challenge.reward.bonus}</Badge>
                       )}
                     </div>
                   </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Badge
-                        className={`bg-gradient-to-r ${difficultyColors[challenge.difficulty]} text-white text-xs`}
+                  
+                  {/* Action Button */}
+                  <div className="pt-2">
+                    {challenge.status === 'available' && (
+                      <Button 
+                        onClick={() => startChallenge(challenge.id)}
+                        className="w-full"
                       >
-                        {challenge.difficulty.toUpperCase()}
-                      </Badge>
-                      <span className="text-xs text-gold font-medium">
-                        +{challenge.xpReward} XP
-                      </span>
-                    </div>
-
-                    {challenge.action && !challenge.completed && (
-                      <Button size="sm" onClick={challenge.action.onClick} className="text-xs">
-                        {challenge.action.label}
-                        <ArrowRight className="ml-1 h-3 w-3" />
+                        Start Challenge
                       </Button>
                     )}
-
-                    {challenge.completed && (
-                      <Badge className="bg-green-500/10 text-green-500 border-green-500/20">
-                        <CheckCircle className="h-3 w-3 mr-1" />
+                    {challenge.status === 'in-progress' && (
+                      <Button variant="outline" className="w-full" disabled>
+                        In Progress...
+                      </Button>
+                    )}
+                    {challenge.status === 'completed' && (
+                      <Button variant="outline" className="w-full" disabled>
+                        <CheckCircle2 className="mr-2 h-4 w-4" />
                         Completed
-                      </Badge>
+                      </Button>
+                    )}
+                    {challenge.status === 'expired' && (
+                      <Button variant="outline" className="w-full" disabled>
+                        <XCircle className="mr-2 h-4 w-4" />
+                        Expired
+                      </Button>
                     )}
                   </div>
                 </div>
-              </GlassCard>
-            </MotionDiv>
+              </CardContent>
+            </Card>
           ))}
-        </SafeAnimatePresence>
-      </div>
-
-      {/* Streak Bonus */}
-      {streak >= 3 && (
-        <MotionDiv
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <GlassCard className="premium-card bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 shadow-xl">
-            <div className="p-4 text-center">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <Flame className="h-5 w-5 text-orange-500" />
-                <span className="font-bold text-foreground">Streak Bonus!</span>
-              </div>
-              <p className="text-sm text-muted-foreground mb-3">
-                You're on a {streak}-day streak! Keep it up for bonus rewards.
-              </p>
-              <div className="flex items-center justify-center gap-4">
-                <div className="text-center">
-                  <Gift className="h-4 w-4 text-gold mx-auto mb-1" />
-                  <span className="text-xs text-muted-foreground">
-                    Next reward at {Math.ceil(streak / 7) * 7} days
-                  </span>
-                </div>
-              </div>
-            </div>
-          </GlassCard>
-        </MotionDiv>
-      )}
+        </div>
+      </ScrollArea>
     </div>
   );
 };
