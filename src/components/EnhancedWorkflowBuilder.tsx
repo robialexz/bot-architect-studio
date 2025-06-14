@@ -276,9 +276,9 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
           id: edge.id,
           source: edge.source,
           target: edge.target,
-          sourceHandle: edge.sourceHandle,
-          targetHandle: edge.targetHandle,
-          label: typeof edge.label === 'string' ? edge.label : undefined,
+          sourceHandle: edge.sourceHandle || undefined,
+          targetHandle: edge.targetHandle || undefined,
+          label: typeof edge.label === 'string' ? edge.label : '',
         })),
         userId: user.id,
         isPublic: false,
@@ -770,7 +770,7 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
             setConfigNodeId(null);
           }}
           onSave={config => {
-            handleNodeConfigChange(configNodeId, config as Record<string, unknown>);
+            handleNodeConfigChange(configNodeId, config as unknown as Record<string, unknown>);
             setShowAIConfigWizard(false);
             setConfigNodeId(null);
           }}

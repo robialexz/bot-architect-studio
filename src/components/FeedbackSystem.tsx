@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import {
   SafeAnimatePresence,
   MotionDiv,
-  MotionSection,
-  MotionH1,
-  MotionH2,
-  MotionP,
   MotionButton,
-  MotionLi,
-  MotionTr,
 } from '@/lib/motion-wrapper';
 
 import {
@@ -16,8 +10,6 @@ import {
   Star,
   Send,
   X,
-  ThumbsUp,
-  ThumbsDown,
   Heart,
   Lightbulb,
   Bug,

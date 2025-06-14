@@ -1,21 +1,9 @@
+
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  MotionDiv,
-  MotionSection,
-  MotionH1,
-  MotionH2,
-  MotionP,
-  MotionButton,
-  MotionLi,
-  MotionTr,
-  MotionFooter,
-  MotionA,
-} from '@/lib/motion-wrapper';
+import { MotionDiv, MotionLi } from '@/lib/motion-wrapper';
 
-import { Layers, Github, Twitter, MessageCircle } from 'lucide-react';
+import { Github, Twitter, MessageCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-
-import { cn } from '@/lib/utils';
 
 const FooterLink = ({ to, children }: { to: string; children: React.ReactNode }) => (
   <MotionLi whileHover={{ y: -2, color: 'hsl(var(--primary))' }} transition={{ duration: 0.2 }}>
@@ -34,31 +22,25 @@ const SocialIconLink = ({
   icon: React.ElementType;
   label: string;
 }) => (
-  <MotionA
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label={label}
-    className="w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br from-[hsl(var(--button-primary))]/10 to-[hsl(var(--nav-secondary))]/10 border border-[hsl(var(--button-primary))]/20 hover:border-[hsl(var(--button-primary))]/40 text-[hsl(var(--nav-foreground))] hover:text-[hsl(var(--button-primary))] transition-all duration-300 hover:shadow-lg hover:shadow-[hsl(var(--button-primary))]/25"
+  <MotionDiv
     whileHover={{ scale: 1.05, y: -2 }}
     whileTap={{ scale: 0.95 }}
   >
-    <Icon className="w-5 h-5" />
-  </MotionA>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br from-[hsl(var(--button-primary))]/10 to-[hsl(var(--nav-secondary))]/10 border border-[hsl(var(--button-primary))]/20 hover:border-[hsl(var(--button-primary))]/40 text-[hsl(var(--nav-foreground))] hover:text-[hsl(var(--button-primary))] transition-all duration-300 hover:shadow-lg hover:shadow-[hsl(var(--button-primary))]/25"
+    >
+      <Icon className="w-5 h-5" />
+    </a>
+  </MotionDiv>
 );
 
 const Footer = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-
-  // Smart logo navigation based on authentication status
-  const handleLogoClick = () => {
-    if (isAuthenticated) {
-      navigate('/account');
-    } else {
-      navigate('/');
-    }
-  };
 
   const footerSections = [
     {
@@ -74,17 +56,17 @@ const Footer = () => {
       title: 'Resources',
       links: [
         { to: '/documentation', label: 'Documentation' },
-        { to: '/tutorials', label: 'Tutorials' }, // Assuming /tutorials exists or will be created
-        { to: '/community', label: 'Community' }, // Assuming /community exists or will be created
+        { to: '/tutorials', label: 'Tutorials' },
+        { to: '/community', label: 'Community' },
       ],
     },
     {
       title: 'Company',
       links: [
-        { to: '/about', label: 'About Us' }, // Assuming /about exists
-        { to: '/contact', label: 'Contact' }, // Assuming /contact exists
-        { to: '/privacy', label: 'Privacy Policy' }, // Assuming /privacy exists
-        { to: '/terms', label: 'Terms of Service' }, // Assuming /terms exists
+        { to: '/about', label: 'About Us' },
+        { to: '/contact', label: 'Contact' },
+        { to: '/privacy', label: 'Privacy Policy' },
+        { to: '/terms', label: 'Terms of Service' },
       ],
     },
   ];

@@ -1,4 +1,5 @@
-import React, { FC } from 'react'; // Added React and FC
+
+import { FC } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -6,25 +7,15 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  // DialogClose, // DialogClose is implicitly handled by onOpenChange or can be added if needed
-} from './ui/dialog'; // Assuming path is correct, might be @/components/ui/dialog
-import { Button } from './ui/button'; // Assuming path is correct, might be @/components/ui/button
+} from './ui/dialog';
+import { Button } from './ui/button';
 import { AlertTriangle } from 'lucide-react';
-import {
-  MotionDiv,
-  MotionSection,
-  MotionH1,
-  MotionH2,
-  MotionP,
-  MotionButton,
-  MotionLi,
-  MotionTr,
-} from '@/lib/motion-wrapper';
+import { MotionDiv } from '@/lib/motion-wrapper';
 
 interface FeatureUnderDevelopmentModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  featureName: string; // Made featureName mandatory as per original
+  featureName: string;
   actionDescription?: string;
 }
 
@@ -46,7 +37,7 @@ const iconVariants = {
 export const FeatureUnderDevelopmentModal: FC<FeatureUnderDevelopmentModalProps> = ({
   open,
   onOpenChange,
-  featureName, // Removed default value to match interface
+  featureName,
   actionDescription,
 }) => {
   const defaultDescription = `The "${featureName}" feature is currently under development and will be available soon. We appreciate your patience!`;
@@ -58,7 +49,7 @@ export const FeatureUnderDevelopmentModal: FC<FeatureUnderDevelopmentModalProps>
           <MotionDiv
             variants={iconVariants}
             initial="hidden"
-            animate={open ? 'visible' : 'hidden'}
+            animate={open ? "visible" : "hidden"}
             className="p-3 bg-primary/10 rounded-full mb-4 border border-primary/20"
           >
             <AlertTriangle className="h-10 w-10 text-primary" />
@@ -66,7 +57,7 @@ export const FeatureUnderDevelopmentModal: FC<FeatureUnderDevelopmentModalProps>
           <MotionDiv
             variants={itemVariants}
             initial="hidden"
-            animate={open ? 'visible' : 'hidden'}
+            animate={open ? "visible" : "hidden"}
             transition={{ delay: 0.2 }}
           >
             <DialogTitle className="text-h3 text-foreground mb-2">
@@ -76,7 +67,7 @@ export const FeatureUnderDevelopmentModal: FC<FeatureUnderDevelopmentModalProps>
           <MotionDiv
             variants={itemVariants}
             initial="hidden"
-            animate={open ? 'visible' : 'hidden'}
+            animate={open ? "visible" : "hidden"}
             transition={{ delay: 0.3 }}
           >
             <DialogDescription className="text-body-std text-muted-foreground">
@@ -88,7 +79,7 @@ export const FeatureUnderDevelopmentModal: FC<FeatureUnderDevelopmentModalProps>
           <MotionDiv
             variants={itemVariants}
             initial="hidden"
-            animate={open ? 'visible' : 'hidden'}
+            animate={open ? "visible" : "hidden"}
             transition={{ delay: 0.4 }}
             className="w-full sm:w-auto"
           >
@@ -102,7 +93,6 @@ export const FeatureUnderDevelopmentModal: FC<FeatureUnderDevelopmentModalProps>
             </Button>
           </MotionDiv>
         </DialogFooter>
-        {/* The X close button is part of DialogContent by default in ui/dialog.tsx if not overridden */}
       </DialogContent>
     </Dialog>
   );

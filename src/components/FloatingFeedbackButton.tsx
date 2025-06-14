@@ -1,17 +1,8 @@
-import React, { useState } from 'react';
-import {
-  SafeAnimatePresence,
-  MotionDiv,
-  MotionSection,
-  MotionH1,
-  MotionH2,
-  MotionP,
-  MotionButton,
-  MotionLi,
-  MotionTr,
-} from '@/lib/motion-wrapper';
 
-import { MessageSquare, X, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { SafeAnimatePresence, MotionDiv } from '@/lib/motion-wrapper';
+
+import { MessageSquare, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FeedbackSystem from './FeedbackSystem';
 import { useAuth } from '@/hooks/useAuth';
@@ -40,8 +31,8 @@ const FloatingFeedbackButton: React.FC = () => {
         <MotionDiv
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onHoverStart={() => setIsHovered(true)}
-          onHoverEnd={() => setIsHovered(false)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <Button
             onClick={() => setShowFeedback(true)}
