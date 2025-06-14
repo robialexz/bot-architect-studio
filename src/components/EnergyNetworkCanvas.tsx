@@ -97,6 +97,8 @@ const EnergyNetworkCanvas: React.FC<EnergyNetworkCanvasProps> = ({
         particle.connections = [];
         for (let j = i + 1; j < particles.length; j++) {
           const other = particles[j];
+          if (!other) continue;
+          
           const dx = particle.x - other.x;
           const dy = particle.y - other.y;
           const distance = Math.sqrt(dx * dx + dy * dy);

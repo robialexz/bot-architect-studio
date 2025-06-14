@@ -34,10 +34,9 @@ interface AchievementSystemProps {
     level: number;
     nextLevelPoints: number;
   };
-  onClaimReward?: (achievementId: string) => void;
 }
 
-const AchievementSystem = ({ achievements, userStats, onClaimReward }: AchievementSystemProps) => {
+const AchievementSystem = ({ achievements, userStats }: AchievementSystemProps) => {
   const [selectedCategory, setSelectedCategory] = useState<'all' | Achievement['category']>('all');
 
   const filteredAchievements = achievements.filter(

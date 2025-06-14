@@ -15,13 +15,7 @@ import {
   Database,
   MessageSquare,
   Code,
-  Image,
   FileText,
-  Music,
-  Video,
-  Calendar,
-  Mail,
-  Shield,
 } from 'lucide-react';
 
 interface AgentTemplate {

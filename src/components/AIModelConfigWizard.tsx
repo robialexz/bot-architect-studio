@@ -1,428 +1,336 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Separator } from '@/components/ui/separator';
-import { 
-  Brain, 
-  Save, 
-  RotateCcw, 
-  BookOpen,
-  Info
+import {
+  Brain,
+  Sliders,
+  Zap,
+  TestTube,
+  Save,
+  RefreshCw,
+  Eye,
 } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface AIModelConfig {
-  // Model Selection
-  provider: 'openai' | 'anthropic' | 'cohere' | 'local';
   model: string;
-  
-  // Generation Parameters
   temperature: number;
+  maxTokens: number;
   topP: number;
   frequencyPenalty: number;
   presencePenalty: number;
-  maxTokens: number;
-  
-  // Prompts
   systemPrompt: string;
-  userPrompt: string;
-  
-  // Advanced Settings
-  responseFormat: 'json' | 'text' | 'structured';
-  streaming: boolean;
-  logprobs: boolean;
-  
-  // Safety & Moderation
-  contentFilter: boolean;
-  moderationLevel: 'low' | 'medium' | 'high';
-  
-  // Custom Settings
-  customHeaders: Record<string, string>;
-  timeout: number;
+  customInstructions: string;
+  enableStreaming: boolean;
+  enableLogging: boolean;
 }
 
 interface AIModelConfigWizardProps {
-  onSave: (config: AIModelConfig) => void;
-  onCancel: () => void;
   initialConfig?: Partial<AIModelConfig>;
+  onSave: (config: AIModelConfig) => void;
+  onClose: () => void;
 }
 
-const DEFAULT_CONFIG: AIModelConfig = {
-  provider: 'openai',
-  model: 'gpt-4',
-  temperature: 0.7,
-  topP: 1.0,
-  frequencyPenalty: 0.0,
-  presencePenalty: 0.0,
-  maxTokens: 1000,
-  systemPrompt: 'You are a helpful AI assistant.',
-  userPrompt: '',
-  responseFormat: 'text',
-  streaming: false,
-  logprobs: false,
-  contentFilter: true,
-  moderationLevel: 'medium',
-  customHeaders: {},
-  timeout: 30000,
-};
+const AIModelConfigWizard = ({ initialConfig, onSave, onClose }: AIModelConfigWizardProps) => {
+  const [config, setConfig] = useState<AIModelConfig>({
+    model: 'gpt-4',
+    temperature: 0.7,
+    maxTokens: 1000,
+    topP: 1.0,
+    frequencyPenalty: 0.0,
+    presencePenalty: 0.0,
+    systemPrompt: '',
+    customInstructions: '',
+    enableStreaming: true,
+    enableLogging: false,
+    ...initialConfig,
+  });
 
-const MODEL_OPTIONS = {
-  openai: [
-    { value: 'gpt-4', label: 'GPT-4', description: 'Most capable model' },
-    { value: 'gpt-4-turbo', label: 'GPT-4 Turbo', description: 'Faster and cheaper' },
-    { value: 'gpt-3.5-turbo', label: 'GPT-3.5 Turbo', description: 'Fast and efficient' },
-  ],
-  anthropic: [
-    { value: 'claude-3', label: 'Claude 3', description: 'Latest Claude model' },
-    { value: 'claude-2', label: 'Claude 2', description: 'Previous generation' },
-  ],
-  cohere: [
-    { value: 'command', label: 'Command', description: 'General purpose' },
-    { value: 'command-nightly', label: 'Command Nightly', description: 'Latest features' },
-  ],
-  local: [
-    { value: 'llama-2', label: 'Llama 2', description: 'Open source' },
-    { value: 'mistral', label: 'Mistral', description: 'Efficient local model' },
-  ],
-};
+  const [activeTab, setActiveTab] = useState('basic');
+  const [isTestingModel, setIsTestingModel] = useState(false);
 
-const PROMPT_TEMPLATES = [
-  {
-    id: 'assistant',
-    name: 'General Assistant',
-    systemPrompt: 'You are a helpful AI assistant. Provide accurate, concise, and helpful responses.',
-    userPrompt: '{user_input}',
-  },
-  {
-    id: 'analyst',
-    name: 'Data Analyst',
-    systemPrompt: 'You are a data analyst. Analyze the provided data and give insights with clear explanations.',
-    userPrompt: 'Analyze this data: {user_input}',
-  },
-  {
-    id: 'creative',
-    name: 'Creative Writer',
-    systemPrompt: 'You are a creative writer. Write engaging, original content based on the given prompt.',
-    userPrompt: 'Write about: {user_input}',
-  },
-];
+  const models = [
+    { id: 'gpt-4', name: 'GPT-4', description: 'Most capable model' },
+    { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo', description: 'Fast and efficient' },
+    { id: 'claude-3', name: 'Claude 3', description: 'Anthropic model' },
+  ];
 
-const AIModelConfigWizard = ({ onSave, onCancel, initialConfig }: AIModelConfigWizardProps) => {
-  const [config, setConfig] = useState<AIModelConfig>({ ...DEFAULT_CONFIG, ...initialConfig });
-  const [activeTab, setActiveTab] = useState('model');
+  const presets = [
+    {
+      name: 'Creative Writing',
+      config: { temperature: 0.9, topP: 0.9, frequencyPenalty: 0.5 },
+    },
+    {
+      name: 'Analytical',
+      config: { temperature: 0.2, topP: 0.8, frequencyPenalty: 0.0 },
+    },
+    {
+      name: 'Balanced',
+      config: { temperature: 0.7, topP: 1.0, frequencyPenalty: 0.0 },
+    },
+  ];
 
-  const updateConfig = (updates: Partial<AIModelConfig>) => {
-    setConfig(prev => ({ ...prev, ...updates }));
+  const handlePresetSelect = (preset: typeof presets[0]) => {
+    setConfig(prev => ({
+      ...prev,
+      ...preset.config,
+    }));
   };
 
   const handleSave = () => {
     onSave(config);
   };
 
-  const handleReset = () => {
-    setConfig({ ...DEFAULT_CONFIG, ...initialConfig });
+  const testModel = async () => {
+    setIsTestingModel(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setIsTestingModel(false);
   };
-
-  const handleTemplateSelect = (template: typeof PROMPT_TEMPLATES[0]) => {
-    updateConfig({
-      systemPrompt: template.systemPrompt,
-      userPrompt: template.userPrompt,
-    });
-  };
-
-  const currentModels = MODEL_OPTIONS[config.provider] || [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Brain className="h-6 w-6" />
-            AI Model Configuration
-          </h2>
-          <p className="text-muted-foreground">Configure your AI model settings and parameters</p>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-background rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold">AI Model Configuration</h2>
+              <p className="text-muted-foreground">Fine-tune your AI model settings</p>
+            </div>
+            <Button variant="outline" onClick={onClose}>
+              Close
+            </Button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={handleReset}>
-            <RotateCcw className="mr-2 h-4 w-4" />
-            Reset
-          </Button>
-          <Button variant="outline" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave}>
-            <Save className="mr-2 h-4 w-4" />
-            Save Configuration
-          </Button>
-        </div>
-      </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="model">Model</TabsTrigger>
-          <TabsTrigger value="parameters">Parameters</TabsTrigger>
-          <TabsTrigger value="prompts">Prompts</TabsTrigger>
-          <TabsTrigger value="advanced">Advanced</TabsTrigger>
-        </TabsList>
+        <div className="p-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="basic">Basic Settings</TabsTrigger>
+              <TabsTrigger value="advanced">Advanced</TabsTrigger>
+              <TabsTrigger value="prompts">Prompts</TabsTrigger>
+              <TabsTrigger value="presets">Presets</TabsTrigger>
+            </TabsList>
 
-        <TabsContent value="model" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Model Selection</CardTitle>
-              <CardDescription>Choose your AI model provider and specific model</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="provider">Provider</Label>
-                <Select value={config.provider} onValueChange={(value: AIModelConfig['provider']) => updateConfig({ provider: value })}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="openai">OpenAI</SelectItem>
-                    <SelectItem value="anthropic">Anthropic</SelectItem>
-                    <SelectItem value="cohere">Cohere</SelectItem>
-                    <SelectItem value="local">Local Models</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <TabsContent value="basic" className="space-y-6 mt-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="model">AI Model</Label>
+                    <Select value={config.model} onValueChange={(value) => setConfig(prev => ({ ...prev, model: value }))}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {models.map((model) => (
+                          <SelectItem key={model.id} value={model.id}>
+                            <div>
+                              <div className="font-medium">{model.name}</div>
+                              <div className="text-sm text-muted-foreground">{model.description}</div>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-              <div>
-                <Label htmlFor="model">Model</Label>
-                <Select value={config.model} onValueChange={(value) => updateConfig({ model: value })}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {currentModels.map((model) => (
-                      <SelectItem key={model.value} value={model.value}>
-                        <div>
-                          <div className="font-medium">{model.label}</div>
-                          <div className="text-sm text-muted-foreground">{model.description}</div>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <Alert>
-                <Info className="h-4 w-4" />
-                <AlertDescription>
-                  Different models have different capabilities and pricing. Choose based on your specific needs.
-                </AlertDescription>
-              </Alert>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="parameters" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Generation Parameters</CardTitle>
-              <CardDescription>Fine-tune how the AI generates responses</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label htmlFor="temperature">Temperature</Label>
-                  <span className="text-sm text-muted-foreground">{config.temperature}</span>
+                  <div>
+                    <Label htmlFor="maxTokens">Max Tokens</Label>
+                    <Input
+                      id="maxTokens"
+                      type="number"
+                      value={config.maxTokens}
+                      onChange={(e) => setConfig(prev => ({ ...prev, maxTokens: parseInt(e.target.value) || 1000 }))}
+                    />
+                  </div>
                 </div>
-                <Slider
-                  id="temperature"
-                  min={0}
-                  max={2}
-                  step={0.1}
-                  value={[config.temperature]}
-                  onValueChange={([value]) => updateConfig({ temperature: value })}
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Controls randomness. Lower values make output more focused and deterministic.
-                </p>
-              </div>
 
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label htmlFor="topP">Top P</Label>
-                  <span className="text-sm text-muted-foreground">{config.topP}</span>
+                <div className="space-y-4">
+                  <div>
+                    <Label>Temperature: {config.temperature}</Label>
+                    <Slider
+                      value={[config.temperature]}
+                      onValueChange={(value) => setConfig(prev => ({ ...prev, temperature: value[0] }))}
+                      max={2}
+                      min={0}
+                      step={0.1}
+                      className="mt-2"
+                    />
+                    <p className="text-sm text-muted-foreground mt-1">Controls randomness in responses</p>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="streaming">Enable Streaming</Label>
+                      <p className="text-sm text-muted-foreground">Stream responses as they generate</p>
+                    </div>
+                    <Switch
+                      id="streaming"
+                      checked={config.enableStreaming}
+                      onCheckedChange={(checked) => setConfig(prev => ({ ...prev, enableStreaming: checked }))}
+                    />
+                  </div>
                 </div>
-                <Slider
-                  id="topP"
-                  min={0}
-                  max={1}
-                  step={0.05}
-                  value={[config.topP]}
-                  onValueChange={([value]) => updateConfig({ topP: value })}
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Controls diversity by limiting token selection to top probability mass.
-                </p>
               </div>
+            </TabsContent>
 
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label htmlFor="frequencyPenalty">Frequency Penalty</Label>
-                  <span className="text-sm text-muted-foreground">{config.frequencyPenalty}</span>
+            <TabsContent value="advanced" className="space-y-6 mt-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-4">
+                  <div>
+                    <Label>Top P: {config.topP}</Label>
+                    <Slider
+                      value={[config.topP]}
+                      onValueChange={(value) => setConfig(prev => ({ ...prev, topP: value[0] }))}
+                      max={1}
+                      min={0}
+                      step={0.1}
+                      className="mt-2"
+                    />
+                    <p className="text-sm text-muted-foreground mt-1">Nucleus sampling parameter</p>
+                  </div>
+
+                  <div>
+                    <Label>Frequency Penalty: {config.frequencyPenalty}</Label>
+                    <Slider
+                      value={[config.frequencyPenalty]}
+                      onValueChange={(value) => setConfig(prev => ({ ...prev, frequencyPenalty: value[0] }))}
+                      max={2}
+                      min={-2}
+                      step={0.1}
+                      className="mt-2"
+                    />
+                    <p className="text-sm text-muted-foreground mt-1">Penalizes frequent tokens</p>
+                  </div>
                 </div>
-                <Slider
-                  id="frequencyPenalty"
-                  min={-2}
-                  max={2}
-                  step={0.1}
-                  value={[config.frequencyPenalty]}
-                  onValueChange={([value]) => updateConfig({ frequencyPenalty: value })}
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Reduces repetition of frequently used tokens.
-                </p>
-              </div>
 
-              <div>
-                <Label htmlFor="maxTokens">Max Tokens</Label>
-                <Input
-                  id="maxTokens"
-                  type="number"
-                  value={config.maxTokens}
-                  onChange={(e) => updateConfig({ maxTokens: parseInt(e.target.value) || 1000 })}
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Maximum number of tokens to generate.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                <div className="space-y-4">
+                  <div>
+                    <Label>Presence Penalty: {config.presencePenalty}</Label>
+                    <Slider
+                      value={[config.presencePenalty]}
+                      onValueChange={(value) => setConfig(prev => ({ ...prev, presencePenalty: value[0] }))}
+                      max={2}
+                      min={-2}
+                      step={0.1}
+                      className="mt-2"
+                    />
+                    <p className="text-sm text-muted-foreground mt-1">Penalizes repeated topics</p>
+                  </div>
 
-        <TabsContent value="prompts" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Prompt Configuration</CardTitle>
-              <CardDescription>Set up system and user prompts</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label>Prompt Templates</Label>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="logging">Enable Logging</Label>
+                      <p className="text-sm text-muted-foreground">Log requests and responses</p>
+                    </div>
+                    <Switch
+                      id="logging"
+                      checked={config.enableLogging}
+                      onCheckedChange={(checked) => setConfig(prev => ({ ...prev, enableLogging: checked }))}
+                    />
+                  </div>
                 </div>
-                <div className="grid gap-2">
-                  {PROMPT_TEMPLATES.map((template) => (
-                    <Button
-                      key={template.id}
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleTemplateSelect(template)}
-                      className="justify-start"
+              </div>
+            </TabsContent>
+
+            <TabsContent value="prompts" className="space-y-6 mt-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="systemPrompt">System Prompt</Label>
+                  <Textarea
+                    id="systemPrompt"
+                    value={config.systemPrompt}
+                    onChange={(e) => setConfig(prev => ({ ...prev, systemPrompt: e.target.value }))}
+                    placeholder="Define the AI's behavior and personality..."
+                    rows={6}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="customInstructions">Custom Instructions</Label>
+                  <Textarea
+                    id="customInstructions"
+                    value={config.customInstructions}
+                    onChange={(e) => setConfig(prev => ({ ...prev, customInstructions: e.target.value }))}
+                    placeholder="Additional instructions for the AI..."
+                    rows={4}
+                  />
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="presets" className="space-y-6 mt-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Configuration Presets</h3>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {presets.map((preset) => (
+                    <Card
+                      key={preset.name}
+                      className="cursor-pointer transition-all duration-200 hover:shadow-lg hover:border-primary/50"
+                      onClick={() => handlePresetSelect(preset)}
                     >
-                      <BookOpen className="mr-2 h-4 w-4" />
-                      {template.name}
-                    </Button>
+                      <CardHeader>
+                        <CardTitle className="text-base">{preset.name}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span>Temperature:</span>
+                            <span>{preset.config.temperature}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Top P:</span>
+                            <span>{preset.config.topP}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Frequency:</span>
+                            <span>{preset.config.frequencyPenalty}</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   ))}
                 </div>
               </div>
+            </TabsContent>
+          </Tabs>
 
-              <Separator />
-
-              <div>
-                <Label htmlFor="systemPrompt">System Prompt</Label>
-                <Textarea
-                  id="systemPrompt"
-                  value={config.systemPrompt}
-                  onChange={(e) => updateConfig({ systemPrompt: e.target.value })}
-                  placeholder="Define the AI's role and behavior..."
-                  rows={4}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="userPrompt">User Prompt Template</Label>
-                <Textarea
-                  id="userPrompt"
-                  value={config.userPrompt}
-                  onChange={(e) => updateConfig({ userPrompt: e.target.value })}
-                  placeholder="Template for user input. Use {user_input} as placeholder..."
-                  rows={3}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="advanced" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Response Format</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <RadioGroup
-                value={config.responseFormat}
-                onValueChange={(value: AIModelConfig['responseFormat']) => updateConfig({ responseFormat: value })}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="text" id="text" />
-                  <Label htmlFor="text">Text</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="json" id="json" />
-                  <Label htmlFor="json">JSON</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="structured" id="structured" />
-                  <Label htmlFor="structured">Structured</Label>
-                </div>
-              </RadioGroup>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Additional Settings</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label htmlFor="streaming">Enable Streaming</Label>
-                  <p className="text-sm text-muted-foreground">Stream responses in real-time</p>
-                </div>
-                <Switch
-                  id="streaming"
-                  checked={config.streaming}
-                  onCheckedChange={(checked) => updateConfig({ streaming: checked })}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label htmlFor="contentFilter">Content Filtering</Label>
-                  <p className="text-sm text-muted-foreground">Apply content moderation</p>
-                </div>
-                <Switch
-                  id="contentFilter"
-                  checked={config.contentFilter}
-                  onCheckedChange={(checked) => updateConfig({ contentFilter: checked })}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="timeout">Timeout (ms)</Label>
-                <Input
-                  id="timeout"
-                  type="number"
-                  value={config.timeout}
-                  onChange={(e) => updateConfig({ timeout: parseInt(e.target.value) || 30000 })}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+          <div className="flex justify-between items-center mt-8 pt-6 border-t">
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={testModel} disabled={isTestingModel}>
+                {isTestingModel ? (
+                  <>
+                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                    Testing...
+                  </>
+                ) : (
+                  <>
+                    <TestTube className="mr-2 h-4 w-4" />
+                    Test Configuration
+                  </>
+                )}
+              </Button>
+            </div>
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button onClick={handleSave}>
+                <Save className="mr-2 h-4 w-4" />
+                Save Configuration
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

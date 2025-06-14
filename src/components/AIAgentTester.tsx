@@ -21,7 +21,6 @@ interface AIAgentExecution {
 }
 
 interface AIAgentTesterProps {
-  agentId: string;
   agentName: string;
   onClose: () => void;
 }
@@ -43,13 +42,14 @@ const AIAgentTester = ({ agentName, onClose }: AIAgentTesterProps) => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
     
+    const isSuccess = Math.random() > 0.2;
     const mockExecution: AIAgentExecution = {
       id: `exec_${Date.now()}`,
-      status: Math.random() > 0.2 ? 'completed' : 'failed',
+      status: isSuccess ? 'completed' : 'failed',
       execution_time_ms: Math.floor(Math.random() * 5000) + 500,
       tokens_used: Math.floor(Math.random() * 1000) + 100,
-      output_data: Math.random() > 0.2 ? { result: 'Mock successful output', confidence: 0.85 } : undefined,
-      error_message: Math.random() > 0.2 ? undefined : 'Mock error: Processing failed',
+      output_data: isSuccess ? { result: 'Mock successful output', confidence: 0.85 } : undefined,
+      error_message: isSuccess ? undefined : 'Mock error: Processing failed',
     };
 
     return mockExecution;
