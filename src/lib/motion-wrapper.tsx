@@ -46,7 +46,7 @@ interface ExtendedMotionProps {
 // Safe forwardRef wrapper
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeForwardRef: typeof React.forwardRef =
-  React.forwardRef || ((render: any) => render as any);
+  React.forwardRef || ((render: React.ForwardRefRenderFunction<HTMLElement, ExtendedMotionProps>) => render as React.ForwardRefExoticComponent<ExtendedMotionProps>);
 
 // CSS-only motion component factory
 const createMotionComponent = (tag: keyof JSX.IntrinsicElements) => {
@@ -237,7 +237,7 @@ export const SafeAnimatePresence: React.FC<{
 };
 
 // Export default motion object for compatibility
-export const motion = {
+const motion = {
   div: MotionDiv,
   section: MotionSection,
   main: MotionMain,
@@ -285,5 +285,5 @@ export const motion = {
   mask: MotionMask,
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
+export { motion };
 export default motion;
