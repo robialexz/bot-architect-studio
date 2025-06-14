@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom'; // Removed
 import { PlayCircle } from 'lucide-react'; // Removed Bug, ExternalLink
@@ -44,19 +45,6 @@ const SimpleSection: React.FC<{
       )}
     </div>
   </section>
-);
-
-// VisualWorkflowBuilder is now imported directly.
-
-// FeaturesSection component definition removed
-
-// const RoadmapSection = () => ( ... ); // Already commented out
-
-const TokenTierSection = () => (
-  <SimpleSection
-    title="Token Tiers"
-    description="Unlock the full potential of FlowsyAI with our flexible token tiers. Whether you're an individual innovator, a growing startup, or a large enterprise, we offer plans tailored to your usage, feature requirements, and support needs. Explore our tiers and find the perfect fit to power your AI automation journey."
-  />
 );
 
 const EnhancedWaitlistCTA = () => {
@@ -121,16 +109,6 @@ const EnhancedWaitlistCTA = () => {
 };
 
 const IndexPage: React.FC = () => {
-  // const navigate = useNavigate(); // Removed
-  // const [showDiagnosticButton, setShowDiagnosticButton] = useState(false); // Removed
-
-  // useEffect(() => { // Effect for showDiagnosticButton removed
-  //   const timer = setTimeout(() => {
-  //     setShowDiagnosticButton(true);
-  //   }, 3000);
-  //   return () => clearTimeout(timer);
-  // }, []);
-
   useEffect(() => {
     console.log('🏠 Index page component mounted', {
       timestamp: new Date().toISOString(),
@@ -147,11 +125,9 @@ const IndexPage: React.FC = () => {
       HeroSection,
       VideoShowcaseSection,
       VisualWorkflowBuilder,
-      TokenTierSection,
       DetailedRoadmapSection,
       TokenomicsSection,
       EnhancedWaitlistCTA,
-      // FeaturesSection, // Already removed in previous step, ensuring it stays removed
     };
 
     console.log('📦 Component availability check:', components);
@@ -193,9 +169,6 @@ const IndexPage: React.FC = () => {
         <SectionErrorBoundary sectionName="Workflow Builder">
           <VisualWorkflowBuilder />
         </SectionErrorBoundary>
-        <SectionErrorBoundary sectionName="Token Tiers">
-          <TokenTierSection />
-        </SectionErrorBoundary>
         <SectionErrorBoundary sectionName="Tokenomics">
           <TokenomicsSection />
         </SectionErrorBoundary>
@@ -205,7 +178,6 @@ const IndexPage: React.FC = () => {
         <SectionErrorBoundary sectionName="Waitlist CTA">
           <EnhancedWaitlistCTA />
         </SectionErrorBoundary>
-        {/* FeaturesSection rendering removed */}
       </main>
     </div>
   );
