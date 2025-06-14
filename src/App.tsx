@@ -1,4 +1,3 @@
-
 import React, { Suspense, lazy } from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as Sonner } from '@/components/ui/sonner';
@@ -205,7 +204,7 @@ const App: React.FC = () => {
                     path="/auth"
                     element={
                       <PublicRoute>
-                        <LandingLayout showNavbar={false} showFooter={false} showFeedback={false}>
+                        <LandingLayout showNavbar={false} showFooter={false}>
                           <AuthPageSimple />
                         </LandingLayout>
                       </PublicRoute>
