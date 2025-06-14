@@ -4,6 +4,7 @@ import VisualWorkflowBuilder from '@/components/landing/VisualWorkflowBuilder';
 import RoadmapSection from '@/components/landing/RoadmapSection';
 import TokenTierSection from '@/components/landing/TokenTierSection';
 import ComingSoonModal from '@/components/ui/ComingSoonModal';
+import FooterNoMotion from '@/components/Footer-NoMotion';
 import { useComingSoon } from '@/hooks/useComingSoon';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -508,6 +509,9 @@ const MinimalistLandingPage: React.FC = () => {
           </MotionDiv>
         </div>
       </section>
+
+      {/* Footer Section - adăugat manual */}
+      <FooterNoMotion />
 
       {/* Sticky Mobile CTA */}
       <SafeAnimatePresence>
