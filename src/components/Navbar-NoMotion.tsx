@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import {
   Menu,
   X,
-  PlusCircle, // Used in authenticatedNavItems (though that array itself is unused currently)
+  // PlusCircle, // Used in authenticatedNavItems (though that array itself is unused currently)
   Sparkles, // Used in Start Free Trial button & authenticatedNavItems
   Star, // Used in Join Token Waitlist button
   // Removed unused Lucide icons: Layers, Settings, LogIn, UserPlus, User, LogOut, Crown, BarChart3, Users, Bot, Shield

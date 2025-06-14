@@ -7,6 +7,14 @@ interface PerformanceMetrics {
   retryCount: number;
 }
 
+interface PerformanceWithMemory extends Performance {
+  memory?: {
+    jsHeapSizeLimit: number;
+    totalJSHeapSize: number;
+    usedJSHeapSize: number;
+  };
+}
+
 class BackgroundPerformanceMonitor {
   private metrics: PerformanceMetrics = {
     loadTime: 0,
@@ -86,14 +94,14 @@ class BackgroundPerformanceMonitor {
   }
 
   private monitorMemoryUsage() {
-    if ('memory' in performance) {
-      const memory = (performance as any).memory;
-      this.metrics.memoryUsage = memory.usedJSHeapSize;
+    const perf = performance as PerformanceWithMemory;
+    if (perf.memory) {
+      this.metrics.memoryUsage = perf.memory.usedJSHeapSize;
 
-      if (memory.usedJSHeapSize > 50 * 1024 * 1024) {
+      if (perf.memory.usedJSHeapSize > 50 * 1024 * 1024) {
         // 50MB
         console.warn(
-          `⚠️ High memory usage detected: ${(memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB`
+          `⚠️ High memory usage detected: ${(perf.memory.usedJSHeapSize / 1024 / 1024).toFixed(2)}MB`
         );
       }
     }

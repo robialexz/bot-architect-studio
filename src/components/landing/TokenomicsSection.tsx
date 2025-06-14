@@ -27,9 +27,11 @@ const TokenDistributionItem: React.FC<TokenDistributionItemProps> = ({
   if (rawBgColorClass && rawBgColorClass.startsWith('bg-')) {
     finalBgColorClass = rawBgColorClass;
     const colorParts = rawBgColorClass.split('-');
-    if (colorParts.length > 1) {
+    // Ensure colorParts[1] exists and is a non-empty string before assigning
+    if (colorParts.length > 1 && typeof colorParts[1] === 'string' && colorParts[1].length > 0) {
       baseColor = colorParts[1];
     }
+    // Otherwise, baseColor remains 'gray' as initialized
   }
 
   // Ensure textColorClass is a complete, valid Tailwind text color class string

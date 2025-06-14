@@ -77,7 +77,7 @@ const FooterNoMotion = () => {
   }
 
   return (
-    <footer className="border-t border-border-alt py-4 md:py-6 bg-card/80 backdrop-blur-lg shadow-top">
+    <footer className="border-t border-border-alt py-4 md:py-6 bg-card backdrop-blur-lg shadow-top">
       <div className="container mx-auto px-4 max-w-screen-xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div className="flex flex-col items-start md:col-span-2 lg:col-span-1 animate-fade-in">

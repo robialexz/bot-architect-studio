@@ -131,7 +131,7 @@ const IndexPage: React.FC = () => {
   //   return () => clearTimeout(timer);
   // }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     console.log('🏠 Index page component mounted', {
       timestamp: new Date().toISOString(),
       location: window.location.href,

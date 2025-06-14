@@ -3,7 +3,8 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 // Safety check for React availability
-const safeForwardRef = React?.forwardRef || ((render: any) => render);
+const safeForwardRef =
+  React?.forwardRef || ((render: (props: unknown, ref: unknown) => React.ReactNode) => render);
 
 const Card = safeForwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (

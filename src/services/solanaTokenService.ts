@@ -573,10 +573,11 @@ class SolanaTokenService {
    * Enrich basic price data with additional information
    */
   private async enrichTokenData(
-    tokenAddress: string,
+    _tokenAddress: string, // Prefixed with underscore as it's currently unused
     baseData: Partial<TokenData>
   ): Promise<TokenData> {
     // In production, this would fetch additional data from multiple sources
+    // _tokenAddress might be used here to fetch more details
     return {
       name: typeof baseData.name === 'string' ? baseData.name : 'FlowsyAI Token',
       symbol: typeof baseData.symbol === 'string' ? baseData.symbol : 'FLOWSY',

@@ -14,7 +14,8 @@ import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 
 // Safety check for React availability
-const safeForwardRef = React?.forwardRef || ((render: any) => render);
+const safeForwardRef =
+  React?.forwardRef || ((render: (props: unknown, ref: unknown) => React.ReactNode) => render);
 
 const Form = FormProvider;
 
