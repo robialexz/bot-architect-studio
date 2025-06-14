@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ReactFlow, {
   Node,
@@ -25,11 +24,6 @@ import {
   Save,
   Settings,
   Search,
-  Zap,
-  Database,
-  Bot,
-  Workflow as WorkflowIcon,
-  Layers,
   RefreshCw,
 } from 'lucide-react';
 
@@ -47,7 +41,6 @@ import ComprehensiveInteractiveTutorial from './tutorial/ComprehensiveInteractiv
 import TutorialProgressTracker from './tutorial/TutorialProgressTracker';
 import ContextualHelp from './help/ContextualHelp';
 import SmartOnboarding from './onboarding/SmartOnboarding';
-import { TutorialValidationService } from '@/services/tutorialValidationService';
 
 // Custom node components
 import AINodeComponent from './nodes/AINodeComponent';
@@ -283,7 +276,7 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
         userId: user.id,
         isPublic: false,
         tags: [],
-        category: 'automation' as const,
+        category: 'custom' as const,
         status: 'draft' as const,
         version: 1,
         lastExecuted: undefined,
@@ -511,14 +504,18 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
   // Get current workflow state for tutorial validation
   const getWorkflowState = useCallback(() => {
     return {
-      nodes,
-      edges,
-      metadata: {
-        workflowId: workflow?.id,
-        lastModified: new Date(),
-      },
+      nodes: nodes.map(node => ({
+        id: node.id,
+        type: node.type || 'default',
+        data: node.data,
+      })),
+      edges: edges.map(edge => ({
+        id: edge.id,
+        source: edge.source,
+        target: edge.target,
+      })),
     };
-  }, [nodes, edges, workflow?.id]);
+  }, [nodes, edges]);
 
   return (
     <div className="h-screen w-screen flex bg-transparent overflow-hidden fixed inset-0">
@@ -726,7 +723,7 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
 
               {/* Luxury Welcome Message */}
               {nodes.length === 0 && (
-                <Panel position="center" className="pointer-events-none">
+                <Panel position="top-center" className="pointer-events-none">
                   <div className="bg-black/60 backdrop-blur-2xl rounded-2xl p-12 border border-white/10 shadow-2xl max-w-md text-center">
                     <div className="relative z-10">
                       <h3 className="text-3xl font-light text-white/90 mb-4 tracking-wide">
@@ -767,10 +764,6 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
             setShowAIConfigWizard(false);
             setConfigNodeId(null);
           }}
-          onCancel={() => {
-            setShowAIConfigWizard(false);
-            setConfigNodeId(null);
-          }}
         />
       )}
 
@@ -803,7 +796,7 @@ const EnhancedWorkflowBuilder: React.FC<EnhancedWorkflowBuilderProps> = ({
         tutorialLevel={tutorialType}
         workflowBuilder={{
           getWorkflowState,
-          testExecution: async (sampleData: Record<string, unknown>) => {
+          testExecution: async () => {
             // Mock execution for tutorial validation
             return { success: true, result: 'Tutorial execution successful' };
           },

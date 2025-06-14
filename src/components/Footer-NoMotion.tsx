@@ -85,7 +85,7 @@ const FooterNoMotion = () => {
             </p>
           </div>
 
-          {footerSections.map((section, index) => (
+          {footerSections.map((section) => (
             <div
               key={section.title}
               className="space-y-4"
