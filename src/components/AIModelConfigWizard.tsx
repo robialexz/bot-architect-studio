@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -152,7 +153,7 @@ const AIModelConfigWizard = ({ initialConfig, onSave, onClose }: AIModelConfigWi
                     <Label>Temperature: {config.temperature}</Label>
                     <Slider
                       value={[config.temperature]}
-                      onValueChange={(value) => setConfig(prev => ({ ...prev, temperature: value[0] }))}
+                      onValueChange={(value) => setConfig(prev => ({ ...prev, temperature: value[0] || 0.7 }))}
                       max={2}
                       min={0}
                       step={0.1}
@@ -183,7 +184,7 @@ const AIModelConfigWizard = ({ initialConfig, onSave, onClose }: AIModelConfigWi
                     <Label>Top P: {config.topP}</Label>
                     <Slider
                       value={[config.topP]}
-                      onValueChange={(value) => setConfig(prev => ({ ...prev, topP: value[0] }))}
+                      onValueChange={(value) => setConfig(prev => ({ ...prev, topP: value[0] || 1.0 }))}
                       max={1}
                       min={0}
                       step={0.1}
@@ -196,7 +197,7 @@ const AIModelConfigWizard = ({ initialConfig, onSave, onClose }: AIModelConfigWi
                     <Label>Frequency Penalty: {config.frequencyPenalty}</Label>
                     <Slider
                       value={[config.frequencyPenalty]}
-                      onValueChange={(value) => setConfig(prev => ({ ...prev, frequencyPenalty: value[0] }))}
+                      onValueChange={(value) => setConfig(prev => ({ ...prev, frequencyPenalty: value[0] || 0.0 }))}
                       max={2}
                       min={-2}
                       step={0.1}
@@ -211,7 +212,7 @@ const AIModelConfigWizard = ({ initialConfig, onSave, onClose }: AIModelConfigWi
                     <Label>Presence Penalty: {config.presencePenalty}</Label>
                     <Slider
                       value={[config.presencePenalty]}
-                      onValueChange={(value) => setConfig(prev => ({ ...prev, presencePenalty: value[0] }))}
+                      onValueChange={(value) => setConfig(prev => ({ ...prev, presencePenalty: value[0] || 0.0 }))}
                       max={2}
                       min={-2}
                       step={0.1}
