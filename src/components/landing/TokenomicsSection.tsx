@@ -1,6 +1,6 @@
 import React from 'react';
 // Removed Coins, ShoppingBag, Zap as they are no longer used in the simplified distribution
-import { PieChart, Users, ShieldCheck } from 'lucide-react';
+import { PieChart, Users, ShieldCheck, ExternalLink } from 'lucide-react';
 
 interface TokenDistributionItemProps {
   category: string;
@@ -8,6 +8,7 @@ interface TokenDistributionItemProps {
   description: string;
   icon: React.ReactNode;
   colorClass: string;
+  lockContract?: string;
 }
 
 const TokenDistributionItem: React.FC<TokenDistributionItemProps> = ({
@@ -16,6 +17,7 @@ const TokenDistributionItem: React.FC<TokenDistributionItemProps> = ({
   description,
   icon,
   colorClass,
+  lockContract,
 }) => {
   const parts = colorClass.split(' ');
   const rawBgColorClass = parts[0];
@@ -55,7 +57,18 @@ const TokenDistributionItem: React.FC<TokenDistributionItemProps> = ({
       <span className={spanClasses}>{icon}</span>
       <h3 className={`text-2xl font-bold text-foreground mb-1`}>{percentage}%</h3>
       <p className={categoryTextClasses}>{category}</p>
-      <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
+      <p className="text-muted-foreground text-sm leading-relaxed mb-3">{description}</p>
+      {lockContract && (
+        <a
+          href={lockContract}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-xs text-violet-400 hover:text-violet-300 transition-colors mt-2"
+        >
+          <span>🔍 View Lock Contract</span>
+          <ExternalLink className="w-3 h-3" />
+        </a>
+      )}
     </div>
   );
 };
@@ -77,6 +90,7 @@ const TokenomicsSection: React.FC = () => {
         'Reserved for development and team incentives. Locked until $10M market cap. At $10M MC, 9% of this wallet (0.9% of total supply) will be burned.',
       icon: <ShieldCheck size={32} />,
       colorClass: 'bg-violet-500 text-violet-400',
+      lockContract: 'https://app.streamflow.finance/contract/solana/mainnet/CfECHu7EJahWe7QuxgyrSJNPB6YgBww79G9o2wMehQBK',
     },
   ];
 

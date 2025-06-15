@@ -114,12 +114,12 @@ const FooterNoMotion = () => {
               label="Follow us on GitHub"
             />
             <SocialIconLink
-              href="https://x.com/flowsyai"
+              href="https://x.com/FlowsyAI"
               icon={Twitter}
               label="Follow us on X (Twitter)"
             />
             <SocialIconLink
-              href="https://t.me/flowsyai"
+              href="https://t.me/+jNmtj8qUUtMxOTVk"
               icon={MessageCircle}
               label="Join our Telegram community"
             />

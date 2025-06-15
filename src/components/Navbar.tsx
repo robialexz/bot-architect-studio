@@ -145,13 +145,13 @@ const Navbar = () => {
       <div className="w-full max-w-7xl mx-auto px-4 py-2 flex items-center justify-between min-h-[70px]">
         <MotionButton
           onClick={handleLogoClick}
-          className="group cursor-pointer bg-transparent border-none p-2 rounded-lg hover:bg-accent/50 transition-all duration-300"
+          className="group cursor-pointer bg-transparent border-none px-12 py-4 rounded-lg hover:bg-accent/50 transition-all duration-300"
           aria-label="Navigate to home page"
           whileHover={{ scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
           <PremiumLogo
-            size={isDesktop ? 'xl' : 'lg'}
+            size={isDesktop ? 'xxl' : 'xl'}
             showText={false}
             animated={true}
             className="drop-shadow-sm"

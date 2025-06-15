@@ -144,7 +144,7 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 1.5, duration: 0.6 }}
             >
               <a
-                href="https://dexscreener.com/solana"
+                href="https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block relative"
@@ -162,7 +162,7 @@ const HeroSection: React.FC = () => {
                       </div>
                       <div>
                         <div className="text-sm font-bold bg-gradient-to-r from-emerald-300 to-teal-300 bg-clip-text text-transparent">
-                          Buy Token
+                          Buy $FlowAI
                         </div>
                         <div className="text-xs text-white/50">DexScreener</div>
                       </div>
@@ -191,7 +191,7 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 1.7, duration: 0.6 }}
             >
               <a
-                href="https://t.me/flowsyai"
+                href="https://t.me/+jNmtj8qUUtMxOTVk"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block relative"
@@ -239,7 +239,7 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 1.9, duration: 0.6 }}
             >
               <a
-                href="https://x.com/flowsyai"
+                href="https://x.com/FlowsyAI"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block relative"

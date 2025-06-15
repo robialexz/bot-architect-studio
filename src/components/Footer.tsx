@@ -72,9 +72,9 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { href: '#telegram', icon: MessageCircle, label: 'Telegram' },
-    { href: '#twitter', icon: Twitter, label: 'X (Twitter)' },
-    { href: '#github', icon: Github, label: 'GitHub' },
+    { href: 'https://t.me/+jNmtj8qUUtMxOTVk', icon: MessageCircle, label: 'Telegram' },
+    { href: 'https://x.com/FlowsyAI', icon: Twitter, label: 'X (Twitter)' },
+    { href: 'https://github.com/flowsyai', icon: Github, label: 'GitHub' },
   ];
 
   return (

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { ArrowRight, Sparkles, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PipelineBackground from '@/components/landing/PipelineBackground';
+import TokenWidget from '@/components/ui/TokenWidget';
 
 // Custom icons as SVG components
 const TelegramIcon = ({ className }: { className?: string }) => (
@@ -70,7 +71,7 @@ const HeroSectionNoMotion: React.FC = () => {
             >
               <Link to="/waitlist" className="block relative">
                 <div className="relative backdrop-blur-xl bg-gradient-to-r from-violet-500/10 via-blue-500/10 to-cyan-500/10 border border-violet-500/30 rounded-xl p-[1px] group-hover:border-cyan-400/60 transition-all duration-500 shadow-xl group-hover:shadow-violet-500/25">
-                  <div className="relative bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-sm rounded-xl px-6 py-4 overflow-hidden">
+                  <div className="relative bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-sm rounded-xl px-8 py-5 overflow-hidden">
                     {/* Animated Background */}
                     <div className="absolute inset-0 opacity-30 group-hover:opacity-50 transition-opacity duration-500">
                       <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-cyan-500/20 animate-gradient-x"></div>
@@ -93,13 +94,13 @@ const HeroSectionNoMotion: React.FC = () => {
               </Link>
             </div>
 
-            {/* Buy Token Button */}
+            {/* Buy $FlowAI Button */}
             <div
               className="group cursor-pointer hover:scale-108 hover:-translate-y-2 transition-all duration-300 animate-slide-up"
               style={{ animationDelay: '1.5s' }}
             >
               <a
-                href="https://dexscreener.com/solana"
+                href="https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block relative"
@@ -112,7 +113,7 @@ const HeroSectionNoMotion: React.FC = () => {
                       </div>
                       <div>
                         <div className="text-sm font-bold bg-gradient-to-r from-emerald-300 to-teal-300 bg-clip-text text-transparent">
-                          Buy Token
+                          Buy $FlowAI
                         </div>
                         <div className="text-xs text-white/50">DexScreener</div>
                       </div>
@@ -129,7 +130,7 @@ const HeroSectionNoMotion: React.FC = () => {
               style={{ animationDelay: '1.7s' }}
             >
               <a
-                href="https://t.me/flowsyai"
+                href="https://t.me/+jNmtj8qUUtMxOTVk"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block relative"
@@ -159,7 +160,7 @@ const HeroSectionNoMotion: React.FC = () => {
               style={{ animationDelay: '1.9s' }}
             >
               <a
-                href="https://x.com/flowsyai"
+                href="https://x.com/FlowsyAI"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block relative"
@@ -182,6 +183,14 @@ const HeroSectionNoMotion: React.FC = () => {
                 </div>
               </a>
             </div>
+          </div>
+
+          {/* Token Widget */}
+          <div
+            className="mt-12 flex justify-center animate-slide-up"
+            style={{ animationDelay: '2.1s' }}
+          >
+            <TokenWidget compact className="max-w-md" />
           </div>
         </div>
       </div>

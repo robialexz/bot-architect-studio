@@ -253,14 +253,25 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
                       }}
                       transition={{ duration: 3, repeat: Infinity }}
                     >
-                      <div className="flex items-center gap-2 text-blue-300">
-                        <motion.div
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
+                      <div className="flex items-center justify-between text-blue-300">
+                        <div className="flex items-center gap-2">
+                          <motion.div
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                          >
+                            <Lock className="w-4 h-4" />
+                          </motion.div>
+                          <span className="text-sm font-semibold">ULTRA-LOCKED</span>
+                        </div>
+                        <a
+                          href="https://app.streamflow.finance/contract/solana/mainnet/CfECHu7EJahWe7QuxgyrSJNPB6YgBww79G9o2wMehQBK"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-blue-300 hover:text-blue-200 transition-colors"
                         >
-                          <Lock className="w-4 h-4" />
-                        </motion.div>
-                        <span className="text-sm font-semibold">ULTRA-LOCKED</span>
+                          <span>🔍</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
                       </div>
                     </motion.div>
                   )}
@@ -489,9 +500,18 @@ export const TokenTabContent: React.FC<TokenTabContentProps> = ({
               <CheckCircle className="w-5 h-5 text-emerald-500 mt-0.5" />
               <div>
                 <div className="font-semibold text-emerald-500">Time-Locked Contracts</div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground mb-2">
                   Developer funds locked until $10M market cap milestone
                 </div>
+                <a
+                  href="https://app.streamflow.finance/contract/solana/mainnet/CfECHu7EJahWe7QuxgyrSJNPB6YgBww79G9o2wMehQBK"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+                >
+                  <span>🔍 View Lock Contract</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
               </div>
             </div>
 

@@ -37,9 +37,9 @@
       "url": "/"
     },
     {
-      "name": "Buy Token",
+      "name": "Buy $FlowAI",
       "short_name": "Buy",
-      "description": "Buy FlowsyAI token",
+      "description": "Buy $FlowAI token",
       "url": "/"
     }
   ],

@@ -102,8 +102,8 @@ const SocialIcons: React.FC<SocialIconsProps> = ({
             <TrendingUp
               className={`${iconSizes[size]} group-hover:scale-110 transition-transform duration-300`}
             />
-            <span className="hidden sm:inline font-medium">Buy Token</span>
-            <span className="sm:hidden font-medium">DexScreener</span>
+            <span className="hidden sm:inline font-medium">Buy $FlowAI</span>
+            <span className="sm:hidden font-medium">$FlowAI</span>
           </span>
 
           {/* Hover effect background */}

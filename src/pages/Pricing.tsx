@@ -41,6 +41,7 @@ import {
   Mic,
   Brain,
   CheckCircle,
+  ExternalLink,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
@@ -309,7 +310,7 @@ const Pricing = () => {
       // For now, just show a coming soon message
       toast({
         title: 'Coming Soon!',
-        description: `${plan.name} plan will be available at launch in May 2025.`,
+        description: `${plan.name} plan will be available at launch in June 2025.`,
       });
     }
   };
@@ -448,14 +449,14 @@ const Pricing = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <Star className="w-5 h-5 text-gold" />
-                <span className="text-sm font-medium">Public Launch: May 2025</span>
+                <span className="text-sm font-medium">Public Launch: June 2025</span>
                 <Badge variant="secondary" className="bg-gold/20 text-gold border-gold/30">
                   Early Bird Pricing
                 </Badge>
               </MotionDiv>
             </MotionDiv>
             {/* Pricing Tiers Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
               {tokenTiers.map((tier, index) => (
                 <MotionDiv
                   key={tier.id}
@@ -473,7 +474,7 @@ const Pricing = () => {
                         : ''
                     } ${
                       tier.exclusive ? 'ring-2 ring-gold/40 shadow-2xl shadow-gold/20' : ''
-                    } transition-all duration-300 group hover:shadow-xl`}
+                    } transition-all duration-300 group hover:shadow-xl flex flex-col`}
                   >
                     {/* Tier Badge */}
                     {(tier.popular || tier.exclusive) && (
@@ -548,7 +549,7 @@ const Pricing = () => {
                     </div>
 
                     {/* Benefits */}
-                    <div className="mb-6">
+                    <div className="mb-6 flex-grow">
                       <h4 className="text-xs font-semibold uppercase tracking-wide text-primary mb-2">
                         Key Benefits
                       </h4>
@@ -562,15 +563,17 @@ const Pricing = () => {
                     </div>
 
                     {/* CTA Button */}
-                    <Button
-                      className={`w-full bg-gradient-to-r ${tier.gradient} text-white hover:shadow-lg transition-all duration-300 group-hover:scale-105`}
-                      onClick={() => handleSelectPlan(tier.id)}
-                    >
-                      <span className="flex items-center justify-center gap-2">
-                        Choose {tier.name}
-                        <ArrowRight className="w-4 h-4" />
-                      </span>
-                    </Button>
+                    <div className="mt-auto">
+                      <Button
+                        className={`w-full bg-gradient-to-r ${tier.gradient} text-white hover:shadow-lg transition-all duration-300 group-hover:scale-105`}
+                        onClick={() => handleSelectPlan(tier.id)}
+                      >
+                        <span className="flex items-center justify-center gap-2">
+                          Choose {tier.name}
+                          <ArrowRight className="w-4 h-4" />
+                        </span>
+                      </Button>
+                    </div>
                   </div>
                 </MotionDiv>
               ))}
@@ -615,8 +618,8 @@ const Pricing = () => {
                         <div>
                           <h5 className="font-semibold text-foreground">Token Burn Mechanism</h5>
                           <p className="text-sm text-muted-foreground">
-                            20% of tokens will be burned after official launch, reducing supply and
-                            increasing value
+                            0.9% of total supply (9% of dev wallet) will be burned at $1M market cap,
+                            reducing supply and increasing value for all holders
                           </p>
                         </div>
                       </div>
@@ -649,10 +652,19 @@ const Pricing = () => {
                         </div>
                         <div>
                           <h5 className="font-semibold text-foreground">Developer Wallet Locked</h5>
-                          <p className="text-sm text-muted-foreground">
-                            Our development wallet is locked for 3 months to ensure project
-                            commitment and investor security
+                          <p className="text-sm text-muted-foreground mb-2">
+                            Our development wallet (10% of supply) is locked until $10M market cap
+                            to ensure project commitment and investor security
                           </p>
+                          <a
+                            href="https://app.streamflow.finance/contract/solana/mainnet/CfECHu7EJahWe7QuxgyrSJNPB6YgBww79G9o2wMehQBK"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                          >
+                            <span>🔍 View Lock Contract</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
                         </div>
                       </div>
 
@@ -687,23 +699,35 @@ const Pricing = () => {
 
                 {/* Token Economics Chart */}
                 <div className="bg-gradient-to-r from-gold/5 to-primary/5 rounded-xl p-6 mb-6">
-                  <h4 className="text-lg font-semibold text-center mb-4">Token Economics</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div>
-                      <div className="text-2xl font-bold text-gold">40%</div>
-                      <div className="text-sm text-muted-foreground">Public Sale</div>
+                  <h4 className="text-lg font-semibold text-center mb-4">FlowsyAI Token Economics</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
+                    <div className="p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                      <div className="text-4xl font-bold text-emerald-500 mb-2">90%</div>
+                      <div className="text-lg font-semibold text-foreground mb-1">Public Sale</div>
+                      <div className="text-sm text-muted-foreground">
+                        Maximum community ownership and decentralized distribution
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-2xl font-bold text-primary">25%</div>
-                      <div className="text-sm text-muted-foreground">Development</div>
+                    <div className="p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                      <div className="text-4xl font-bold text-blue-500 mb-2">10%</div>
+                      <div className="text-lg font-semibold text-foreground mb-1">Dev Wallet (Locked)</div>
+                      <div className="text-sm text-muted-foreground mb-2">
+                        Locked until $10M market cap for maximum security
+                      </div>
+                      <a
+                        href="https://app.streamflow.finance/contract/solana/mainnet/CfECHu7EJahWe7QuxgyrSJNPB6YgBww79G9o2wMehQBK"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                      >
+                        <span>🔍 Verify Lock Contract</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
                     </div>
-                    <div>
-                      <div className="text-2xl font-bold text-emerald-500">20%</div>
-                      <div className="text-sm text-muted-foreground">To Be Burned</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl font-bold text-purple-500">15%</div>
-                      <div className="text-sm text-muted-foreground">Team & Advisors</div>
+                  </div>
+                  <div className="mt-4 p-3 bg-orange-500/10 rounded-lg border border-orange-500/20 text-center">
+                    <div className="text-sm text-orange-400 font-medium">
+                      🔥 Burn Mechanism: 0.9% of total supply (9% of dev wallet) will be burned at $1M market cap
                     </div>
                   </div>
                 </div>
@@ -715,10 +739,10 @@ const Pricing = () => {
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                     <div>
-                      <div className="text-xl font-bold text-emerald-500">+150%</div>
+                      <div className="text-xl font-bold text-emerald-500">+50%</div>
                       <div className="text-sm text-muted-foreground">Post-Burn Value Increase</div>
                       <div className="text-xs text-muted-foreground mt-1">
-                        Based on 20% token burn
+                        Based on 0.9% token burn at $1M MC
                       </div>
                     </div>
                     <div>
@@ -735,8 +759,8 @@ const Pricing = () => {
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground text-center mt-4">
-                    *Projections are estimates based on market analysis and tokenomics. Past
-                    performance does not guarantee future results.
+                    *Projections are estimates based on market analysis and FlowsyAI tokenomics (90% public, 10% dev locked).
+                    Past performance does not guarantee future results.
                   </p>
                 </div>
 
