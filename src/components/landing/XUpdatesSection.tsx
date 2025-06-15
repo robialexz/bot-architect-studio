@@ -361,26 +361,37 @@ const XUpdatesSection: React.FC = () => {
 
   const checkApiConfiguration = useCallback(() => {
     const bearerToken = import.meta.env.VITE_TWITTER_BEARER_TOKEN;
-    return bearerToken && bearerToken !== 'your_x_api_bearer_token_here';
+    const isConfigured = bearerToken && bearerToken !== 'your_x_api_bearer_token_here';
+    console.log('📱 X API Configuration Check:', {
+      hasToken: !!bearerToken,
+      tokenLength: bearerToken?.length || 0,
+      isConfigured
+    });
+    return isConfigured;
   }, []);
 
   const fetchPosts = useCallback(async () => {
+    console.log('📱 Starting X posts fetch...');
+
     // Check if API is configured
     if (!checkApiConfiguration()) {
+      console.warn('📱 X API not configured');
       setIsApiConfigured(false);
       setLoading(false);
       return;
     }
 
     setIsApiConfigured(true);
+    console.log('📱 X API configured, fetching posts...');
 
     try {
       setError(null);
       const xPosts = await xService.fetchUserPosts(5);
+      console.log('📱 Successfully fetched X posts:', xPosts.length);
       setPosts(xPosts);
     } catch (err) {
-      console.error('Failed to fetch X posts:', err);
-      setError('Unable to load latest updates. Please check back later.');
+      console.error('📱 Failed to fetch X posts:', err);
+      setError(`Unable to load latest updates: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }

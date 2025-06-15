@@ -111,6 +111,7 @@ class XService {
   private readonly baseUrl = 'https://api.twitter.com/2';
   private readonly bearerToken = import.meta.env.VITE_TWITTER_BEARER_TOKEN;
   private readonly username = import.meta.env.VITE_TWITTER_USERNAME || 'flowsyai';
+  private readonly userId = '1932495872702447617'; // FlowsyAI user ID
   private cache: { data: XPost[]; timestamp: number } | null = null;
   private readonly cacheTimeout = 10 * 60 * 1000; // 10 minutes for background refresh
   private autoRefreshInterval: NodeJS.Timeout | null = null;
@@ -147,15 +148,17 @@ class XService {
       }
 
       const response = await this.makeApiRequest(maxResults);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
+        console.error('📱 X API Response Error:', response.status, errorText);
         throw new Error(`X API error: ${response.status} - ${errorText}`);
       }
 
       const data: XApiResponse = await response.json();
-      
+
       if (!data.data || data.data.length === 0) {
+        console.warn('📱 No posts received from X API');
         throw new Error('No posts received from X API');
       }
 
@@ -188,7 +191,11 @@ class XService {
       'exclude': 'retweets' // Include replies but exclude retweets
     });
 
-    return fetch(`${this.baseUrl}/users/by/username/${this.username}/tweets?${params}`, {
+    // Use the correct API endpoint with user ID
+    const url = `${this.baseUrl}/users/${this.userId}/tweets?${params}`;
+    console.log('📱 Making X API request to:', url);
+
+    return fetch(url, {
       headers: {
         'Authorization': `Bearer ${this.bearerToken}`,
         'Content-Type': 'application/json',
