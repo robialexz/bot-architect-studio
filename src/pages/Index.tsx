@@ -122,7 +122,6 @@ const IndexPage: React.FC = () => {
     const components = {
       PipelineCanvas,
       HeroSection,
-      XUpdatesSection,
       VisualWorkflowBuilder,
       DetailedRoadmapSection,
       TokenomicsSection,
