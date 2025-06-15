@@ -10,7 +10,6 @@ import SectionErrorBoundary from '@/components/SectionErrorBoundary';
 
 // Direct imports - NO LAZY LOADING to avoid Framer Motion issues
 import HeroSection from '@/components/landing/HeroSection-NoMotion';
-import XUpdatesSection from '@/components/landing/XUpdatesSection';
 import DetailedRoadmapSection from '@/components/landing/DetailedRoadmapSection';
 import TokenomicsSection from '@/components/landing/TokenomicsSection';
 import VisualWorkflowBuilder from '@/components/landing/VisualWorkflowBuilder';
@@ -163,9 +162,6 @@ const IndexPage: React.FC = () => {
       <PipelineCanvas />
       <main className="relative z-10 w-full">
         <HeroSection />
-        <SectionErrorBoundary sectionName="X Updates">
-          <XUpdatesSection />
-        </SectionErrorBoundary>
         <SectionErrorBoundary sectionName="Workflow Builder">
           <VisualWorkflowBuilder />
         </SectionErrorBoundary>
