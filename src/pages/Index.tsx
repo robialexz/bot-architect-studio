@@ -10,7 +10,7 @@ import SectionErrorBoundary from '@/components/SectionErrorBoundary';
 
 // Direct imports - NO LAZY LOADING to avoid Framer Motion issues
 import HeroSection from '@/components/landing/HeroSection-NoMotion';
-import VideoShowcaseSection from '@/components/landing/VideoShowcaseSection-NoMotion';
+import XUpdatesSection from '@/components/landing/XUpdatesSection';
 import DetailedRoadmapSection from '@/components/landing/DetailedRoadmapSection';
 import TokenomicsSection from '@/components/landing/TokenomicsSection';
 import VisualWorkflowBuilder from '@/components/landing/VisualWorkflowBuilder';
@@ -123,7 +123,7 @@ const IndexPage: React.FC = () => {
     const components = {
       PipelineCanvas,
       HeroSection,
-      VideoShowcaseSection,
+      XUpdatesSection,
       VisualWorkflowBuilder,
       DetailedRoadmapSection,
       TokenomicsSection,
@@ -163,8 +163,8 @@ const IndexPage: React.FC = () => {
       <PipelineCanvas />
       <main className="relative z-10 w-full">
         <HeroSection />
-        <SectionErrorBoundary sectionName="Video Showcase">
-          <VideoShowcaseSection />
+        <SectionErrorBoundary sectionName="X Updates">
+          <XUpdatesSection />
         </SectionErrorBoundary>
         <SectionErrorBoundary sectionName="Workflow Builder">
           <VisualWorkflowBuilder />
