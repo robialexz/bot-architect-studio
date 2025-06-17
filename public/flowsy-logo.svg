@@ -1,0 +1,31 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circuit/Flow Design -->
+  <g id="flowsy-logo">
+    <!-- Purple circuit paths -->
+    <path d="M150 350 C200 350 200 350 250 350 L300 350 C350 350 350 400 350 450 L350 500" stroke="#8B5CF6" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <path d="M150 450 C200 450 200 450 250 450 L300 450" stroke="#8B5CF6" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <path d="M150 550 C200 550 200 550 250 550 L300 550" stroke="#8B5CF6" stroke-width="12" fill="none" stroke-linecap="round"/>
+    
+    <!-- Green circuit paths -->
+    <path d="M350 500 C400 500 400 500 450 500 L500 500 C550 500 550 550 550 600 L550 650" stroke="#10B981" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <path d="M350 600 C400 600 400 600 450 600 L500 600" stroke="#10B981" stroke-width="12" fill="none" stroke-linecap="round"/>
+    
+    <!-- Connection nodes (circles) -->
+    <circle cx="150" cy="350" r="20" fill="#8B5CF6"/>
+    <circle cx="300" cy="350" r="20" fill="#8B5CF6"/>
+    <circle cx="350" cy="450" r="20" fill="#8B5CF6"/>
+    <circle cx="150" cy="450" r="20" fill="#8B5CF6"/>
+    <circle cx="300" cy="450" r="20" fill="#8B5CF6"/>
+    <circle cx="150" cy="550" r="20" fill="#8B5CF6"/>
+    <circle cx="300" cy="550" r="20" fill="#8B5CF6"/>
+    <circle cx="350" cy="500" r="20" fill="#10B981"/>
+    <circle cx="500" cy="500" r="20" fill="#10B981"/>
+    <circle cx="550" cy="600" r="20" fill="#10B981"/>
+    <circle cx="350" cy="600" r="20" fill="#10B981"/>
+    <circle cx="500" cy="600" r="20" fill="#10B981"/>
+    <circle cx="550" cy="650" r="20" fill="#10B981"/>
+    
+    <!-- FlowsyAI Text -->
+    <text x="400" y="520" font-family="Inter, system-ui, sans-serif" font-size="120" font-weight="300" fill="#6B7280" text-anchor="start">FlowsyAI</text>
+  </g>
+</svg>

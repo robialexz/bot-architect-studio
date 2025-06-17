@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlowsyAI - Advanced Workflow Automation Platform</title>
+    <meta
+      name="description"
+      content="Create, manage, and optimize AI-powered workflows with FlowsyAI's advanced automation platform. Build intelligent agents and streamline your processes."
+    />
+    <meta name="author" content="FlowsyAI Team" />
+    <meta
+      name="keywords"
+      content="FlowsyAI, AI, workflow, automation, artificial intelligence, agents, productivity"
+    />
+
+    <!-- Performance optimizations -->
+    <meta name="theme-color" content="#0078FF" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Critical fonts for immediate loading -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Critical CSS preload hint -->
+    <link rel="preload" as="style" href="/src/index.css" />
+
+    <!-- Inline critical CSS for immediate styling -->
+    <!-- <link rel="stylesheet" href="/src/critical.css"> --> <!-- Assuming critical CSS is moved to a file -->
+
+    <!-- PWA manifest - TEMPORARILY DISABLED FOR DEBUGGING -->
+    <!-- <link rel="manifest" href="/manifest.webmanifest" /> -->
+
+    <!-- Favicon and icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.svg" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="FlowsyAI - Advanced Workflow Automation Platform" />
+    <meta
+      property="og:description"
+      content="Create, manage, and optimize AI-powered workflows with FlowsyAI's advanced automation platform."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://flowsyai.com/og-image.png" />
+    <meta property="og:url" content="https://flowsyai.com" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FlowsyAI - Advanced Workflow Automation Platform" />
+    <meta
+      name="twitter:description"
+      content="Create, manage, and optimize AI-powered workflows with FlowsyAI's advanced automation platform."
+    />
+    <meta name="twitter:image" content="https://flowsyai.com/og-image.png" />
+  </head>
+
+  <body>
+    <div id="root">
+      <!-- Fallback content while React loads -->
+      <div class="loading-fallback" id="loading-fallback">
+        <div class="text-center">
+          <div class="text-3xl font-bold mb-4">FlowsyAI</div>
+          <div class="animate-pulse">Loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TEMPORARILY DISABLED FOR DEBUGGING -->
+    <!-- <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script> -->
+
+    <!-- Vite entry point - CRITICAL FOR PRODUCTION -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

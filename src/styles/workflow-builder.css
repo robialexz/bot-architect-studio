@@ -1,0 +1,334 @@
+/* Workflow Builder Full-Screen Styles */
+
+/* Premium Luxury Workflow Canvas with Responsive Design */
+.workflow-builder-container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    #0f0f23 0%,
+    #1a1a2e 25%,
+    #16213e 50%,
+    #0f3460 75%,
+    #533483 100%
+  );
+}
+
+/* Responsive Design Breakpoints */
+@media (max-width: 768px) {
+  .workflow-builder-container {
+    flex-direction: column;
+  }
+
+  .node-library-sidebar {
+    width: 100% !important;
+    height: 40vh;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .node-library-sidebar .p-8 {
+    padding: 1rem;
+  }
+
+  .node-library-sidebar h2 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .node-library-sidebar {
+    height: 35vh;
+  }
+
+  .node-library-sidebar .grid-cols-2,
+  .node-library-sidebar .grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Ensure ReactFlow takes full space without scroll */
+.react-flow__renderer {
+  height: 100vh !important;
+  width: 100% !important;
+}
+
+/* Hide scrollbars but keep functionality for ReactFlow */
+.react-flow__pane {
+  overflow: hidden !important;
+}
+
+/* Premium node library sidebar with enhanced interactions */
+.node-library-sidebar {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 15, 35, 0.95) 0%,
+    rgba(26, 26, 46, 0.95) 50%,
+    rgba(22, 33, 62, 0.95) 100%
+  );
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced node card interactions */
+.node-library-sidebar .cursor-grab {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.node-library-sidebar .cursor-grab::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.node-library-sidebar .cursor-grab:hover::before {
+  left: 100%;
+}
+
+.node-library-sidebar .cursor-grab:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.node-library-sidebar .cursor-grab:active {
+  transform: translateY(0) scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Luxury scrollbar for node library */
+.node-library-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.node-library-sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+}
+
+.node-library-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.node-library-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Prevent body scroll when workflow builder is active */
+body.workflow-builder-active {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Luxury zoom controls styling */
+.react-flow__controls {
+  background: rgba(0, 0, 0, 0.8) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.react-flow__controls-button {
+  background: transparent !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  transition: all 0.5s ease !important;
+}
+
+.react-flow__controls-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  transform: scale(1.05) !important;
+}
+
+/* Luxury minimap styling */
+.react-flow__minimap {
+  background: rgba(0, 0, 0, 0.8) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Smooth transitions for all interactive elements */
+.workflow-builder-container * {
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* Prevent text selection during drag operations */
+.workflow-builder-container .react-flow__pane {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Enhanced node drag feedback */
+.react-flow__node.dragging {
+  transform: scale(1.05) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+  z-index: 1000 !important;
+}
+
+/* Enhanced drag feedback for sidebar components */
+.node-library-sidebar .cursor-grab:active {
+  cursor: grabbing !important;
+}
+
+.node-library-sidebar [draggable='true']:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.node-library-sidebar [draggable='true']:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Drag over canvas feedback */
+.react-flow__pane.drag-over {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+  transition: background-color 0.2s ease;
+}
+
+/* Custom drag image styling */
+.drag-preview {
+  transform: rotate(2deg) scale(1.05);
+  opacity: 0.8;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Optimized smooth drag preview for maximum performance */
+.smooth-drag-preview {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  transition: transform 0.08s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  transform-origin: center;
+  /* Position will be set via CSS custom properties */
+  left: var(--drag-x, 0px);
+  top: var(--drag-y, 0px);
+  transform: scale(1.05) rotate(2deg) translateZ(0);
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+}
+
+.smooth-drag-preview .drag-card {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 15, 35, 0.95) 0%,
+    rgba(26, 26, 46, 0.95) 50%,
+    rgba(22, 33, 62, 0.95) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 16px;
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: rotate(2deg) scale(1.05);
+  transition: all 0.1s ease-out;
+}
+
+/* Enhanced hover effects for smoother interaction */
+.node-library-sidebar [draggable='true'] {
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.node-library-sidebar [draggable='true']:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.node-library-sidebar [draggable='true']:active {
+  transform: scale(0.98);
+  transition: transform 0.05s ease-out;
+}
+
+/* Smooth canvas interactions */
+.react-flow__pane {
+  transition: background-color 0.2s ease-out;
+}
+
+.react-flow__pane.drag-over {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Smooth zoom and pan */
+.react-flow__viewport {
+  transition: transform 0.1s ease-out;
+}
+
+/* Smooth edge animations */
+.react-flow__edge-path {
+  stroke-dasharray: 5;
+  animation: dash 20s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+/* Loading state for workflow builder */
+.workflow-builder-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #3730a3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .node-library-sidebar {
+    width: 280px;
+  }
+}
+
+@media (max-width: 640px) {
+  .node-library-sidebar {
+    width: 240px;
+  }
+}
