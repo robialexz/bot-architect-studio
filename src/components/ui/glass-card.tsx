@@ -30,6 +30,9 @@ interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   description?: string;
   footer?: React.ReactNode;
   headerAction?: React.ReactNode;
+  variant?: 'subtle' | 'medium' | 'strong' | 'accent';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  gradient?: 'primary' | 'secondary' | 'accent' | 'none';
 }
 
 const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
@@ -43,14 +46,45 @@ const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
       description,
       footer,
       headerAction,
+      variant = 'medium',
+      size = 'md',
+      gradient = 'none',
       ...props
     },
     ref
   ) => {
+    // Generate variant classes
+    const variantClasses = {
+      subtle: 'glass-card-subtle',
+      medium: 'glass-card-base',
+      strong: 'glass-card-strong',
+      accent: 'glass-card-accent',
+    };
+
+    const sizeClasses = {
+      sm: 'glass-card-sm',
+      md: 'glass-card-md',
+      lg: 'glass-card-lg',
+      xl: 'glass-card-xl',
+    };
+
+    const gradientClasses = {
+      primary: 'glass-accent-primary',
+      secondary: 'glass-accent-sapphire',
+      accent: 'glass-accent-gold',
+      none: '',
+    };
+
     const cardContent = (
       <div
         ref={ref}
-        className={cn('glass-card', !hoverEffect && 'hover:transform-none', className)}
+        className={cn(
+          variantClasses[variant],
+          sizeClasses[size],
+          gradientClasses[gradient],
+          !hoverEffect && 'hover:transform-none',
+          className
+        )}
         {...props}
       >
         {(title || description || icon || headerAction) && (

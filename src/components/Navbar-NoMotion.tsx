@@ -1,20 +1,12 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Menu,
-  X,
-  Sparkles,
-  Star,
-  TrendingUp,
-  Zap,
-  Bot,
-  Layers,
-} from 'lucide-react';
+import { Menu, X, Sparkles, Star, TrendingUp, Zap, Bot, Layers } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import React, { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/hooks/useAuth';
+import { preloadRouteComponents } from '@/components/lazy/LazyComponents';
 
 // Define a type for navigation items
 interface NavItem {
@@ -64,6 +56,11 @@ const NavbarNoMotion = () => {
     } else {
       navigate('/');
     }
+  };
+
+  // Preload handler for navigation items
+  const handleNavHover = (route: string) => {
+    preloadRouteComponents(route);
   };
 
   // Different navigation for authenticated vs unauthenticated users
@@ -143,6 +140,8 @@ const NavbarNoMotion = () => {
               <NavLink
                 key={item.to}
                 to={item.to}
+                onMouseEnter={() => handleNavHover(item.to)}
+                onFocus={() => handleNavHover(item.to)}
                 className={({ isActive }) =>
                   cn(
                     'group relative overflow-hidden inline-flex h-11 items-center justify-center rounded-xl px-5 py-2 text-sm font-bold transition-all duration-500 ease-out focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:ring-offset-2 focus:ring-offset-transparent',
@@ -219,7 +218,13 @@ const NavbarNoMotion = () => {
                 {/* Buy FlowAI Button */}
                 <button
                   type="button"
-                  onClick={() => window.open('https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump', '_blank', 'noopener,noreferrer')}
+                  onClick={() =>
+                    window.open(
+                      'https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
+                      '_blank',
+                      'noopener,noreferrer'
+                    )
+                  }
                   className="group relative overflow-hidden bg-gradient-to-r from-emerald-500 via-teal-500 to-green-500 hover:from-emerald-400 hover:via-teal-400 hover:to-green-400 text-white font-bold rounded-xl hover:shadow-2xl hover:shadow-emerald-500/40 transition-all duration-500 ease-out border border-emerald-400/60 hover:border-emerald-300/80 inline-flex h-11 items-center justify-center whitespace-nowrap px-6 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent hover:scale-105 backdrop-blur-xl"
                 >
                   {/* Animated shine effect */}
@@ -266,6 +271,7 @@ const NavbarNoMotion = () => {
                 key={item.to}
                 to={item.to}
                 onClick={() => setIsMobileMenuOpen(false)}
+                onTouchStart={() => handleNavHover(item.to)}
                 className={({ isActive }) =>
                   cn(
                     mobileNavLinkBaseClasses,

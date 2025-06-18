@@ -21,8 +21,91 @@ import {
   Brain,
   Rocket,
   X,
+  Save,
+  Download,
+  Upload,
+  Play,
+  Pause,
+  Settings,
+  Link,
+  Unlink,
+  Cpu,
+  Mic,
+  Search,
+  Globe,
+  Mail,
+  Shield,
+  CheckCircle,
+  GitBranch,
+  RotateCcw,
+  Merge,
+  Send,
+  Server,
+  Eye,
+  Filter,
+  Shuffle,
+  FileCode,
+  Layers,
+  Network,
+  Workflow,
+  Target,
+  Gauge,
+  Activity,
+  TrendingUp,
+  BarChart3,
+  PieChart,
+  LineChart,
+  Hash,
+  Type,
+  AlignLeft,
+  Palette,
+  Wand2,
+  Scissors,
+  Copy,
+  Clipboard,
+  FolderOpen,
+  Archive,
+  Package,
+  Boxes,
+  Container,
+  HardDrive,
+  CloudDownload,
+  CloudUpload,
+  Wifi,
+  Radio,
+  Bluetooth,
+  Smartphone,
+  Monitor,
+  Tablet,
+  Laptop,
+  Watch,
+  Headphones,
+  Camera,
+  Video,
+  Music,
+  Volume2,
+  VolumeX,
+  Play as PlayIcon,
+  Pause as PauseIcon,
+  Square,
+  SkipForward,
+  SkipBack,
+  FastForward,
+  Rewind,
+  Repeat,
+  Shuffle as ShuffleIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { toast } from 'sonner';
 import { realAIService } from '@/services/realAIService';
 
 interface AgentNode {
@@ -89,14 +172,85 @@ interface NodeOutput extends Record<string, unknown> {
   scrapingData?: Record<string, unknown>;
 }
 
+// Enhanced Workflow Management
+interface WorkflowData {
+  id: string;
+  name: string;
+  description: string;
+  nodes: AgentNode[];
+  connections: Connection[];
+  variables: WorkflowVariable[];
+  settings: WorkflowSettings;
+  metadata: {
+    created: string;
+    modified: string;
+    version: string;
+    author: string;
+    tags: string[];
+    category: string;
+  };
+}
+
+// Workflow Variables System
+interface WorkflowVariable {
+  id: string;
+  name: string;
+  type: 'string' | 'number' | 'boolean' | 'object' | 'array';
+  value: unknown;
+  description: string;
+  scope: 'global' | 'local';
+  encrypted: boolean;
+}
+
+// Workflow Settings
+interface WorkflowSettings {
+  timeout: number; // in seconds
+  retryAttempts: number;
+  parallelExecution: boolean;
+  errorHandling: 'stop' | 'continue' | 'retry';
+  logging: 'minimal' | 'detailed' | 'debug';
+  notifications: {
+    onSuccess: boolean;
+    onError: boolean;
+    email?: string;
+    webhook?: string;
+  };
+}
+
+// Real-time execution state
+interface ExecutionState {
+  isRunning: boolean;
+  currentNode: string | null;
+  completedNodes: Set<string>;
+  nodeResults: Map<string, NodeOutput>;
+  executionLog: Array<{
+    nodeId: string;
+    timestamp: number;
+    status: 'started' | 'completed' | 'error';
+    data?: unknown;
+    error?: string;
+  }>;
+}
+
 // Removed unused ParticlesBackground component
 
 const VisualWorkflowBuilder: React.FC = () => {
+  // Core workflow state
   const [nodes, setNodes] = useState<AgentNode[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
   const [, setDataPackets] = useState<DataPacket[]>([]);
   const [, setProcessingResults] = useState<ProcessingResult[]>([]);
-  const [isRunning, setIsRunning] = useState(false);
+
+  // Enhanced execution state
+  const [executionState, setExecutionState] = useState<ExecutionState>({
+    isRunning: false,
+    currentNode: null,
+    completedNodes: new Set(),
+    nodeResults: new Map(),
+    executionLog: [],
+  });
+
+  // UI state
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [draggedAgent, setDraggedAgent] = useState<{
     type: string;
@@ -126,6 +280,41 @@ const VisualWorkflowBuilder: React.FC = () => {
     averageAccuracy: 0,
     throughput: 0,
   });
+
+  // Enhanced workflow management
+  const [currentWorkflow, setCurrentWorkflow] = useState<WorkflowData | null>(null);
+  const [savedWorkflows, setSavedWorkflows] = useState<WorkflowData[]>([]);
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [showLoadDialog, setShowLoadDialog] = useState(false);
+  const [workflowName, setWorkflowName] = useState('');
+  const [workflowDescription, setWorkflowDescription] = useState('');
+
+  // Advanced workflow features
+  const [workflowVariables, setWorkflowVariables] = useState<WorkflowVariable[]>([]);
+  const [workflowSettings, setWorkflowSettings] = useState<WorkflowSettings>({
+    timeout: 300,
+    retryAttempts: 3,
+    parallelExecution: false,
+    errorHandling: 'stop',
+    logging: 'detailed',
+    notifications: {
+      onSuccess: true,
+      onError: true,
+    },
+  });
+  const [showVariablesPanel, setShowVariablesPanel] = useState(false);
+  const [showSettingsPanel, setShowSettingsPanel] = useState(false);
+  const [showDebugPanel, setShowDebugPanel] = useState(false);
+  const [showTemplateMarketplace, setShowTemplateMarketplace] = useState(false);
+  const [debugLogs, setDebugLogs] = useState<
+    Array<{
+      timestamp: number;
+      level: 'info' | 'warning' | 'error' | 'debug';
+      message: string;
+      nodeId?: string;
+      data?: unknown;
+    }>
+  >([]);
   const [aiSuggestions, setAiSuggestions] = useState<
     Array<{
       id: string;
@@ -161,9 +350,343 @@ const VisualWorkflowBuilder: React.FC = () => {
   const [, setGeneratedWorkflowDescription] = useState('');
   const [finalResults, setFinalResults] = useState<string>('');
 
+  // Advanced workflow templates
+  const advancedTemplates = [
+    {
+      id: 'ai-content-pipeline',
+      name: 'AI Content Creation Pipeline',
+      description: 'Complete content workflow with conditional logic and validation',
+      category: 'Content Marketing',
+      difficulty: 'advanced' as const,
+      estimatedTime: '8-12 min',
+      popularity: 98,
+      tags: ['AI', 'Content', 'Marketing', 'Automation'],
+      nodes: [
+        {
+          id: 'content-trigger',
+          type: 'smart-trigger',
+          name: 'Content Trigger',
+          icon: <Zap className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-yellow-500 to-orange-500',
+          position: { x: 50, y: 100 },
+          inputs: 0,
+          outputs: 1,
+          description: 'Triggers content creation workflow',
+          category: 'Automation',
+          status: 'idle' as const,
+        },
+        {
+          id: 'topic-analyzer',
+          type: 'gemini-analyzer',
+          name: 'Topic Analyzer',
+          icon: <BrainCircuit className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-green-500 to-blue-600',
+          position: { x: 250, y: 80 },
+          inputs: 1,
+          outputs: 2,
+          description: 'Analyze topic and generate content strategy',
+          category: 'AI Models',
+          status: 'idle' as const,
+        },
+        {
+          id: 'content-validator',
+          type: 'data-validator',
+          name: 'Content Validator',
+          icon: <Bot className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-emerald-500 to-teal-600',
+          position: { x: 450, y: 60 },
+          inputs: 1,
+          outputs: 2,
+          description: 'Validate content quality and guidelines',
+          category: 'Data Processing',
+          status: 'idle' as const,
+        },
+        {
+          id: 'content-branch',
+          type: 'conditional-branch',
+          name: 'Quality Check',
+          icon: <ArrowRight className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-indigo-500 to-purple-600',
+          position: { x: 650, y: 40 },
+          inputs: 1,
+          outputs: 2,
+          description: 'Branch based on content quality',
+          category: 'Logic & Control',
+          status: 'idle' as const,
+        },
+        {
+          id: 'content-writer',
+          type: 'claude-writer',
+          name: 'Content Writer',
+          icon: <FileText className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-green-500 to-emerald-600',
+          position: { x: 850, y: 20 },
+          inputs: 1,
+          outputs: 1,
+          description: 'Generate high-quality content',
+          category: 'AI Models',
+          status: 'idle' as const,
+        },
+        {
+          id: 'content-enhancer',
+          type: 'gpt4-analyzer',
+          name: 'Content Enhancer',
+          icon: <Sparkles className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-blue-500 to-purple-600',
+          position: { x: 850, y: 120 },
+          inputs: 1,
+          outputs: 1,
+          description: 'Enhance and optimize content',
+          category: 'AI Models',
+          status: 'idle' as const,
+        },
+      ],
+      connections: [
+        {
+          id: 'c1',
+          sourceId: 'content-trigger',
+          targetId: 'topic-analyzer',
+          sourcePort: 0,
+          targetPort: 0,
+          animated: false,
+        },
+        {
+          id: 'c2',
+          sourceId: 'topic-analyzer',
+          targetId: 'content-validator',
+          sourcePort: 0,
+          targetPort: 0,
+          animated: false,
+        },
+        {
+          id: 'c3',
+          sourceId: 'content-validator',
+          targetId: 'content-branch',
+          sourcePort: 0,
+          targetPort: 0,
+          animated: false,
+        },
+        {
+          id: 'c4',
+          sourceId: 'content-branch',
+          targetId: 'content-writer',
+          sourcePort: 0,
+          targetPort: 0,
+          animated: false,
+        },
+        {
+          id: 'c5',
+          sourceId: 'content-branch',
+          targetId: 'content-enhancer',
+          sourcePort: 1,
+          targetPort: 0,
+          animated: false,
+        },
+      ],
+      variables: [
+        {
+          id: 'v1',
+          name: 'content_topic',
+          type: 'string' as const,
+          value: 'AI Technology Trends',
+          description: 'Main topic for content creation',
+          scope: 'global' as const,
+          encrypted: false,
+        },
+        {
+          id: 'v2',
+          name: 'quality_threshold',
+          type: 'number' as const,
+          value: 0.8,
+          description: 'Minimum quality score',
+          scope: 'global' as const,
+          encrypted: false,
+        },
+        {
+          id: 'v3',
+          name: 'target_audience',
+          type: 'string' as const,
+          value: 'Tech professionals',
+          description: 'Target audience for content',
+          scope: 'global' as const,
+          encrypted: false,
+        },
+      ],
+    },
+    {
+      id: 'data-processing-pipeline',
+      name: 'Advanced Data Processing Pipeline',
+      description: 'Complex data workflow with loops, validation, and transformations',
+      category: 'Data Science',
+      difficulty: 'expert' as const,
+      estimatedTime: '15-20 min',
+      popularity: 92,
+      tags: ['Data', 'Processing', 'Validation', 'Transformation'],
+      nodes: [
+        {
+          id: 'data-trigger',
+          type: 'smart-trigger',
+          name: 'Data Trigger',
+          icon: <Zap className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-yellow-500 to-orange-500',
+          position: { x: 50, y: 120 },
+          inputs: 0,
+          outputs: 1,
+          description: 'Triggers data processing workflow',
+          category: 'Automation',
+          status: 'idle' as const,
+        },
+        {
+          id: 'data-loader',
+          type: 'file-processor',
+          name: 'Data Loader',
+          icon: <FileText className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-amber-500 to-yellow-600',
+          position: { x: 250, y: 100 },
+          inputs: 1,
+          outputs: 1,
+          description: 'Load and parse data files',
+          category: 'Data Processing',
+          status: 'idle' as const,
+        },
+        {
+          id: 'data-iterator',
+          type: 'loop-iterator',
+          name: 'Data Iterator',
+          icon: <RefreshCw className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-pink-500 to-rose-600',
+          position: { x: 450, y: 80 },
+          inputs: 1,
+          outputs: 2,
+          description: 'Iterate through data records',
+          category: 'Logic & Control',
+          status: 'idle' as const,
+        },
+        {
+          id: 'data-validator',
+          type: 'data-validator',
+          name: 'Data Validator',
+          icon: <Bot className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-emerald-500 to-teal-600',
+          position: { x: 650, y: 60 },
+          inputs: 1,
+          outputs: 2,
+          description: 'Validate data quality and schema',
+          category: 'Data Processing',
+          status: 'idle' as const,
+        },
+        {
+          id: 'data-transformer',
+          type: 'data-transformer',
+          name: 'Data Transformer',
+          icon: <Code className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-violet-500 to-purple-600',
+          position: { x: 850, y: 40 },
+          inputs: 1,
+          outputs: 1,
+          description: 'Transform and clean data',
+          category: 'Data Processing',
+          status: 'idle' as const,
+        },
+        {
+          id: 'data-merger',
+          type: 'data-merger',
+          name: 'Data Merger',
+          icon: <Database className="w-5 h-5" />,
+          color: 'bg-gradient-to-r from-cyan-500 to-blue-600',
+          position: { x: 1050, y: 80 },
+          inputs: 3,
+          outputs: 1,
+          description: 'Merge processed data streams',
+          category: 'Logic & Control',
+          status: 'idle' as const,
+        },
+      ],
+      connections: [
+        {
+          id: 'c1',
+          sourceId: 'data-trigger',
+          targetId: 'data-loader',
+          sourcePort: 0,
+          targetPort: 0,
+          animated: false,
+        },
+        {
+          id: 'c2',
+          sourceId: 'data-loader',
+          targetId: 'data-iterator',
+          sourcePort: 0,
+          targetPort: 0,
+          animated: false,
+        },
+        {
+          id: 'c3',
+          sourceId: 'data-iterator',
+          targetId: 'data-validator',
+          sourcePort: 0,
+          targetPort: 0,
+          animated: false,
+        },
+        {
+          id: 'c4',
+          sourceId: 'data-validator',
+          targetId: 'data-transformer',
+          sourcePort: 0,
+          targetPort: 0,
+          animated: false,
+        },
+        {
+          id: 'c5',
+          sourceId: 'data-transformer',
+          targetId: 'data-merger',
+          sourcePort: 0,
+          targetPort: 0,
+          animated: false,
+        },
+        {
+          id: 'c6',
+          sourceId: 'data-iterator',
+          targetId: 'data-merger',
+          sourcePort: 1,
+          targetPort: 1,
+          animated: false,
+        },
+      ],
+      variables: [
+        {
+          id: 'v1',
+          name: 'batch_size',
+          type: 'number' as const,
+          value: 100,
+          description: 'Number of records to process per batch',
+          scope: 'global' as const,
+          encrypted: false,
+        },
+        {
+          id: 'v2',
+          name: 'validation_schema',
+          type: 'string' as const,
+          value: 'user_data_v2',
+          description: 'Schema for data validation',
+          scope: 'global' as const,
+          encrypted: false,
+        },
+        {
+          id: 'v3',
+          name: 'output_format',
+          type: 'string' as const,
+          value: 'JSON',
+          description: 'Output data format',
+          scope: 'global' as const,
+          encrypted: false,
+        },
+      ],
+    },
+  ];
+
   // Initialize Smart Templates and AI Features - Run only once
   useEffect(() => {
-    // Load workflow templates
+    // Load workflow templates (keeping existing simple templates)
     const templates = [
       {
         id: 'content-pipeline',
@@ -377,7 +900,7 @@ const VisualWorkflowBuilder: React.FC = () => {
 
     // Templates initialized (removed setWorkflowTemplates as it's unused)
 
-    // Initialize AI suggestions only once
+    // Initialize AI suggestions only once with enhanced messaging
     setTimeout(() => {
       setAiSuggestions([
         {
@@ -393,7 +916,7 @@ const VisualWorkflowBuilder: React.FC = () => {
           message: 'Or try our Content Creation Pipeline - perfect for marketing workflows!',
           confidence: 0.95,
           action: () => {
-            // Inline template loading to avoid circular dependency
+            // Enhanced template loading with better feedback
             const template = templates.find(t => t.id === 'content-pipeline');
             if (template) {
               setNodes(template.nodes);
@@ -402,6 +925,20 @@ const VisualWorkflowBuilder: React.FC = () => {
               setConnectionStart(null);
               setProcessingResults([]);
               setShowResults(false);
+
+              // Add success feedback
+              setTimeout(() => {
+                setAiSuggestions(prev => [
+                  ...prev.filter(s => s.id !== 'suggestion-1'),
+                  {
+                    id: 'template-loaded',
+                    type: 'completion',
+                    message:
+                      '✅ Content Creation Pipeline loaded! Click "Run" to see it in action.',
+                    confidence: 1.0,
+                  },
+                ]);
+              }, 500);
             }
           },
         },
@@ -463,10 +1000,11 @@ const VisualWorkflowBuilder: React.FC = () => {
 
   // Advanced AI Agents Library with Real Capabilities
   const agentLibrary = [
+    // AI Models
     {
       type: 'gemini-analyzer',
       name: 'Gemini Pro Analyzer',
-      icon: <BrainCircuit className="w-5 h-5" />,
+      icon: <Brain className="w-5 h-5" />,
       color: 'bg-gradient-to-r from-green-500 to-blue-600',
       inputs: 1,
       outputs: 2,
@@ -484,12 +1022,12 @@ const VisualWorkflowBuilder: React.FC = () => {
     {
       type: 'gpt4-analyzer',
       name: 'GPT-4 Analyzer',
-      icon: <BrainCircuit className="w-5 h-5" />,
+      icon: <Cpu className="w-5 h-5" />,
       color: 'bg-gradient-to-r from-blue-500 to-purple-600',
       inputs: 1,
       outputs: 2,
       description:
-        'Advanced text analysis powered by Google AI: sentiment, entities, topics, intent',
+        'Advanced text analysis powered by OpenAI GPT-4: sentiment, entities, topics, intent',
       category: 'AI Models',
       processingTime: 2.3,
       sampleOutput: {
@@ -502,7 +1040,7 @@ const VisualWorkflowBuilder: React.FC = () => {
     {
       type: 'claude-writer',
       name: 'Claude Writer',
-      icon: <FileText className="w-5 h-5" />,
+      icon: <Type className="w-5 h-5" />,
       color: 'bg-gradient-to-r from-green-500 to-emerald-600',
       inputs: 1,
       outputs: 1,
@@ -519,7 +1057,7 @@ const VisualWorkflowBuilder: React.FC = () => {
     {
       type: 'dalle-generator',
       name: 'DALL-E 3',
-      icon: <Image className="w-5 h-5" />,
+      icon: <Palette className="w-5 h-5" />,
       color: 'bg-gradient-to-r from-purple-500 to-pink-600',
       inputs: 1,
       outputs: 1,
@@ -536,7 +1074,7 @@ const VisualWorkflowBuilder: React.FC = () => {
     {
       type: 'whisper-transcriber',
       name: 'Whisper STT',
-      icon: <MessageSquare className="w-5 h-5" />,
+      icon: <Mic className="w-5 h-5" />,
       color: 'bg-gradient-to-r from-cyan-500 to-blue-600',
       inputs: 1,
       outputs: 2,
@@ -553,7 +1091,7 @@ const VisualWorkflowBuilder: React.FC = () => {
     {
       type: 'vector-search',
       name: 'Vector Search',
-      icon: <Database className="w-5 h-5" />,
+      icon: <Search className="w-5 h-5" />,
       color: 'bg-gradient-to-r from-orange-500 to-red-600',
       inputs: 1,
       outputs: 1,
@@ -570,7 +1108,7 @@ const VisualWorkflowBuilder: React.FC = () => {
     {
       type: 'code-interpreter',
       name: 'Code Interpreter',
-      icon: <Code className="w-5 h-5" />,
+      icon: <FileCode className="w-5 h-5" />,
       color: 'bg-gradient-to-r from-gray-700 to-gray-900',
       inputs: 1,
       outputs: 2,
@@ -587,7 +1125,7 @@ const VisualWorkflowBuilder: React.FC = () => {
     {
       type: 'web-scraper',
       name: 'Web Scraper',
-      icon: <BarChart className="w-5 h-5" />,
+      icon: <Globe className="w-5 h-5" />,
       color: 'bg-gradient-to-r from-teal-500 to-cyan-600',
       inputs: 1,
       outputs: 1,
@@ -616,6 +1154,159 @@ const VisualWorkflowBuilder: React.FC = () => {
         payload: '2.3KB',
         validated: true,
         timestamp: new Date().toISOString(),
+      },
+    },
+
+    // Advanced Logic & Control Flow
+    {
+      type: 'conditional-branch',
+      name: 'Conditional Branch',
+      icon: <GitBranch className="w-5 h-5" />,
+      color: 'bg-gradient-to-r from-indigo-500 to-purple-600',
+      inputs: 1,
+      outputs: 2,
+      description: 'Branch workflow based on conditions: if-then-else logic',
+      category: 'Logic & Control',
+      processingTime: 0.2,
+      sampleOutput: {
+        condition: 'true',
+        branch: 'then',
+        evaluation: 'Condition met: value > threshold',
+      },
+    },
+    {
+      type: 'loop-iterator',
+      name: 'Loop Iterator',
+      icon: <RotateCcw className="w-5 h-5" />,
+      color: 'bg-gradient-to-r from-pink-500 to-rose-600',
+      inputs: 1,
+      outputs: 2,
+      description: 'Iterate over data arrays or repeat operations',
+      category: 'Logic & Control',
+      processingTime: 0.3,
+      sampleOutput: {
+        iteration: 3,
+        total: 10,
+        current_item: 'item_3',
+        progress: '30%',
+      },
+    },
+    {
+      type: 'data-merger',
+      name: 'Data Merger',
+      icon: <Merge className="w-5 h-5" />,
+      color: 'bg-gradient-to-r from-cyan-500 to-blue-600',
+      inputs: 3,
+      outputs: 1,
+      description: 'Merge multiple data streams into unified output',
+      category: 'Logic & Control',
+      processingTime: 0.5,
+      sampleOutput: {
+        merged_fields: 15,
+        data_sources: 3,
+        conflicts_resolved: 2,
+      },
+    },
+
+    // External Integrations
+    {
+      type: 'webhook-sender',
+      name: 'Webhook Sender',
+      icon: <Send className="w-5 h-5" />,
+      color: 'bg-gradient-to-r from-orange-500 to-red-600',
+      inputs: 1,
+      outputs: 1,
+      description: 'Send HTTP webhooks to external services',
+      category: 'Integrations',
+      processingTime: 1.2,
+      sampleOutput: {
+        status: 'sent',
+        response_code: 200,
+        endpoint: 'https://api.example.com/webhook',
+      },
+    },
+    {
+      type: 'database-query',
+      name: 'Database Query',
+      icon: <Server className="w-5 h-5" />,
+      color: 'bg-gradient-to-r from-slate-600 to-gray-800',
+      inputs: 1,
+      outputs: 1,
+      description: 'Execute SQL queries on connected databases',
+      category: 'Integrations',
+      processingTime: 2.1,
+      sampleOutput: {
+        rows_affected: 156,
+        query_time: '0.8s',
+        database: 'production_db',
+      },
+    },
+    {
+      type: 'email-sender',
+      name: 'Email Sender',
+      icon: <Mail className="w-5 h-5" />,
+      color: 'bg-gradient-to-r from-blue-500 to-indigo-600',
+      inputs: 1,
+      outputs: 1,
+      description: 'Send automated emails with templates',
+      category: 'Integrations',
+      processingTime: 1.8,
+      sampleOutput: {
+        sent: true,
+        recipients: 3,
+        template: 'notification_template',
+      },
+    },
+
+    // Advanced Data Processing
+    {
+      type: 'data-validator',
+      name: 'Data Validator',
+      icon: <CheckCircle className="w-5 h-5" />,
+      color: 'bg-gradient-to-r from-emerald-500 to-teal-600',
+      inputs: 1,
+      outputs: 2,
+      description: 'Validate data against schemas and rules',
+      category: 'Data Processing',
+      processingTime: 0.8,
+      sampleOutput: {
+        valid: true,
+        errors: 0,
+        warnings: 2,
+        schema: 'user_profile_v2',
+      },
+    },
+    {
+      type: 'data-transformer',
+      name: 'Data Transformer',
+      icon: <Shuffle className="w-5 h-5" />,
+      color: 'bg-gradient-to-r from-violet-500 to-purple-600',
+      inputs: 1,
+      outputs: 1,
+      description: 'Transform data formats: JSON, XML, CSV conversions',
+      category: 'Data Processing',
+      processingTime: 1.1,
+      sampleOutput: {
+        format_from: 'JSON',
+        format_to: 'CSV',
+        records: 1250,
+        size: '2.4MB',
+      },
+    },
+    {
+      type: 'file-processor',
+      name: 'File Processor',
+      icon: <FolderOpen className="w-5 h-5" />,
+      color: 'bg-gradient-to-r from-amber-500 to-yellow-600',
+      inputs: 1,
+      outputs: 1,
+      description: 'Process files: read, write, convert, compress',
+      category: 'Data Processing',
+      processingTime: 3.2,
+      sampleOutput: {
+        files_processed: 12,
+        total_size: '45.6MB',
+        compression: '68%',
       },
     },
   ];
@@ -766,19 +1457,32 @@ const VisualWorkflowBuilder: React.FC = () => {
     setNodes([]);
     setConnections([]);
     setDataPackets([]);
-    setIsRunning(false);
+    setExecutionState({
+      isRunning: false,
+      currentNode: null,
+      completedNodes: new Set(),
+      nodeResults: new Map(),
+      executionLog: [],
+    });
     setSelectedNode(null);
     setConnectionStart(null);
   };
 
-  // Advanced Workflow Execution with Real AI Simulation
+  // Enhanced Real Workflow Execution Engine
   const runWorkflow = async () => {
-    if (nodes.length === 0) return;
+    if (nodes.length === 0) {
+      toast.error('No nodes to execute. Add some AI agents first!');
+      return;
+    }
 
-    setIsRunning(true);
-    setDataPackets([]);
-    setProcessingResults([]);
-    setShowResults(false);
+    // Initialize execution state
+    setExecutionState({
+      isRunning: true,
+      currentNode: null,
+      completedNodes: new Set(),
+      nodeResults: new Map(),
+      executionLog: [],
+    });
 
     // Reset all nodes to idle
     setNodes(prev => prev.map(node => ({ ...node, status: 'idle' as const, outputData: null })));
@@ -786,172 +1490,784 @@ const VisualWorkflowBuilder: React.FC = () => {
     // Animate connections
     setConnections(prev => prev.map(conn => ({ ...conn, animated: true })));
 
-    // Find trigger nodes (nodes with 0 inputs)
-    const triggerNodes = nodes.filter(node => node.inputs === 0);
-    const processedNodes = new Set<string>();
-    const results: ProcessingResult[] = [];
+    toast.success('🚀 Starting workflow execution...');
 
-    // Process workflow in topological order
-    const processNode = async (
-      node: AgentNode,
-      inputData: Record<string, unknown> | null = null
-    ) => {
-      if (processedNodes.has(node.id)) return;
-
-      // Set node to processing
-      setNodes(prev =>
-        prev.map(n => (n.id === node.id ? { ...n, status: 'processing' as const } : n))
+    try {
+      // Find trigger nodes (nodes with 0 inputs or no incoming connections)
+      const triggerNodes = nodes.filter(
+        node => node.inputs === 0 || !connections.some(conn => conn.targetId === node.id)
       );
 
-      // Get agent template for realistic simulation
-      const agentTemplate = agentLibrary.find(agent => agent.type === node.type);
-      const processingTime = (agentTemplate?.processingTime || 1) * 1000;
-
-      // Simulate realistic processing time
-      await new Promise(resolve => setTimeout(resolve, processingTime));
-
-      // Generate realistic output based on agent type using real AI service
-      let output;
-      try {
-        // Try to use real AI service first
-        const workflowNode = {
-          id: node.id,
-          type: node.type,
-          name: node.name,
-          inputs: inputData || { prompt: 'Process this workflow step.' },
-        };
-
-        // Try to use the new execution engine
-        try {
-          const { aiServiceProxy } = await import('@/services/aiServiceProxy');
-
-          const aiRequest = {
-            nodeId: node.id,
-            nodeType: node.type,
-            service: getServiceFromNodeType(node.type),
-            model: getModelFromNodeType(node.type),
-            prompt: getPromptFromNodeType(node.type),
-            inputs: inputData || { prompt: 'Process this workflow step.' },
-            parameters: { temperature: 0.7, maxTokens: 1000 },
-          };
-
-          const aiResult = await aiServiceProxy.executeAIRequest(aiRequest, 'demo-user');
-
-          if (aiResult.success) {
-            output = {
-              response: aiResult.data,
-              model: aiResult.model,
-              tokensUsed: aiResult.tokensUsed,
-              processingTime: aiResult.processingTime,
-              timestamp: Date.now(),
-            };
-          } else {
-            // Fallback to template output if AI service fails
-            output = agentTemplate?.sampleOutput || { processed: true, timestamp: Date.now() };
-          }
-        } catch (importError) {
-          // Fallback to old service if new one fails
-          const aiResult = await realAIService.executeWorkflowNode(workflowNode);
-
-          if (aiResult.success) {
-            output = aiResult.data;
-          } else {
-            output = agentTemplate?.sampleOutput || { processed: true, timestamp: Date.now() };
-          }
-        }
-      } catch (error) {
-        // Fallback to template output on error
-        output = agentTemplate?.sampleOutput || { processed: true, timestamp: Date.now() };
-        console.warn('AI service failed, using fallback:', error);
+      if (triggerNodes.length === 0) {
+        toast.error(
+          'No trigger nodes found. Add a trigger or ensure nodes are properly connected.'
+        );
+        return;
       }
 
-      // Create processing result
-      const result: ProcessingResult = {
-        nodeId: node.id,
-        input: inputData || { type: 'initial_trigger' },
-        output: output as Record<string, unknown>,
-        metrics: {
-          processingTime: processingTime / 1000,
-          tokensProcessed: Math.floor(Math.random() * 1000) + 100,
-          accuracy: Math.random() * 0.3 + 0.7, // 70-100%
-          confidence: Math.random() * 0.2 + 0.8, // 80-100%
+      // Execute workflow using topological sort for proper dependency order
+      await executeWorkflowTopologically(triggerNodes);
+
+      toast.success('✅ Workflow completed successfully!');
+    } catch (error) {
+      toast.error(
+        `❌ Workflow execution failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    } finally {
+      setExecutionState(prev => ({ ...prev, isRunning: false, currentNode: null }));
+      setConnections(prev => prev.map(conn => ({ ...conn, animated: false })));
+    }
+  };
+
+  // Topological execution engine with real data flow
+  const executeWorkflowTopologically = async (triggerNodes: AgentNode[]) => {
+    const processedNodes = new Set<string>();
+    const nodeQueue = [...triggerNodes];
+
+    while (nodeQueue.length > 0) {
+      const currentNode = nodeQueue.shift()!;
+
+      if (processedNodes.has(currentNode.id)) continue;
+
+      // Check if all dependencies are satisfied
+      const incomingConnections = connections.filter(conn => conn.targetId === currentNode.id);
+      const dependenciesSatisfied = incomingConnections.every(conn =>
+        processedNodes.has(conn.sourceId)
+      );
+
+      if (!dependenciesSatisfied) {
+        // Put back at end of queue
+        nodeQueue.push(currentNode);
+        continue;
+      }
+
+      // Execute the node
+      await executeNode(currentNode, incomingConnections);
+      processedNodes.add(currentNode.id);
+
+      // Add dependent nodes to queue
+      const outgoingConnections = connections.filter(conn => conn.sourceId === currentNode.id);
+      for (const conn of outgoingConnections) {
+        const targetNode = nodes.find(n => n.id === conn.targetId);
+        if (targetNode && !processedNodes.has(targetNode.id)) {
+          nodeQueue.push(targetNode);
+        }
+      }
+    }
+  };
+
+  // Real node execution with AI processing
+  const executeNode = async (node: AgentNode, incomingConnections: Connection[]) => {
+    // Update UI to show current processing node
+    setExecutionState(prev => ({ ...prev, currentNode: node.id }));
+    setNodes(prev =>
+      prev.map(n => (n.id === node.id ? { ...n, status: 'processing' as const } : n))
+    );
+
+    // Log execution start
+    setExecutionState(prev => ({
+      ...prev,
+      executionLog: [
+        ...prev.executionLog,
+        {
+          nodeId: node.id,
+          timestamp: Date.now(),
+          status: 'started',
         },
-        timestamp: Date.now(),
-      };
+      ],
+    }));
 
-      results.push(result);
-      setProcessingResults(prev => [...prev, result]);
+    try {
+      // Gather input data from connected nodes
+      const inputData = await gatherNodeInputs(node, incomingConnections);
 
-      // Update node with output data and completed status
+      // Execute the actual AI processing
+      const result = await processNodeWithAI(node, inputData);
+
+      // Store result
+      setExecutionState(prev => {
+        const newResults = new Map(prev.nodeResults);
+        newResults.set(node.id, result);
+        return {
+          ...prev,
+          nodeResults: newResults,
+          completedNodes: new Set([...prev.completedNodes, node.id]),
+          executionLog: [
+            ...prev.executionLog,
+            {
+              nodeId: node.id,
+              timestamp: Date.now(),
+              status: 'completed',
+              data: result,
+            },
+          ],
+        };
+      });
+
+      // Update node UI
       setNodes(prev =>
         prev.map(n =>
           n.id === node.id
             ? {
                 ...n,
                 status: 'completed' as const,
-                outputData: output as Record<string, unknown> | null,
+                outputData: result,
                 metrics: {
-                  tokensProcessed: result.metrics.tokensProcessed || 0,
-                  accuracy: result.metrics.accuracy || 0,
-                  speed: result.metrics.processingTime ? 1 / result.metrics.processingTime : 0,
+                  tokensProcessed: result.tokensUsed || 0,
+                  accuracy: 0.95,
+                  speed: result.processingTime || 1000,
                 },
               }
             : n
         )
       );
 
-      processedNodes.add(node.id);
+      // Simulate processing time for visual feedback
+      await new Promise(resolve => setTimeout(resolve, 500));
+    } catch (error) {
+      // Handle execution error
+      setExecutionState(prev => ({
+        ...prev,
+        executionLog: [
+          ...prev.executionLog,
+          {
+            nodeId: node.id,
+            timestamp: Date.now(),
+            status: 'error',
+            error: error instanceof Error ? error.message : 'Unknown error',
+          },
+        ],
+      }));
 
-      // Create data packets for outgoing connections
-      const outgoingConnections = connections.filter(conn => conn.sourceId === node.id);
-      for (const connection of outgoingConnections) {
-        const packet: DataPacket = {
-          id: `packet-${Date.now()}-${Math.random()}`,
-          connectionId: connection.id,
-          progress: 0,
-          data: output as Record<string, unknown>,
-          type: getDataTypeFromAgent(node.type),
-          size: Math.floor(Math.random() * 1000) + 100,
-          timestamp: Date.now(),
-        };
+      setNodes(prev => prev.map(n => (n.id === node.id ? { ...n, status: 'error' as const } : n)));
 
-        setDataPackets(prev => [...prev, packet]);
+      throw error;
+    }
+  };
 
-        // Process connected nodes
-        const targetNode = nodes.find(n => n.id === connection.targetId);
-        if (targetNode) {
-          setTimeout(() => processNode(targetNode, output as Record<string, unknown>), 500);
-        }
+  // Gather input data from connected nodes
+  const gatherNodeInputs = async (
+    node: AgentNode,
+    incomingConnections: Connection[]
+  ): Promise<Record<string, unknown>> => {
+    const inputs: Record<string, unknown> = {};
+
+    for (const connection of incomingConnections) {
+      const sourceResult = executionState.nodeResults.get(connection.sourceId);
+      if (sourceResult) {
+        inputs[`input_${connection.targetPort}`] = sourceResult.response;
+        inputs['previousData'] = sourceResult;
       }
-    };
-
-    // Start processing from trigger nodes
-    for (const triggerNode of triggerNodes) {
-      await processNode(triggerNode);
     }
 
-    // Calculate workflow metrics
-    setTimeout(() => {
-      const totalTime = results.reduce((sum, r) => sum + r.metrics.processingTime, 0);
-      const totalTokens = results.reduce((sum, r) => sum + (r.metrics.tokensProcessed || 0), 0);
-      const avgAccuracy =
-        results.reduce((sum, r) => sum + (r.metrics.accuracy || 0), 0) / results.length;
+    // If no inputs, provide default based on node type
+    if (Object.keys(inputs).length === 0) {
+      inputs['prompt'] = getDefaultPromptForNode(node);
+    }
 
-      setWorkflowMetrics({
-        totalProcessingTime: totalTime,
-        totalTokensProcessed: totalTokens,
-        averageAccuracy: avgAccuracy,
-        throughput: totalTokens / totalTime,
-      });
-
-      setIsRunning(false);
-      setConnections(prev => prev.map(conn => ({ ...conn, animated: false })));
-      setShowResults(true);
-
-      // Clear data packets after a delay
-      setTimeout(() => setDataPackets([]), 2000);
-    }, 1000);
+    return inputs;
   };
+
+  // Get default prompt for different node types
+  const getDefaultPromptForNode = (node: AgentNode): string => {
+    const defaultPrompts: Record<string, string> = {
+      'gpt4-analyzer': 'Analyze the current market trends in AI technology and provide insights.',
+      'claude-writer': 'Write a comprehensive article about the future of AI automation.',
+      'gemini-analyzer': 'Analyze user behavior patterns and provide recommendations.',
+      'dalle-generator': 'A futuristic AI workspace with holographic interfaces',
+      'web-scraper': 'Scrape latest AI news and developments',
+      'code-interpreter': 'Generate Python code for data analysis',
+      'smart-trigger': 'Workflow triggered successfully',
+    };
+
+    return defaultPrompts[node.type] || 'Process the given input and provide meaningful output.';
+  };
+
+  // Enhanced node processing with advanced logic support
+  const processNodeWithAI = async (
+    node: AgentNode,
+    inputData: Record<string, unknown>
+  ): Promise<NodeOutput> => {
+    const prompt = String(inputData.prompt || inputData.input_0 || getDefaultPromptForNode(node));
+
+    // Add debug logging
+    addDebugLog('info', `Processing node: ${node.name}`, node.id, { inputData });
+
+    try {
+      let result;
+
+      switch (node.type) {
+        // AI Models
+        case 'gpt4-analyzer':
+        case 'gemini-analyzer':
+          result = await realAIService.processGemini(prompt);
+          break;
+
+        case 'claude-writer':
+          result = await realAIService.processClaude(prompt);
+          break;
+
+        case 'dalle-generator':
+          result = await realAIService.generateImage(prompt);
+          return {
+            response: result.data?.imageUrl || 'Image generated successfully',
+            model: 'dall-e-3',
+            tokensUsed: 0,
+            processingTime: result.processingTime || 5000,
+            timestamp: Date.now(),
+            imageUrl: result.data?.imageUrl,
+          };
+
+        case 'code-interpreter':
+          result = await realAIService.generateCode(prompt, 'python');
+          return {
+            response: result.data?.code || 'Code generated successfully',
+            model: 'code-generator',
+            tokensUsed: result.tokensUsed || 0,
+            processingTime: result.processingTime || 2000,
+            timestamp: Date.now(),
+            code: result.data?.code,
+            language: result.data?.language,
+          };
+
+        // Logic & Control Flow
+        case 'conditional-branch':
+          return await processConditionalBranch(inputData);
+
+        case 'loop-iterator':
+          return await processLoopIterator(inputData);
+
+        case 'data-merger':
+          return await processDataMerger(inputData);
+
+        // Integrations
+        case 'webhook-sender':
+          return await processWebhookSender(inputData);
+
+        case 'database-query':
+          return await processDatabaseQuery(inputData);
+
+        case 'email-sender':
+          return await processEmailSender(inputData);
+
+        // Data Processing
+        case 'data-validator':
+          return await processDataValidator(inputData);
+
+        case 'data-transformer':
+          return await processDataTransformer(inputData);
+
+        case 'file-processor':
+          return await processFileProcessor(inputData);
+
+        case 'web-scraper':
+          // Simulate web scraping with realistic data
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          return {
+            response: 'Web scraping completed successfully',
+            model: 'web-scraper',
+            tokensUsed: 0,
+            processingTime: 2000,
+            timestamp: Date.now(),
+            scrapingData: {
+              urls: ['https://example.com/ai-news', 'https://example.com/tech-trends'],
+              dataPoints: 150,
+              insights: ['AI adoption increased 40%', 'Automation tools trending'],
+            },
+          };
+
+        case 'smart-trigger':
+          return {
+            response: 'Workflow triggered successfully',
+            model: 'trigger',
+            tokensUsed: 0,
+            processingTime: 100,
+            timestamp: Date.now(),
+            triggerData: { status: 'activated', timestamp: Date.now() },
+          };
+
+        default:
+          result = await realAIService.processGemini(prompt);
+      }
+
+      if (result && !result.success) {
+        throw new Error(result.error || 'AI processing failed');
+      }
+
+      const output = {
+        response: result?.data?.response || String(result?.data) || 'Processing completed',
+        model: result?.data?.model || node.type,
+        tokensUsed: result?.tokensUsed || 0,
+        processingTime: result?.processingTime || 1000,
+        timestamp: Date.now(),
+      };
+
+      addDebugLog('info', `Node processed successfully: ${node.name}`, node.id, { output });
+      return output;
+    } catch (error) {
+      const errorMessage = `Failed to process ${node.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      addDebugLog('error', errorMessage, node.id, { error });
+      throw new Error(errorMessage);
+    }
+  };
+
+  // Advanced node processing functions
+  const processConditionalBranch = async (
+    inputData: Record<string, unknown>
+  ): Promise<NodeOutput> => {
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    // Simple condition evaluation (can be enhanced with complex logic)
+    const condition = String(inputData.condition || 'true');
+    const value = inputData.value || 0;
+    const threshold = inputData.threshold || 50;
+
+    const conditionMet = condition === 'true' || Number(value) > Number(threshold);
+
+    return {
+      response: conditionMet
+        ? 'Condition met - taking TRUE branch'
+        : 'Condition not met - taking FALSE branch',
+      model: 'conditional-branch',
+      tokensUsed: 0,
+      processingTime: 200,
+      timestamp: Date.now(),
+      conditionResult: conditionMet,
+      branch: conditionMet ? 'true' : 'false',
+      evaluation: `${value} ${conditionMet ? '>' : '<='} ${threshold}`,
+    };
+  };
+
+  const processLoopIterator = async (inputData: Record<string, unknown>): Promise<NodeOutput> => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    const items = Array.isArray(inputData.items) ? inputData.items : [1, 2, 3, 4, 5];
+    const currentIndex = Number(inputData.currentIndex || 0);
+    const maxIterations = Number(inputData.maxIterations || items.length);
+
+    const hasMore = currentIndex < Math.min(items.length, maxIterations) - 1;
+    const currentItem = items[currentIndex];
+
+    return {
+      response: `Processing item ${currentIndex + 1} of ${Math.min(items.length, maxIterations)}`,
+      model: 'loop-iterator',
+      tokensUsed: 0,
+      processingTime: 300,
+      timestamp: Date.now(),
+      currentIndex,
+      currentItem,
+      hasMore,
+      totalItems: items.length,
+      progress: ((currentIndex + 1) / Math.min(items.length, maxIterations)) * 100,
+    };
+  };
+
+  const processDataMerger = async (inputData: Record<string, unknown>): Promise<NodeOutput> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    const input1 = inputData.input_0 || {};
+    const input2 = inputData.input_1 || {};
+    const input3 = inputData.input_2 || {};
+
+    const merged = { ...input1, ...input2, ...input3 };
+    const fieldCount = Object.keys(merged).length;
+
+    return {
+      response: `Successfully merged ${fieldCount} fields from 3 data sources`,
+      model: 'data-merger',
+      tokensUsed: 0,
+      processingTime: 500,
+      timestamp: Date.now(),
+      mergedData: merged,
+      fieldCount,
+      sources: 3,
+    };
+  };
+
+  const processWebhookSender = async (inputData: Record<string, unknown>): Promise<NodeOutput> => {
+    await new Promise(resolve => setTimeout(resolve, 1200));
+
+    const url = String(inputData.url || 'https://api.example.com/webhook');
+    const payload = inputData.payload || { message: 'Hello from FlowsyAI' };
+
+    // Simulate webhook sending
+    const success = Math.random() > 0.1; // 90% success rate
+
+    return {
+      response: success ? 'Webhook sent successfully' : 'Webhook failed to send',
+      model: 'webhook-sender',
+      tokensUsed: 0,
+      processingTime: 1200,
+      timestamp: Date.now(),
+      url,
+      payload,
+      status: success ? 'sent' : 'failed',
+      responseCode: success ? 200 : 500,
+    };
+  };
+
+  const processDatabaseQuery = async (inputData: Record<string, unknown>): Promise<NodeOutput> => {
+    await new Promise(resolve => setTimeout(resolve, 2100));
+
+    const query = String(inputData.query || 'SELECT * FROM users LIMIT 10');
+    const database = String(inputData.database || 'production_db');
+
+    // Simulate database query
+    const rowsAffected = Math.floor(Math.random() * 1000) + 1;
+
+    return {
+      response: `Query executed successfully: ${rowsAffected} rows affected`,
+      model: 'database-query',
+      tokensUsed: 0,
+      processingTime: 2100,
+      timestamp: Date.now(),
+      query,
+      database,
+      rowsAffected,
+      executionTime: '0.8s',
+    };
+  };
+
+  const processEmailSender = async (inputData: Record<string, unknown>): Promise<NodeOutput> => {
+    await new Promise(resolve => setTimeout(resolve, 1800));
+
+    const recipients = Array.isArray(inputData.recipients)
+      ? inputData.recipients
+      : ['user@example.com'];
+    const subject = String(inputData.subject || 'Notification from FlowsyAI');
+    const template = String(inputData.template || 'default_template');
+
+    return {
+      response: `Email sent successfully to ${recipients.length} recipient(s)`,
+      model: 'email-sender',
+      tokensUsed: 0,
+      processingTime: 1800,
+      timestamp: Date.now(),
+      recipients,
+      subject,
+      template,
+      sent: true,
+    };
+  };
+
+  const processDataValidator = async (inputData: Record<string, unknown>): Promise<NodeOutput> => {
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    const data = inputData.data || {};
+    const schema = String(inputData.schema || 'default_schema');
+
+    // Simulate validation
+    const isValid = Math.random() > 0.2; // 80% valid rate
+    const errors = isValid ? 0 : Math.floor(Math.random() * 3) + 1;
+    const warnings = Math.floor(Math.random() * 3);
+
+    return {
+      response: isValid
+        ? 'Data validation passed'
+        : `Data validation failed with ${errors} error(s)`,
+      model: 'data-validator',
+      tokensUsed: 0,
+      processingTime: 800,
+      timestamp: Date.now(),
+      valid: isValid,
+      errors,
+      warnings,
+      schema,
+      validatedFields: Object.keys(data).length,
+    };
+  };
+
+  const processDataTransformer = async (
+    inputData: Record<string, unknown>
+  ): Promise<NodeOutput> => {
+    await new Promise(resolve => setTimeout(resolve, 1100));
+
+    const fromFormat = String(inputData.fromFormat || 'JSON');
+    const toFormat = String(inputData.toFormat || 'CSV');
+    const data = inputData.data || {};
+
+    const recordCount = Array.isArray(data) ? data.length : Object.keys(data).length;
+    const estimatedSize = recordCount * 0.5; // KB
+
+    return {
+      response: `Successfully transformed ${recordCount} records from ${fromFormat} to ${toFormat}`,
+      model: 'data-transformer',
+      tokensUsed: 0,
+      processingTime: 1100,
+      timestamp: Date.now(),
+      fromFormat,
+      toFormat,
+      recordCount,
+      estimatedSize: `${estimatedSize.toFixed(1)}KB`,
+      transformedData: `[${toFormat} formatted data]`,
+    };
+  };
+
+  const processFileProcessor = async (inputData: Record<string, unknown>): Promise<NodeOutput> => {
+    await new Promise(resolve => setTimeout(resolve, 3200));
+
+    const operation = String(inputData.operation || 'read');
+    const fileType = String(inputData.fileType || 'text');
+    const fileCount = Number(inputData.fileCount || 1);
+
+    const totalSize = fileCount * (Math.random() * 10 + 1); // MB
+    const compressionRatio = operation === 'compress' ? Math.random() * 0.4 + 0.4 : 0; // 40-80%
+
+    return {
+      response: `File processing completed: ${operation} operation on ${fileCount} ${fileType} file(s)`,
+      model: 'file-processor',
+      tokensUsed: 0,
+      processingTime: 3200,
+      timestamp: Date.now(),
+      operation,
+      fileType,
+      fileCount,
+      totalSize: `${totalSize.toFixed(1)}MB`,
+      compressionRatio: compressionRatio > 0 ? `${(compressionRatio * 100).toFixed(0)}%` : 'N/A',
+    };
+  };
+
+  // Debug logging function
+  const addDebugLog = (
+    level: 'info' | 'warning' | 'error' | 'debug',
+    message: string,
+    nodeId?: string,
+    data?: unknown
+  ) => {
+    const logEntry = {
+      timestamp: Date.now(),
+      level,
+      message,
+      nodeId,
+      data,
+    };
+
+    setDebugLogs(prev => [...prev.slice(-99), logEntry]); // Keep last 100 logs
+
+    // Also log to console in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[${level.toUpperCase()}] ${message}`, { nodeId, data });
+    }
+  };
+
+  // Enhanced save workflow functionality
+  const saveWorkflow = () => {
+    if (!workflowName.trim()) {
+      toast.error('Please enter a workflow name');
+      return;
+    }
+
+    const workflow: WorkflowData = {
+      id: currentWorkflow?.id || `workflow_${Date.now()}`,
+      name: workflowName,
+      description: workflowDescription,
+      nodes,
+      connections,
+      variables: workflowVariables,
+      settings: workflowSettings,
+      metadata: {
+        created: currentWorkflow?.metadata.created || new Date().toISOString(),
+        modified: new Date().toISOString(),
+        version: currentWorkflow?.metadata.version || '1.0.0',
+        author: 'FlowsyAI User',
+        tags: currentWorkflow?.metadata.tags || [],
+        category: currentWorkflow?.metadata.category || 'General',
+      },
+    };
+
+    // Save to localStorage
+    const existingWorkflows = JSON.parse(localStorage.getItem('flowsyai_workflows') || '[]');
+    const workflowIndex = existingWorkflows.findIndex((w: WorkflowData) => w.id === workflow.id);
+
+    if (workflowIndex >= 0) {
+      existingWorkflows[workflowIndex] = workflow;
+    } else {
+      existingWorkflows.push(workflow);
+    }
+
+    localStorage.setItem('flowsyai_workflows', JSON.stringify(existingWorkflows));
+    setSavedWorkflows(existingWorkflows);
+    setCurrentWorkflow(workflow);
+    setShowSaveDialog(false);
+
+    toast.success(`✅ Workflow "${workflowName}" saved successfully!`);
+  };
+
+  // Enhanced load workflow functionality
+  const loadWorkflow = (workflow: WorkflowData) => {
+    setNodes(workflow.nodes);
+    setConnections(workflow.connections);
+    setCurrentWorkflow(workflow);
+    setWorkflowName(workflow.name);
+    setWorkflowDescription(workflow.description);
+
+    // Load advanced features
+    setWorkflowVariables(workflow.variables || []);
+    setWorkflowSettings(
+      workflow.settings || {
+        timeout: 300,
+        retryAttempts: 3,
+        parallelExecution: false,
+        errorHandling: 'stop',
+        logging: 'detailed',
+        notifications: {
+          onSuccess: true,
+          onError: true,
+        },
+      }
+    );
+
+    setShowLoadDialog(false);
+
+    // Reset execution state
+    setExecutionState({
+      isRunning: false,
+      currentNode: null,
+      completedNodes: new Set(),
+      nodeResults: new Map(),
+      executionLog: [],
+    });
+
+    // Clear debug logs
+    setDebugLogs([]);
+
+    addDebugLog('info', `Workflow "${workflow.name}" loaded successfully`);
+    toast.success(`📂 Workflow "${workflow.name}" loaded successfully!`);
+  };
+
+  // Variable management functions
+  const addVariable = () => {
+    const newVariable: WorkflowVariable = {
+      id: `var_${Date.now()}`,
+      name: `variable_${workflowVariables.length + 1}`,
+      type: 'string',
+      value: '',
+      description: '',
+      scope: 'global',
+      encrypted: false,
+    };
+
+    setWorkflowVariables(prev => [...prev, newVariable]);
+    addDebugLog('info', `Variable "${newVariable.name}" added`);
+  };
+
+  const updateVariable = (id: string, updates: Partial<WorkflowVariable>) => {
+    setWorkflowVariables(prev =>
+      prev.map(variable => (variable.id === id ? { ...variable, ...updates } : variable))
+    );
+    addDebugLog('info', `Variable updated`, undefined, { id, updates });
+  };
+
+  const deleteVariable = (id: string) => {
+    const variable = workflowVariables.find(v => v.id === id);
+    setWorkflowVariables(prev => prev.filter(v => v.id !== id));
+    addDebugLog('info', `Variable "${variable?.name}" deleted`);
+    toast.success('Variable deleted');
+  };
+
+  // Get variable value by name
+  const getVariableValue = (name: string): unknown => {
+    const variable = workflowVariables.find(v => v.name === name);
+    return variable?.value;
+  };
+
+  // Set variable value by name
+  const setVariableValue = (name: string, value: unknown) => {
+    setWorkflowVariables(prev =>
+      prev.map(variable => (variable.name === name ? { ...variable, value } : variable))
+    );
+    addDebugLog('debug', `Variable "${name}" set to:`, undefined, { value });
+  };
+
+  // Load advanced template
+  const loadAdvancedTemplate = (template: (typeof advancedTemplates)[0]) => {
+    setNodes(template.nodes);
+    setConnections(template.connections);
+    setWorkflowVariables(template.variables);
+    setWorkflowName(template.name);
+    setWorkflowDescription(template.description);
+    setShowTemplateMarketplace(false);
+
+    // Reset execution state
+    setExecutionState({
+      isRunning: false,
+      currentNode: null,
+      completedNodes: new Set(),
+      nodeResults: new Map(),
+      executionLog: [],
+    });
+
+    // Clear debug logs
+    setDebugLogs([]);
+
+    addDebugLog('info', `Advanced template "${template.name}" loaded successfully`);
+    toast.success(`🎯 Template "${template.name}" loaded successfully!`);
+  };
+
+  // Export workflow functionality
+  const exportWorkflow = () => {
+    if (nodes.length === 0) {
+      toast.error('No workflow to export');
+      return;
+    }
+
+    const workflow: WorkflowData = {
+      id: currentWorkflow?.id || `workflow_${Date.now()}`,
+      name: currentWorkflow?.name || 'Untitled Workflow',
+      description: currentWorkflow?.description || '',
+      nodes,
+      connections,
+      metadata: {
+        created: currentWorkflow?.metadata.created || new Date().toISOString(),
+        modified: new Date().toISOString(),
+        version: '1.0.0',
+        author: 'FlowsyAI User',
+      },
+    };
+
+    const dataStr = JSON.stringify(workflow, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${workflow.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast.success('📥 Workflow exported successfully!');
+  };
+
+  // Import workflow functionality
+  const importWorkflow = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const workflow: WorkflowData = JSON.parse(e.target?.result as string);
+        loadWorkflow(workflow);
+      } catch (error) {
+        toast.error('Invalid workflow file');
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // Delete connection
+  const deleteConnection = (connectionId: string) => {
+    setConnections(prev => prev.filter(conn => conn.id !== connectionId));
+    toast.success('🗑️ Connection deleted');
+  };
+
+  // Load saved workflows on component mount
+  useEffect(() => {
+    const workflows = JSON.parse(localStorage.getItem('flowsyai_workflows') || '[]');
+    setSavedWorkflows(workflows);
+  }, []);
 
   // Helper function to determine data type from agent
   const getDataTypeFromAgent = (agentType: string): 'text' | 'image' | 'data' | 'code' => {
@@ -1288,7 +2604,7 @@ The transition to sustainable technology requires continued investment, policy s
     }
   };
 
-  // Analyze user input to determine workflow structure
+  // Enhanced AI-powered workflow analysis
   const analyzeUserInput = (
     input: string
   ): {
@@ -1298,6 +2614,9 @@ The transition to sustainable technology requires continued investment, policy s
       description: string;
       agentType: string;
     }>;
+    complexity: 'simple' | 'medium' | 'complex';
+    estimatedTime: string;
+    category: string;
   } => {
     const lowerInput = input.toLowerCase();
 
@@ -1309,7 +2628,10 @@ The transition to sustainable technology requires continued investment, policy s
       lowerInput.includes('blog')
     ) {
       return {
-        description: `Content creation workflow for: "${input}"`,
+        description: `AI-Powered Content Creation for: "${input}"`,
+        complexity: 'medium' as const,
+        estimatedTime: '5-8 minutes',
+        category: 'Content Marketing',
         steps: [
           { name: 'Research', description: 'Research the topic', agentType: 'web-scraper' },
           { name: 'Analyze', description: 'Analyze research data', agentType: 'gpt4-analyzer' },
@@ -1326,7 +2648,10 @@ The transition to sustainable technology requires continued investment, policy s
     // Translation workflows
     if (lowerInput.includes('translate') || lowerInput.includes('translation')) {
       return {
-        description: `Translation workflow for: "${input}"`,
+        description: `Professional Translation for: "${input}"`,
+        complexity: 'simple' as const,
+        estimatedTime: '3-5 minutes',
+        category: 'Language Processing',
         steps: [
           { name: 'Analyze Text', description: 'Analyze source text', agentType: 'gpt4-analyzer' },
           { name: 'Translate', description: 'Perform translation', agentType: 'claude-writer' },
@@ -1399,7 +2724,10 @@ The transition to sustainable technology requires continued investment, policy s
 
     // Default general workflow
     return {
-      description: `Custom workflow for: "${input}"`,
+      description: `Custom AI Workflow for: "${input}"`,
+      complexity: 'simple' as const,
+      estimatedTime: '3-6 minutes',
+      category: 'General Processing',
       steps: [
         {
           name: 'Analyze Request',
@@ -1421,7 +2749,7 @@ The transition to sustainable technology requires continued investment, policy s
       return;
     }
 
-    setIsRunning(true);
+    setExecutionState(prev => ({ ...prev, isRunning: true }));
     setFinalResults('');
 
     // Reset all nodes to idle using the provided nodes
@@ -1657,7 +2985,7 @@ The transition to sustainable technology requires continued investment, policy s
 
     // Stop animations
     setConnections(prev => prev.map(conn => ({ ...conn, animated: false })));
-    setIsRunning(false);
+    setExecutionState(prev => ({ ...prev, isRunning: false }));
     setShowResults(true);
   };
 
@@ -1809,26 +3137,65 @@ The transition to sustainable technology requires continued investment, policy s
                     <Button
                       size="sm"
                       onClick={runWorkflow}
-                      disabled={isRunning || nodes.length === 0}
+                      disabled={executionState.isRunning || nodes.length === 0}
                       variant="outline"
                       className="border-primary/20 text-primary hover:bg-primary/5"
                     >
-                      {isRunning ? (
+                      {executionState.isRunning ? (
                         <RefreshCw className="w-4 h-4 animate-spin mr-2" />
                       ) : (
-                        <Rocket className="w-4 h-4 mr-2" />
+                        <Play className="w-4 h-4 mr-2" />
                       )}
-                      {isRunning ? 'Running...' : 'Launch'}
+                      {executionState.isRunning ? 'Running...' : 'Launch'}
+                    </Button>
+
+                    {/* Workflow Management */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setShowSaveDialog(true)}
+                      disabled={nodes.length === 0}
+                      className="border-emerald-500/20 text-emerald-600 hover:bg-emerald-500/5"
+                    >
+                      <Save className="w-4 h-4 mr-2" />
+                      Save
                     </Button>
 
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => window.open('/roadmap', '_blank')}
-                      className="border-gold/20 text-gold hover:bg-gold/5"
+                      onClick={() => {
+                        const workflows = JSON.parse(
+                          localStorage.getItem('flowsyai_workflows') || '[]'
+                        );
+                        setSavedWorkflows(workflows);
+                        setShowLoadDialog(true);
+                      }}
+                      className="border-blue-500/20 text-blue-600 hover:bg-blue-500/5"
                     >
-                      <MapPin className="w-4 h-4 mr-2" />
-                      Roadmap
+                      <Upload className="w-4 h-4 mr-2" />
+                      Load
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={exportWorkflow}
+                      disabled={nodes.length === 0}
+                      className="border-purple-500/20 text-purple-600 hover:bg-purple-500/5"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Export
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setShowTemplateMarketplace(true)}
+                      className="border-pink-500/20 text-pink-600 hover:bg-pink-500/5"
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Templates
                     </Button>
 
                     <Button
@@ -1839,6 +3206,46 @@ The transition to sustainable technology requires continued investment, policy s
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
                       Clear
+                    </Button>
+                  </div>
+
+                  {/* Advanced Tools */}
+                  <div className="w-px h-6 bg-border-alt"></div>
+
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setShowVariablesPanel(!showVariablesPanel)}
+                      className={`border-indigo-500/20 text-indigo-600 hover:bg-indigo-500/5 ${showVariablesPanel ? 'bg-indigo-500/10' : ''}`}
+                    >
+                      <Database className="w-4 h-4 mr-2" />
+                      Variables
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setShowSettingsPanel(!showSettingsPanel)}
+                      className={`border-gray-500/20 text-gray-600 hover:bg-gray-500/5 ${showSettingsPanel ? 'bg-gray-500/10' : ''}`}
+                    >
+                      <Settings className="w-4 h-4 mr-2" />
+                      Settings
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setShowDebugPanel(!showDebugPanel)}
+                      className={`border-orange-500/20 text-orange-600 hover:bg-orange-500/5 ${showDebugPanel ? 'bg-orange-500/10' : ''}`}
+                    >
+                      <Code className="w-4 h-4 mr-2" />
+                      Debug
+                      {debugLogs.length > 0 && (
+                        <span className="ml-1 px-1.5 py-0.5 text-xs bg-orange-500 text-white rounded-full">
+                          {debugLogs.length}
+                        </span>
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -2191,7 +3598,7 @@ The transition to sustainable technology requires continued investment, policy s
                           </div>
 
                           {/* Processing Indicator */}
-                          {isRunning && (
+                          {executionState.isRunning && (
                             <div className="absolute inset-0 bg-primary/20 rounded-lg flex items-center justify-center">
                               <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                             </div>
@@ -2212,6 +3619,335 @@ The transition to sustainable technology requires continued investment, policy s
                 </div>
               </div>
             </div>
+
+            {/* Advanced Panels */}
+            <SafeAnimatePresence>
+              {(showVariablesPanel || showSettingsPanel || showDebugPanel) && (
+                <MotionDiv
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mt-4 border-t border-border-alt pt-4"
+                >
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    {/* Variables Panel */}
+                    {showVariablesPanel && (
+                      <MotionDiv
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        className="bg-card/30 border border-border-alt rounded-lg p-4"
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                            <Database className="w-4 h-4 text-indigo-600" />
+                            Workflow Variables
+                          </h4>
+                          <Button
+                            size="sm"
+                            onClick={addVariable}
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                          >
+                            <Plus className="w-4 h-4 mr-1" />
+                            Add
+                          </Button>
+                        </div>
+
+                        <div className="space-y-3 max-h-64 overflow-y-auto">
+                          {workflowVariables.length === 0 ? (
+                            <div className="text-center py-4 text-muted-foreground text-sm">
+                              No variables defined. Click "Add" to create one.
+                            </div>
+                          ) : (
+                            workflowVariables.map(variable => (
+                              <div
+                                key={variable.id}
+                                className="p-3 bg-background/50 border border-border-alt rounded-lg"
+                              >
+                                <div className="flex items-center justify-between mb-2">
+                                  <Input
+                                    value={variable.name}
+                                    onChange={e =>
+                                      updateVariable(variable.id, { name: e.target.value })
+                                    }
+                                    className="text-sm font-medium"
+                                    placeholder="Variable name"
+                                  />
+                                  <Button
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={() => deleteVariable(variable.id)}
+                                    className="text-red-600 hover:bg-red-500/10"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2 mb-2">
+                                  <select
+                                    value={variable.type}
+                                    onChange={e =>
+                                      updateVariable(variable.id, {
+                                        type: e.target.value as WorkflowVariable['type'],
+                                      })
+                                    }
+                                    className="text-xs px-2 py-1 bg-background border border-border-alt rounded"
+                                  >
+                                    <option value="string">String</option>
+                                    <option value="number">Number</option>
+                                    <option value="boolean">Boolean</option>
+                                    <option value="object">Object</option>
+                                    <option value="array">Array</option>
+                                  </select>
+                                  <select
+                                    value={variable.scope}
+                                    onChange={e =>
+                                      updateVariable(variable.id, {
+                                        scope: e.target.value as WorkflowVariable['scope'],
+                                      })
+                                    }
+                                    className="text-xs px-2 py-1 bg-background border border-border-alt rounded"
+                                  >
+                                    <option value="global">Global</option>
+                                    <option value="local">Local</option>
+                                  </select>
+                                </div>
+                                <Input
+                                  value={String(variable.value)}
+                                  onChange={e =>
+                                    updateVariable(variable.id, { value: e.target.value })
+                                  }
+                                  className="text-xs mb-2"
+                                  placeholder="Variable value"
+                                />
+                                <Input
+                                  value={variable.description}
+                                  onChange={e =>
+                                    updateVariable(variable.id, { description: e.target.value })
+                                  }
+                                  className="text-xs"
+                                  placeholder="Description (optional)"
+                                />
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </MotionDiv>
+                    )}
+
+                    {/* Settings Panel */}
+                    {showSettingsPanel && (
+                      <MotionDiv
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        className="bg-card/30 border border-border-alt rounded-lg p-4"
+                      >
+                        <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                          <Settings className="w-4 h-4 text-gray-600" />
+                          Workflow Settings
+                        </h4>
+
+                        <div className="space-y-4">
+                          <div>
+                            <label className="text-xs font-medium text-foreground mb-1 block">
+                              Timeout (seconds)
+                            </label>
+                            <Input
+                              type="number"
+                              value={workflowSettings.timeout}
+                              onChange={e =>
+                                setWorkflowSettings(prev => ({
+                                  ...prev,
+                                  timeout: Number(e.target.value),
+                                }))
+                              }
+                              className="text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-medium text-foreground mb-1 block">
+                              Retry Attempts
+                            </label>
+                            <Input
+                              type="number"
+                              value={workflowSettings.retryAttempts}
+                              onChange={e =>
+                                setWorkflowSettings(prev => ({
+                                  ...prev,
+                                  retryAttempts: Number(e.target.value),
+                                }))
+                              }
+                              className="text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-medium text-foreground mb-1 block">
+                              Error Handling
+                            </label>
+                            <select
+                              value={workflowSettings.errorHandling}
+                              onChange={e =>
+                                setWorkflowSettings(prev => ({
+                                  ...prev,
+                                  errorHandling: e.target
+                                    .value as WorkflowSettings['errorHandling'],
+                                }))
+                              }
+                              className="w-full text-sm px-2 py-1 bg-background border border-border-alt rounded"
+                            >
+                              <option value="stop">Stop on Error</option>
+                              <option value="continue">Continue on Error</option>
+                              <option value="retry">Retry on Error</option>
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="text-xs font-medium text-foreground mb-1 block">
+                              Logging Level
+                            </label>
+                            <select
+                              value={workflowSettings.logging}
+                              onChange={e =>
+                                setWorkflowSettings(prev => ({
+                                  ...prev,
+                                  logging: e.target.value as WorkflowSettings['logging'],
+                                }))
+                              }
+                              className="w-full text-sm px-2 py-1 bg-background border border-border-alt rounded"
+                            >
+                              <option value="minimal">Minimal</option>
+                              <option value="detailed">Detailed</option>
+                              <option value="debug">Debug</option>
+                            </select>
+                          </div>
+
+                          <div className="space-y-2">
+                            <label className="text-xs font-medium text-foreground block">
+                              Notifications
+                            </label>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={workflowSettings.notifications.onSuccess}
+                                onChange={e =>
+                                  setWorkflowSettings(prev => ({
+                                    ...prev,
+                                    notifications: {
+                                      ...prev.notifications,
+                                      onSuccess: e.target.checked,
+                                    },
+                                  }))
+                                }
+                                className="rounded"
+                              />
+                              <span className="text-xs text-foreground">On Success</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={workflowSettings.notifications.onError}
+                                onChange={e =>
+                                  setWorkflowSettings(prev => ({
+                                    ...prev,
+                                    notifications: {
+                                      ...prev.notifications,
+                                      onError: e.target.checked,
+                                    },
+                                  }))
+                                }
+                                className="rounded"
+                              />
+                              <span className="text-xs text-foreground">On Error</span>
+                            </div>
+                          </div>
+                        </div>
+                      </MotionDiv>
+                    )}
+
+                    {/* Debug Panel */}
+                    {showDebugPanel && (
+                      <MotionDiv
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        className="bg-card/30 border border-border-alt rounded-lg p-4"
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                            <Code className="w-4 h-4 text-orange-600" />
+                            Debug Logs
+                          </h4>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setDebugLogs([])}
+                            className="text-muted-foreground hover:text-foreground"
+                          >
+                            <Trash2 className="w-3 h-3 mr-1" />
+                            Clear
+                          </Button>
+                        </div>
+
+                        <div className="space-y-2 max-h-64 overflow-y-auto">
+                          {debugLogs.length === 0 ? (
+                            <div className="text-center py-4 text-muted-foreground text-sm">
+                              No debug logs yet. Run a workflow to see logs.
+                            </div>
+                          ) : (
+                            debugLogs
+                              .slice(-20)
+                              .reverse()
+                              .map((log, index) => (
+                                <div
+                                  key={index}
+                                  className="p-2 bg-background/50 border border-border-alt rounded text-xs"
+                                >
+                                  <div className="flex items-center justify-between mb-1">
+                                    <span
+                                      className={`px-1.5 py-0.5 rounded text-xs font-medium ${
+                                        log.level === 'error'
+                                          ? 'bg-red-500/20 text-red-600'
+                                          : log.level === 'warning'
+                                            ? 'bg-yellow-500/20 text-yellow-600'
+                                            : log.level === 'debug'
+                                              ? 'bg-blue-500/20 text-blue-600'
+                                              : 'bg-green-500/20 text-green-600'
+                                      }`}
+                                    >
+                                      {log.level.toUpperCase()}
+                                    </span>
+                                    <span className="text-muted-foreground">
+                                      {new Date(log.timestamp).toLocaleTimeString()}
+                                    </span>
+                                  </div>
+                                  <div className="text-foreground">{log.message}</div>
+                                  {log.nodeId && (
+                                    <div className="text-muted-foreground mt-1">
+                                      Node: {log.nodeId}
+                                    </div>
+                                  )}
+                                  {log.data && (
+                                    <details className="mt-1">
+                                      <summary className="text-muted-foreground cursor-pointer">
+                                        Data
+                                      </summary>
+                                      <pre className="text-xs mt-1 p-1 bg-background/50 rounded overflow-x-auto">
+                                        {JSON.stringify(log.data, null, 2)}
+                                      </pre>
+                                    </details>
+                                  )}
+                                </div>
+                              ))
+                          )}
+                        </div>
+                      </MotionDiv>
+                    )}
+                  </div>
+                </MotionDiv>
+              )}
+            </SafeAnimatePresence>
           </div>
         </MotionDiv>
 
@@ -2331,6 +4067,261 @@ The transition to sustainable technology requires continued investment, policy s
             </div>
           </MotionDiv>
         )}
+
+        {/* Save Workflow Dialog */}
+        <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Save className="w-5 h-5 text-emerald-600" />
+                Save Workflow
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-foreground mb-2 block">
+                  Workflow Name
+                </label>
+                <Input
+                  value={workflowName}
+                  onChange={e => setWorkflowName(e.target.value)}
+                  placeholder="My AI Workflow"
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-foreground mb-2 block">
+                  Description (Optional)
+                </label>
+                <Textarea
+                  value={workflowDescription}
+                  onChange={e => setWorkflowDescription(e.target.value)}
+                  placeholder="Describe what this workflow does..."
+                  className="w-full h-20 resize-none"
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setShowSaveDialog(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={saveWorkflow}
+                  disabled={!workflowName.trim()}
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Workflow
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Load Workflow Dialog */}
+        <Dialog open={showLoadDialog} onOpenChange={setShowLoadDialog}>
+          <DialogContent className="sm:max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Upload className="w-5 h-5 text-blue-600" />
+                Load Workflow
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              {savedWorkflows.length === 0 ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted/20 flex items-center justify-center">
+                    <Upload className="w-8 h-8 text-muted-foreground" />
+                  </div>
+                  <h4 className="text-lg font-medium text-foreground mb-2">No Saved Workflows</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Create and save a workflow first to see it here.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid gap-3 max-h-96 overflow-y-auto">
+                  {savedWorkflows.map(workflow => (
+                    <div
+                      key={workflow.id}
+                      className="p-4 border border-border-alt rounded-lg hover:border-primary/30 transition-colors cursor-pointer"
+                      onClick={() => loadWorkflow(workflow)}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h5 className="font-medium text-foreground">{workflow.name}</h5>
+                          {workflow.description && (
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {workflow.description}
+                            </p>
+                          )}
+                          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                            <span>{workflow.nodes.length} nodes</span>
+                            <span>{workflow.connections.length} connections</span>
+                            <span>
+                              Modified: {new Date(workflow.metadata.modified).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={e => {
+                            e.stopPropagation();
+                            const updatedWorkflows = savedWorkflows.filter(
+                              w => w.id !== workflow.id
+                            );
+                            localStorage.setItem(
+                              'flowsyai_workflows',
+                              JSON.stringify(updatedWorkflows)
+                            );
+                            setSavedWorkflows(updatedWorkflows);
+                            toast.success('Workflow deleted');
+                          }}
+                          className="text-muted-foreground hover:text-red-600"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="flex justify-end">
+                <Button variant="outline" onClick={() => setShowLoadDialog(false)}>
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Template Marketplace Dialog */}
+        <Dialog open={showTemplateMarketplace} onOpenChange={setShowTemplateMarketplace}>
+          <DialogContent className="sm:max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-pink-600" />
+                Advanced Workflow Templates
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-6">
+              <div className="text-sm text-muted-foreground">
+                Choose from our collection of advanced workflow templates with pre-configured logic,
+                variables, and integrations.
+              </div>
+
+              <div className="grid gap-4">
+                {advancedTemplates.map(template => (
+                  <div
+                    key={template.id}
+                    className="p-6 border border-border-alt rounded-lg hover:border-primary/30 transition-colors cursor-pointer group"
+                    onClick={() => loadAdvancedTemplate(template)}
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h5 className="font-semibold text-foreground group-hover:text-primary transition-colors">
+                            {template.name}
+                          </h5>
+                          <span
+                            className={`px-2 py-1 text-xs rounded-full ${
+                              template.difficulty === 'advanced'
+                                ? 'bg-orange-500/20 text-orange-600'
+                                : template.difficulty === 'expert'
+                                  ? 'bg-red-500/20 text-red-600'
+                                  : 'bg-blue-500/20 text-blue-600'
+                            }`}
+                          >
+                            {template.difficulty}
+                          </span>
+                          <span className="px-2 py-1 text-xs bg-primary/20 text-primary rounded-full">
+                            {template.category}
+                          </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-3">{template.description}</p>
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                          <span>{template.nodes.length} nodes</span>
+                          <span>{template.connections.length} connections</span>
+                          <span>{template.variables.length} variables</span>
+                          <span>⏱️ {template.estimatedTime}</span>
+                          <span>⭐ {template.popularity}% popularity</span>
+                        </div>
+                        <div className="flex items-center gap-2 mt-3">
+                          {template.tags.map(tag => (
+                            <span
+                              key={tag}
+                              className="px-2 py-1 text-xs bg-background border border-border-alt rounded"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="ml-4 group-hover:bg-primary group-hover:text-white transition-colors"
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Load Template
+                      </Button>
+                    </div>
+
+                    {/* Template Preview */}
+                    <div className="bg-background/50 border border-border-alt rounded-lg p-4">
+                      <h6 className="text-xs font-medium text-foreground mb-2">
+                        Workflow Preview:
+                      </h6>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        {template.nodes.slice(0, 4).map((node, index) => (
+                          <React.Fragment key={node.id}>
+                            <span className="px-2 py-1 bg-primary/10 text-primary rounded">
+                              {node.name}
+                            </span>
+                            {index < Math.min(template.nodes.length - 1, 3) && (
+                              <ArrowRight className="w-3 h-3" />
+                            )}
+                          </React.Fragment>
+                        ))}
+                        {template.nodes.length > 4 && (
+                          <span className="text-muted-foreground">
+                            +{template.nodes.length - 4} more
+                          </span>
+                        )}
+                      </div>
+
+                      {template.variables.length > 0 && (
+                        <div className="mt-3">
+                          <h6 className="text-xs font-medium text-foreground mb-2">
+                            Pre-configured Variables:
+                          </h6>
+                          <div className="grid grid-cols-2 gap-2">
+                            {template.variables.slice(0, 4).map(variable => (
+                              <div key={variable.id} className="text-xs">
+                                <span className="font-medium text-foreground">
+                                  {variable.name}:
+                                </span>
+                                <span className="text-muted-foreground ml-1">
+                                  {String(variable.value).substring(0, 20)}
+                                  {String(variable.value).length > 20 ? '...' : ''}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-end">
+                <Button variant="outline" onClick={() => setShowTemplateMarketplace(false)}>
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   );

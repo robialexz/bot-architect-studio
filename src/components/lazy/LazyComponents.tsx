@@ -216,6 +216,21 @@ export const preloadCriticalComponents = () => {
 // Preload components for specific routes
 export const preloadRouteComponents = (route: string) => {
   switch (route) {
+    case '/features':
+      preloadComponent(() => import('@/pages/Features'));
+      break;
+    case '/documentation':
+      preloadComponent(() => import('@/pages/Documentation'));
+      break;
+    case '/roadmap':
+      preloadComponent(() => import('@/pages/RoadmapPage'));
+      break;
+    case '/pricing':
+      preloadComponent(() => import('@/pages/Pricing'));
+      break;
+    case '/platform-showcase':
+      preloadComponent(() => import('@/pages/PlatformShowcase'));
+      break;
     case '/studio':
       preloadComponent(() => import('@/pages/WorkflowStudio'));
       preloadComponent(() => import('@/components/EnhancedWorkflowBuilder'));

@@ -59,8 +59,10 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { GlassCard } from '@/components/ui/glass-card';
+import { GlassButton } from '@/components/ui/glass-button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useDesignSystem } from '@/hooks/useDesignSystem';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -112,13 +114,17 @@ const Features: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredFeature, setHoveredFeature] = useState<string | null>(null);
 
+  // Use design system
+  const { getGlassCardClasses, getGlassButtonClasses } = useDesignSystem();
+
   // Modern features showcase data
   const featuresShowcase = [
     {
       id: 'ai-orchestration',
       title: 'AI Agent Orchestration',
       subtitle: 'Intelligent Multi-Agent Coordination',
-      description: 'Deploy sophisticated AI agents that collaborate seamlessly to solve complex problems',
+      description:
+        'Deploy sophisticated AI agents that collaborate seamlessly to solve complex problems',
       icon: Bot,
       category: 'AI Core',
       status: 'live',
@@ -130,12 +136,12 @@ const Features: React.FC = () => {
         'Autonomous decision making',
         'Real-time communication',
         'Conflict resolution',
-        'Performance optimization'
+        'Performance optimization',
       ],
       metrics: {
         efficiency: '+300%',
         accuracy: '99.7%',
-        speed: '10x faster'
+        speed: '10x faster',
       },
       demoAvailable: true,
     },
@@ -155,12 +161,12 @@ const Features: React.FC = () => {
         'Template library',
         'Version control',
         'Collaborative editing',
-        'Auto-save functionality'
+        'Auto-save functionality',
       ],
       metrics: {
         productivity: '+250%',
         learning: '5 min setup',
-        templates: '500+'
+        templates: '500+',
       },
       demoAvailable: true,
     },
@@ -168,7 +174,8 @@ const Features: React.FC = () => {
       id: 'smart-analytics',
       title: 'Smart Analytics',
       subtitle: 'AI-Powered Insights',
-      description: 'Deep insights into performance with predictive analytics and optimization suggestions',
+      description:
+        'Deep insights into performance with predictive analytics and optimization suggestions',
       icon: BarChart3,
       category: 'Analytics',
       status: 'live',
@@ -180,12 +187,12 @@ const Features: React.FC = () => {
         'Custom dashboards',
         'Performance optimization',
         'Cost analysis',
-        'ROI tracking'
+        'ROI tracking',
       ],
       metrics: {
         insights: 'Real-time',
         accuracy: '95%+',
-        savings: '40% cost'
+        savings: '40% cost',
       },
       demoAvailable: true,
     },
@@ -205,12 +212,12 @@ const Features: React.FC = () => {
         'Voice-to-workflow conversion',
         'Hands-free operation',
         'Context awareness',
-        'Custom commands'
+        'Custom commands',
       ],
       metrics: {
         languages: '25+',
         accuracy: '98%',
-        response: '<1s'
+        response: '<1s',
       },
       demoAvailable: false,
     },
@@ -230,12 +237,12 @@ const Features: React.FC = () => {
         'Role-based access',
         'Audit logging',
         'Data sovereignty',
-        'Zero-trust architecture'
+        'Zero-trust architecture',
       ],
       metrics: {
         uptime: '99.99%',
         compliance: 'SOC 2',
-        encryption: 'AES-256'
+        encryption: 'AES-256',
       },
       demoAvailable: false,
     },
@@ -255,12 +262,12 @@ const Features: React.FC = () => {
         'Webhook triggers',
         'Data synchronization',
         'Real-time updates',
-        'Error handling'
+        'Error handling',
       ],
       metrics: {
         integrations: '1000+',
         apis: 'REST/GraphQL',
-        uptime: '99.9%'
+        uptime: '99.9%',
       },
       demoAvailable: true,
     },
@@ -269,19 +276,45 @@ const Features: React.FC = () => {
   // Feature categories for filtering
   const categories = [
     { id: 'all', label: 'All Features', icon: Star, count: featuresShowcase.length },
-    { id: 'AI Core', label: 'AI Core', icon: Brain, count: featuresShowcase.filter(f => f.category === 'AI Core').length },
-    { id: 'Builder', label: 'Builder', icon: WorkflowIcon, count: featuresShowcase.filter(f => f.category === 'Builder').length },
-    { id: 'Analytics', label: 'Analytics', icon: BarChart3, count: featuresShowcase.filter(f => f.category === 'Analytics').length },
-    { id: 'Security', label: 'Security', icon: Shield, count: featuresShowcase.filter(f => f.category === 'Security').length },
-    { id: 'Connectivity', label: 'Connectivity', icon: Network, count: featuresShowcase.filter(f => f.category === 'Connectivity').length },
+    {
+      id: 'AI Core',
+      label: 'AI Core',
+      icon: Brain,
+      count: featuresShowcase.filter(f => f.category === 'AI Core').length,
+    },
+    {
+      id: 'Builder',
+      label: 'Builder',
+      icon: WorkflowIcon,
+      count: featuresShowcase.filter(f => f.category === 'Builder').length,
+    },
+    {
+      id: 'Analytics',
+      label: 'Analytics',
+      icon: BarChart3,
+      count: featuresShowcase.filter(f => f.category === 'Analytics').length,
+    },
+    {
+      id: 'Security',
+      label: 'Security',
+      icon: Shield,
+      count: featuresShowcase.filter(f => f.category === 'Security').length,
+    },
+    {
+      id: 'Connectivity',
+      label: 'Connectivity',
+      icon: Network,
+      count: featuresShowcase.filter(f => f.category === 'Connectivity').length,
+    },
   ];
 
   // Filter features based on active category and search
   const filteredFeatures = featuresShowcase.filter(feature => {
     const matchesCategory = activeCategory === 'all' || feature.category === activeCategory;
-    const matchesSearch = feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         feature.features.some(f => f.toLowerCase().includes(searchQuery.toLowerCase()));
+    const matchesSearch =
+      feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      feature.features.some(f => f.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
@@ -290,8 +323,14 @@ const Features: React.FC = () => {
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-10 right-10 w-64 h-64 bg-primary/8 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-10 left-10 w-80 h-80 bg-sapphire/8 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-gradient-to-r from-primary/5 to-sapphire/5 rounded-full blur-3xl animate-spin" style={{ animationDuration: '30s' }} />
+        <div
+          className="absolute bottom-10 left-10 w-80 h-80 bg-sapphire/8 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: '2s' }}
+        />
+        <div
+          className="absolute top-1/3 left-1/3 w-96 h-96 bg-gradient-to-r from-primary/5 to-sapphire/5 rounded-full blur-3xl animate-spin"
+          style={{ animationDuration: '30s' }}
+        />
       </div>
 
       <MotionDiv
@@ -321,7 +360,9 @@ const Features: React.FC = () => {
           </h1>
 
           <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
-            Discover cutting-edge AI automation features designed to <span className="text-primary font-semibold">revolutionize</span> your workflow experience
+            Discover cutting-edge AI automation features designed to{' '}
+            <span className="text-primary font-semibold">revolutionize</span> your workflow
+            experience
           </p>
 
           {/* Search and Filter */}
@@ -339,7 +380,7 @@ const Features: React.FC = () => {
 
             {/* Category Filter */}
             <div className="flex flex-wrap justify-center gap-3">
-              {categories.map((category) => (
+              {categories.map(category => (
                 <Button
                   key={category.id}
                   variant={activeCategory === category.id ? 'default' : 'outline'}
@@ -395,7 +436,8 @@ const Features: React.FC = () => {
               🎯 Feature Showcase
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Explore our comprehensive suite of AI-powered features designed for maximum productivity
+              Explore our comprehensive suite of AI-powered features designed for maximum
+              productivity
             </p>
           </div>
 
@@ -409,30 +451,46 @@ const Features: React.FC = () => {
                 onMouseLeave={() => setHoveredFeature(null)}
                 className="group cursor-pointer"
               >
-                <GlassCard className={`premium-card bg-card/90 backdrop-blur-lg border-2 border-border-alt shadow-2xl p-8 h-full relative overflow-hidden transition-all duration-500 ${
-                  hoveredFeature === feature.id ? 'shadow-primary/20 border-primary/30' : ''
-                }`}>
-
+                <GlassCard
+                  variant={hoveredFeature === feature.id ? 'accent' : 'medium'}
+                  size="lg"
+                  className="h-full relative overflow-hidden"
+                >
                   {/* Animated Background */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${feature.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  />
 
                   <div className="relative z-10">
                     {/* Header */}
                     <div className="flex items-start justify-between mb-6">
-                      <div className={`p-4 bg-gradient-to-r ${feature.gradient} rounded-xl shadow-lg`}>
+                      <div
+                        className={`p-4 bg-gradient-to-r ${feature.gradient} rounded-xl shadow-lg`}
+                      >
                         <feature.icon className="h-8 w-8 text-white" />
                       </div>
                       <div className="flex flex-col items-end gap-2">
                         <Badge
-                          variant={feature.status === 'live' ? 'default' : feature.status === 'beta' ? 'secondary' : 'outline'}
+                          variant={
+                            feature.status === 'live'
+                              ? 'default'
+                              : feature.status === 'beta'
+                                ? 'secondary'
+                                : 'outline'
+                          }
                           className={`${
-                            feature.status === 'live' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
-                            feature.status === 'beta' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
-                            'bg-orange-500/20 text-orange-400 border-orange-500/30'
+                            feature.status === 'live'
+                              ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                              : feature.status === 'beta'
+                                ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                                : 'bg-orange-500/20 text-orange-400 border-orange-500/30'
                           } text-sm px-3 py-1`}
                         >
-                          {feature.status === 'live' ? '✅ LIVE' :
-                           feature.status === 'beta' ? '🧪 BETA' : '🚧 COMING SOON'}
+                          {feature.status === 'live'
+                            ? '✅ LIVE'
+                            : feature.status === 'beta'
+                              ? '🧪 BETA'
+                              : '🚧 COMING SOON'}
                         </Badge>
                         <Badge variant="outline" className="text-xs">
                           {feature.category}
@@ -467,7 +525,10 @@ const Features: React.FC = () => {
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {feature.features.map((feat, idx) => (
-                          <div key={idx} className="flex items-center text-sm text-muted-foreground">
+                          <div
+                            key={idx}
+                            className="flex items-center text-sm text-muted-foreground"
+                          >
                             <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                             {feat}
                           </div>
@@ -478,24 +539,27 @@ const Features: React.FC = () => {
                     {/* Action Buttons */}
                     <div className="flex gap-3">
                       {feature.demoAvailable && (
-                        <Button
+                        <GlassButton
+                          variant="glass-primary"
                           size="sm"
                           onClick={() => navigate('/waitlist')}
-                          className="bg-gradient-to-r from-primary to-sapphire text-background hover:shadow-lg flex-1"
+                          gradient="primary"
+                          glow
+                          icon={<PlayCircle className="w-4 h-4" />}
+                          className="flex-1"
                         >
-                          <PlayCircle className="w-4 h-4 mr-2" />
                           Try Demo
-                        </Button>
+                        </GlassButton>
                       )}
-                      <Button
-                        variant="outline"
+                      <GlassButton
+                        variant="glass"
                         size="sm"
                         onClick={() => navigate('/documentation')}
-                        className={`border-primary/20 hover:border-primary/40 ${feature.demoAvailable ? 'flex-1' : 'w-full'}`}
+                        icon={<Code className="w-4 h-4" />}
+                        className={feature.demoAvailable ? 'flex-1' : 'w-full'}
                       >
-                        <Code className="w-4 h-4 mr-2" />
                         Learn More
-                      </Button>
+                      </GlassButton>
                     </div>
                   </div>
                 </GlassCard>
@@ -520,8 +584,12 @@ const Features: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
-          <GlassCard className="premium-card bg-gradient-to-br from-primary/10 via-sapphire/10 to-gold/10 backdrop-blur-lg border-2 border-primary/20 shadow-2xl p-12 relative overflow-hidden">
-
+          <GlassCard
+            variant="accent"
+            size="xl"
+            gradient="primary"
+            className="relative overflow-hidden"
+          >
             {/* Animated Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-sapphire/5 to-gold/5 animate-pulse" />
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-sapphire to-gold" />
@@ -541,7 +609,9 @@ const Features: React.FC = () => {
               {/* Feature Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">{featuresShowcase.length}</div>
+                  <div className="text-3xl font-bold text-primary mb-2">
+                    {featuresShowcase.length}
+                  </div>
                   <div className="text-sm text-muted-foreground">Powerful Features</div>
                 </div>
                 <div className="text-center">
@@ -560,25 +630,34 @@ const Features: React.FC = () => {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <Button
-                  size="lg"
-                  onClick={() => window.open('https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump', '_blank', 'noopener,noreferrer')}
-                  className="bg-gradient-to-r from-emerald-500 to-teal-500 text-background hover:shadow-xl hover:shadow-emerald-500/30 text-xl px-12 py-6 animate-pulse"
+                <GlassButton
+                  variant="glass-primary"
+                  size="xl"
+                  onClick={() =>
+                    window.open(
+                      'https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
+                      '_blank',
+                      'noopener,noreferrer'
+                    )
+                  }
+                  gradient="accent"
+                  glow
+                  icon={<TrendingUp className="w-6 h-6" />}
+                  iconPosition="left"
+                  className="animate-pulse"
                 >
-                  <TrendingUp className="mr-3 h-6 w-6" />
                   Buy $FlowAI
-                  <ArrowRight className="ml-3 h-6 w-6" />
-                </Button>
+                </GlassButton>
 
-                <Button
-                  variant="outline"
-                  size="lg"
+                <GlassButton
+                  variant="glass"
+                  size="xl"
                   onClick={() => navigate('/pricing')}
-                  className="border-2 border-primary/30 hover:border-primary/60 text-xl px-12 py-6"
+                  icon={<DollarSign className="w-6 h-6" />}
+                  iconPosition="left"
                 >
-                  <DollarSign className="mr-3 h-6 w-6" />
                   View Pricing
-                </Button>
+                </GlassButton>
               </div>
 
               {/* Trust Indicators */}

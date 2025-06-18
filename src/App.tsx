@@ -12,6 +12,7 @@ import LandingLayout from './components/LandingLayout';
 
 import { AuthenticatedRoute, PublicRoute } from './components/auth/authHelpers';
 import { Loader2 } from 'lucide-react';
+import PageSkeleton from './components/ui/page-skeleton';
 
 // Import critical pages immediately (landing pages and auth)
 import Index from './pages/Index';
@@ -263,9 +264,13 @@ const App: React.FC = () => {
                         <LandingLayout>
                           <Suspense
                             fallback={
-                              <div className="flex items-center justify-center min-h-screen">
-                                <Loader2 className="h-8 w-8 animate-spin" />
-                              </div>
+                              <PageSkeleton
+                                title="Loading Roadmap..."
+                                subtitle="Preparing our journey to success"
+                                variant="roadmap"
+                                showCards={true}
+                                cardCount={4}
+                              />
                             }
                           >
                             <RoadmapPage />
@@ -281,9 +286,13 @@ const App: React.FC = () => {
                         <LandingLayout>
                           <Suspense
                             fallback={
-                              <div className="flex items-center justify-center min-h-screen">
-                                <Loader2 className="h-8 w-8 animate-spin" />
-                              </div>
+                              <PageSkeleton
+                                title="Loading Pricing..."
+                                subtitle="Calculating the best value for you"
+                                variant="default"
+                                showCards={true}
+                                cardCount={3}
+                              />
                             }
                           >
                             <Pricing />
@@ -299,9 +308,13 @@ const App: React.FC = () => {
                         <LandingLayout>
                           <Suspense
                             fallback={
-                              <div className="flex items-center justify-center min-h-screen">
-                                <Loader2 className="h-8 w-8 animate-spin" />
-                              </div>
+                              <PageSkeleton
+                                title="Loading Features..."
+                                subtitle="Showcasing powerful AI capabilities"
+                                variant="features"
+                                showCards={true}
+                                cardCount={6}
+                              />
                             }
                           >
                             <Features />
@@ -317,9 +330,13 @@ const App: React.FC = () => {
                         <LandingLayout>
                           <Suspense
                             fallback={
-                              <div className="flex items-center justify-center min-h-screen">
-                                <Loader2 className="h-8 w-8 animate-spin" />
-                              </div>
+                              <PageSkeleton
+                                title="Loading Documentation..."
+                                subtitle="Preparing comprehensive guides"
+                                variant="documentation"
+                                showCards={false}
+                                showSidebar={true}
+                              />
                             }
                           >
                             <Documentation />

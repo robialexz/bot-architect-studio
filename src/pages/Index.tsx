@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom'; // Removed
 import { PlayCircle } from 'lucide-react'; // Removed Bug, ExternalLink
@@ -10,6 +9,7 @@ import SectionErrorBoundary from '@/components/SectionErrorBoundary';
 
 // Direct imports - NO LAZY LOADING to avoid Framer Motion issues
 import HeroSection from '@/components/landing/HeroSection-NoMotion';
+import N8NStyleHero from '@/components/landing/N8NStyleHero';
 import DetailedRoadmapSection from '@/components/landing/DetailedRoadmapSection';
 import TokenomicsSection from '@/components/landing/TokenomicsSection';
 import VisualWorkflowBuilder from '@/components/landing/VisualWorkflowBuilder';
@@ -158,9 +158,8 @@ const IndexPage: React.FC = () => {
 
   return (
     <div className="index-page-container relative w-full">
-      <PipelineCanvas />
       <main className="relative z-10 w-full">
-        <HeroSection />
+        <N8NStyleHero />
         <SectionErrorBoundary sectionName="Workflow Builder">
           <VisualWorkflowBuilder />
         </SectionErrorBoundary>

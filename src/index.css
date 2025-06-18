@@ -5,6 +5,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import FlowsyAI Design System */
+@import './styles/design-tokens.css';
+
 /* CRITICAL: Force CSS inclusion marker for Vercel deployment - UPDATED */
 .css-force-inclusion-marker {
   display: none !important;
@@ -110,11 +113,20 @@
     --popover: 0 0% 10%; /* #1A1A1A - Consistent with card */
     --popover-foreground: 0 0% 96%; /* #F5F5F5 - High contrast text */
 
-    --primary: 210 100% 60%; /* #0099FF - Professional blue */
+    --primary: 160 84% 39%; /* #10B981 - Modern AI Emerald */
     --primary-foreground: 0 0% 100%; /* #FFFFFF - Maximum contrast */
 
     --secondary: 220 100% 70%; /* #4D79FF - Complementary blue */
     --secondary-foreground: 0 0% 100%; /* #FFFFFF - Maximum contrast */
+
+    /* New AI Color Palette */
+    --ai-emerald: 160 84% 39%; /* #10B981 - Primary AI green */
+    --ai-forest: 160 84% 30%; /* #059669 - Darker emerald */
+    --ai-mint: 160 84% 55%; /* #34D399 - Lighter emerald */
+    --ai-neon: 120 100% 50%; /* #00FF00 - Electric green */
+    --ai-electric: 200 100% 50%; /* #00CCFF - Electric blue */
+    --ai-cyber: 280 100% 70%; /* #B366FF - Cyber purple */
+    --ai-plasma: 320 100% 60%; /* #FF33CC - Plasma pink */
 
     --muted: 0 0% 16%; /* #292929 - Professional muted background */
     --muted-foreground: 0 0% 75%; /* #BFBFBF - Clear gray text */

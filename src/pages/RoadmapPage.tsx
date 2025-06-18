@@ -71,6 +71,170 @@ import {
   Satellite,
   Orbit,
   Atom,
+  Infinity as InfinityIcon,
+  Cpu,
+  Monitor,
+  Smartphone,
+  Tablet,
+  Server,
+  Cloud,
+  CloudLightning,
+  Wifi,
+  Bluetooth,
+  Battery,
+  Power,
+  HardDrive,
+  MemoryStick,
+  Microchip,
+  CircuitBoard,
+  Wrench,
+  Hammer,
+  Tool,
+  Cog,
+  Gear,
+  Sliders,
+  ToggleLeft,
+  ToggleRight,
+  Volume2,
+  VolumeX,
+  Headphones,
+  Mic,
+  Camera,
+  Video,
+  Image,
+  FileText,
+  File,
+  Folder,
+  Archive,
+  Download,
+  Upload,
+  Share,
+  Link,
+  Unlink,
+  Copy,
+  Cut,
+  Paste,
+  Scissors,
+  Edit,
+  Edit2,
+  Edit3,
+  PenTool,
+  Paintbrush,
+  Palette,
+  Eyedropper,
+  Move,
+  RotateCcw,
+  RotateCw,
+  FlipHorizontal,
+  FlipVertical,
+  ZoomIn,
+  ZoomOut,
+  Maximize,
+  Minimize,
+  Square,
+  Circle as CircleIcon,
+  Triangle,
+  Hexagon,
+  Octagon,
+  Pentagon,
+  Diamond,
+  Heart,
+  Bookmark,
+  Flag,
+  Tag,
+  Hash,
+  AtSign,
+  Percent,
+  Plus,
+  Minus,
+  X,
+  Check,
+  ChevronUp,
+  ChevronLeft,
+  ArrowUp,
+  ArrowDown,
+  ArrowLeft,
+  CornerDownLeft,
+  CornerDownRight,
+  CornerUpLeft,
+  CornerUpRight,
+  TrendingDown as TrendingDownIcon,
+  BarChart2,
+  BarChart4,
+  PieChart as PieChartIcon,
+  Doughnut,
+  TrendingUp as TrendingUpIcon,
+  Activity as ActivityIcon,
+  Pulse,
+  Radio,
+  Disc,
+  Play,
+  Pause,
+  Stop,
+  SkipBack,
+  SkipForward,
+  FastForward,
+  Rewind,
+  Repeat,
+  Repeat1,
+  Shuffle,
+  Volume,
+  Volume1,
+  VolumeOff,
+  Mute,
+  Unmute,
+  Speaker,
+  Headset,
+  Microphone,
+  MicOff,
+  PhoneCall,
+  PhoneIncoming,
+  PhoneOutgoing,
+  PhoneMissed,
+  PhoneOff,
+  MessageSquare,
+  MessageCircle,
+  Mail,
+  MailOpen,
+  Send,
+  Inbox,
+  Outbox,
+  Archive as ArchiveIcon,
+  Trash,
+  Trash2,
+  Delete,
+  Backspace,
+  Space,
+  Enter,
+  Tab,
+  CapsLock,
+  Shift,
+  Ctrl,
+  Alt,
+  Cmd,
+  Option,
+  Fn,
+  Home,
+  End,
+  PageUp,
+  PageDown,
+  Insert,
+  Escape,
+  PrintScreen,
+  ScrollLock,
+  NumLock,
+  F1,
+  F2,
+  F3,
+  F4,
+  F5,
+  F6,
+  F7,
+  F8,
+  F9,
+  F10,
+  F11,
+  F12,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -132,7 +296,7 @@ const RoadmapPage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Roadmap phases with specific timeline and budget information
+  // Enhanced roadmap phases with detailed information and interactive elements
   const roadmapPhases = [
     {
       id: 'phase-0',
@@ -145,16 +309,27 @@ const RoadmapPage: React.FC = () => {
       description: 'Complete website development and infrastructure setup',
       achievements: [
         'Production-ready website launched',
-        'Modern UI/UX implementation',
-        'Backend infrastructure setup',
+        'Modern UI/UX implementation with glassmorphism design',
+        'Backend infrastructure setup with Supabase',
         'Security protocols implemented',
-        'Performance optimization completed'
+        'Performance optimization completed',
+        'Mobile-responsive design implemented',
+        'SEO optimization and analytics setup',
       ],
+      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Vite'],
+      metrics: {
+        linesOfCode: '25,000+',
+        components: '150+',
+        pages: '12',
+        loadTime: '< 2s',
+      },
       icon: Code,
       color: 'from-green-500 to-emerald-600',
       bgColor: 'bg-green-500/10',
       borderColor: 'border-green-500/30',
       glowColor: 'shadow-green-500/20',
+      hoverColor: 'hover:shadow-green-500/40',
+      completionDate: '2025-02-28',
     },
     {
       id: 'phase-1',
@@ -166,23 +341,36 @@ const RoadmapPage: React.FC = () => {
       progress: 85,
       description: 'Token launch completion and aggressive marketing campaign',
       achievements: [
-        'AIF Token successfully launched',
+        '$FlowAI Token successfully launched on Solana',
         'Multi-channel marketing campaign active',
-        'Community building initiatives',
+        'Community building initiatives (1,265+ members)',
         'Influencer partnerships established',
-        'Social media presence expansion'
+        'Social media presence expansion',
+        'DexScreener listing completed',
+        'Telegram community growth acceleration',
       ],
       currentFocus: [
-        'Expanding community reach',
-        'Strategic partnerships',
+        'Expanding community reach to 5,000+ members',
+        'Strategic partnerships with AI companies',
         'Content marketing campaigns',
-        'User acquisition optimization'
+        'User acquisition optimization',
+        'Token utility development',
+        'Community engagement programs',
       ],
+      technologies: ['Solana Blockchain', 'DexScreener', 'Telegram Bot', 'Social Media APIs'],
+      metrics: {
+        communitySize: '1,265+',
+        tokenHolders: 'Growing',
+        socialReach: '10,000+',
+        engagement: '15%+',
+      },
       icon: Rocket,
       color: 'from-blue-500 to-cyan-600',
       bgColor: 'bg-blue-500/10',
       borderColor: 'border-blue-500/30',
       glowColor: 'shadow-blue-500/20',
+      hoverColor: 'hover:shadow-blue-500/40',
+      estimatedCompletion: '2025-07-15',
     },
     {
       id: 'phase-2',
@@ -194,45 +382,78 @@ const RoadmapPage: React.FC = () => {
       progress: 0,
       description: 'Massive community building and marketing boost with substantial investment',
       plannedInitiatives: [
-        'Large-scale marketing campaigns',
-        'Global community expansion',
-        'Strategic partnerships & collaborations',
-        'Platform development acceleration',
-        'Enterprise client acquisition',
+        'Large-scale marketing campaigns across multiple channels',
+        'Global community expansion (target: 50,000+ members)',
+        'Strategic partnerships & collaborations with AI companies',
+        'Platform development acceleration with full team',
+        'Enterprise client acquisition program',
         'Advanced AI features development',
-        'International market expansion',
-        'Professional team scaling'
+        'International market expansion (US, EU, Asia)',
+        'Professional team scaling (10+ developers)',
+        'Major exchange listings',
+        'Institutional investor outreach',
       ],
+      technologies: [
+        'Advanced AI Models',
+        'Enterprise APIs',
+        'Multi-language Support',
+        'Global CDN',
+      ],
+      metrics: {
+        targetCommunity: '50,000+',
+        teamSize: '10+',
+        markets: '3 continents',
+        partnerships: '20+',
+      },
       icon: Crown,
       color: 'from-purple-500 to-pink-600',
       bgColor: 'bg-purple-500/10',
       borderColor: 'border-purple-500/30',
       glowColor: 'shadow-purple-500/20',
+      hoverColor: 'hover:shadow-purple-500/40',
+      estimatedStart: '2025-08-01',
     },
     {
       id: 'phase-3',
       title: 'Platform Revolution',
       period: '2026 & Beyond',
       status: 'future',
-      budget: 'TBD',
-      budgetIcon: Infinity,
+      budget: 'Multi-Million €',
+      budgetIcon: InfinityIcon,
       progress: 0,
       description: 'Full AI automation platform launch and market domination',
       visionPoints: [
-        'Complete AI workflow platform',
-        'Enterprise-grade solutions',
-        'Global market leadership',
-        'Advanced AI agent ecosystem',
-        'Revolutionary automation tools',
-        'Industry partnerships',
-        'IPO preparation',
-        'Worldwide expansion'
+        'Complete AI workflow platform with 1000+ agents',
+        'Enterprise-grade solutions for Fortune 500',
+        'Global market leadership in AI automation',
+        'Advanced AI agent ecosystem marketplace',
+        'Revolutionary automation tools and APIs',
+        'Industry partnerships with tech giants',
+        'IPO preparation and public listing',
+        'Worldwide expansion to 50+ countries',
+        'AI research lab establishment',
+        'University partnerships and education programs',
       ],
+      technologies: [
+        'AGI Integration',
+        'Quantum Computing',
+        'Edge AI',
+        'Blockchain Oracles',
+        'Neural Networks',
+      ],
+      metrics: {
+        targetUsers: '1M+',
+        revenue: '$100M+',
+        valuation: '$1B+',
+        employees: '500+',
+      },
       icon: Sparkles,
-      color: 'from-gold to-yellow-500',
+      color: 'from-yellow-400 to-orange-500',
       bgColor: 'bg-yellow-500/10',
       borderColor: 'border-yellow-500/30',
       glowColor: 'shadow-yellow-500/20',
+      hoverColor: 'hover:shadow-yellow-500/40',
+      estimatedStart: '2026-01-01',
     },
   ];
 
@@ -285,8 +506,14 @@ const RoadmapPage: React.FC = () => {
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-sapphire/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/5 to-sapphire/5 rounded-full blur-3xl animate-spin" style={{ animationDuration: '20s' }} />
+        <div
+          className="absolute bottom-20 right-10 w-96 h-96 bg-sapphire/10 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: '1s' }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/5 to-sapphire/5 rounded-full blur-3xl animate-spin"
+          style={{ animationDuration: '20s' }}
+        />
       </div>
 
       <MotionDiv
@@ -317,8 +544,9 @@ const RoadmapPage: React.FC = () => {
             </h1>
 
             <p className="text-xl sm:text-2xl text-muted-foreground mb-8 max-w-4xl mx-auto leading-relaxed">
-              From <span className="text-primary font-semibold">€5,000 foundation</span> to <span className="text-gold font-semibold">€40,000+ expansion</span> -
-              witness our ambitious journey to revolutionize AI automation
+              From <span className="text-primary font-semibold">€5,000 foundation</span> to{' '}
+              <span className="text-gold font-semibold">€40,000+ expansion</span> - witness our
+              ambitious journey to revolutionize AI automation
             </p>
 
             {/* Live Metrics Dashboard */}
@@ -380,30 +608,37 @@ const RoadmapPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {investmentMilestones.map((milestone, index) => (
-              <MotionDiv
-                key={milestone.phase}
-                variants={milestoneVariants}
-                className="relative"
-              >
-                <GlassCard className={`premium-card bg-card/80 backdrop-blur-lg border-2 ${
-                  milestone.status === 'completed' ? 'border-green-500/30 shadow-green-500/20' :
-                  milestone.status === 'active' ? 'border-blue-500/30 shadow-blue-500/20 animate-pulse' :
-                  'border-purple-500/30 shadow-purple-500/20'
-                } shadow-2xl p-8 text-center relative overflow-hidden`}>
-
+              <MotionDiv key={milestone.phase} variants={milestoneVariants} className="relative">
+                <GlassCard
+                  className={`premium-card bg-card/80 backdrop-blur-lg border-2 ${
+                    milestone.status === 'completed'
+                      ? 'border-green-500/30 shadow-green-500/20'
+                      : milestone.status === 'active'
+                        ? 'border-blue-500/30 shadow-blue-500/20 animate-pulse'
+                        : 'border-purple-500/30 shadow-purple-500/20'
+                  } shadow-2xl p-8 text-center relative overflow-hidden`}
+                >
                   {/* Background Animation */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${
-                    milestone.status === 'completed' ? 'from-green-500/5 to-emerald-500/5' :
-                    milestone.status === 'active' ? 'from-blue-500/5 to-cyan-500/5' :
-                    'from-purple-500/5 to-pink-500/5'
-                  } animate-pulse`} />
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${
+                      milestone.status === 'completed'
+                        ? 'from-green-500/5 to-emerald-500/5'
+                        : milestone.status === 'active'
+                          ? 'from-blue-500/5 to-cyan-500/5'
+                          : 'from-purple-500/5 to-pink-500/5'
+                    } animate-pulse`}
+                  />
 
                   <div className="relative z-10">
-                    <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-6 ${
-                      milestone.status === 'completed' ? 'bg-green-500/20' :
-                      milestone.status === 'active' ? 'bg-blue-500/20' :
-                      'bg-purple-500/20'
-                    }`}>
+                    <div
+                      className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-6 ${
+                        milestone.status === 'completed'
+                          ? 'bg-green-500/20'
+                          : milestone.status === 'active'
+                            ? 'bg-blue-500/20'
+                            : 'bg-purple-500/20'
+                      }`}
+                    >
                       <milestone.icon className={`h-8 w-8 ${milestone.color}`} />
                     </div>
 
@@ -415,20 +650,29 @@ const RoadmapPage: React.FC = () => {
                     <p className="text-muted-foreground mb-4">{milestone.description}</p>
 
                     <Badge
-                      variant={milestone.status === 'completed' ? 'default' : milestone.status === 'active' ? 'secondary' : 'outline'}
+                      variant={
+                        milestone.status === 'completed'
+                          ? 'default'
+                          : milestone.status === 'active'
+                            ? 'secondary'
+                            : 'outline'
+                      }
                       className={`${
-                        milestone.status === 'completed' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
-                        milestone.status === 'active' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 animate-pulse' :
-                        'bg-purple-500/20 text-purple-400 border-purple-500/30'
+                        milestone.status === 'completed'
+                          ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                          : milestone.status === 'active'
+                            ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 animate-pulse'
+                            : 'bg-purple-500/20 text-purple-400 border-purple-500/30'
                       } mb-4`}
                     >
-                      {milestone.status === 'completed' ? '✅ COMPLETED' :
-                       milestone.status === 'active' ? '🔥 ACTIVE NOW' : '🚀 COMING SOON'}
+                      {milestone.status === 'completed'
+                        ? '✅ COMPLETED'
+                        : milestone.status === 'active'
+                          ? '🔥 ACTIVE NOW'
+                          : '🚀 COMING SOON'}
                     </Badge>
 
-                    <div className="text-sm text-primary font-semibold">
-                      ROI: {milestone.roi}
-                    </div>
+                    <div className="text-sm text-primary font-semibold">ROI: {milestone.roi}</div>
                   </div>
                 </GlassCard>
               </MotionDiv>
@@ -466,42 +710,95 @@ const RoadmapPage: React.FC = () => {
                   index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                 }`}
               >
-                {/* Timeline Dot */}
-                <div className={`absolute left-8 md:left-1/2 w-6 h-6 rounded-full border-4 border-background transform md:-translate-x-1/2 z-10 ${
-                  phase.status === 'completed' ? 'bg-green-500 animate-pulse' :
-                  phase.status === 'in-progress' ? 'bg-blue-500 animate-bounce' :
-                  phase.status === 'planned' ? 'bg-purple-500' :
-                  'bg-gold animate-spin'
-                }`} />
+                {/* Enhanced Timeline Dot */}
+                <div className={`absolute left-8 md:left-1/2 transform md:-translate-x-1/2 z-10`}>
+                  <div
+                    className={`relative w-8 h-8 rounded-full border-4 border-background ${
+                      phase.status === 'completed'
+                        ? 'bg-green-500 animate-pulse'
+                        : phase.status === 'in-progress'
+                          ? 'bg-blue-500 animate-bounce'
+                          : phase.status === 'planned'
+                            ? 'bg-purple-500 hover:animate-pulse'
+                            : 'bg-gradient-to-r from-yellow-400 to-orange-500 animate-spin'
+                    }`}
+                  >
+                    {/* Inner icon */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      {phase.status === 'completed' ? (
+                        <CheckCircle className="w-4 h-4 text-white" />
+                      ) : phase.status === 'in-progress' ? (
+                        <Zap className="w-4 h-4 text-white animate-pulse" />
+                      ) : phase.status === 'planned' ? (
+                        <Clock className="w-4 h-4 text-white" />
+                      ) : (
+                        <Sparkles className="w-4 h-4 text-white" />
+                      )}
+                    </div>
+                    {/* Outer glow ring */}
+                    <div
+                      className={`absolute -inset-2 rounded-full opacity-30 ${
+                        phase.status === 'completed'
+                          ? 'bg-green-500 animate-ping'
+                          : phase.status === 'in-progress'
+                            ? 'bg-blue-500 animate-ping'
+                            : phase.status === 'planned'
+                              ? 'bg-purple-500'
+                              : 'bg-gradient-to-r from-yellow-400 to-orange-500 animate-ping'
+                      }`}
+                      style={{ animationDuration: '2s' }}
+                    />
+                  </div>
+                </div>
 
                 {/* Phase Card */}
-                <div className={`w-full md:w-5/12 ml-16 md:ml-0 ${
-                  index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'
-                }`}>
-                  <GlassCard className={`premium-card bg-card/90 backdrop-blur-lg border-2 ${phase.borderColor} ${phase.glowColor} shadow-2xl p-8 hover:scale-105 transition-all duration-500 relative overflow-hidden`}>
-
+                <div
+                  className={`w-full md:w-5/12 ml-16 md:ml-0 ${
+                    index % 2 === 0 ? 'md:mr-auto md:pr-8' : 'md:ml-auto md:pl-8'
+                  }`}
+                >
+                  <GlassCard
+                    className={`premium-card bg-card/90 backdrop-blur-lg border-2 ${phase.borderColor} ${phase.glowColor} ${phase.hoverColor} shadow-2xl p-8 hover:scale-105 hover:-translate-y-2 transition-all duration-500 relative overflow-hidden group cursor-pointer`}
+                  >
                     {/* Animated Background */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${phase.color.replace('from-', 'from-').replace('to-', 'to-')}/5 animate-pulse`} />
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br ${phase.color.replace('from-', 'from-').replace('to-', 'to-')}/5 animate-pulse`}
+                    />
 
                     <div className="relative z-10">
                       {/* Header */}
                       <div className="flex items-center justify-between mb-6">
                         <div className={`p-4 ${phase.bgColor} rounded-xl`}>
-                          <phase.icon className={`h-8 w-8 bg-gradient-to-r ${phase.color} bg-clip-text text-transparent`} />
+                          <phase.icon
+                            className={`h-8 w-8 bg-gradient-to-r ${phase.color} bg-clip-text text-transparent`}
+                          />
                         </div>
                         <div className="text-right">
                           <Badge
-                            variant={phase.status === 'completed' ? 'default' : phase.status === 'in-progress' ? 'secondary' : 'outline'}
+                            variant={
+                              phase.status === 'completed'
+                                ? 'default'
+                                : phase.status === 'in-progress'
+                                  ? 'secondary'
+                                  : 'outline'
+                            }
                             className={`text-lg px-4 py-2 ${
-                              phase.status === 'completed' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
-                              phase.status === 'in-progress' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 animate-pulse' :
-                              phase.status === 'planned' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
-                              'bg-gold/20 text-gold border-gold/30'
+                              phase.status === 'completed'
+                                ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                                : phase.status === 'in-progress'
+                                  ? 'bg-blue-500/20 text-blue-400 border-blue-500/30 animate-pulse'
+                                  : phase.status === 'planned'
+                                    ? 'bg-purple-500/20 text-purple-400 border-purple-500/30'
+                                    : 'bg-gold/20 text-gold border-gold/30'
                             }`}
                           >
-                            {phase.status === 'completed' ? '✅ COMPLETED' :
-                             phase.status === 'in-progress' ? '🔥 ACTIVE NOW' :
-                             phase.status === 'planned' ? '🚀 PLANNED' : '✨ FUTURE'}
+                            {phase.status === 'completed'
+                              ? '✅ COMPLETED'
+                              : phase.status === 'in-progress'
+                                ? '🔥 ACTIVE NOW'
+                                : phase.status === 'planned'
+                                  ? '🚀 PLANNED'
+                                  : '✨ FUTURE'}
                           </Badge>
                         </div>
                       </div>
@@ -538,7 +835,10 @@ const RoadmapPage: React.FC = () => {
                             </h4>
                             <div className="grid grid-cols-1 gap-2">
                               {phase.achievements.map((achievement, idx) => (
-                                <div key={idx} className="flex items-center text-sm text-muted-foreground">
+                                <div
+                                  key={idx}
+                                  className="flex items-center text-sm text-muted-foreground"
+                                >
                                   <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
                                   {achievement}
                                 </div>
@@ -555,7 +855,10 @@ const RoadmapPage: React.FC = () => {
                             </h4>
                             <div className="grid grid-cols-1 gap-2">
                               {phase.currentFocus.map((focus, idx) => (
-                                <div key={idx} className="flex items-center text-sm text-muted-foreground">
+                                <div
+                                  key={idx}
+                                  className="flex items-center text-sm text-muted-foreground"
+                                >
                                   <Zap className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" />
                                   {focus}
                                 </div>
@@ -572,7 +875,10 @@ const RoadmapPage: React.FC = () => {
                             </h4>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               {phase.plannedInitiatives.map((initiative, idx) => (
-                                <div key={idx} className="flex items-center text-sm text-muted-foreground">
+                                <div
+                                  key={idx}
+                                  className="flex items-center text-sm text-muted-foreground"
+                                >
                                   <Star className="w-4 h-4 text-purple-500 mr-2 flex-shrink-0" />
                                   {initiative}
                                 </div>
@@ -589,7 +895,10 @@ const RoadmapPage: React.FC = () => {
                             </h4>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               {phase.visionPoints.map((point, idx) => (
-                                <div key={idx} className="flex items-center text-sm text-muted-foreground">
+                                <div
+                                  key={idx}
+                                  className="flex items-center text-sm text-muted-foreground"
+                                >
                                   <Crown className="w-4 h-4 text-gold mr-2 flex-shrink-0" />
                                   {point}
                                 </div>
@@ -597,6 +906,76 @@ const RoadmapPage: React.FC = () => {
                             </div>
                           </div>
                         )}
+
+                        {/* Technologies Section */}
+                        {phase.technologies && (
+                          <div className="mt-6">
+                            <h4 className="font-semibold text-cyan-400 mb-3 flex items-center">
+                              <Cpu className="w-4 h-4 mr-2" />
+                              Technologies
+                            </h4>
+                            <div className="flex flex-wrap gap-2">
+                              {phase.technologies.map((tech, idx) => (
+                                <Badge
+                                  key={idx}
+                                  variant="outline"
+                                  className="bg-cyan-500/10 text-cyan-400 border-cyan-500/30 hover:bg-cyan-500/20 transition-colors"
+                                >
+                                  {tech}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Metrics Section */}
+                        {phase.metrics && (
+                          <div className="mt-6">
+                            <h4 className="font-semibold text-orange-400 mb-3 flex items-center">
+                              <BarChart3 className="w-4 h-4 mr-2" />
+                              Key Metrics
+                            </h4>
+                            <div className="grid grid-cols-2 gap-4">
+                              {Object.entries(phase.metrics).map(([key, value], idx) => (
+                                <div
+                                  key={idx}
+                                  className="bg-card/30 rounded-lg p-3 border border-border-alt"
+                                >
+                                  <div className="text-lg font-bold text-orange-400">{value}</div>
+                                  <div className="text-xs text-muted-foreground capitalize">
+                                    {key.replace(/([A-Z])/g, ' $1').trim()}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Timeline Information */}
+                        <div className="mt-6 pt-4 border-t border-border-alt">
+                          <div className="flex items-center justify-between text-sm">
+                            <div className="flex items-center text-muted-foreground">
+                              <Calendar className="w-4 h-4 mr-2" />
+                              {phase.completionDate && phase.status === 'completed'
+                                ? `Completed: ${phase.completionDate}`
+                                : phase.estimatedCompletion && phase.status === 'in-progress'
+                                  ? `Est. Completion: ${phase.estimatedCompletion}`
+                                  : phase.estimatedStart
+                                    ? `Est. Start: ${phase.estimatedStart}`
+                                    : phase.period}
+                            </div>
+                            <div className="flex items-center text-muted-foreground">
+                              <Timer className="w-4 h-4 mr-2" />
+                              {phase.status === 'completed'
+                                ? 'Completed'
+                                : phase.status === 'in-progress'
+                                  ? 'In Progress'
+                                  : phase.status === 'planned'
+                                    ? 'Planned'
+                                    : 'Future'}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </GlassCard>
@@ -614,7 +993,6 @@ const RoadmapPage: React.FC = () => {
           transition={{ duration: 0.8, delay: 1 }}
         >
           <GlassCard className="premium-card bg-gradient-to-br from-primary/10 via-sapphire/10 to-gold/10 backdrop-blur-lg border-2 border-primary/20 shadow-2xl p-12 relative overflow-hidden">
-
             {/* Animated Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-sapphire/5 to-gold/5 animate-pulse" />
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-sapphire to-gold animate-pulse" />
@@ -678,9 +1056,7 @@ const RoadmapPage: React.FC = () => {
 
               {/* Next Milestone Countdown */}
               <div className="mt-12 p-6 bg-card/50 rounded-xl border border-border-alt">
-                <h3 className="text-2xl font-bold mb-4 text-center">
-                  🎯 Next Major Milestone
-                </h3>
+                <h3 className="text-2xl font-bold mb-4 text-center">🎯 Next Major Milestone</h3>
                 <div className="text-center">
                   <div className="text-4xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent mb-2">
                     €40,000 Expansion Phase
@@ -700,9 +1076,5 @@ const RoadmapPage: React.FC = () => {
     </div>
   );
 };
-
-
-
-
 
 export default RoadmapPage;
