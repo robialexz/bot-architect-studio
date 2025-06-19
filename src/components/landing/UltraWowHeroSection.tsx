@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, Sparkles, ExternalLink, Play, Zap, Brain, Rocket, MessageCircle } from 'lucide-react';
+import { ArrowRight, Sparkles, ExternalLink, Play, Zap, Brain, Rocket, MessageCircle, Star, Layers, Bot } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 // Social Media Icons
 const TelegramIcon = ({ className }: { className?: string }) => (
@@ -15,20 +16,20 @@ const TwitterIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// 3D Floating Particles Component
+// Enhanced 3D Floating Particles Component with Premium Effects
 const FloatingParticles: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    
+
     const particles: Array<{
       x: number;
       y: number;
@@ -39,32 +40,39 @@ const FloatingParticles: React.FC = () => {
       size: number;
       color: string;
       opacity: number;
+      pulse: number;
+      pulseSpeed: number;
     }> = [];
-    
-    // Create particles
-    for (let i = 0; i < 100; i++) {
+
+    // Create premium particles with enhanced colors
+    for (let i = 0; i < 150; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         z: Math.random() * 1000,
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2,
-        vz: (Math.random() - 0.5) * 5,
-        size: Math.random() * 3 + 1,
-        color: ['#3B82F6', '#8B5CF6', '#06B6D4', '#10B981'][Math.floor(Math.random() * 4)],
-        opacity: Math.random() * 0.8 + 0.2
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: (Math.random() - 0.5) * 1.5,
+        vz: (Math.random() - 0.5) * 3,
+        size: Math.random() * 4 + 1,
+        color: ['#3B82F6', '#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444'][Math.floor(Math.random() * 6)],
+        opacity: Math.random() * 0.9 + 0.1,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: Math.random() * 0.02 + 0.01
       });
     }
-    
+
+    let animationId: number;
+
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       particles.forEach(particle => {
         // Update position
         particle.x += particle.vx;
         particle.y += particle.vy;
         particle.z += particle.vz;
-        
+        particle.pulse += particle.pulseSpeed;
+
         // Wrap around edges
         if (particle.x < 0) particle.x = canvas.width;
         if (particle.x > canvas.width) particle.x = 0;
@@ -72,39 +80,52 @@ const FloatingParticles: React.FC = () => {
         if (particle.y > canvas.height) particle.y = 0;
         if (particle.z < 0) particle.z = 1000;
         if (particle.z > 1000) particle.z = 0;
-        
-        // 3D perspective
+
+        // 3D perspective with enhanced effects
         const scale = 1000 / (1000 + particle.z);
         const x2d = particle.x * scale;
         const y2d = particle.y * scale;
-        const size2d = particle.size * scale;
-        
-        // Draw particle with glow
+        const pulseSize = Math.sin(particle.pulse) * 0.5 + 1;
+        const size2d = particle.size * scale * pulseSize;
+
+        // Draw particle with enhanced glow and pulse
         ctx.save();
-        ctx.globalAlpha = particle.opacity * scale;
-        ctx.shadowBlur = 20;
+        ctx.globalAlpha = particle.opacity * scale * (Math.sin(particle.pulse) * 0.3 + 0.7);
+        ctx.shadowBlur = 30 * scale;
         ctx.shadowColor = particle.color;
         ctx.fillStyle = particle.color;
+
+        // Create gradient for premium look
+        const gradient = ctx.createRadialGradient(x2d, y2d, 0, x2d, y2d, size2d * 2);
+        gradient.addColorStop(0, particle.color);
+        gradient.addColorStop(1, 'transparent');
+        ctx.fillStyle = gradient;
+
         ctx.beginPath();
         ctx.arc(x2d, y2d, size2d, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       });
-      
-      requestAnimationFrame(animate);
+
+      animationId = requestAnimationFrame(animate);
     };
-    
+
     animate();
-    
+
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-    
+
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
   }, []);
-  
+
   return (
     <canvas
       ref={canvasRef}

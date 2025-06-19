@@ -34,6 +34,7 @@
     "type-check": "tsc --noEmit",
     "quality:check": "npm run lint && npm run type-check && npm run test:run",
     "quality:fix": "npm run lint:fix && npm run test:run",
+    "deploy:surge": "npm run build && surge dist www.flowsyai.com",
     "prepare": "husky"
   },
   "dependencies": {
@@ -83,7 +84,7 @@
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.3.0",
-    "framer-motion": "^12.12.0",
+    "framer-motion": "^12.18.1",
     "gsap": "^3.13.0",
     "input-otp": "^1.2.4",
     "lovable-tagger": "^1.1.8",

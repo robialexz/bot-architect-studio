@@ -14,7 +14,7 @@ import { AuthenticatedRoute, PublicRoute } from './components/auth/authHelpers';
 import { Loader2 } from 'lucide-react';
 
 // Import critical pages immediately (landing pages and auth)
-import Index from './pages/Index';
+import LandingV2 from './pages/LandingV2';
 import AuthPageSimple from './pages/AuthPageSimple';
 import NotFound from './pages/NotFound';
 import UITest from './pages/UITest';
@@ -155,16 +155,22 @@ const App: React.FC = () => {
             <TooltipProvider>
               <BrowserRouter>
                 <Routes>
-                  {/* Public Routes with Landing Layout */}
+                  {/* Main Landing Page Route */}
                   <Route
                     path="/"
                     element={
                       <PublicRoute>
-                        <LandingLayout>
-                          <Index />
+                        <LandingLayout showNavbar={true} showFooter={true}>
+                          <LandingV2 />
                         </LandingLayout>
                       </PublicRoute>
                     }
+                  />
+
+                  {/* Legacy V2 Route - Redirect to main */}
+                  <Route
+                    path="/v2"
+                    element={<Navigate to="/" replace />}
                   />
 
 
@@ -246,7 +252,7 @@ const App: React.FC = () => {
                     path="/pricing"
                     element={
                       <PublicRoute>
-                        <LandingLayout>
+                        <LandingLayout showNavbar={true} showFooter={true}>
                           <Suspense
                             fallback={
                               <div className="flex items-center justify-center min-h-screen">

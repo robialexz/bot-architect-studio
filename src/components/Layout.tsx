@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from './Navbar';
+import EnhancedNavbar from './EnhancedNavbar';
 import Footer from './Footer';
 import FloatingFeedbackButton from './FloatingFeedbackButton';
 import GlobalPipelineBackground from './landing/GlobalPipelineBackground';
@@ -58,16 +59,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <GlobalPipelineBackground />
 
       <div className="relative flex flex-col min-h-screen">
-        {/* Dynamic Navbar - transparent for landing page, solid for other pages */}
-        <div
-          className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-            isLandingPage && !isScrolled
-              ? 'bg-transparent backdrop-blur-0'
-              : 'bg-background/80 backdrop-blur-md shadow-sm'
-          }`}
-        >
-          <Navbar />
-        </div>
+        {/* Enhanced Navbar for landing page, regular navbar for other pages */}
+        {isLandingPage ? (
+          <EnhancedNavbar />
+        ) : (
+          <div
+            className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
+              isScrolled
+                ? 'bg-background/80 backdrop-blur-md shadow-sm'
+                : 'bg-background/80 backdrop-blur-md shadow-sm'
+            }`}
+          >
+            <Navbar />
+          </div>
+        )}
 
         {/* Page Content */}
         <main className={`flex-grow ${isLandingPage ? 'pt-0' : 'pt-16'}`}>
