@@ -28,7 +28,7 @@ const SocialIcons: React.FC<SocialIconsProps> = ({
 
   const handleTelegramClick = () => {
     // FlowsyAI Telegram community link
-    window.open('https://t.me/+jNmtj8qUUtMxOTVk', '_blank', 'noopener,noreferrer');
+    window.open('https://t.me/FlowsyAIChat', '_blank', 'noopener,noreferrer');
   };
 
   const handleDexScreenerClick = () => {

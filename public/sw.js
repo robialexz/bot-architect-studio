@@ -1,9 +1,9 @@
 // Service Worker for AI Flow Application
 // Provides caching strategies for better performance
 
-const CACHE_NAME = 'ai-flow-v1.0.0';
-const STATIC_CACHE_NAME = 'ai-flow-static-v1.0.0';
-const DYNAMIC_CACHE_NAME = 'ai-flow-dynamic-v1.0.0';
+const CACHE_NAME = 'ai-flow-NUCLEAR-RESET-' + Date.now();
+const STATIC_CACHE_NAME = 'ai-flow-static-NUCLEAR-RESET-' + Date.now();
+const DYNAMIC_CACHE_NAME = 'ai-flow-dynamic-NUCLEAR-RESET-' + Date.now();
 
 // Assets to cache immediately
 const STATIC_ASSETS = [

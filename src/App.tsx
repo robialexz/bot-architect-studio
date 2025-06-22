@@ -19,10 +19,8 @@ import Index from './pages/Index';
 import SimpleLandingPage from './pages/SimpleLandingPage';
 import InteractiveLandingPage from './pages/InteractiveLandingPage';
 import MinimalistLandingPage from './pages/MinimalistLandingPage';
-import AuthPageSimple from './pages/AuthPageSimple';
+import AuthPage from './pages/AuthPage';
 import NotFound from './pages/NotFound';
-import UITest from './pages/UITest';
-import DiagnosticPage from './pages/DiagnosticPage';
 import ErrorDetector from './components/ErrorDetector';
 
 // Lazy load public pages for better performance
@@ -206,7 +204,7 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout showNavbar={false} showFooter={false}>
-                          <AuthPageSimple />
+                          <AuthPage />
                         </LandingLayout>
                       </PublicRoute>
                     }
@@ -216,24 +214,8 @@ const App: React.FC = () => {
                     element={
                       <PublicRoute>
                         <LandingLayout>
-                          <UITest />
+                          <NotFound />
                         </LandingLayout>
-                      </PublicRoute>
-                    }
-                  />
-                  <Route
-                    path="/debug"
-                    element={
-                      <PublicRoute>
-                        <DiagnosticPage />
-                      </PublicRoute>
-                    }
-                  />
-                  <Route
-                    path="/diagnostic"
-                    element={
-                      <PublicRoute>
-                        <DiagnosticPage />
                       </PublicRoute>
                     }
                   />

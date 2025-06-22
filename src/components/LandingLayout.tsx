@@ -1,7 +1,7 @@
 
 import React from 'react';
-import NavbarNoMotion from '@/components/Navbar-NoMotion';
-import FooterNoMotion from '@/components/Footer-NoMotion';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 interface LandingLayoutProps {
   children: React.ReactNode;
@@ -17,13 +17,13 @@ const LandingLayout: React.FC<LandingLayoutProps> = ({
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation Bar */}
-      {showNavbar && <NavbarNoMotion />}
+      {showNavbar && <Navbar />}
 
       {/* Main Content */}
       <main className="flex-1">{children}</main>
 
       {/* Footer */}
-      {showFooter && <FooterNoMotion />}
+      {showFooter && <Footer />}
     </div>
   );
 };

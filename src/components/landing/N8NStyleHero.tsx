@@ -17,6 +17,19 @@ import {
   Calendar,
   Activity,
 } from 'lucide-react';
+
+// Custom Telegram and X icons as SVG components
+const TelegramIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+  </svg>
+);
+
+const XIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+  </svg>
+);
 import { Link } from 'react-router-dom';
 import { GlassButton } from '@/components/ui/glass-button';
 import { GlassCard } from '@/components/ui/glass-card';
@@ -75,7 +88,7 @@ const N8NStyleHero: React.FC = () => {
                   iconPosition="left"
                   gradient="accent"
                   glow
-                  className="text-xl px-12 py-6 animate-pulse hover:animate-none transform hover:scale-105 transition-all duration-300"
+                  className="text-xl px-12 py-6 animate-pulse hover:animate-none transform hover:scale-105 transition-all duration-300 relative overflow-hidden group"
                   onClick={() =>
                     window.open(
                       'https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
@@ -84,8 +97,12 @@ const N8NStyleHero: React.FC = () => {
                     )
                   }
                 >
-                  Buy $FlowAI Token
-                  <ArrowRight className="w-6 h-6 ml-2" />
+                  <span className="relative z-10 flex items-center">
+                    Buy $FlowAI Token
+                    <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                  </span>
+                  {/* Enhanced glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-ai-emerald/20 via-ai-electric/30 to-ai-cyber/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
                 </GlassButton>
 
                 <div className="text-xs text-muted-foreground">
@@ -104,12 +121,12 @@ const N8NStyleHero: React.FC = () => {
               <GlassButton
                 variant="glass-secondary"
                 size="lg"
-                icon={<MessageCircle className="w-5 h-5" />}
+                icon={<TelegramIcon className="w-5 h-5" />}
                 iconPosition="left"
                 gradient="secondary"
                 className="min-w-[180px] hover:scale-105 transition-transform duration-300"
                 onClick={() =>
-                  window.open('https://t.me/+jNmtj8qUUtMxOTVk', '_blank', 'noopener,noreferrer')
+                  window.open('https://t.me/FlowsyAIChat', '_blank', 'noopener,noreferrer')
                 }
               >
                 Join Telegram
@@ -119,7 +136,7 @@ const N8NStyleHero: React.FC = () => {
               <GlassButton
                 variant="glass-secondary"
                 size="lg"
-                icon={<Users className="w-5 h-5" />}
+                icon={<XIcon className="w-5 h-5" />}
                 iconPosition="left"
                 gradient="primary"
                 className="min-w-[180px] hover:scale-105 transition-transform duration-300"
@@ -134,12 +151,12 @@ const N8NStyleHero: React.FC = () => {
               <GlassButton
                 variant="glass"
                 size="lg"
-                icon={<Play className="w-5 h-5" />}
+                icon={<Star className="w-5 h-5" />}
                 iconPosition="left"
                 className="min-w-[180px] hover:scale-105 transition-transform duration-300"
-                onClick={() => window.open('/platform-showcase', '_self')}
+                onClick={() => window.open('/waitlist', '_self')}
               >
-                Watch Demo
+                Join Waitlist
               </GlassButton>
             </MotionDiv>
 
@@ -235,10 +252,14 @@ const N8NStyleHero: React.FC = () => {
                     <GlassButton
                       variant="glass-secondary"
                       size="sm"
-                      className="w-full"
-                      onClick={() => window.open('https://t.me/+jNmtj8qUUtMxOTVk', '_blank')}
+                      icon={<TelegramIcon className="w-4 h-4" />}
+                      iconPosition="left"
+                      className="w-full group"
+                      onClick={() => window.open('https://t.me/FlowsyAIChat', '_blank')}
                     >
-                      Join Telegram
+                      <span className="group-hover:scale-105 transition-transform duration-300">
+                        Join Telegram
+                      </span>
                     </GlassButton>
                   </MotionDiv>
 
@@ -374,7 +395,7 @@ const N8NStyleHero: React.FC = () => {
                     iconPosition="left"
                     gradient="accent"
                     glow
-                    className="text-xl px-12 py-6 min-w-[250px] animate-pulse hover:animate-none"
+                    className="text-xl px-12 py-6 min-w-[250px] animate-pulse hover:animate-none relative overflow-hidden group"
                     onClick={() =>
                       window.open(
                         'https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
@@ -383,23 +404,28 @@ const N8NStyleHero: React.FC = () => {
                       )
                     }
                   >
-                    Buy $FlowAI Now
-                    <ExternalLink className="w-5 h-5 ml-2" />
+                    <span className="relative z-10 flex items-center">
+                      Buy $FlowAI Now
+                      <ExternalLink className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform duration-300" />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-ai-emerald/20 via-ai-electric/30 to-ai-cyber/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
                   </GlassButton>
 
                   <GlassButton
                     variant="glass-secondary"
                     size="xl"
-                    icon={<MessageCircle className="w-6 h-6" />}
+                    icon={<TelegramIcon className="w-6 h-6" />}
                     iconPosition="left"
                     gradient="secondary"
-                    className="text-xl px-12 py-6 min-w-[250px]"
+                    className="text-xl px-12 py-6 min-w-[250px] group"
                     onClick={() =>
-                      window.open('https://t.me/+jNmtj8qUUtMxOTVk', '_blank', 'noopener,noreferrer')
+                      window.open('https://t.me/FlowsyAIChat', '_blank', 'noopener,noreferrer')
                     }
                   >
-                    Join Community
-                    <ExternalLink className="w-5 h-5 ml-2" />
+                    <span className="relative z-10 flex items-center">
+                      Join Community
+                      <ExternalLink className="w-5 h-5 ml-2 group-hover:scale-110 transition-transform duration-300" />
+                    </span>
                   </GlassButton>
                 </div>
 

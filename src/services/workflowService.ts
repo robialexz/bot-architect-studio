@@ -165,3 +165,6 @@ export class WorkflowService {
     return data || [];
   }
 }
+
+// Export instance for compatibility
+export const workflowService = WorkflowService;

@@ -64,7 +64,7 @@ export const FLOWSY_TOKEN_CONFIG: TokenConfig = {
   // Social Links
   website: 'https://flowsyai.com',
   twitter: 'https://x.com/FlowsyAI',
-  telegram: 'https://t.me/+jNmtj8qUUtMxOTVk',
+  telegram: 'https://t.me/FlowsyAIChat',
   discord: 'https://discord.gg/FlowsyAI',
 
   // Launch Information

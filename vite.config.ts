@@ -9,6 +9,10 @@ export default defineConfig(({ mode }) => ({
     host: '::',
     port: 8080,
   },
+
+  // Base URL for Surge.sh deployment
+  base: '/',
+
   plugins: [react(), mode === 'development' && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
@@ -39,9 +43,10 @@ export default defineConfig(({ mode }) => ({
           'ui-vendor': ['@radix-ui/react-slot', '@radix-ui/react-toast', 'lucide-react'],
         },
         format: 'es',
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
+        // Add timestamp for cache busting
+        entryFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
+        chunkFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
+        assetFileNames: `assets/[name]-[hash]-${Date.now()}.[ext]`,
       },
     },
     chunkSizeWarningLimit: 500,

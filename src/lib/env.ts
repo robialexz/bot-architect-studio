@@ -18,8 +18,9 @@ const envSchema = z.object({
     ),
 
   // API Configuration
-  VITE_API_BASE_URL: z.string().url().optional(),
+  VITE_API_BASE_URL: z.string().url().default('http://localhost:8000'),
   VITE_API_TIMEOUT: z.string().transform(Number).default('30000'),
+  VITE_BACKEND_ENABLED: z.string().transform(Boolean).default('true'),
 
   // Feature Flags
   VITE_ENABLE_ANALYTICS: z.string().transform(Boolean).default('false'),
@@ -121,8 +122,9 @@ export const features = {
 
 // Configuration objects
 export const apiConfig = {
-  baseUrl: env.VITE_API_BASE_URL || env.VITE_SUPABASE_URL,
+  baseUrl: env.VITE_API_BASE_URL,
   timeout: env.VITE_API_TIMEOUT,
+  backendEnabled: env.VITE_BACKEND_ENABLED,
 } as const;
 
 export const supabaseConfig = {

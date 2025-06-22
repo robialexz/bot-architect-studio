@@ -1,0 +1,263 @@
+name: Backend CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+
+jobs:
+  # Test Job
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: flowsyai_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('backend/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      working-directory: ./backend
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-asyncio pytest-cov
+
+    - name: Set up test environment
+      working-directory: ./backend
+      run: |
+        echo "DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/flowsyai_test" > .env.testing
+        echo "REDIS_URL=redis://localhost:6379/15" >> .env.testing
+        echo "CELERY_BROKER_URL=redis://localhost:6379/14" >> .env.testing
+        echo "SECRET_KEY=test-secret-key" >> .env.testing
+        echo "ENVIRONMENT=testing" >> .env.testing
+
+    - name: Run database migrations
+      working-directory: ./backend
+      run: |
+        python scripts/init_db.py
+      env:
+        DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/flowsyai_test
+
+    - name: Run tests
+      working-directory: ./backend
+      run: |
+        pytest tests/ -v --cov=app --cov-report=xml --cov-report=html
+      env:
+        DATABASE_URL: postgresql+asyncpg://postgres:postgres@localhost:5432/flowsyai_test
+        REDIS_URL: redis://localhost:6379/15
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./backend/coverage.xml
+        flags: backend
+        name: backend-coverage
+
+  # Lint Job
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install linting tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install black isort flake8 mypy
+
+    - name: Run Black
+      working-directory: ./backend
+      run: black --check --diff .
+
+    - name: Run isort
+      working-directory: ./backend
+      run: isort --check-only --diff .
+
+    - name: Run flake8
+      working-directory: ./backend
+      run: flake8 .
+
+    - name: Run mypy
+      working-directory: ./backend
+      run: mypy app/
+
+  # Security Scan
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install security tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety bandit
+
+    - name: Run safety check
+      working-directory: ./backend
+      run: safety check -r requirements.txt
+
+    - name: Run bandit security scan
+      working-directory: ./backend
+      run: bandit -r app/ -f json -o bandit-report.json
+
+    - name: Upload bandit report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: bandit-report
+        path: backend/bandit-report.json
+
+  # Build Docker Image
+  build:
+    runs-on: ubuntu-latest
+    needs: [test, lint, security]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Docker Hub
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: flowsyai/backend
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./backend
+        file: ./backend/Dockerfile
+        target: production
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  # Deploy to Staging
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    environment: staging
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to staging
+      run: |
+        echo "🚀 Deploying to staging environment"
+        # Add your staging deployment commands here
+        # Example: SSH to staging server and run deployment script
+
+  # Deploy to Production
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to production
+      run: |
+        echo "🚀 Deploying to production environment"
+        # Add your production deployment commands here
+        # Example: SSH to production server and run deployment script
+
+  # Notify
+  notify:
+    runs-on: ubuntu-latest
+    needs: [test, lint, security, build]
+    if: always()
+    
+    steps:
+    - name: Notify on success
+      if: ${{ needs.test.result == 'success' && needs.lint.result == 'success' && needs.security.result == 'success' && needs.build.result == 'success' }}
+      run: |
+        echo "✅ All checks passed successfully!"
+        # Add notification logic (Slack, Discord, etc.)
+
+    - name: Notify on failure
+      if: ${{ needs.test.result == 'failure' || needs.lint.result == 'failure' || needs.security.result == 'failure' || needs.build.result == 'failure' }}
+      run: |
+        echo "❌ Some checks failed!"
+        # Add notification logic (Slack, Discord, etc.)

@@ -130,7 +130,7 @@ const HeroSectionNoMotion: React.FC = () => {
               style={{ animationDelay: '1.7s' }}
             >
               <a
-                href="https://t.me/+jNmtj8qUUtMxOTVk"
+                href="https://t.me/FlowsyAIChat"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block relative"

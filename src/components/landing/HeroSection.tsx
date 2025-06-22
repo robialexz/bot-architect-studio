@@ -191,7 +191,7 @@ const HeroSection: React.FC = () => {
               transition={{ delay: 1.7, duration: 0.6 }}
             >
               <a
-                href="https://t.me/+jNmtj8qUUtMxOTVk"
+                href="https://t.me/FlowsyAIChat"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block relative"

@@ -57,6 +57,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/hooks/useAuth';
+import { preloadRouteComponents } from '@/components/lazy/LazyComponents';
 
 const navLinkBaseClasses =
   'group inline-flex h-10 w-max items-center justify-center rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background';
@@ -81,6 +82,11 @@ const Navbar = () => {
       setIsMobileMenuOpen(false);
     }
   }, [isDesktop, isMobileMenuOpen]);
+
+  // Preload handler for navigation items
+  const handleNavHover = (route: string) => {
+    preloadRouteComponents(route);
+  };
 
   const handleNewProject = () => {
     setIsMobileMenuOpen(false);
@@ -167,6 +173,8 @@ const Navbar = () => {
                   <NavLink
                     key={item.to}
                     to={item.to}
+                    onMouseEnter={() => handleNavHover(item.to)}
+                    onFocus={() => handleNavHover(item.to)}
                     className={({ isActive }) =>
                       cn(
                         'group relative inline-flex h-10 items-center justify-center rounded-full px-6 py-2 text-sm font-medium transition-all duration-500 ease-out focus:outline-none',
@@ -329,7 +337,8 @@ const Navbar = () => {
                     onClick={() =>
                       window.open(
                         'https://dexscreener.com/solana/GzfwLWcTyEWcC3D9SeaXQPvfCevjh5xce1iWsPJGpump',
-                        '_blank'
+                        '_blank',
+                        'noopener,noreferrer'
                       )
                     }
                     className="group relative overflow-hidden bg-gradient-to-r from-ai-emerald via-ai-electric to-ai-emerald text-white font-bold rounded-full transition-all duration-500 ease-out inline-flex h-10 items-center justify-center whitespace-nowrap px-6 text-sm shadow-lg shadow-ai-emerald/30 hover:shadow-xl hover:shadow-ai-emerald/40"

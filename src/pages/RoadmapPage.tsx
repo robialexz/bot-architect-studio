@@ -580,7 +580,7 @@ const RoadmapPage: React.FC = () => {
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => window.open('https://t.me/your_telegram', '_blank')}
+                onClick={() => window.open('https://t.me/FlowsyAIChat', '_blank')}
                 className="border-primary/30 hover:border-primary/60 text-lg px-8 py-4"
               >
                 <Users className="mr-2 h-5 w-5" />
@@ -1045,7 +1045,7 @@ const RoadmapPage: React.FC = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => window.open('https://t.me/your_telegram', '_blank')}
+                  onClick={() => window.open('https://t.me/FlowsyAIChat', '_blank')}
                   className="border-2 border-primary/30 hover:border-primary/60 text-xl px-12 py-6"
                 >
                   <Users className="mr-3 h-6 w-6" />

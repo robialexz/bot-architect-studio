@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useIntegratedAuth } from '@/hooks/useIntegratedAuth';
 import { Loader2 } from 'lucide-react';
 
 interface ProtectedRouteProps {
@@ -18,7 +18,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   redirectTo,
   fallbackComponent,
 }) => {
-  const { user, isAuthenticated, isLoading, isInitialized } = useAuth();
+  const { user, isAuthenticated, isLoading, authSystem } = useIntegratedAuth();
+  const isInitialized = !isLoading;
   const location = useLocation();
   const hasRedirected = useRef(false);
 
@@ -32,10 +33,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       isInitialized,
       user: !!user,
       userEmail: user?.email,
+      authSystem,
       hasRedirected: hasRedirected.current,
       timestamp: new Date().toLocaleTimeString(),
     });
-  }, [location.pathname, requireAuth, isAuthenticated, isLoading, isInitialized, user]);
+  }, [location.pathname, requireAuth, isAuthenticated, isLoading, isInitialized, user, authSystem]);
 
   // Reset redirect flag when location changes
   useEffect(() => {
@@ -69,7 +71,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   // Handle premium requirements
-  if (requirePremium && !user?.isPremium) {
+  if (requirePremium && user && !user.subscription_tier?.includes('premium') && !user.subscription_tier?.includes('enterprise')) {
     if (fallbackComponent) {
       return <>{fallbackComponent}</>;
     }
